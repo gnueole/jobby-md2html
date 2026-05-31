@@ -336,27 +336,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         };
     }
 
-    // Save configuration and markdown to local files on the server
-    const saveToServer = debounce(() => {
-        const payload = {
-            markdown: markdownInput.value,
-            config: styleConfig
-        };
-        
-        fetch('/api/save', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload)
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log("Fichiers de configuration locaux sauvegardés sur le serveur.");
-        })
-        .catch(err => {
-            console.error("Erreur de sauvegarde locale sur le serveur :", err);
-        });
+    // Save configuration and markdown to localStorage
+    const saveToLocalStorage = debounce(() => {
+        try {
+            localStorage.setItem('ats_resume_markdown', markdownInput.value);
+            localStorage.setItem('ats_resume_styles', JSON.stringify(styleConfig));
+            console.log("Configuration and markdown saved to localStorage.");
+        } catch (e) {
+            console.error("Failed to save to localStorage:", e);
+        }
     }, 1000);
 
     // Import configurations from controls values
@@ -399,7 +387,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Recompile markdown since layout modes affect DOM structure
         compileMarkdown(markdownInput.value);
         
-        saveToServer();
+        saveToLocalStorage();
     }
 
     // Sync GUI controls with current active state
@@ -481,7 +469,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             markdownInput.value = newLines.join('\n');
             // Recompile markdown to update preview
             compileMarkdown(markdownInput.value);
-            saveToServer();
+            saveToLocalStorage();
         }
     }
 
@@ -906,7 +894,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     markdownInput.addEventListener('input', (e) => {
         const mdText = e.target.value;
         compileMarkdown(mdText);
-        saveToServer();
+        saveToLocalStorage();
     });
 
     // Wire customizer sliders and pickers
@@ -931,7 +919,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             
             // Recompile markdown since typography changes might affect auto zoom
             compileMarkdown(markdownInput.value);
-            saveToServer();
+            saveToLocalStorage();
         });
     });
 
@@ -945,7 +933,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         styleConfig.colorAccent = '#444444';
         updateControlsFromConfig();
         compileMarkdown(markdownInput.value);
-        saveToServer();
+        saveToLocalStorage();
     });
 
     presetDarkMode.addEventListener('click', () => {
@@ -957,7 +945,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         styleConfig.colorAccent = '#34d399';
         updateControlsFromConfig();
         compileMarkdown(markdownInput.value);
-        saveToServer();
+        saveToLocalStorage();
     });
 
     presetCleanBlue.addEventListener('click', () => {
@@ -969,7 +957,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         styleConfig.colorAccent = '#0ea5e9';
         updateControlsFromConfig();
         compileMarkdown(markdownInput.value);
-        saveToServer();
+        saveToLocalStorage();
     });
 
     presetCustom.addEventListener('click', () => {
@@ -983,7 +971,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         styleConfig.sidebarText = customColors.sidebarText;
         updateControlsFromConfig();
         compileMarkdown(markdownInput.value);
-        saveToServer();
+        saveToLocalStorage();
     });
 
     // App Theme Toggle (Auto / Light / Dark)
@@ -1041,7 +1029,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 .then(sampleText => {
                     markdownInput.value = sampleText;
                     compileMarkdown(sampleText);
-                    saveToServer();
+                    saveToLocalStorage();
                     showToast("Julien Avarre sample reloaded!");
                 })
                 .catch(err => console.error(err));
@@ -1052,7 +1040,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (confirm("Are you sure you want to clear the editor?")) {
             markdownInput.value = "";
             compileMarkdown("");
-            saveToServer();
+            saveToLocalStorage();
         }
     });
     
@@ -1778,90 +1766,90 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // --- API Startup Loader ---
     async function loadWorkspaceData() {
-        try {
-            const response = await fetch('/api/load');
-            if (response.ok) {
-                const data = await response.json();
-                
-                // 1. Populates Editor Text
-                if (data.markdown) {
-                    markdownInput.value = data.markdown;
-                    compileMarkdown(data.markdown);
-                } else {
-                    // Fallback to local storage or load sample
-                    const savedMd = localStorage.getItem('ats_resume_markdown');
-                    if (savedMd) {
-                        markdownInput.value = savedMd;
-                        compileMarkdown(savedMd);
-                    } else {
-                        // Load default sample
-                        fetch('sample.md')
-                            .then(res => res.text())
-                            .then(txt => {
-                                markdownInput.value = txt;
-                                compileMarkdown(txt);
-                            });
-                    }
-                }
-                
-                // 2. Populates Style configuration
-                if (data.config) {
-                    styleConfig = { ...DEFAULT_STYLE_CONFIG, ...data.config };
-                } else {
-                    // Fallback to local storage or default
-                    const savedStyles = localStorage.getItem('ats_resume_styles');
-                    if (savedStyles) {
-                        try {
-                            styleConfig = { ...DEFAULT_STYLE_CONFIG, ...JSON.parse(savedStyles) };
-                        } catch(e) {
-                            styleConfig = { ...DEFAULT_STYLE_CONFIG };
-                        }
-                    } else {
-                        styleConfig = { ...DEFAULT_STYLE_CONFIG };
-                    }
-                }
-                
-                // Initialize customColors from loaded config
-                customColors.colorBg = styleConfig.colorBg || DEFAULT_STYLE_CONFIG.colorBg;
-                customColors.colorHeadings = styleConfig.colorHeadings;
-                customColors.colorBody = styleConfig.colorBody;
-                customColors.colorLinks = styleConfig.colorLinks;
-                customColors.colorAccent = styleConfig.colorAccent;
-                customColors.sidebarBg = styleConfig.sidebarBg || DEFAULT_STYLE_CONFIG.sidebarBg;
-                customColors.sidebarText = styleConfig.sidebarText || DEFAULT_STYLE_CONFIG.sidebarText;
-                
-                updateControlsFromConfig();
-                
-            } else {
-                throw new Error("HTTP " + response.status);
-            }
-        } catch (e) {
-            console.warn("API load failed, falling back to local storage:", e);
-            // Local fallback
-            const savedMd = localStorage.getItem('ats_resume_markdown');
-            if (savedMd) {
-                markdownInput.value = savedMd;
-                compileMarkdown(savedMd);
-            }
-            const savedStyles = localStorage.getItem('ats_resume_styles');
+        let loadedMarkdown = null;
+        let loadedConfig = null;
+
+        // 1. Try reading from localStorage first
+        const savedMd = localStorage.getItem('ats_resume_markdown');
+        const savedStyles = localStorage.getItem('ats_resume_styles');
+
+        if (savedMd) {
+            loadedMarkdown = savedMd;
             if (savedStyles) {
                 try {
-                    styleConfig = { ...DEFAULT_STYLE_CONFIG, ...JSON.parse(savedStyles) };
-                } catch(e) {}
+                    loadedConfig = JSON.parse(savedStyles);
+                } catch (e) {
+                    console.error("Failed to parse saved styles from localStorage:", e);
+                }
             }
-            
-            // Initialize customColors from fallback config
-            customColors.colorBg = styleConfig.colorBg || DEFAULT_STYLE_CONFIG.colorBg;
-            customColors.colorHeadings = styleConfig.colorHeadings;
-            customColors.colorBody = styleConfig.colorBody;
-            customColors.colorLinks = styleConfig.colorLinks;
-            customColors.colorAccent = styleConfig.colorAccent;
-            customColors.sidebarBg = styleConfig.sidebarBg || DEFAULT_STYLE_CONFIG.sidebarBg;
-            customColors.sidebarText = styleConfig.sidebarText || DEFAULT_STYLE_CONFIG.sidebarText;
-            
-            updateControlsFromConfig();
         }
-        
+
+        // 2. If localStorage is empty, try to fetch from local files (for backward compatibility if user already has resume.md / config.json on disk)
+        if (!loadedMarkdown) {
+            try {
+                const mdResponse = await fetch('resume.md');
+                if (mdResponse.ok) {
+                    loadedMarkdown = await mdResponse.text();
+                    
+                    // Try fetching config.json as well
+                    const configResponse = await fetch('config.json');
+                    if (configResponse.ok) {
+                        try {
+                            loadedConfig = await configResponse.json();
+                        } catch (e) {
+                            console.error("Failed to parse config.json fetched from server:", e);
+                        }
+                    }
+                    console.log("Loaded legacy resume.md and config.json from disk.");
+                }
+            } catch (e) {
+                console.warn("Attempt to fetch legacy resume.md from server failed:", e);
+            }
+        }
+
+        // 3. Fallback to sample.md if still empty
+        if (!loadedMarkdown) {
+            try {
+                const sampleResponse = await fetch('sample.md');
+                if (sampleResponse.ok) {
+                    loadedMarkdown = await sampleResponse.text();
+                    console.log("Loaded default sample.md.");
+                } else {
+                    loadedMarkdown = "# Welcome to Jobby MD Editor\n\nStart typing here...";
+                }
+            } catch (e) {
+                console.error("Failed to fetch sample.md:", e);
+                loadedMarkdown = "# Welcome to Jobby MD Editor\n\nStart typing here...";
+            }
+        }
+
+        // Populate the editor and state
+        markdownInput.value = loadedMarkdown;
+        compileMarkdown(loadedMarkdown);
+
+        if (loadedConfig) {
+            styleConfig = { ...DEFAULT_STYLE_CONFIG, ...loadedConfig };
+        } else {
+            styleConfig = { ...DEFAULT_STYLE_CONFIG };
+        }
+
+        // Initialize customColors from loaded config
+        customColors.colorBg = styleConfig.colorBg || DEFAULT_STYLE_CONFIG.colorBg;
+        customColors.colorHeadings = styleConfig.colorHeadings;
+        customColors.colorBody = styleConfig.colorBody;
+        customColors.colorLinks = styleConfig.colorLinks;
+        customColors.colorAccent = styleConfig.colorAccent;
+        customColors.sidebarBg = styleConfig.sidebarBg || DEFAULT_STYLE_CONFIG.sidebarBg;
+        customColors.sidebarText = styleConfig.sidebarText || DEFAULT_STYLE_CONFIG.sidebarText;
+
+        updateControlsFromConfig();
+
+        // Save immediately to localStorage if it wasn't there already
+        if (!savedMd) {
+            localStorage.setItem('ats_resume_markdown', loadedMarkdown);
+            localStorage.setItem('ats_resume_styles', JSON.stringify(styleConfig));
+        }
+
         // Compute default canvas fitting scale on startup
         setTimeout(autoFitZoom, 300);
     }

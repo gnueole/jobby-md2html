@@ -1,0 +1,17 @@
+{
+  "name": "resume-md2html",
+  "version": "1.2.6",
+  "description": "ATS Markdown resume editor",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "markdown",
+    "resume",
+    "ats"
+  ],
+  "author": "Julien (Éole) Avarre",
+  "license": "MIT",
+  "dependencies": {}
+}
