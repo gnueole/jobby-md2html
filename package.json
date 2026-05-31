@@ -1,6 +1,6 @@
 {
   "name": "resume-md2html",
-  "version": "1.2.6",
+  "version": "1.3.0",
   "description": "ATS Markdown resume editor",
   "main": "server.js",
   "scripts": {
