@@ -87,9 +87,7 @@ services:
 
   # Jobby ATS Markdown Resume Editor
   jobby-editor:
-    build:
-      context: https://github.com/gnueole/resume-md2html.git#main
-      dockerfile: docker/Dockerfile
+    image: ghcr.io/gnueole/resume-md2html:latest
     container_name: jobby-editor
     restart: unless-stopped
     depends_on:
