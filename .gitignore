@@ -27,3 +27,7 @@ REX.md
 # Personal CV and layout config
 resume.md
 config.json
+
+# Node dependencies
+node_modules/
+

@@ -1,0 +1,107 @@
+name: n8n-eole-prod
+
+services:
+  # Initialisation des droits pour le certificat SSL (indispensable après un dump/restore)
+  traefik-acme-init:
+    image: alpine:3.20
+    container_name: traefik-acme-init
+    command: >
+      sh -lc "mkdir -p /letsencrypt &&
+              touch /letsencrypt/acme.json &&
+              chmod 600 /letsencrypt/acme.json"
+    volumes:
+      - traefik_letsencrypt:/letsencrypt
+    restart: "no"
+
+  # Le "Videur" de ton infrastructure
+  traefik:
+    image: traefik:v2.11
+    container_name: traefik-n8n
+    restart: unless-stopped
+    depends_on:
+      - traefik-acme-init
+    ports:
+      - "80:80"
+      - "443:443"
+    command:
+      - --log.level=INFO
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.docker.endpoint=unix:///var/run/docker.sock
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entrypoints.web.http.redirections.entrypoint.scheme=https
+      - --certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL}
+      - --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
+      - --certificatesresolvers.letsencrypt.acme.httpchallenge=true
+      - --certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - traefik_letsencrypt:/letsencrypt
+
+  # Ton nouveau serveur MCP pour Notion
+  # Note : n8n l'appellera via http://mcp-notion:3000
+  mcp-notion:
+    image: mcp/notion:latest 
+    container_name: mcp-notion
+    restart: unless-stopped
+    environment:
+      - NOTION_API_KEY=${NOTION_API_KEY} # À définir dans tes variables Hostinger
+      - TZ=${TZ}
+
+  # Le moteur de rendu PDF (Gotenberg)
+  gotenberg:
+    image: gotenberg/gotenberg:8
+    container_name: gotenberg
+    restart: unless-stopped
+    environment:
+      - GOTENBERG_CHROMIUM_DISABLE_JAVASCRIPT=true
+      - GOTENBERG_ALLOW_LIST_ACCESS_LOCAL_FILES=false
+
+  # n8n en version 2.21.0 avec support IA et MCP
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:2.21.0
+    container_name: n8n-server
+    restart: unless-stopped
+    depends_on:
+      - traefik
+      - mcp-notion
+      - gotenberg
+    environment:
+      - TZ=${TZ}
+      - N8N_HOST=${DOMAIN_NAME}
+      - N8N_PROTOCOL=https
+      - WEBHOOK_URL=https://${DOMAIN_NAME}/
+      - N8N_SECURE_COOKIE=true
+      - NODE_OPTIONS=--max-old-space-size=2048
+    volumes:
+      - n8n_data:/home/node/.n8n
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.n8n.rule=Host(`${DOMAIN_NAME}`)
+      - traefik.http.routers.n8n.entrypoints=websecure
+      - traefik.http.routers.n8n.tls=true
+      - traefik.http.routers.n8n.tls.certresolver=letsencrypt
+      - traefik.http.services.n8n.loadbalancer.server.port=5678
+
+  # Jobby ATS Markdown Resume Editor
+  jobby-editor:
+    build:
+      context: https://github.com/gnueole/resume-md2html.git#main
+      dockerfile: docker/Dockerfile
+    container_name: jobby-editor
+    restart: unless-stopped
+    depends_on:
+      - traefik
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.jobby.rule=Host(`cv.eole.me`)
+      - traefik.http.routers.jobby.entrypoints=websecure
+      - traefik.http.routers.jobby.tls=true
+      - traefik.http.routers.jobby.tls.certresolver=letsencrypt
+      - traefik.http.services.jobby.loadbalancer.server.port=3000
+
+volumes:
+  traefik_letsencrypt:
+  n8n_data:
