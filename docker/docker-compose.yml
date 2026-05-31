@@ -15,7 +15,7 @@ services:
 
   # Le "Videur" de ton infrastructure
   traefik:
-    image: traefik:v2.11
+    image: traefik:latest
     container_name: traefik-n8n
     restart: unless-stopped
     depends_on:
