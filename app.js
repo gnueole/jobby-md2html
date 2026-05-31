@@ -182,6 +182,28 @@ document.addEventListener('DOMContentLoaded', async () => {
         root.style.setProperty('--resume-sidebar-bg', styleConfig.sidebarBg || '#2d3748');
         root.style.setProperty('--resume-sidebar-text', styleConfig.sidebarText || '#ffffff');
 
+        // Update dynamic print margins style
+        let printPageStyle = document.getElementById('print-page-style');
+        if (!printPageStyle) {
+            printPageStyle = document.createElement('style');
+            printPageStyle.id = 'print-page-style';
+            document.head.appendChild(printPageStyle);
+        }
+        printPageStyle.textContent = `
+            @media print {
+                @page {
+                    size: A4 portrait;
+                    margin-top: ${styleConfig.marginY}px;
+                    margin-bottom: ${styleConfig.marginY}px;
+                    margin-left: ${styleConfig.marginX}px;
+                    margin-right: ${styleConfig.marginX}px;
+                }
+                .a4-sheet {
+                    padding: 0 !important;
+                }
+            }
+        `;
+
         // Update Slider Labels
         valFontSize.textContent = styleConfig.fontSize + 'px';
         valLineHeight.textContent = styleConfig.lineHeight;
@@ -1543,6 +1565,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     <style>
         ${inlineVariables}
         ${templatesCssText}
+        
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin-top: ${styleConfig.marginY}px;
+                margin-bottom: ${styleConfig.marginY}px;
+                margin-left: ${styleConfig.marginX}px;
+                margin-right: ${styleConfig.marginX}px;
+            }
+            .a4-sheet {
+                padding: 0 !important;
+            }
+        }
         
         /* Layout overrides for clean full-screen rendering */
         body {
