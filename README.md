@@ -4,8 +4,6 @@ A premium, modern Markdown resume editor that respects ATS (Applicant Tracking S
 
 All your content and style changes (colors, fonts, margins) are automatically saved in your working folder, allowing you to resume work across machines via Git.
 
----
-
 ## 🚀 Quick Start
 
 To launch the editor on a new machine after performing a `git pull`:
@@ -23,8 +21,6 @@ To launch the editor on a new machine after performing a `git pull`:
 3. Open your browser and go to:
    👉 **[http://localhost:3000](http://localhost:3000)**
 
----
-
 ## 📁 Project File Structure
 
 - `server.py`: Ultra‑lightweight local server written in Python (no dependencies to install). It serves the application and saves your data to disk.
@@ -36,8 +32,6 @@ To launch the editor on a new machine after performing a `git pull`:
 
 *Note: Committing and pushing `resume.md` and `config.json` to Git lets you synchronize all your text and style changes across machines.*
 
----
-
 ## 📝 Specific Resume Directives (Guide)
 
 Following standard guidelines, you can use special shortcuts in your Markdown to style the output:
@@ -45,8 +39,6 @@ Following standard guidelines, you can use special shortcuts in your Markdown to
 - **Accent Color**: Use `:accent[your text]` to color important elements (e.g., `:accent[Immediately available]`).
 - **Muted Text (gray)**: Use `:muted[your text]` to visually de‑emphasize secondary information while keeping it indexable by ATS bots (e.g., `:muted[Driver's license B · Own vehicle]`).
 - **Contact Bar**: The editor automatically detects the line containing your emails or links and formats it neatly. You can also force a centered contact block with the syntax `[CONTACT : email | phone | linkedin]`.
-
----
 
 ## 🖨️ Generate PDF for Recruiters
 

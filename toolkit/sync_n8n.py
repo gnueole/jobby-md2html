@@ -166,45 +166,131 @@ def main():
         nodes = wf.get("nodes", [])
         updated = False
         
-        for node in nodes:
-            if "code" in node.get("type", "").lower() and "Génération" in node.get("name", ""):
-                print(f"Found target Code node: '{node.get('name')}'")
-                js_code = node.get("parameters", {}).get("jsCode", "")
-                original_code = js_code
-                
-                # Replace newline split occurrences safely (only if contains actual newlines)
-                s_idx = js_code.find("split('")
-                while s_idx != -1:
-                    e_idx = js_code.find("')", s_idx)
-                    if e_idx != -1:
-                        target = js_code[s_idx:e_idx+2]
-                        content = js_code[s_idx+7:e_idx]
-                        if '\n' in content or '\r' in content:
-                            print(f"Replacing newline split: {repr(target)} -> split(String.fromCharCode(10))")
-                            js_code = js_code.replace(target, "split(String.fromCharCode(10))")
-                    s_idx = js_code.find("split('", s_idx + 1)
-                
-                # Replace newline join occurrences safely (only if contains actual newlines)
-                j_idx = js_code.find("join('")
-                while j_idx != -1:
-                    e_idx = js_code.find("')", j_idx)
-                    if e_idx != -1:
-                        target = js_code[j_idx:e_idx+2]
-                        content = js_code[j_idx+6:e_idx]
-                        if '\n' in content or '\r' in content:
-                            print(f"Replacing newline join: {repr(target)} -> join(String.fromCharCode(10))")
-                            js_code = js_code.replace(target, "join(String.fromCharCode(10))")
-                    j_idx = js_code.find("join('", j_idx + 1)
-                
-                # 3. Replace H3 layout restructurer with pure Regex H2/H3 splitter
-                old_restructurer_start = js_code.find("let finalHtml = compiledHtml;")
-                old_restructurer_end = js_code.find("// 6. GENERATE INLINE CSS")
-                
-                if old_restructurer_start != -1 and old_restructurer_end != -1:
-                    print("Updating 2-column layout restructurer to auto-split H2 into Main and H3 into Sidebar...")
-                    new_restructurer = """let finalHtml = compiledHtml;
+        new_js_code = r"""// 1. Récupération du CV et des deux nouvelles propriétés Notion
+const properties = $('Webhook').item.json.body?.data?.properties || {};
+const richTextArray = properties.CV?.rich_text || [];
+
+// Extraction propre (sans double ?. )
+const company = properties.Company?.rich_text?.[0]?.plain_text || 'company';
+const jobTitle = properties.Job_Title?.rich_text?.[0]?.plain_text || 'job';
+
+let mdText = richTextArray.map(block => block.plain_text || '').join('');
+
+// Fallback: Parser Markdown avec nettoyage du "plain text" parasite
+function robustMarkdownToHtml(md) {
+  let cleanedMd = md.replace(/plain[\s_]text/gi, '');
+  const lines = cleanedMd.split(String.fromCharCode(10));
+  let htmlOutput = [];
+  let inList = false;
+
+  for (let line of lines) {
+    let trimmed = line.trim();
+    if (!/^[-\*]\s+/.test(trimmed) && inList) {
+      htmlOutput.push('</ul>');
+      inList = false;
+    }
+    if (trimmed === '---' || trimmed === '***') {
+      htmlOutput.push('<hr />');
+      continue;
+    }
+    if (trimmed.startsWith('>')) {
+      let content = line.replace(/^>\s*/, '').trim().replace(/^"(.*)"$/, '$1');
+      htmlOutput.push(`<div class="summary-box">${content}</div>`);
+      continue;
+    }
+    if (trimmed.startsWith('# ')) { htmlOutput.push(`<h1>${trimmed.substring(2)}</h1>`); continue; }
+    if (trimmed.startsWith('## ')) { htmlOutput.push(`<h2>${trimmed.substring(3)}</h2>`); continue; }
+    if (trimmed.startsWith('### ')) { htmlOutput.push(`<h3>${trimmed.substring(4)}</h3>`); continue; }
+
+    if (/^[-\*]\s+/.test(trimmed)) {
+      if (!inList) { htmlOutput.push('<ul>'); inList = true; }
+      htmlOutput.push(`<li>${trimmed.replace(/^[-\*]\s+/, '')}</li>`);
+      continue;
+    }
+    if (trimmed !== '') {
+      if (line.includes('•') || line.includes('·')) {
+        htmlOutput.push(`<p style="text-align: justify; text-justify: inter-word;">${line}</p>`);
+      } else {
+        htmlOutput.push(`<p>${line}</p>`);
+      }
+    }
+  }
+  if (inList) htmlOutput.push('</ul>');
+
+  let finalBody = htmlOutput.join(String.fromCharCode(10));
+  finalBody = finalBody.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  finalBody = finalBody.replace(/\*(.*?)\*/g, '<em>$1</em>');
+  return finalBody;
+}
+
+// Fonction utilitaire pour nettoyer les caractères spéciaux du futur nom de fichier
+function slugify(text) {
+  return text
+    .toString()
+    .toLowerCase()
+    .normalize('NFD') // Supprime les accents
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim()
+    .replace(/\s+/g, '-') // Remplace les espaces par des tirets
+    .replace(/[^a-z0-9\-]/g, ''); // Supprime le reste
+}
+
+const finalFileName = `javarre-${slugify(company)}-${slugify(jobTitle)}`;
+
+// 3. RECUPERATION CONFIG & CSS DE DATA TABLE
+const config = JSON.parse($('Read Config from Table').first().json.value);
+const templatesCss = $('Read CSS from Table').first().json.value;
+
+// 4. PARSER MARKDOWN AVEC LE MEME COMPILATEUR QUE L'EDITEUR (MARKED.JS VIA CDN) OU FALLBACK ROBUSTE
+let compiledHtml;
+try {
+  const cdnUrl = 'https://cdn.jsdelivr.net/npm/marked/marked.min.js';
+  const response = await fetch(cdnUrl);
+  if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+  const markedText = await response.text();
+  const evalGlobal = new Function(markedText + '\nreturn marked;');
+  const marked = evalGlobal();
+  
+  marked.setOptions({
+    gfm: true,
+    breaks: true
+  });
+  
+  let processedMd = mdText.replace(/plain[\s_]text/gi, '');
+  processedMd = processedMd.replace(/:accent\[([^\]]+)\]/g, '<span class="resume-accent">$1</span>');
+  processedMd = processedMd.replace(/:muted\[([^\]]+)\]/g, '<span class="resume-muted">$1</span>');
+  
+  compiledHtml = marked.parse(processedMd);
+  
+  // Post-process styling for paragraph tags with separators/bullets to justify
+  compiledHtml = compiledHtml.replace(/<p>((?:(?!<\/p>).)*(?:[•·])(?:(?!<\/p>).)*)<\/p>/g, '<p style="text-align: justify; text-justify: inter-word;">$1</p>');
+} catch (error) {
+  console.warn('Fallback: Failed to load marked.js from CDN, using robustMarkdownToHtml', error);
+  compiledHtml = robustMarkdownToHtml(mdText);
+  compiledHtml = compiledHtml.replace(/:accent\[([^\]]+)\]/g, '<span class="resume-accent">$1</span>');
+  compiledHtml = compiledHtml.replace(/:muted\[([^\]]+)\]/g, '<span class="resume-muted">$1</span>');
+}
+
+// Traitement du bloc contact si présent
+compiledHtml = compiledHtml.replace(/\[CONTACT\s*:\s*([^\]]+)\]/gi, (match, contents) => {
+    const parts = contents.split('|').map(p => p.trim());
+    const formattedParts = parts.map(part => {
+        if (part.includes('@') && !part.includes(' ')) {
+            return `<a href="mailto:${part}">${part}</a>`;
+        }
+        if (part.startsWith('http://') || part.startsWith('https://')) {
+            const cleanUrl = part.replace(/^https?:\/\/(www\.)?/, '');
+            return `<a href="${part}" target="_blank">${cleanUrl}</a>`;
+        }
+        return `<span>${part}</span>`;
+    });
+    return `<div class="resume-contact-bar">${formattedParts.join(' &nbsp;•&nbsp; ')}</div>`;
+});
+
+// 5. LAYOUT 2 COLUMNS RESTRUCTURING
+let finalHtml = compiledHtml;
 if (config.layoutMode === '2-column') {
-    const parts = compiledHtml.split(/(?=<h[23]\\b)/i);
+    const parts = compiledHtml.split(/(?=<h[23]\b)/i);
     const headerHtml = parts[0];
     let mainHtml = '';
     let sidebarHtml = '';
@@ -232,30 +318,84 @@ if (config.layoutMode === '2-column') {
         </div>
     `;
 }
-"""
-                    target_block = js_code[old_restructurer_start:old_restructurer_end]
-                    js_code = js_code.replace(target_block, new_restructurer + "\n")
-                
-                if "margin: 15mm;" in js_code:
-                    print("Replacing A4 print margins in template: margin: 15mm; -> margin: 0;")
-                    js_code = js_code.replace("margin: 15mm;", "margin: 0;")
-                
-                old_p_line = "if (trimmed !== '') htmlOutput.push(`<p>${line}</p>`);"
-                if old_p_line in js_code:
-                    print("Updating Markdown parser to auto-justify inline skills list paragraphs...")
-                    new_p_line = """if (trimmed !== '') {
-      if (line.includes('•') || line.includes('·')) {
-        htmlOutput.push(`<p style="text-align: justify; text-justify: inter-word;">${line}</p>`);
-      } else {
-        htmlOutput.push(`<p>${line}</p>`);
-      }
-    }"""
-                    js_code = js_code.replace(old_p_line, new_p_line)
-                
-                if js_code != original_code:
-                    node["parameters"]["jsCode"] = js_code
+
+// 6. GENERATE INLINE CSS VARIABLES
+const inlineVariables = `
+:root {
+    --resume-font-family: ${config.fontFamily};
+    --resume-font-size: ${config.fontSize}px;
+    --resume-line-height: ${config.lineHeight};
+    --resume-heading-scale: ${config.headingScale};
+    --resume-margin-x: ${config.marginX}px;
+    --resume-margin-y: ${config.marginY}px;
+    --resume-section-spacing: ${config.sectionSpacing}px;
+    --resume-color-bg: ${config.colorBg || '#ffffff'};
+    --resume-color-headings: ${config.colorHeadings};
+    --resume-color-body: ${config.colorBody};
+    --resume-color-links: ${config.colorLinks};
+    --resume-color-accent: ${config.colorAccent};
+    --resume-sidebar-bg: ${config.sidebarBg || '#2d3748'};
+    --resume-sidebar-text: ${config.sidebarText || '#ffffff'};
+}`;
+
+// 7. ASSEMBLE STANDALONE DOCUMENT
+const standaloneHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>${finalFileName}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Raleway:wght@300;400;500;600;700;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    @page { 
+      size: A4; 
+      margin: 0; 
+    }
+    ${inlineVariables}
+    ${templatesCss}
+    body {
+        background-color: var(--resume-color-bg, #ffffff);
+        margin: 0;
+        padding: 0;
+    }
+    .a4-sheet {
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <article class="a4-sheet" id="resume-output">
+    ${finalHtml}
+  </article>
+</body>
+</html>`;
+
+return [
+  {
+    json: {
+      compiledBody: standaloneHtml,
+      pdfFileName: finalFileName,
+      printBackground: "true",
+      marginTop: "0",
+      marginBottom: "0",
+      marginLeft: "0",
+      marginRight: "0"
+    }
+  }
+];"""
+
+        for node in nodes:
+            if "code" in node.get("type", "").lower() and "Génération" in node.get("name", ""):
+                print(f"Found target Code node: '{node.get('name')}'")
+                js_code = node.get("parameters", {}).get("jsCode", "")
+                if js_code != new_js_code:
+                    node["parameters"]["jsCode"] = new_js_code
                     updated = True
-                
+                    print("Updated Génération Code node parameters to the latest version.")
+
         if updated:
             print("Applying corrections to n8n...")
             if push_workflow(wf):
