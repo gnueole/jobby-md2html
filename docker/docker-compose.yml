@@ -163,7 +163,7 @@ services:
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./vector.toml:/etc/vector/vector.toml:ro
+      - ./vector.yaml:/etc/vector/vector.yaml:ro
     environment:
       - AXIOM_TOKEN=${AXIOM_TOKEN}
       - AXIOM_DATASET=${AXIOM_DATASET}

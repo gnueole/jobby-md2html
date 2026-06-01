@@ -1,0 +1,14 @@
+sources:
+  docker_logs:
+    type: "docker_logs"
+    exclude_containers:
+      - "vector"
+
+sinks:
+  axiom_sink:
+    type: "axiom"
+    inputs:
+      - "docker_logs"
+    dataset: "${AXIOM_DATASET}"
+    token: "${AXIOM_TOKEN}"
+    url: "https://api.eu.axiom.co"
