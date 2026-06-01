@@ -1,31 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BLZSKHC2KE"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-BLZSKHC2KE');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>jobby MD Editor</title>
     <!-- Google Fonts for app UI and resume rendering -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Raleway:wght@300;400;500;600;700;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Raleway:wght@300;400;500;600;700;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap"
+        rel="stylesheet">
+
     <link rel="stylesheet" href="style.css?v=1.2.6">
     <link rel="stylesheet" href="templates.css?v=1.2.6">
-    
+
     <!-- Marked.js Markdown Parser -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
+
 <body>
     <div class="app-container">
         <!-- HEADER / TOP BAR -->
         <header class="app-header">
             <div class="brand">
-                <svg class="brand-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
-                    <polyline points="14 2 14 8 20 8"/>
-                    <line x1="16" y1="13" x2="8" y2="13"/>
-                    <line x1="16" y1="17" x2="8" y2="17"/>
-                    <line x1="10" y1="9" x2="8" y2="9"/>
+                <svg class="brand-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="16" y1="13" x2="8" y2="13" />
+                    <line x1="16" y1="17" x2="8" y2="17" />
+                    <line x1="10" y1="9" x2="8" y2="9" />
                 </svg>
                 <h1>jobby MD Editor</h1>
             </div>
@@ -35,18 +48,20 @@
                     <span id="theme-btn-text">Theme: Auto</span>
                 </button>
                 <button id="btn-about" class="btn btn-secondary" title="About Jobby">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10"/>
-                        <line x1="12" y1="16" x2="12" y2="12"/>
-                        <line x1="12" y1="8" x2="12.01" y2="8"/>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" />
+                        <line x1="12" y1="16" x2="12" y2="12" />
+                        <line x1="12" y1="8" x2="12.01" y2="8" />
                     </svg>
                     <span>About</span>
                 </button>
                 <button id="btn-print" class="btn btn-primary" title="Print to PDF (Ctrl+P)">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="6 9 6 2 18 2 18 9"/>
-                        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
-                        <rect x="6" y="14" width="12" height="8"/>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 6 2 18 2 18 9" />
+                        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+                        <rect x="6" y="14" width="12" height="8" />
                     </svg>
                     <span>Print / PDF</span>
                 </button>
@@ -55,29 +70,33 @@
 
         <!-- DASHBOARD GRID -->
         <main class="app-main">
-            
+
             <!-- COLUMN 1: MARKDOWN EDITOR -->
             <section class="panel editor-panel">
                 <div class="panel-header">
                     <span class="status-indicator markdown-dot">✍ MARKDOWN (EDITABLE)</span>
                     <div class="header-actions">
                         <button id="btn-load-sample" class="btn-icon" title="Load sample: Julien Avarre">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
                             </svg>
                             Sample
                         </button>
                         <button id="btn-copy-md" class="btn-icon" title="Copy Markdown to clipboard">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
                             </svg>
                             Copy
                         </button>
                         <button id="btn-clear" class="btn-icon text-danger" title="Clear editor">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="3 6 5 6 21 6"/>
-                                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="3 6 5 6 21 6" />
+                                <path
+                                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
                             </svg>
                             Clear
                         </button>
@@ -99,7 +118,8 @@
                     <span class="status-indicator preview-dot">● PREVIEW</span>
                     <div class="preview-controls">
                         <button id="btn-pan-toggle" class="btn-circle-sm active" title="Toggle Pan Mode (Hand)">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v5" />
                                 <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v6" />
                                 <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8" />
@@ -107,9 +127,10 @@
                             </svg>
                         </button>
                         <button id="btn-page-breaks" class="btn-circle-sm" title="Toggle Page Outlines & Breaks">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                                <line x1="3" y1="12" x2="21" y2="12" stroke-dasharray="3,3"/>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                                <line x1="3" y1="12" x2="21" y2="12" stroke-dasharray="3,3" />
                             </svg>
                         </button>
                         <select id="select-page-format" class="select-sm" title="Choose Page Format">
@@ -117,20 +138,28 @@
                             <option value="letter">Letter</option>
                         </select>
                         <button id="zoom-out" class="btn-circle-sm" title="Zoom out">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                            </svg>
                         </button>
                         <span id="zoom-level" style="cursor: pointer;" title="Double click to reset">100%</span>
                         <button id="zoom-in" class="btn-circle-sm" title="Zoom in">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.5">
+                                <line x1="12" y1="5" x2="12" y2="19" />
+                                <line x1="5" y1="12" x2="19" y2="12" />
+                            </svg>
                         </button>
                         <button id="zoom-reset" class="btn-circle-sm" title="Reset view">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
                             </svg>
                         </button>
                     </div>
                 </div>
-                
+
                 <div class="preview-canvas-wrapper pan-mode">
                     <div class="preview-canvas" id="preview-canvas">
                         <!-- Simulated A4 Document sheet -->
@@ -149,41 +178,51 @@
                     <span>● DESIGN & EXPORTS</span>
                 </div>
                 <div class="controls-content">
-                    
+
                     <!-- TYPOGRAPHY SECTION -->
                     <div class="control-group">
                         <h3>
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <polyline points="4 7 4 4 20 4 20 7"/>
-                                <line x1="9" y1="20" x2="15" y2="20"/>
-                                <line x1="12" y1="4" x2="12" y2="20"/>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="4 7 4 4 20 4 20 7" />
+                                <line x1="9" y1="20" x2="15" y2="20" />
+                                <line x1="12" y1="4" x2="12" y2="20" />
                             </svg>
                             Typography
                         </h3>
                         <div class="control-item">
                             <label>Font Family</label>
                             <div class="font-tiles-grid" id="font-family-tiles">
-                                <button type="button" class="font-tile" data-font="'Raleway', 'Inter', sans-serif" style="font-family: 'Raleway', sans-serif;" title="Raleway (Modern & Sleek)">
+                                <button type="button" class="font-tile" data-font="'Raleway', 'Inter', sans-serif"
+                                    style="font-family: 'Raleway', sans-serif;" title="Raleway (Modern & Sleek)">
                                     <span class="font-tile-preview">T</span>
                                     <span class="font-tile-name">Raleway</span>
                                 </button>
-                                <button type="button" class="font-tile" data-font="'Inter', sans-serif" style="font-family: 'Inter', sans-serif;" title="Inter (Sleek & Neutral)">
+                                <button type="button" class="font-tile" data-font="'Inter', sans-serif"
+                                    style="font-family: 'Inter', sans-serif;" title="Inter (Sleek & Neutral)">
                                     <span class="font-tile-preview">T</span>
                                     <span class="font-tile-name">Inter</span>
                                 </button>
-                                <button type="button" class="font-tile" data-font="'Merriweather', serif" style="font-family: 'Merriweather', serif;" title="Merriweather (Traditional Serif)">
+                                <button type="button" class="font-tile" data-font="'Merriweather', serif"
+                                    style="font-family: 'Merriweather', serif;"
+                                    title="Merriweather (Traditional Serif)">
                                     <span class="font-tile-preview">T</span>
                                     <span class="font-tile-name">Merri</span>
                                 </button>
-                                <button type="button" class="font-tile" data-font="'Playfair Display', serif" style="font-family: 'Playfair Display', serif;" title="Playfair (Elegant & Premium)">
+                                <button type="button" class="font-tile" data-font="'Playfair Display', serif"
+                                    style="font-family: 'Playfair Display', serif;"
+                                    title="Playfair (Elegant & Premium)">
                                     <span class="font-tile-preview">T</span>
                                     <span class="font-tile-name">Playfair</span>
                                 </button>
-                                <button type="button" class="font-tile" data-font="'Lora', serif" style="font-family: 'Lora', serif;" title="Lora (Literary & Polished)">
+                                <button type="button" class="font-tile" data-font="'Lora', serif"
+                                    style="font-family: 'Lora', serif;" title="Lora (Literary & Polished)">
                                     <span class="font-tile-preview">T</span>
                                     <span class="font-tile-name">Lora</span>
                                 </button>
-                                <button type="button" class="font-tile" data-font="'JetBrains Mono', monospace" style="font-family: 'JetBrains Mono', monospace;" title="JetBrains Mono (Tech & Minimal)">
+                                <button type="button" class="font-tile" data-font="'JetBrains Mono', monospace"
+                                    style="font-family: 'JetBrains Mono', monospace;"
+                                    title="JetBrains Mono (Tech & Minimal)">
                                     <span class="font-tile-preview">T</span>
                                     <span class="font-tile-name">JetBrains</span>
                                 </button>
@@ -215,9 +254,10 @@
                     <!-- LAYOUT SECTION -->
                     <div class="control-group">
                         <h3>
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                                <line x1="9" y1="3" x2="9" y2="21"/>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                                <line x1="9" y1="3" x2="9" y2="21" />
                             </svg>
                             Layout
                         </h3>
@@ -228,9 +268,10 @@
                                 <option value="2-column">2 Columns (Modern)</option>
                             </select>
                         </div>
-                        
+
                         <!-- Sidebar Specific Controls -->
-                        <div id="sidebar-only-controls" style="display: none; margin-top: 12px; border-top: 1px solid var(--border-color); padding-top: 12px;">
+                        <div id="sidebar-only-controls"
+                            style="display: none; margin-top: 12px; border-top: 1px solid var(--border-color); padding-top: 12px;">
                             <div class="control-item">
                                 <label for="sidebar-position">Sidebar Position</label>
                                 <select id="sidebar-position">
@@ -238,7 +279,7 @@
                                     <option value="left">Left</option>
                                 </select>
                             </div>
-                            
+
                             <div class="control-item color-picker-row">
                                 <label for="color-sidebar-bg">Sidebar BG</label>
                                 <div class="color-input-wrapper">
@@ -246,7 +287,7 @@
                                     <input type="color" id="color-sidebar-bg" value="#2d3748">
                                 </div>
                             </div>
-                            
+
                             <div class="control-item color-picker-row">
                                 <label for="color-sidebar-text">Sidebar Text</label>
                                 <div class="color-input-wrapper">
@@ -254,7 +295,7 @@
                                     <input type="color" id="color-sidebar-text" value="#ffffff">
                                 </div>
                             </div>
-                            
+
                             <div class="control-item">
                                 <label>Sidebar Sections</label>
                                 <div id="sidebar-sections-checklist" class="sidebar-checklist">
@@ -267,10 +308,11 @@
                     <!-- SPACING SECTION -->
                     <div class="control-group">
                         <h3>
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                                <line x1="9" y1="3" x2="9" y2="21"/>
-                                <line x1="15" y1="3" x2="15" y2="21"/>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                                <line x1="9" y1="3" x2="9" y2="21" />
+                                <line x1="15" y1="3" x2="15" y2="21" />
                             </svg>
                             Spacing
                         </h3>
@@ -300,22 +342,28 @@
                     <!-- COLORS SECTION -->
                     <div class="control-group">
                         <h3>
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"/>
-                                <path d="M12 6V18"/>
-                                <path d="M6 12H18"/>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path
+                                    d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" />
+                                <path d="M12 6V18" />
+                                <path d="M6 12H18" />
                             </svg>
                             Colors
                         </h3>
-                        
+
                         <!-- Color presets -->
                         <div class="color-presets-container">
                             <label>Color Presets</label>
                             <div class="color-presets-grid">
-                                <button type="button" class="preset-btn" id="preset-classic-nb" title="Classic B&W (Black and White)">B&W</button>
-                                <button type="button" class="preset-btn" id="preset-dark-mode" title="Dark Mode">Dark</button>
-                                <button type="button" class="preset-btn" id="preset-clean-blue" title="Clean Blue">Blue</button>
-                                <button type="button" class="preset-btn active" id="preset-custom" title="Custom (User Colors)">Custom</button>
+                                <button type="button" class="preset-btn" id="preset-classic-nb"
+                                    title="Classic B&W (Black and White)">B&W</button>
+                                <button type="button" class="preset-btn" id="preset-dark-mode"
+                                    title="Dark Mode">Dark</button>
+                                <button type="button" class="preset-btn" id="preset-clean-blue"
+                                    title="Clean Blue">Blue</button>
+                                <button type="button" class="preset-btn active" id="preset-custom"
+                                    title="Custom (User Colors)">Custom</button>
                             </div>
                         </div>
 
@@ -359,17 +407,21 @@
                     <!-- ATS SCORECARD WIDGET -->
                     <div class="control-group scorecard-group">
                         <h3>
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                                <polyline points="22 4 12 14.01 9 11.01"/>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                <polyline points="22 4 12 14.01 9 11.01" />
                             </svg>
                             ATS Compliance Analysis
                         </h3>
                         <div class="scorecard-summary">
                             <div class="score-radial">
                                 <svg class="score-ring" width="60" height="60">
-                                    <circle class="score-ring-bg" cx="30" cy="30" r="26" fill="transparent" stroke="#334155" stroke-width="4"/>
-                                    <circle id="score-ring-progress" class="score-ring-progress" cx="30" cy="30" r="26" fill="transparent" stroke="#10b981" stroke-width="4" stroke-dasharray="163.36" stroke-dashoffset="0"/>
+                                    <circle class="score-ring-bg" cx="30" cy="30" r="26" fill="transparent"
+                                        stroke="#334155" stroke-width="4" />
+                                    <circle id="score-ring-progress" class="score-ring-progress" cx="30" cy="30" r="26"
+                                        fill="transparent" stroke="#10b981" stroke-width="4" stroke-dasharray="163.36"
+                                        stroke-dashoffset="0" />
                                 </svg>
                                 <span id="score-value" class="score-text">100%</span>
                             </div>
@@ -386,18 +438,22 @@
                     <!-- N8N / COPY PASTE LAB -->
                     <div class="control-group export-group">
                         <h3>
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
                             </svg>
                             n8n Export & Clipboard
                         </h3>
                         <p class="export-note">Copy ready-to-use code for n8n workflows or automated scripts:</p>
                         <div class="export-buttons">
-                            <button id="btn-copy-standalone" class="btn btn-secondary btn-full" title="Copy full document (HTML + encapsulated CSS)">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
-                                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
+                            <button id="btn-copy-standalone" class="btn btn-secondary btn-full"
+                                title="Copy full document (HTML + encapsulated CSS)">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path
+                                        d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+                                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
                                 </svg>
                                 Copy Standalone HTML
                             </button>
@@ -409,14 +465,22 @@
                                     Copy HTML
                                 </button>
                             </div>
-                            <button id="btn-download-md" class="btn btn-outline btn-full" title="Download Markdown source">
+                            <button id="btn-download-md" class="btn btn-outline btn-full"
+                                title="Download Markdown source">
                                 Download Markdown (.md)
                             </button>
-                            <div class="n8n-webhook-sync" style="margin-top: 16px; border-top: 1px solid var(--border-color); padding-top: 12px;">
-                                <label for="n8n-webhook-url" style="font-size: 11px; font-weight: 500; display: block; margin-bottom: 6px; color: var(--text-color);">n8n Webhook Sync</label>
+                            <div class="n8n-webhook-sync"
+                                style="margin-top: 16px; border-top: 1px solid var(--border-color); padding-top: 12px;">
+                                <label for="n8n-webhook-url"
+                                    style="font-size: 11px; font-weight: 500; display: block; margin-bottom: 6px; color: var(--text-color);">n8n
+                                    Webhook Sync</label>
                                 <div style="display: flex; gap: 8px;">
-                                    <input type="url" id="n8n-webhook-url" placeholder="https://n8n.yourdomain.com/webhook/..." style="flex: 1; min-width: 0; padding: 6px 10px; border-radius: 4px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-color); font-size: 11px;">
-                                    <button id="btn-sync-n8n" class="btn btn-primary" style="padding: 6px 12px; font-size: 11px; cursor: pointer;" title="Send design config directly to your n8n workflow">Sync</button>
+                                    <input type="url" id="n8n-webhook-url"
+                                        placeholder="https://n8n.yourdomain.com/webhook/..."
+                                        style="flex: 1; min-width: 0; padding: 6px 10px; border-radius: 4px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-color); font-size: 11px;">
+                                    <button id="btn-sync-n8n" class="btn btn-primary"
+                                        style="padding: 6px 12px; font-size: 11px; cursor: pointer;"
+                                        title="Send design config directly to your n8n workflow">Sync</button>
                                 </div>
                             </div>
                         </div>
@@ -440,12 +504,13 @@
             <div class="modal-body">
                 <div class="modal-brand-section">
                     <div class="modal-logo">
-                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/>
-                            <polyline points="14 2 14 8 20 8"/>
-                            <line x1="16" y1="13" x2="8" y2="13"/>
-                            <line x1="16" y1="17" x2="8" y2="17"/>
-                            <line x1="10" y1="9" x2="8" y2="9"/>
+                        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2.5"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+                            <polyline points="14 2 14 8 20 8" />
+                            <line x1="16" y1="13" x2="8" y2="13" />
+                            <line x1="16" y1="17" x2="8" y2="17" />
+                            <line x1="10" y1="9" x2="8" y2="9" />
                         </svg>
                     </div>
                     <div class="modal-brand-text">
@@ -454,19 +519,25 @@
                     </div>
                 </div>
                 <p class="modal-desc">
-                    A premium Markdown resume editor designed to blend elegant aesthetics with flawless ATS (Applicant Tracking System) compliance. <br><br>
-                    <span style="font-size: 11px; opacity: 0.85;">Inspired by <a href="https://github.com/rozita-hasani/markdown-resume" target="_blank" style="color: var(--resume-color-links); text-decoration: underline;">rozita-hasani/markdown-resume</a>.</span>
+                    A premium Markdown resume editor designed to blend elegant aesthetics with flawless ATS (Applicant
+                    Tracking System) compliance. <br><br>
+                    <span style="font-size: 11px; opacity: 0.85;">Inspired by <a
+                            href="https://github.com/rozita-hasani/markdown-resume" target="_blank"
+                            style="color: var(--resume-color-links); text-decoration: underline;">rozita-hasani/markdown-resume</a>.</span>
                 </p>
                 <div class="modal-github-section" style="margin-bottom: 24px; text-align: center;">
-                    <a href="https://github.com/gnueole/resume-md2html" target="_blank" class="btn btn-secondary" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; width: auto; padding: 8px 16px;">
+                    <a href="https://github.com/gnueole/resume-md2html" target="_blank" class="btn btn-secondary"
+                        style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; width: auto; padding: 8px 16px;">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            <path
+                                d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
                         </svg>
                         <span>View on GitHub</span>
                     </a>
                 </div>
                 <div class="modal-footer-sig">
-                    Designed and developed by <br><strong>Julien (Éole) Avarre</strong> & <strong>Antigravity</strong> (Google DeepMind team)
+                    Designed and developed by <br><strong>Julien (Éole) Avarre</strong> & <strong>Antigravity</strong>
+                    (Google DeepMind team)
                 </div>
             </div>
         </div>
@@ -474,4 +545,5 @@
 
     <script src="app.js?v=1.2.6"></script>
 </body>
+
 </html>
