@@ -8,6 +8,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME_VECTOR: ${{ github.repository }}-vector
 
 jobs:
   build-and-push:
@@ -44,3 +45,21 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Extract metadata (tags, labels) for Vector
+        id: meta-vector
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_VECTOR }}
+          tags: |
+            type=raw,value=latest
+            type=sha
+
+      - name: Build and push Vector image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: docker/vector.Dockerfile
+          push: true
+          tags: ${{ steps.meta-vector.outputs.tags }}
+          labels: ${{ steps.meta-vector.outputs.labels }}

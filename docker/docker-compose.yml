@@ -158,12 +158,11 @@ services:
 
   # Vector Log Shipper to Axiom
   vector:
-    image: timberio/vector:0.40.0-alpine
+    image: ghcr.io/gnueole/resume-md2html-vector:latest
     container_name: vector
     restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./vector.yaml:/etc/vector/vector.yaml:ro
     environment:
       - AXIOM_TOKEN=${AXIOM_TOKEN}
       - AXIOM_DATASET=${AXIOM_DATASET}
