@@ -11,4 +11,4 @@ sinks:
       - "docker_logs"
     dataset: "${AXIOM_DATASET}"
     token: "${AXIOM_TOKEN}"
-    url: "https://api.eu.axiom.co"
+    region: "eu-central-1.aws.edge.axiom.co"
