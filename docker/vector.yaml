@@ -6,9 +6,13 @@ sources:
 
 sinks:
   axiom_sink:
-    type: "axiom"
+    type: "http"
     inputs:
       - "docker_logs"
-    dataset: "${AXIOM_DATASET}"
-    token: "${AXIOM_TOKEN}"
-    region: "eu-central-1.aws.edge.axiom.co"
+    uri: "https://eu-central-1.aws.edge.axiom.co/v1/ingest/${AXIOM_DATASET}"
+    encoding:
+      codec: "json"
+    request:
+      headers:
+        Authorization: "Bearer ${AXIOM_TOKEN}"
+        Content-Type: "application/json"
