@@ -37,10 +37,26 @@ const server = http.createServer((req, res) => {
 
     // Resolve file path safely and strip query parameters/hash
     const cleanUrl = req.url.split('?')[0].split('#')[0];
-    let filePath = path.join(__dirname, cleanUrl === '/' ? 'index.html' : cleanUrl);
     
-    // Security check: ensure path is within the workspace root
-    if (!filePath.startsWith(__dirname)) {
+    let decodedUrl;
+    try {
+        decodedUrl = decodeURIComponent(cleanUrl);
+    } catch (e) {
+        res.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8' });
+        res.end('Bad Request');
+        return;
+    }
+
+    // Resolve absolute path to the file
+    const rootDir = path.resolve(__dirname);
+    const safeRootDir = rootDir.endsWith(path.sep) ? rootDir : rootDir + path.sep;
+    const filePath = path.normalize(path.resolve(rootDir, decodedUrl === '/' ? 'index.html' : '.' + decodedUrl));
+    
+    // Security check: ensure path is within the workspace root and not escaping it
+    const relative = path.relative(rootDir, filePath);
+    const isSafe = !relative.startsWith('..') && !path.isAbsolute(relative) && (filePath === rootDir || filePath.startsWith(safeRootDir));
+    
+    if (!isSafe) {
         res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' });
         res.end('Forbidden');
         return;

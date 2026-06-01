@@ -2,6 +2,8 @@
 
 A premium, modern Markdown resume editor that respects ATS (Applicant Tracking System) standards, designed to run locally without heavy external dependencies.
 
+👉 **Production URL:** **[https://cv.eole.me](https://cv.eole.me)**
+
 All your content and style changes (colors, fonts, margins) are automatically saved in your working folder, allowing you to resume work across machines via Git.
 
 ## 🚀 Quick Start
@@ -13,9 +15,9 @@ To launch the editor on a new machine after performing a `git pull`:
    cd "path/to/resume MD2HTML"
    ```
 
-2. Start the local server with Python:
+2. Start the local server with Node.js:
    ```powershell
-   python server.py
+   node server.js
    ```
 
 3. Open your browser and go to:
@@ -23,7 +25,7 @@ To launch the editor on a new machine after performing a `git pull`:
 
 ## 📁 Project File Structure
 
-- `server.py`: Ultra‑lightweight local server written in Python (no dependencies to install). It serves the application and saves your data to disk.
+- `server.js`: Ultra‑lightweight local server written in Node.js. It serves the application.
 - `index.html`, `style.css`, `app.js`: Source code for the editing UI, auto‑zoom system, and ATS analyzer.
 - `templates.css`: Rendering styles for A4 page (screen + PDF print rules).
 - `sample.md`: Default resume template (example author) provided as a starting point.
@@ -39,6 +41,10 @@ Following standard guidelines, you can use special shortcuts in your Markdown to
 - **Accent Color**: Use `:accent[your text]` to color important elements (e.g., `:accent[Immediately available]`).
 - **Muted Text (gray)**: Use `:muted[your text]` to visually de‑emphasize secondary information while keeping it indexable by ATS bots (e.g., `:muted[Driver's license B · Own vehicle]`).
 - **Contact Bar**: The editor automatically detects the line containing your emails or links and formats it neatly. You can also force a centered contact block with the syntax `[CONTACT : email | phone | linkedin]`.
+- **Two-Column Layout (Heading levels)**: When the **2-column layout** is enabled, section headers defined with `##` (H2) and `###` (H3) are styled identically but placed in separate columns:
+  - `###` (H3) sections are placed in the **Sidebar Column (left)**.
+  - `##` (H2) sections are placed in the **Main Column (right)**.
+  *(Note: In 1-column layout, they are both displayed sequentially in a single column).*
 
 ## 🖨️ Generate PDF for Recruiters
 
