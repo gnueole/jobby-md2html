@@ -31,3 +31,8 @@ config.json
 # Node dependencies
 node_modules/
 
+# Secrets / Environment files
+.env
+docker/.env
+
+
