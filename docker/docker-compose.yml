@@ -46,8 +46,9 @@ services:
     image: mcp/notion:latest 
     container_name: mcp-notion
     restart: unless-stopped
+    command: --transport http --disable-auth
     environment:
-      - NOTION_API_KEY=${NOTION_API_KEY} # À définir dans tes variables Hostinger
+      - NOTION_TOKEN=${NOTION_API_KEY} # À définir dans tes variables Hostinger
       - TZ=${TZ}
 
   # Le moteur de rendu PDF (Gotenberg)
