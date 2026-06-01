@@ -449,18 +449,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     function updateHeaderInMarkdown(title, toSidebar) {
         const mdText = markdownInput.value;
         const lines = mdText.split('\n');
-        const escapedTitle = escapeRegExp(title.trim().toLowerCase());
-        
-        // Match lines starting with ## or ### and followed by the title
-        const headerRegex = new RegExp(`^(##|###)\\s+(${escapedTitle})\\s*$`, 'i');
+        const targetTitle = title.trim().toLowerCase();
         
         let updated = false;
         const newLines = lines.map(line => {
-            const match = line.match(headerRegex);
-            if (match) {
-                updated = true;
-                const newHeader = toSidebar ? '###' : '##';
-                return `${newHeader} ${line.substring(match[1].length).trim()}`;
+            const trimmed = line.trim();
+            const isHeading = trimmed.startsWith('## ') || trimmed.startsWith('### ');
+            if (isHeading) {
+                const currentHeadingTitle = trimmed.replace(/^###?\s+/, '').trim().toLowerCase();
+                if (currentHeadingTitle === targetTitle) {
+                    updated = true;
+                    const prefix = toSidebar ? '###' : '##';
+                    return `${prefix} ${title.toUpperCase()}`;
+                }
             }
             return line;
         });
@@ -479,8 +480,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             // Keep checkbox states in sync with current section states
             const checkboxes = sidebarChecklistContainer.querySelectorAll('input[type="checkbox"]');
             checkboxes.forEach((cb, index) => {
-                if (sections[index]) {
-                    cb.checked = sections[index].isSidebar;
+                if (sections.at(index)) {
+                    cb.checked = sections.at(index).isSidebar;
                 }
             });
             return;
@@ -556,7 +557,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const nonSpaceTokens = tokens.filter(t => t.type !== 'space');
 
         bodyElements.forEach((el, idx) => {
-            const token = nonSpaceTokens[idx];
+            const token = nonSpaceTokens.at(idx);
             if (token) {
                 const tokenIndex = tokens.indexOf(token);
                 el.setAttribute('data-token-index', tokenIndex);
@@ -676,7 +677,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             };
             const nameParts = cleanNameText.split(/\s+/).map(slugify).filter(Boolean);
             if (nameParts.length >= 2) {
-                nameKey = nameParts[0][0] + nameParts[nameParts.length - 1];
+                nameKey = nameParts.at(0).charAt(0) + nameParts.at(-1);
             } else if (nameParts.length === 1) {
                 nameKey = nameParts[0];
             }
@@ -804,7 +805,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Render checklist UI with proper mapping of c.status to icon keys
         atsChecklistContainer.innerHTML = checks.map(c => {
             const iconKey = c.status === 'pass' ? 'check' : (c.status === 'fail' ? 'error' : 'info');
-            const icon = ICONS[iconKey];
+            const icon = iconKey === 'check' ? ICONS.check : (iconKey === 'error' ? ICONS.error : ICONS.info);
             return `<li class="${c.status}">${icon} <span>${c.text}</span></li>`;
         }).join('');
 
@@ -997,8 +998,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         
         document.documentElement.setAttribute('data-theme', activeTheme);
-        themeBtnIcon.innerHTML = themeIcons[theme];
-        themeBtnText.textContent = themeTexts[theme];
+        themeBtnIcon.innerHTML = theme === 'system' ? themeIcons.system : (theme === 'light' ? themeIcons.light : themeIcons.dark);
+        themeBtnText.textContent = theme === 'system' ? themeTexts.system : (theme === 'light' ? themeTexts.light : themeTexts.dark);
     }
 
     btnThemeToggle.addEventListener('click', () => {
@@ -1139,7 +1140,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 let nodeNonWsCount = 0;
                 const nonWsIndices = [];
                 for (let i = 0; i < content.length; i++) {
-                    if (!/\s/.test(content[i])) {
+                    if (!/\s/.test(content.charAt(i))) {
                         nonWsIndices.push(i);
                         nodeNonWsCount++;
                     }
@@ -1152,8 +1153,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                     const overlapStartNonWsIdx = Math.max(0, startNonWsCount - nodeStartNonWs);
                     const overlapEndNonWsIdx = Math.min(nodeNonWsCount, endNonWsCount - nodeStartNonWs);
                     
-                    const charStart = nonWsIndices[overlapStartNonWsIdx];
-                    const charEnd = nonWsIndices[overlapEndNonWsIdx - 1] + 1;
+                    const charStart = nonWsIndices.at(overlapStartNonWsIdx);
+                    const charEnd = nonWsIndices.at(overlapEndNonWsIdx - 1) + 1;
                     
                     if (parent && parent.tagName !== 'MARK' && parent.tagName !== 'SCRIPT' && parent.tagName !== 'STYLE') {
                         const fragment = document.createDocumentFragment();
@@ -1281,13 +1282,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         mirror.style.width = textarea.clientWidth + 'px';
         mirror.style.boxSizing = 'border-box';
         
-        const props = [
-            'fontFamily', 'fontSize', 'fontWeight', 'fontStyle', 'lineHeight',
-            'paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft'
-        ];
-        props.forEach(p => {
-            mirror.style[p] = styles[p];
-        });
+        mirror.style.fontFamily = styles.fontFamily;
+        mirror.style.fontSize = styles.fontSize;
+        mirror.style.fontWeight = styles.fontWeight;
+        mirror.style.fontStyle = styles.fontStyle;
+        mirror.style.lineHeight = styles.lineHeight;
+        mirror.style.paddingTop = styles.paddingTop;
+        mirror.style.paddingRight = styles.paddingRight;
+        mirror.style.paddingBottom = styles.paddingBottom;
+        mirror.style.paddingLeft = styles.paddingLeft;
         
         const text = textarea.value.substring(0, selectionStart);
         mirror.textContent = text;
@@ -1922,7 +1925,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 this.exploded = false;
                 // Elegant vibrant colors (purple, teal, emerald, gold, blue, hotpink)
                 const colors = ['#7c3aed', '#0d9488', '#10b981', '#fbbf24', '#3b82f6', '#ec4899', '#f43f5e'];
-                this.color = colors[Math.floor(Math.random() * colors.length)];
+                this.color = colors.at(Math.floor(Math.random() * colors.length));
                 this.particles = [];
             }
             update() {
@@ -1936,7 +1939,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     }
                 } else {
                     for (let i = this.particles.length - 1; i >= 0; i--) {
-                        const p = this.particles[i];
+                        const p = this.particles.at(i);
                         p.update();
                         if (p.alpha <= 0) {
                             this.particles.splice(i, 1);
@@ -1990,7 +1993,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             ctx.clearRect(0, 0, width, height);
 
             for (let i = fireworks.length - 1; i >= 0; i--) {
-                const f = fireworks[i];
+                const f = fireworks.at(i);
                 f.update();
                 f.draw();
                 if (f.exploded && f.particles.length === 0) {
