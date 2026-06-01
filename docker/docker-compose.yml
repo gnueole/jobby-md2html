@@ -12,6 +12,11 @@ services:
     volumes:
       - traefik_letsencrypt:/letsencrypt
     restart: "no"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   # Le "Videur" de ton infrastructure
   traefik:
@@ -39,6 +44,16 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - traefik_letsencrypt:/letsencrypt
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
 
   # Ton nouveau serveur MCP pour Notion
   # Note : n8n l'appellera via http://mcp-notion:3000
@@ -50,6 +65,16 @@ services:
     environment:
       - NOTION_TOKEN=${NOTION_TOKEN} # À définir dans tes variables Hostinger
       - TZ=${TZ}
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 256M
 
   # Le moteur de rendu PDF (Gotenberg)
   gotenberg:
@@ -59,6 +84,16 @@ services:
     environment:
       - GOTENBERG_CHROMIUM_DISABLE_JAVASCRIPT=true
       - GOTENBERG_ALLOW_LIST_ACCESS_LOCAL_FILES=false
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
 
   # n8n en version 2.21.0 avec support IA et MCP
   n8n:
@@ -85,6 +120,16 @@ services:
       - traefik.http.routers.n8n.tls=true
       - traefik.http.routers.n8n.tls.certresolver=letsencrypt
       - traefik.http.services.n8n.loadbalancer.server.port=5678
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          cpus: '1.50'
+          memory: 2048M
 
   # Jobby ATS Markdown Resume Editor
   jobby-editor:
@@ -100,6 +145,16 @@ services:
       - traefik.http.routers.jobby.tls=true
       - traefik.http.routers.jobby.tls.certresolver=letsencrypt
       - traefik.http.services.jobby.loadbalancer.server.port=3000
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.25'
+          memory: 256M
 
 volumes:
   traefik_letsencrypt:
