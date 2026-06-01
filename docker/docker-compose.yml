@@ -48,7 +48,7 @@ services:
     restart: unless-stopped
     command: --transport http --disable-auth
     environment:
-      - NOTION_TOKEN=${NOTION_API_KEY} # À définir dans tes variables Hostinger
+      - NOTION_TOKEN=${NOTION_TOKEN} # À définir dans tes variables Hostinger
       - TZ=${TZ}
 
   # Le moteur de rendu PDF (Gotenberg)
