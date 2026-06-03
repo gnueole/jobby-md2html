@@ -133,6 +133,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const btnDownloadMd = document.getElementById('btn-download-md');
     const btnSyncN8n = document.getElementById('btn-sync-n8n');
     const n8nWebhookUrl = document.getElementById('n8n-webhook-url');
+    const n8nWebhookToken = document.getElementById('n8n-webhook-token');
 
     // Toast Alert
     const toast = document.getElementById('toast');
@@ -1673,6 +1674,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (n8nWebhookUrl) {
         n8nWebhookUrl.value = localStorage.getItem('n8n_webhook_url') || '';
     }
+    if (n8nWebhookToken) {
+        n8nWebhookToken.value = localStorage.getItem('n8n_webhook_token') || '';
+    }
 
     if (btnSyncN8n && n8nWebhookUrl) {
         btnSyncN8n.addEventListener('click', () => {
@@ -1682,7 +1686,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 return;
             }
 
+            const token = n8nWebhookToken ? n8nWebhookToken.value.trim() : '';
+
             localStorage.setItem('n8n_webhook_url', url);
+            localStorage.setItem('n8n_webhook_token', token);
 
             const payload = {
                 config: styleConfig,
@@ -1693,11 +1700,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             const originalText = btnSyncN8n.textContent;
             btnSyncN8n.textContent = "Syncing...";
 
+            const headers = {
+                'Content-Type': 'application/json'
+            };
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+
             fetch(url, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: headers,
                 body: JSON.stringify(payload)
             })
                 .then(res => {
