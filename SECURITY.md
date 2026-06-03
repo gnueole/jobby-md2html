@@ -1,21 +1,27 @@
 # Security Policy
 
-## Supported Versions
+We take the security of Jobby seriously. If you believe you have found a security vulnerability, please report it to us privately so we can resolve it before public disclosure.
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
+## Supported Versions
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
+| 1.x     | :white_check_mark: |
+| < 1.0   | :x:                |
 
 ## Reporting a Vulnerability
 
-Use this section to tell people how to report a vulnerability.
+Please do not open a public issue for security vulnerabilities. Instead, report them privately using one of the following methods:
 
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+1. **Email**: Send a detailed report to **admin@eole.me** (Julien Avarre).
+2. **GitHub Security Advisory**: Submit a private advisory request directly on the GitHub repository at `https://github.com/gnueole/jobby-md2html/security/advisories/new`.
+
+### What to Include in a Report
+* A description of the vulnerability and its potential impact.
+* Detailed steps to reproduce the issue (including any proofs of concept, sample requests, or payload scripts).
+* Any recommended fixes or mitigations if you have them.
+
+### Our Response Process
+* **Acknowledgment**: We will acknowledge receipt of your report within 48 hours.
+* **Triage**: We will investigate the issue and coordinate with you on confirmation and timeline.
+* **Resolution**: If confirmed, we will develop a patch and release an update. We ask that you give us reasonable time to fix the issue before public disclosure.
