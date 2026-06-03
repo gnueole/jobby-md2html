@@ -480,7 +480,7 @@ def activate_all():
     print(f"SUCCESS: Activated {count} workflows.")
 
 def main():
-    parser = argparse.ArgumentParser(description="n8n Resume Workflow Sync & Maintenance Toolkit")
+    parser = argparse.ArgumentParser(description="n8n Jobby Workflow Sync & Maintenance Toolkit")
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--backup", action="store_true", help="Download current workflow from n8n and save as local backup JSON")
     group.add_argument("--backup-all", action="store_true", help="Download all workflows from n8n and save in local n8n/ directory")

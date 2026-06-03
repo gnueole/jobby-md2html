@@ -79,7 +79,7 @@ def main():
         if dev_api:
             toolkit_values["DEV_N8N_API_KEY"] = dev_api
             
-        dev_wf = input(f"{YELLOW}Enter your local resume n8n workflow ID (or press Enter to skip): {RESET}").strip()
+        dev_wf = input(f"{YELLOW}Enter your local jobby n8n workflow ID (or press Enter to skip): {RESET}").strip()
         if dev_wf:
             toolkit_values["DEV_N8N_WORKFLOW_ID"] = dev_wf
         toolkit_values["DEV_N8N_BASE_URL"] = "http://localhost:5678"
@@ -124,7 +124,7 @@ def main():
         if prod_api:
             toolkit_values["N8N_API_KEY"] = prod_api
             
-        prod_wf = input(f"{YELLOW}Enter your production resume n8n workflow ID (or press Enter to skip): {RESET}").strip()
+        prod_wf = input(f"{YELLOW}Enter your production jobby n8n workflow ID (or press Enter to skip): {RESET}").strip()
         if prod_wf:
             toolkit_values["N8N_WORKFLOW_ID"] = prod_wf
             
