@@ -5,6 +5,7 @@ import ssl
 import sys
 import os
 import argparse
+import re
 
 # Global configuration variables to be populated by ensure_env()
 API_KEY = None
@@ -12,66 +13,79 @@ WORKFLOW_ID = None
 BASE_URL = None
 N8N_URL = None
 
+# SSL context bypassing validation
+ctx = ssl.create_default_context()
+ctx.check_hostname = False
+ctx.verify_mode = ssl.CERT_NONE
+
 def generate_env(force=False):
     env_path = os.path.join(os.path.dirname(__file__), ".env")
     template = (
-        "# n8n API configuration\n"
+        "# Production n8n Configuration\n"
         "N8N_API_KEY=\n"
         "N8N_WORKFLOW_ID=\n"
-        "N8N_BASE_URL=\n"
+        "N8N_BASE_URL=https://n8n.eole.me\n\n"
+        "# Local Development n8n Configuration (WSL / Overrides)\n"
+        "DEV_N8N_API_KEY=\n"
+        "DEV_N8N_WORKFLOW_ID=\n"
+        "DEV_N8N_BASE_URL=http://localhost:5678\n"
     )
     if not os.path.exists(env_path) or force or os.path.getsize(env_path) == 0:
         with open(env_path, "w", encoding="utf-8") as f:
             f.write(template)
         print(f"SUCCESS: Generated default .env file template at {env_path}")
-        print("Please fill in N8N_API_KEY, N8N_WORKFLOW_ID, and N8N_BASE_URL inside it.")
+        print("Please fill in the variables inside it.")
         return True
     else:
         print(f"INFO: .env file already exists at {env_path}")
         return False
 
-def ensure_env(require_workflow_id=True):
+def ensure_env(require_workflow_id=True, use_dev=False, api_key_override=None, workflow_id_override=None, base_url_override=None):
     global API_KEY, WORKFLOW_ID, BASE_URL, N8N_URL
     env_path = os.path.join(os.path.dirname(__file__), ".env")
     
-    # Check if missing or empty (0 bytes)
-    if not os.path.exists(env_path) or os.path.getsize(env_path) == 0:
+    config = {}
+    if os.path.exists(env_path) and os.path.getsize(env_path) > 0:
+        with open(env_path, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith("#") or "=" not in line:
+                    continue
+                key, val = line.split("=", 1)
+                val = val.strip().strip('"').strip("'")
+                config[key.strip()] = val
+    elif not use_dev:
         print(f"Error: .env file is missing or empty at {env_path}")
         print("Please run this script with the --init-env option to generate a template.")
         sys.exit(1)
         
-    config = {}
-    with open(env_path, "r", encoding="utf-8") as f:
-        for line in f:
-            line = line.strip()
-            if not line or line.startswith("#") or "=" not in line:
-                continue
-            key, val = line.split("=", 1)
-            # Remove optional quotes surrounding the values
-            val = val.strip().strip('"').strip("'")
-            config[key.strip()] = val
-            
-    API_KEY = config.get("N8N_API_KEY")
-    WORKFLOW_ID = config.get("N8N_WORKFLOW_ID")
-    BASE_URL = config.get("N8N_BASE_URL", "").rstrip("/")
+    if use_dev:
+        API_KEY = api_key_override or config.get("DEV_N8N_API_KEY")
+        WORKFLOW_ID = workflow_id_override or config.get("DEV_N8N_WORKFLOW_ID")
+        BASE_URL = base_url_override or config.get("DEV_N8N_BASE_URL") or "http://localhost:5678"
+    else:
+        API_KEY = api_key_override or config.get("N8N_API_KEY")
+        WORKFLOW_ID = workflow_id_override or config.get("N8N_WORKFLOW_ID")
+        BASE_URL = base_url_override or config.get("N8N_BASE_URL", "https://n8n.eole.me")
+        
+    BASE_URL = BASE_URL.rstrip("/")
     
-    if not API_KEY or not BASE_URL:
+    if not API_KEY and not use_dev:
         print("Error: Missing credentials in .env file.")
         print("Please ensure N8N_API_KEY and N8N_BASE_URL are populated in your .env file.")
         sys.exit(1)
         
     if require_workflow_id and not WORKFLOW_ID:
-        print("Error: Missing N8N_WORKFLOW_ID in .env file.")
-        print("Please ensure N8N_WORKFLOW_ID is populated in your .env file for this operation.")
+        print("Error: Missing WORKFLOW_ID in .env file or command override (--id).")
         sys.exit(1)
         
     if WORKFLOW_ID:
         N8N_URL = f"{BASE_URL}/api/v1/workflows/{WORKFLOW_ID}"
 
-# SSL context bypassing validation
-ctx = ssl.create_default_context()
-ctx.check_hostname = False
-ctx.verify_mode = ssl.CERT_NONE
+def slugify(text):
+    text = text.lower()
+    text = re.sub(r"[^\w\s-]", "", text)
+    return re.sub(r"[-\s]+", "-", text).strip("-")
 
 def fetch_workflow():
     req = urllib.request.Request(
@@ -91,7 +105,6 @@ def fetch_workflow():
         sys.exit(1)
 
 def push_workflow(wf):
-    # Filter settings keys to avoid API validation errors
     raw_settings = wf.get("settings", {})
     clean_settings = {}
     for k in ["executionOrder", "errorWorkflow"]:
@@ -177,11 +190,17 @@ def list_workflows():
 
 def create_workflow(wf):
     url = f"{BASE_URL}/api/v1/workflows"
+    raw_settings = wf.get("settings", {})
+    clean_settings = {}
+    for k in ["executionOrder", "errorWorkflow"]:
+        if k in raw_settings:
+            clean_settings[k] = raw_settings[k]
+
     payload = {
         "name": wf.get("name"),
         "nodes": wf.get("nodes"),
         "connections": wf.get("connections"),
-        "settings": wf.get("settings", {}),
+        "settings": clean_settings,
         "staticData": wf.get("staticData")
     }
     req = urllib.request.Request(
@@ -206,11 +225,17 @@ def create_workflow(wf):
 
 def update_workflow_by_id(workflow_id, wf):
     url = f"{BASE_URL}/api/v1/workflows/{workflow_id}"
+    raw_settings = wf.get("settings", {})
+    clean_settings = {}
+    for k in ["executionOrder", "errorWorkflow"]:
+        if k in raw_settings:
+            clean_settings[k] = raw_settings[k]
+
     payload = {
         "name": wf.get("name"),
         "nodes": wf.get("nodes"),
         "connections": wf.get("connections"),
-        "settings": wf.get("settings", {}),
+        "settings": clean_settings,
         "staticData": wf.get("staticData")
     }
     req = urllib.request.Request(
@@ -253,29 +278,247 @@ def activate_workflow_by_id(workflow_id):
         print(f"Warning: Could not auto-activate workflow {workflow_id}: {e}")
     return False
 
+def backup_all(n8n_dir, use_dev):
+    import subprocess
+    global API_KEY, BASE_URL
+    
+    if use_dev and not API_KEY:
+        print("API Key not set. Attempting Docker fallback for workflow export...")
+        container_name = "n8n-server-dev"
+        try:
+            check_res = subprocess.run(
+                ["docker", "inspect", "-f", "{{.State.Running}}", container_name],
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
+            )
+            if check_res.returncode != 0:
+                err_msg = check_res.stderr or check_res.stdout or ""
+                if "permission denied" in err_msg.lower() or "cannot connect" in err_msg.lower():
+                    print("Docker daemon connection error (permission denied or daemon not running).")
+                    print("If you are running WSL, make sure Docker Desktop is active on Windows.")
+                    print("You can also run these commands manually to export:")
+                    print(f"  sg docker -c \"docker exec -u node {container_name} n8n export:workflow --all --output=/tmp/n8n_export\"")
+                    print(f"  sg docker -c \"docker cp {container_name}:/tmp/n8n_export/. {n8n_dir}/\"")
+                else:
+                    print(f"Error checking status for container '{container_name}': {err_msg.strip()}")
+                sys.exit(1)
+            elif "true" not in check_res.stdout.lower():
+                print(f"Error: Docker container '{container_name}' is not running.")
+                print("Please start your dev environment using 'docker compose up -d' first.")
+                sys.exit(1)
+            
+            print("Exporting workflows inside the container...")
+            subprocess.run(["docker", "exec", container_name, "mkdir", "-p", "/tmp/n8n_export"], check=True)
+            export_res = subprocess.run(
+                ["docker", "exec", "-u", "node", container_name, "n8n", "export:workflow", "--all", "--output=/tmp/n8n_export"],
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
+            )
+            if export_res.returncode != 0:
+                print("Error: n8n export command failed inside the container:")
+                print(export_res.stderr)
+                sys.exit(1)
+                
+            print("Copying exported workflows from container...")
+            subprocess.run(["docker", "cp", f"{container_name}:/tmp/n8n_export/.", n8n_dir + "/"], check=True)
+            print(f"SUCCESS: Workflows exported successfully to {n8n_dir} folder.")
+            return True
+        except Exception as e:
+            print(f"Docker fallback failed: {e}")
+            print("\nPlease make sure Docker is running and you have necessary permissions.")
+            print("Alternatively, you can run these commands manually:")
+            print(f"  sg docker -c \"docker exec -u node {container_name} n8n export:workflow --all --output=/tmp/n8n_export\"")
+            print(f"  sg docker -c \"docker cp {container_name}:/tmp/n8n_export/. {n8n_dir}/\"")
+            sys.exit(1)
+
+    print(f"Connecting to n8n at: {BASE_URL}")
+    req = urllib.request.Request(
+        f"{BASE_URL}/api/v1/workflows",
+        headers={"X-N8N-API-KEY": API_KEY, "Accept": "application/json"}
+    )
+    
+    try:
+        with urllib.request.urlopen(req, context=ctx) as response:
+            if response.status == 200:
+                workflows_data = json.loads(response.read().decode("utf-8")).get("data", [])
+                print(f"Found {len(workflows_data)} workflows on target n8n.")
+                
+                for wf in workflows_data:
+                    name = wf.get("name", "untitled")
+                    wf_id = wf.get("id")
+                    filename = f"{slugify(name)}.json"
+                    file_path = os.path.join(n8n_dir, filename)
+                    
+                    wf_req = urllib.request.Request(
+                        f"{BASE_URL}/api/v1/workflows/{wf_id}",
+                        headers={"X-N8N-API-KEY": API_KEY, "Accept": "application/json"}
+                    )
+                    with urllib.request.urlopen(wf_req, context=ctx) as wf_res:
+                        full_wf = json.loads(wf_res.read().decode("utf-8"))
+                        with open(file_path, "w", encoding="utf-8") as out:
+                            json.dump(full_wf, out, indent=2, ensure_ascii=False)
+                        print(f"  - Saved: n8n/{filename} (ID: {wf_id})")
+                print("SUCCESS: All workflows saved locally.")
+                return True
+            else:
+                print(f"Error: Server returned status {response.status}")
+                sys.exit(1)
+    except Exception as e:
+        print(f"Error fetching workflows: {e}")
+        sys.exit(1)
+
+def push_all(n8n_dir, use_dev):
+    import subprocess
+    global API_KEY, BASE_URL
+    
+    if not os.path.exists(n8n_dir):
+        print(f"Error: Workflows directory '{n8n_dir}' does not exist.")
+        sys.exit(1)
+        
+    json_files = [f for f in os.listdir(n8n_dir) if f.endswith(".json")]
+    if not json_files:
+        print(f"Warning: No .json workflow files found in '{n8n_dir}'.")
+        return True
+        
+    if use_dev and not API_KEY:
+        print("API Key not set. Attempting Docker fallback for workflow import...")
+        container_name = "n8n-server-dev"
+        try:
+            check_res = subprocess.run(
+                ["docker", "inspect", "-f", "{{.State.Running}}", container_name],
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
+            )
+            if check_res.returncode != 0:
+                err_msg = check_res.stderr or check_res.stdout or ""
+                if "permission denied" in err_msg.lower() or "cannot connect" in err_msg.lower():
+                    print("Docker daemon connection error (permission denied or daemon not running).")
+                    print("If you are running WSL, make sure Docker Desktop is active on Windows.")
+                    print("You can also run these commands manually to import:")
+                    print(f"  sg docker -c \"docker cp {n8n_dir}/. {container_name}:/tmp/n8n_import/\"")
+                    print(f"  sg docker -c \"docker exec -u node {container_name} n8n import:workflow --input=/tmp/n8n_import\"")
+                else:
+                    print(f"Error checking status for container '{container_name}': {err_msg.strip()}")
+                sys.exit(1)
+            elif "true" not in check_res.stdout.lower():
+                print(f"Error: Docker container '{container_name}' is not running.")
+                print("Please start your dev environment using 'docker compose up -d' first.")
+                sys.exit(1)
+            
+            print(f"Copying workflows to container '{container_name}'...")
+            subprocess.run(["docker", "exec", container_name, "mkdir", "-p", "/tmp/n8n_import"], check=True)
+            subprocess.run(["docker", "cp", f"{n8n_dir}/.", f"{container_name}:/tmp/n8n_import/"], check=True)
+            
+            print("Importing workflows inside the container...")
+            import_res = subprocess.run(
+                ["docker", "exec", "-u", "node", container_name, "n8n", "import:workflow", "--input=/tmp/n8n_import"],
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
+            )
+            if import_res.returncode == 0:
+                print("SUCCESS: Workflows imported successfully via Docker CLI!")
+                print(import_res.stdout)
+                return True
+            else:
+                print("Error: n8n import command failed inside the container:")
+                print(import_res.stderr)
+                sys.exit(1)
+        except Exception as e:
+            print(f"Docker fallback failed: {e}")
+            print("\nPlease make sure Docker is running and you have necessary permissions.")
+            print("Alternatively, you can run these commands manually:")
+            print(f"  sg docker -c \"docker cp {n8n_dir}/. {container_name}:/tmp/n8n_import/\"")
+            print(f"  sg docker -c \"docker exec -u node {container_name} n8n import:workflow --input=/tmp/n8n_import\"")
+            sys.exit(1)
+
+    print(f"Connecting to n8n at: {BASE_URL}")
+    existing_workflows = list_workflows()
+    existing_map = {wf.get("name", "").lower(): wf.get("id") for wf in existing_workflows if "name" in wf}
+    
+    print(f"Found {len(existing_workflows)} existing workflows on target n8n.")
+    print(f"Preparing to import {len(json_files)} workflows from '{n8n_dir}'...")
+    
+    for filename in json_files:
+        file_path = os.path.join(n8n_dir, filename)
+        try:
+            with open(file_path, "r", encoding="utf-8") as f:
+                wf = json.load(f)
+        except Exception as e:
+            print(f"Error reading workflow file '{filename}': {e}. Skipping.")
+            continue
+            
+        name = wf.get("name")
+        if not name:
+            print(f"Warning: Workflow file '{filename}' is missing 'name' field. Skipping.")
+            continue
+            
+        name_lower = name.lower()
+        if name_lower in existing_map:
+            wf_id = existing_map[name_lower]
+            print(f"Updating workflow: '{name}' (ID: {wf_id})...")
+            if update_workflow_by_id(wf_id, wf):
+                if wf.get("active") is True:
+                    activate_workflow_by_id(wf_id)
+        else:
+            print(f"Creating new workflow: '{name}'...")
+            new_wf = create_workflow(wf)
+            if new_wf:
+                wf_id = new_wf.get("id")
+                if wf_id and wf.get("active") is True:
+                    activate_workflow_by_id(wf_id)
+                    
+    print("SUCCESS: Bulk workflow import/push completed.")
+    return True
+
+def activate_all():
+    global API_KEY, BASE_URL
+    print(f"Listing workflows to activate on: {BASE_URL}")
+    workflows = list_workflows()
+    count = 0
+    for wf in workflows:
+        wf_id = wf.get("id")
+        if wf_id:
+            print(f"Activating workflow: '{wf.get('name')}' (ID: {wf_id})...")
+            if activate_workflow_by_id(wf_id):
+                count += 1
+    print(f"SUCCESS: Activated {count} workflows.")
+
 def main():
     parser = argparse.ArgumentParser(description="n8n Resume Workflow Sync & Maintenance Toolkit")
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--backup", action="store_true", help="Download current workflow from n8n and save as local backup JSON")
+    group.add_argument("--backup-all", action="store_true", help="Download all workflows from n8n and save in local n8n/ directory")
     group.add_argument("--fix", action="store_true", help="Automatically fix the JS Code node syntax errors (split/join newline bugs) and H3 -> H2 structural splitting")
     group.add_argument("--push", action="store_true", help="Push the local backup JSON workflow back to n8n")
+    group.add_argument("--push-all", action="store_true", help="Push/import all workflows in local n8n/ directory to the target n8n instance")
     group.add_argument("--activate", action="store_true", help="Activate/Publish the workflow on n8n")
+    group.add_argument("--activate-all", action="store_true", help="Activate/Publish all workflows on n8n")
     group.add_argument("--deploy-error", action="store_true", help="Deploy the error trigger to Axiom workflow to n8n")
     group.add_argument("--init-env", action="store_true", help="Generate a default .env file template")
     
+    parser.add_argument("--dev", action="store_true", help="Target the local development n8n instance instead of production")
+    parser.add_argument("--id", type=str, help="Override N8N_WORKFLOW_ID / DEV_N8N_WORKFLOW_ID")
+    parser.add_argument("--api-key", type=str, help="Override N8N_API_KEY / DEV_N8N_API_KEY")
+    parser.add_argument("--base-url", type=str, help="Override N8N_BASE_URL / DEV_N8N_BASE_URL")
+    parser.add_argument("--file", type=str, help="Override input/output file path for --backup, --push, or --fix")
+
     args = parser.parse_args()
     
-    # If generating .env, skip the load-check step
     if args.init_env:
         generate_env(force=True)
         sys.exit(0)
         
-    # Ensure env configuration is loaded and valid for selected action
-    # --deploy-error does not require N8N_WORKFLOW_ID
-    require_wf_id = not args.deploy_error
-    ensure_env(require_workflow_id=require_wf_id)
+    require_wf_id = not (args.backup_all or args.push_all or args.activate_all or args.deploy_error)
     
-    backup_file = os.path.join(os.path.dirname(__file__), "workflow_backup.json")
+    ensure_env(
+        require_workflow_id=require_wf_id,
+        use_dev=args.dev,
+        api_key_override=args.api_key,
+        workflow_id_override=args.id,
+        base_url_override=args.base_url
+    )
+    
+    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    n8n_dir = os.path.join(project_root, "n8n")
+    os.makedirs(n8n_dir, exist_ok=True)
+    
+    backup_file = args.file or os.path.join(os.path.dirname(__file__), "workflow_backup.json")
     
     if args.backup:
         print("Fetching workflow from n8n...")
@@ -283,6 +526,9 @@ def main():
         with open(backup_file, "w", encoding="utf-8") as f:
             json.dump(wf, f, indent=2, ensure_ascii=False)
         print(f"Backup saved successfully to: {backup_file}")
+        
+    elif args.backup_all:
+        backup_all(n8n_dir, args.dev)
         
     elif args.fix:
         print("Fetching workflow from n8n to apply fixes...")
@@ -527,7 +773,6 @@ return [
   }
 ];"""
 
-        # Load inlined fonts CSS
         fonts_css_path = os.path.join(os.path.dirname(__file__), "inlined_fonts.css")
         if os.path.exists(fonts_css_path):
             with open(fonts_css_path, "r", encoding="utf-8") as f:
@@ -536,7 +781,6 @@ return [
             print("Warning: inlined_fonts.css not found, placeholder will not be replaced!")
             inlined_fonts_css = ""
 
-        # Prepare code to push
         js_code_to_push = new_js_code.replace("/* INLINED_FONTS_PLACEHOLDER */", inlined_fonts_css)
 
         for node in nodes:
@@ -566,9 +810,15 @@ return [
         if push_workflow(wf):
             activate_workflow()
             
+    elif args.push_all:
+        push_all(n8n_dir, args.dev)
+            
     elif args.activate:
         print("Activating workflow on n8n...")
         activate_workflow()
+        
+    elif args.activate_all:
+        activate_all()
         
     elif args.deploy_error:
         error_wf_file = os.path.join(os.path.dirname(__file__), "error_workflow.json")

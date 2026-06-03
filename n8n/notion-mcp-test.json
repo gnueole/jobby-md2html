@@ -1,0 +1,171 @@
+{
+  "updatedAt": "2026-05-29T11:33:00.744Z",
+  "createdAt": "2026-05-28T14:58:46.123Z",
+  "id": "pIckPaxckew6U5Ml",
+  "name": "Notion MCP test",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "fe45c242-c2fb-4d80-bf26-dd874f91afe8",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "2d40da56-4a19-4710-b515-6deb9ff0f528",
+      "name": "When chat message received",
+      "webhookId": "1a303570-ffeb-40c8-9f06-de316afe575d"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "Demande au serveur MCP connecté de lister ses outils, puis cherche une page ou une base de données qui s'appelle 'La Graine' ou 'CV Atomique' pour confirmer que tu y as accès.",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        416,
+        0
+      ],
+      "id": "e121e707-3f25-4b40-ac5b-35cca0297808",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-flash-latest",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        272,
+        272
+      ],
+      "id": "3483fe95-61bb-463f-8b0a-f3e7f3a8a78d",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "QZGttnIQoPa4rsAg",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/mcp-registry.notion",
+      "typeVersion": 1,
+      "position": [
+        592,
+        240
+      ],
+      "id": "1f576f65-ec10-4131-a475-6deb5f11aa14",
+      "name": "Notion MCP",
+      "credentials": {
+        "notionMcpOAuth2Api": {
+          "id": "VhjnOqbcADUw4itW",
+          "name": "Notion MCP OAuth2"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "Notion MCP": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "065e6fe6-c375-405e-a9f1-9c5618f23888",
+  "activeVersionId": null,
+  "versionCounter": 35,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-05-28T14:58:46.127Z",
+      "createdAt": "2026-05-28T14:58:46.127Z",
+      "role": "workflow:owner",
+      "workflowId": "pIckPaxckew6U5Ml",
+      "projectId": "GfFdmZTqGEJQkrXG",
+      "project": {
+        "updatedAt": "2026-05-11T09:44:44.757Z",
+        "createdAt": "2026-05-11T09:34:45.695Z",
+        "id": "GfFdmZTqGEJQkrXG",
+        "name": "Éole Wind <megazef@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "2792484d-cba3-4156-adba-fbc49134eb55"
+      }
+    }
+  ],
+  "tags": [
+    {
+      "updatedAt": "2026-05-11T12:19:25.326Z",
+      "createdAt": "2026-05-11T12:19:25.326Z",
+      "id": "8yiCAJZW8fFXfFqI",
+      "name": "notion"
+    }
+  ],
+  "activeVersion": null
+}

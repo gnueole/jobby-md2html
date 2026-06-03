@@ -1,0 +1,362 @@
+{
+  "updatedAt": "2026-05-29T11:41:55.830Z",
+  "createdAt": "2026-05-11T09:46:21.361Z",
+  "id": "OUptMPU4JX4tVvZ2",
+  "name": "LinkedIn auto - old (GDocs)",
+  "description": null,
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Company: {{ $('Webhook').item.json.query.company }}\njon title : {{ $('Webhook').item.json.query.job_title }}\njob Url: {{ $('Webhook').item.json.query.job_url }}\nDescription: {{ $('Webhook').item.json.query.job_description }}\n",
+        "options": {
+          "systemMessage": "=# Identity & Tone\nTu es Jobby 2.0, l'assistant stratégique de Julien. Ton ton est neutre, analytique et orienté résultats, comme un coach en recrutement senior. Ta valeur ajoutée réside dans la détection précise des écarts techniques et organisationnels.\n\n# Purpose\nÉvaluer l'adéquation entre le profil de Julien (Solutions Engineer, expert automation/IA) et une offre d'emploi spécifique.\n\n# Evaluation Criteria\n1. Score (1-10) : Basé strictement sur l'adéquation technique, l'expérience passée et le niveau de séniorité requis.\n2. Gap Analysis : Identifier les technologies ou méthodologies manquantes sans fioritures.\n3. Concise : Chaque champ doit être percutant. Pas de remplissage.\n\n# Output Format (STRICT JSON)\nRéponds exclusivement par un objet JSON. Chaque champ de texte doit être indépendant pour permettre le mapping dans Notion sans risque de troncature.\n\n{\n  \"domain\": \"string (ex: Generative AI, Automation, API Management)\",\n  \"job_title\": \"string (Titre exact)\",\n  \"category\": \"string (ex: Pre-sales, Solutions Architect, Technical Lead)\",\n  \"company\": \"string\",\n  \"link\": \"string (URL)\",\n  \"match_score\": number,\n  \"status\": \"To review\",\n  \"quick_summary\": \"string (MAX 150 caractères)\",\n  \"analysis_pros\": \"string (Points forts techniques et métier - Max 800 caractères)\",\n  \"analysis_cons\": \"string (Points de friction et manques - Max 800 caractères)\",\n  \"action_plan\": \"string (Conseil immédiat pour la candidature - Max 400 caractères)\",\n  \"response_date\": \"YYYY-MM-DD\"\n}\n\n# DEBUT DE JULIEN\n{{ $json.content }}\n# FIN CV JULIEN"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        240,
+        80
+      ],
+      "id": "a6282874-3694-47de-98ec-8380572acb7d",
+      "name": "AI Agent",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        80,
+        368
+      ],
+      "id": "f3aea52c-67b5-46b2-ae53-40217c6a9f0e",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "QZGttnIQoPa4rsAg",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "127bad1f-b25a-4b6b-8eec-7b342e3aa504",
+          "mode": "list",
+          "cachedResultName": "Linked Detector",
+          "cachedResultUrl": "https://www.notion.so/127bad1fb25a4b6b8eec7b342e3aa504"
+        },
+        "title": "LinkedIn Detector",
+        "simple": false,
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Job Title|title",
+              "title": "={{ $json.job_title }}"
+            },
+            {
+              "key": "category|multi_select",
+              "multiSelectValue": "={{ $json.category }}"
+            },
+            {
+              "key": "URL|url",
+              "urlValue": "={{ $json.link }}"
+            },
+            {
+              "key": "Match Score|number",
+              "numberValue": "={{ $json.score }}"
+            },
+            {
+              "key": "Status|status",
+              "statusValue": "={{ $json.status }}"
+            },
+            {
+              "key": "Company|select",
+              "selectValue": "={{ $json.company }}"
+            },
+            {
+              "key": "domain|multi_select",
+              "multiSelectValue": "={{ $json.domain }}"
+            },
+            {
+              "key": "analysis|rich_text",
+              "textContent": "={{ $json.summary }}"
+            }
+          ]
+        },
+        "blockUi": {
+          "blockValues": [
+            {
+              "type": "heading_1",
+              "textContent": "Analyse complète"
+            },
+            {
+              "textContent": "={{ $json.summary }}"
+            },
+            {
+              "type": "heading_2",
+              "textContent": "Pros"
+            },
+            {
+              "textContent": "={{ $json.analysis_pros }}"
+            },
+            {
+              "type": "heading_2",
+              "textContent": "Cons"
+            },
+            {
+              "textContent": "={{ $json.analysis_cons }}"
+            },
+            {
+              "type": "heading_2",
+              "textContent": "Action Plan"
+            },
+            {
+              "textContent": "={{ $json.action_plan }}"
+            }
+          ]
+        },
+        "options": {
+          "iconType": "emoji",
+          "icon": "🆕"
+        }
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        816,
+        -16
+      ],
+      "id": "404db6fa-a1aa-4ffc-aeb1-792b9e60a3ff",
+      "name": "Create a database page",
+      "retryOnFail": false,
+      "executeOnce": false,
+      "credentials": {
+        "notionApi": {
+          "id": "KYrsxF0plfLkPpqW",
+          "name": "Notion LinkedIn Auto"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "errorMessage": "={{ $('AI Agent').item.json.error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        592,
+        176
+      ],
+      "id": "829ade90-f24f-4af5-acd8-74ed9fc11202",
+      "name": "Stop and Error"
+    },
+    {
+      "parameters": {
+        "path": "linkedin-extraction",
+        "options": {
+          "responseData": "{\"status\": \"processing\"}"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -208,
+        80
+      ],
+      "id": "aca1afc4-7b71-4305-935e-b2aacce92deb",
+      "name": "Webhook",
+      "webhookId": "25090746-891d-4538-9e01-465c6930b95d"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-4-6",
+          "cachedResultName": "Claude Sonnet 4.6"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.4,
+      "position": [
+        672,
+        448
+      ],
+      "id": "b047a0c0-7e35-4278-ba66-0e20e48d3779",
+      "name": "Anthropic Chat Model",
+      "credentials": {
+        "anthropicApi": {
+          "id": "ZLxe6Yv6rEgDYs00",
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. Récupération des données\nconst webhook = $(\"Webhook\").first().json.query || {}; \nconst text = $json.output || \"\"; \n\n// 2. Extraction du bloc JSON via Regex\nconst match = text.match(/\\{[\\s\\S]*\\}/);\n\nif (match) {\n  try {\n    const data = JSON.parse(match);\n\n    // 3. Helper pour transformer \"A, B, C\" en tableau propre pour Notion\n    const toSimpleArray = (val) => {\n      if (!val) return [];\n      const rawItems = Array.isArray(val) ? val : val.toString().split(/[|,\\/&]|\\band\\b/);\n      return rawItems.map(i => i.trim()).filter(i => i.length > 1);\n    };\n\n    // 4. Retour de l'objet mappé sur tes nouvelles propriétés\n    return {\n      domain: toSimpleArray(data.domain),\n      category: toSimpleArray(data.category),\n      job_title: data.job_title || webhook.job_title || \"Position inconnue\",\n      company: data.company || webhook.company || \"Entreprise inconnue\",\n      link: data.link || webhook.job_url || \"N/A\",\n      score: parseInt(data.match_score) || 0,\n      status: data.status || \"To review\",\n      summary: data.quick_summary || \"Analyse terminée\",\n      // On utilise tes 3 nouveaux blocs atomisés\n      analysis_pros: (data.analysis_pros || \"\").substring(0, 1900),\n      analysis_cons: (data.analysis_cons || \"\").substring(0, 1900),\n      action_plan: (data.action_plan || \"\").substring(0, 1900),\n      response_date: data.response_date || new Date().toISOString().split('T')\n    };\n\n  } catch (e) {\n    return { error: \"JSON Parsing Error\", message: e.message, raw: text.substring(0, 200) };\n  }\n}\n\nreturn { error: \"No JSON found in AI output\" };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        592,
+        -16
+      ],
+      "id": "0982f144-2c0b-4e13-a522-b7ba35e5346b",
+      "name": "JSON Cleaner",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "documentURL": "https://docs.google.com/document/d/1_Gri6268rXvHDK__MVqT_3f7vlSR5OLEWqOJpaFwrPs/edit?usp=sharing",
+        "simple": false
+      },
+      "type": "n8n-nodes-base.googleDocs",
+      "typeVersion": 2,
+      "position": [
+        16,
+        80
+      ],
+      "id": "91041ef8-4679-4f20-a2ef-4645ff19889f",
+      "name": "CV julien"
+    }
+  ],
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "JSON Cleaner",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Stop and Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a database page": {
+      "main": [
+        [],
+        []
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "CV julien",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "JSON Cleaner": {
+      "main": [
+        [
+          {
+            "node": "Create a database page",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "CV julien": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "timezone": "Europe/Paris",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "0fac6b5a-b3c9-49a2-a60f-eadca9dfb2a5",
+  "activeVersionId": null,
+  "versionCounter": 558,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2026-05-11T09:46:21.363Z",
+      "createdAt": "2026-05-11T09:46:21.363Z",
+      "role": "workflow:owner",
+      "workflowId": "OUptMPU4JX4tVvZ2",
+      "projectId": "GfFdmZTqGEJQkrXG",
+      "project": {
+        "updatedAt": "2026-05-11T09:44:44.757Z",
+        "createdAt": "2026-05-11T09:34:45.695Z",
+        "id": "GfFdmZTqGEJQkrXG",
+        "name": "Éole Wind <megazef@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "2792484d-cba3-4156-adba-fbc49134eb55"
+      }
+    }
+  ],
+  "tags": [
+    {
+      "updatedAt": "2026-05-29T11:31:39.972Z",
+      "createdAt": "2026-05-29T11:31:39.972Z",
+      "id": "5zynHpPHQi9PRMyD",
+      "name": "jobby"
+    },
+    {
+      "updatedAt": "2026-05-11T12:19:25.326Z",
+      "createdAt": "2026-05-11T12:19:25.326Z",
+      "id": "8yiCAJZW8fFXfFqI",
+      "name": "notion"
+    }
+  ],
+  "activeVersion": null
+}

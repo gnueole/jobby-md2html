@@ -588,30 +588,51 @@
                 <button id="btn-close-developer-modal" class="modal-close-btn">&times;</button>
             </div>
             <div class="modal-body">
-                <p class="modal-desc">Generate your LinkedIn job sync bookmarklet and configure webhook tokens.</p>
+                <p class="modal-desc">Configure your LinkedIn job sync bookmarklets for Production and Development environments.</p>
                 
                 <div class="modal-directives">
-                    <h4>🔗 Jobby Webhook Bookmarklet</h4>
+                    <h4>🔗 Jobby Webhook Bookmarklets</h4>
                     <p style="font-size: 11px; margin-bottom: 12px; color: var(--text-secondary);">
-                        Drag the button below to your bookmarks bar. When viewing a job on LinkedIn, click it to sync the job automatically.
+                        Drag the buttons below to your bookmarks bar. When viewing a job on LinkedIn, click either button to sync the job details.
                     </p>
-                    <div style="text-align: center; margin-bottom: 20px;">
-                        <a id="bookmarklet-drag-link" href="#" class="btn btn-primary" style="cursor: grab;">
-                            🗂️ Sync to Jobby
+                    <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px;">
+                        <a id="bookmarklet-drag-link-prod" href="#" class="btn btn-primary" style="cursor: grab;" title="Drag to Bookmarks bar">
+                            🚀 Sync to Jobby (Prod)
+                        </a>
+                        <a id="bookmarklet-drag-link-dev" href="#" class="btn btn-secondary" style="cursor: grab;" title="Drag to Bookmarks bar">
+                            🛠️ Sync to Jobby (Dev)
                         </a>
                     </div>
                     
-                    <h4>⚙️ Configure Token & URL</h4>
-                    <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
-                        <div>
-                            <label style="font-size: 11px; font-weight: 500; display: block; margin-bottom: 4px;">n8n Webhook URL</label>
-                            <input type="url" id="dev-webhook-url" style="width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-input); color: var(--text-primary); font-size: 12.5px;">
+                    <h4>⚙️ Configure Webhooks</h4>
+                    <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
+                        <div style="border-bottom: 1px solid var(--border-color); padding-bottom: 12px;">
+                            <h5 style="font-size: 11px; font-weight: 600; margin-bottom: 6px; color: var(--text-primary);">PROD WEBHOOK</h5>
+                            <div style="display: flex; flex-direction: column; gap: 8px;">
+                                <div>
+                                    <label style="font-size: 11px; font-weight: 500; display: block; margin-bottom: 4px;">n8n Webhook URL</label>
+                                    <input type="url" id="prod-webhook-url" style="width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-input); color: var(--text-primary); font-size: 12.5px;">
+                                </div>
+                                <div>
+                                    <label style="font-size: 11px; font-weight: 500; display: block; margin-bottom: 4px;">Security Token</label>
+                                    <input type="password" id="prod-webhook-token" style="width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-input); color: var(--text-primary); font-size: 12.5px;">
+                                </div>
+                            </div>
                         </div>
                         <div>
-                            <label style="font-size: 11px; font-weight: 500; display: block; margin-bottom: 4px;">Security Token</label>
-                            <input type="password" id="dev-webhook-token" style="width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-input); color: var(--text-primary); font-size: 12.5px;">
+                            <h5 style="font-size: 11px; font-weight: 600; margin-bottom: 6px; color: var(--text-primary);">DEV WEBHOOK</h5>
+                            <div style="display: flex; flex-direction: column; gap: 8px;">
+                                <div>
+                                    <label style="font-size: 11px; font-weight: 500; display: block; margin-bottom: 4px;">n8n Webhook URL</label>
+                                    <input type="url" id="dev-webhook-url" style="width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-input); color: var(--text-primary); font-size: 12.5px;">
+                                </div>
+                                <div>
+                                    <label style="font-size: 11px; font-weight: 500; display: block; margin-bottom: 4px;">Security Token</label>
+                                    <input type="password" id="dev-webhook-token" style="width: 100%; padding: 8px 12px; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-input); color: var(--text-primary); font-size: 12.5px;">
+                                </div>
+                            </div>
                         </div>
-                        <div style="text-align: right; margin-top: 10px;">
+                        <div style="text-align: right; margin-top: 6px;">
                             <button id="btn-save-dev-settings" class="btn btn-primary">Save Settings</button>
                         </div>
                     </div>

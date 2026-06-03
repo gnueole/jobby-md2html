@@ -1,40 +1,57 @@
-# JULIEN AVARRE
+# YOUR FIRST & LAST NAME
 
-**Enterprise Solutions Engineer (AI Voice / Generative Media)**
+**Target Job Title (e.g., Solutions Engineer)** :accent[· Available Immediately]
 
-[CONTACT : julien.avarre@example.com | +33 6 00 00 00 00 | https://www.linkedin.com/in/julien-avarre]
+[CONTACT : your.email@example.com | +33 6 00 00 00 00 | https://www.linkedin.com/in/your-profile]
 
-> "Solutions Engineer orienté impact, j'aide les équipes Enterprise à déployer des expériences Voice & GenAI fiables et scalables - de la qualification au rollout - en accélérant l'adoption via des PoC mesurés, des intégrations API et un enablement sans friction."
+> "Write a short 2 to 3 sentence introduction here. Highlight your core expertise, key achievements, and the unique value you bring to a team. Use target keywords that align with the jobs you are applying for to optimize for ATS algorithms."
 
-## EXPÉRIENCES CLÉS
+## PROFESSIONAL EXPERIENCE
 
-**Solutions Engineer (Expertise Tooling & RFPs)** | Diabolocom | 2025 - présent
-- Cadrage et pilotage de cycles enterprise (discovery, qualification, PoC) en traduisant les enjeux CX en exigences techniques (sécurité, intégrations, scalabilité).
-- Industrialisation des réponses RFP et du "deal enablement" (assets, templates, storylines, démonstrations), réduisant le temps de réponse et améliorant la qualité des dossiers.
+**Current Job Title** | Company Name :muted[· City, Country] | 2024 - Present
+- **Action & Impact**: Describe your key responsibilities and achievements starting each bullet point with a strong action verb.
+- **Quantifiable Data**: Bring credibility to your impact by including metrics, e.g.: :accent[Improved pipeline efficiency by 25%].
+- **ATS Keywords**: Naturally weave in technologies, methodologies, and skills mentioned in job descriptions to optimize your resume score.
 
-**Presales Engineer** | Valiantys | 2023 - présent
-- Animation de démonstrations et ateliers multi-stakeholders, construction de business cases et plans de succès orientés ROI.
-- Conception d'architectures d'intégration (API, workflows, automatisation) pour accélérer la mise en œuvre et sécuriser le passage à l'échelle.
+**Previous Job Title** | Company Name :muted[· City, Country] | 2021 - 2024
+- Describe a high-impact project or key system you built or maintained.
+- Outline your scope of responsibility, team size, or budget managed.
+- List tools and technologies used on a daily basis to solve problems.
 
-**Presales Engineer** | Claranet | 2019 - 2022
-- Conception de solutions cloud et d'architectures cibles (fiabilité, monitoring, sécurité) pour des environnements critiques, avec définition du périmètre et des critères d'acceptation.
-- Conduite de PoC et chiffrages, coordination des parties prenantes (Sales, Delivery, Engineering) pour accélérer la prise de décision et la clôture.
+## PROJECTS & PORTFOLIO
 
-**Technical Project Manager** | Actility | 2015 - 2019
-- Gestion et livraison de projets de déploiement réseau LoRaWAN pour de grands comptes IoT.
-- Pilotage technique des intégrations API et support avant-vente sur les architectures IoT complexes.
+**Personal Project Name** | Role / Tech Stack Used | 2023
+- Describe the project goal, your role, and what you built.
+- Link to the live application or Git repository if available.
 
-### FORMATION
+### 💡 FORMATTING DIRECTIVES (Sidebar)
 
-**Master en Ingénierie des Systèmes d'Information** | École Supérieure d'Informatique | 2012 - 2015
-- Spécialisation en architectures logicielles et cloud computing.
+This template serves as an interactive guide for the editor:
 
-**Licence en Sciences pour l'Ingénieur** | Université de Technologie | 2009 - 2012
-- Option réseaux et télécommunications.
+- **Accent Color**:
+  Use the `:accent[my text]` syntax to color key terms with the accent color.
+- **Muted Text (Gray)**:
+  Use `:muted[my text]` to de-emphasize secondary details (e.g., :muted[Driver's License B]).
+- **Contact Bar**:
+  The `[CONTACT : email | phone | link]` line at the top auto-formats a centered bar with active links.
+- **2-Column Layout**:
+  - `##` (H2) headers go to the **right** (Main Column).
+  - `###` (H3) headers go to the **left** (Sidebar Column).
 
-### COMPÉTENCES TECHNIQUES
+### TECHNICAL SKILLS
 
-- **Intelligence Artificielle**: Generative AI (LLMs), Voice AI, NLP (Natural Language Processing).
-- **Architecture & Cloud**: Solutions Cloud (AWS/GCP), API Management, Webhooks, SaaS Integrations.
-- **Méthodologies**: Product/Technical Presales, RFP Response Management, POC Delivery.
-- **Langues**: Français (Maternelle), Anglais (Courant / Professionnel).
+- **Domain A**: Skill 1, Skill 2, Skill 3.
+- **Domain B**: Tool X, Tool Y, Tool Z.
+- **Methodologies**: Agile/Scrum, Project Management.
+
+### EDUCATION
+
+**Master of Science in Information Technology** | University Name :muted[· 2018 - 2021]
+- Core specialization or thesis topic.
+
+**Bachelor of Science** | College Name :muted[· 2015 - 2018]
+
+### LANGUAGES
+
+- **English**: Native or Bilingual.
+- **French**: :accent[Professional / Fluent].

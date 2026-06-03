@@ -1,0 +1,26 @@
+# Version control
+.git
+.gitignore
+
+# CI/CD
+.github
+
+# Local environment configurations (contains secrets)
+.env
+docker/.env
+toolkit/.env
+
+# Docker deployment files
+docker-compose.yml
+docker/docker-compose.yml
+docker/vector.Dockerfile
+docker/vector.yaml
+
+# Node dependencies
+node_modules
+npm-debug.log
+
+# Unused assets and backups
+screenshot.png
+toolkit/__pycache__/
+toolkit/workflow_backup.json

@@ -1,0 +1,920 @@
+{
+  "updatedAt": "2026-06-03T10:11:59.136Z",
+  "createdAt": "2026-05-25T13:51:11.721Z",
+  "id": "olgL8wb7nrJumkct",
+  "name": "Jobby - LinkedIn 2 Notion",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Company: {{ $('CV Factory').item.json.query.company }}\njon title : {{ $('CV Factory').item.json.query.job_title }}\njob Url: {{ $('CV Factory').item.json.query.job_url }}\nDescription: {{ $('CV Factory').item.json.query.job_description }}\n",
+        "options": {
+          "systemMessage": "=# Tu es Jobby 3.0\nL'assistant stratégique de recherche d'imploi pour Julien. \n\n## Identity & Tone\nTon ton est neutre, analytique et orienté résultats, comme un coach en recrutement senior. Ta valeur ajoutée réside dans la détection précise des écarts techniques et organisationnels.\n\n## Purpose\nÉvaluer l'adéquation entre le profil de Julien (Solutions Engineer, expert automation/IA) et une offre d'emploi spécifique, puis générer le CV Markdown optimal pour maximiser le score ATS.\n\n## Context & Data\nPour réaliser cette analyse et cette génération, voici les données consolidées issues du système :\n\n## 1. Fiche de Poste Aspirée (LinkedIn)\n{{ $json.job_description }}\n\n## 2. Directives de Positionnement (La Graine)\n- Baseline attendue : {{ $json.seed_baseline }}\n- Consignes de filtrage : {{ $json.seed_directives }}\n\n## 3. Graphe de Compétences & Expériences (CV Atomique)\n{{ $json.cv_master_payload }}\n\n# Evaluation Criteria\n1. Score (1-10) : Basé strictement sur l'adéquation technique, l'expérience passée et le niveau de séniorité requis.\n2. Gap Analysis : Identifier les technologies ou méthodologies manquantes sans fioritures.\n3. Reskilling & Tailoring : Sélectionner uniquement les 4 dernières activités du CV Atomique et adapter subtilement les puces d'impact en utilisant les mots-clés de la fiche de poste et l'orientation de la Graine.\n\n**CRITICAL NOTION LIMIT**: Le texte dans `\"generated_cv_markdown\"` doit être concis et synthétique. Chaque section `(Summary, Expérience, etc.)``  doit être séparée par le caractère \"|\" pour nous permettre de découper le texte après coup et éviter de dépasser la limite de 2000 caractères par bloc imposée par l'API Notion.\n\n# Output Format (STRICT JSON)\nRéponds exclusivement par un objet JSON valide. Le CV au format Markdown et en anglais doit être entièrement encapsulé dans la clé \"generated_cv_markdown\". Ne mets pas de balises de code (comme `markdown`) à l'intérieur du JSON.\n\n```{\n  \"domain\": \"string (ex: Generative AI, Automation, API Management)\",\n  \"job_title\": \"string (Titre exact)\",\n  \"company\": \"string\",\n  \"match_score\": number,\n  \"quick_summary\": \"string (MAX 150 caractères)\",\n  \"analysis_pros\": \"string (Points forts techniques et métier - Max 800 caractères)\",\n  \"analysis_cons\": \"string (Points de friction et manques - Max 800 caractères)\",\n  \"action_plan\": \"string (Conseil immédiat pour la candidature - Max 400 caractères)\",\n  \"generated_cv_markdown\": \"string (Le CV V2.0 complet en Markdown, structuré avec l'Aside de départ contenant la baseline, puis les 4 derniers jobs adaptés aux critères ATS)\"\n}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        352,
+        48
+      ],
+      "id": "b28e3fb0-c3bf-42f4-9a63-a95c5c8d4055",
+      "name": "AI Agent",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        352,
+        320
+      ],
+      "id": "c09c542b-80ca-4d47-a542-15fc14eabccd",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "QZGttnIQoPa4rsAg",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-4-6",
+          "cachedResultName": "Claude Sonnet 4.6"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.4,
+      "position": [
+        -544,
+        384
+      ],
+      "id": "29dd6f16-98a6-48f5-ad0b-7a76b5eb335a",
+      "name": "Anthropic Chat Model",
+      "credentials": {
+        "anthropicApi": {
+          "id": "ZLxe6Yv6rEgDYs00",
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. On récupère le texte généré par l'Agent\nconst text = $json.output || \"\"; \nconst match = text.match(/\\{[\\s\\S]*\\}/);\n\nif (match) {\n  try {\n    // On parse uniquement le bloc JSON trouvé\n    const data = JSON.parse(match);\n\n    // Helper pour les tableaux Notion (Multi-select)\n    const toSimpleArray = (val) => {\n      if (!val) return [];\n      const rawItems = Array.isArray(val) ? val : val.toString().split(/[|,\\/&]|\\band\\b/);\n      return rawItems.map(i => i.trim()).filter(i => i.length > 1);\n    };\n\n    // 2. On reconstruit l'objet propre pour alimenter le nœud \"Update Notion\"\n    return [{\n      json: {\n        domain: toSimpleArray(data.domain),\n        category: toSimpleArray(data.category || data.job_title),\n        job_title: data.job_title || \"Position inconnue\",\n        company: data.company || \"Entreprise inconnue\",\n        score: parseInt(data.match_score) || 0,\n        status: \"To review\",\n        summary: data.quick_summary || \"Analyse terminée\",\n        analysis_pros: data.analysis_pros || \"N/A\",\n        analysis_cons: data.analysis_cons || \"N/A\",\n        action_plan: data.action_plan || \"N/A\",\n        generated_cv_markdown: data.generated_cv_markdown || \"\",\n        response_date: new Date().toISOString().split('T')\n      }\n    }];\n\n  } catch (e) {\n    return [{ json: { error: \"JSON Parsing Error\", message: e.message, raw: text.substring(0, 200) } }];\n  }\n}\n\nreturn [{ json: { error: \"No JSON found in AI output\", raw: text.substring(0, 100) } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        704,
+        -48
+      ],
+      "id": "bc6d9e53-7c47-4b19-97f4-e78868ea7cdd",
+      "name": "JSON Cleaner",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "resource": "database",
+        "databaseId": {
+          "__rl": true,
+          "value": "5ea1407d-50b4-4527-bd86-21f3c58535fa",
+          "mode": "list",
+          "cachedResultName": "Complete Resume DB",
+          "cachedResultUrl": "https://www.notion.so/5ea1407d50b44527bd8621f3c58535fa"
+        }
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        -320,
+        48
+      ],
+      "id": "98b735c7-3087-4ff3-83a7-c749cba35b8b",
+      "name": "Get CV data",
+      "credentials": {
+        "notionApi": {
+          "id": "KYrsxF0plfLkPpqW",
+          "name": "Notion LinkedIn Auto"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "database",
+        "databaseId": {
+          "__rl": true,
+          "value": "642d04c9-1c1f-4c01-a4d3-89822f02556b",
+          "mode": "list",
+          "cachedResultName": "CV Seeds",
+          "cachedResultUrl": "https://www.notion.so/642d04c91c1f4c01a4d389822f02556b"
+        }
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        -96,
+        48
+      ],
+      "id": "1c3e6440-cbf2-472c-ab63-959a496a7e6f",
+      "name": "CV Seed",
+      "credentials": {
+        "notionApi": {
+          "id": "KYrsxF0plfLkPpqW",
+          "name": "Notion LinkedIn Auto"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "127bad1f-b25a-4b6b-8eec-7b342e3aa504",
+          "mode": "list",
+          "cachedResultName": "Linked Detector",
+          "cachedResultUrl": "https://www.notion.so/127bad1fb25a4b6b8eec7b342e3aa504"
+        },
+        "title": "LinkedIn Detector",
+        "simple": false,
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Job Title|title",
+              "title": "={{ $json.job_title || \"Nouvelle offre LinkedIn (Titre non extrait)\" }}\n"
+            },
+            {
+              "key": "category|multi_select",
+              "multiSelectValue": "={{ $json.category }}"
+            },
+            {
+              "key": "URL|url",
+              "urlValue": "={{ $('CV Factory').item.json.query.job_url }}"
+            },
+            {
+              "key": "Match Score|number",
+              "numberValue": "={{ $json.score }}"
+            },
+            {
+              "key": "Status|status",
+              "statusValue": "={{ $json.status }}"
+            },
+            {
+              "key": "Company|select",
+              "selectValue": "={{ $json.company }}"
+            },
+            {
+              "key": "domain|multi_select",
+              "multiSelectValue": "={{ $json.domain }}S"
+            },
+            {
+              "key": "analysis|rich_text",
+              "textContent": "={{ $json.summary }}"
+            }
+          ]
+        },
+        "blockUi": {
+          "blockValues": [
+            {
+              "type": "heading_1",
+              "textContent": "Analyse complète"
+            },
+            {
+              "textContent": "={{ $json.summary }}"
+            },
+            {
+              "type": "heading_2",
+              "textContent": "Pros"
+            },
+            {
+              "textContent": "={{ $json.analysis_pros }}"
+            },
+            {
+              "type": "heading_2",
+              "textContent": "Cons"
+            },
+            {
+              "textContent": "={{ $json.analysis_cons }}"
+            },
+            {
+              "type": "heading_2",
+              "textContent": "Action Plan"
+            },
+            {
+              "textContent": "={{ $json.action_plan }}"
+            },
+            {
+              "type": "heading_1",
+              "textContent": "Raw job description "
+            },
+            {
+              "type": "toggle",
+              "textContent": "=About the job"
+            },
+            {
+              "textContent": "={{ $('CV Factory').item.json.query.job_description }}"
+            }
+          ]
+        },
+        "options": {
+          "iconType": "emoji",
+          "icon": "🆕"
+        }
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        928,
+        -48
+      ],
+      "id": "a801be3c-190f-4c32-a564-050e9ba194f2",
+      "name": "update prospect",
+      "retryOnFail": false,
+      "executeOnce": false,
+      "credentials": {
+        "notionApi": {
+          "id": "KYrsxF0plfLkPpqW",
+          "name": "Notion LinkedIn Auto"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "path": "cv-factory",
+        "authentication": "headerAuth",
+        "options": {
+          "responseData": "{\"status\": \"processing\"}"
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -544,
+        48
+      ],
+      "id": "4f70d8ad-1003-4506-b630-04d85c94d2e1",
+      "name": "CV Factory",
+      "webhookId": "44786c94-5bac-493e-a778-8d065668d8b2",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "QDm4dLNTsiXmLpmM",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. Récupération des lignes du CV Atomique\nlet cvRows = [];\ntry {\n  cvRows = $('Get CV data').all();\n} catch (e) {\n  cvRows = [];\n}\n\n// Extraction universelle pour le CV\nconst cleanExperiences = cvRows.map((row, index) => {\n  const props = row.json?.properties || {};\n  \n  // Fonction helper pour extraire le texte brut d'une propriété Notion, quel que soit son type (title ou rich_text)\n  const extractText = (propObj) => {\n    if (!propObj) return \"\";\n    const arr = propObj.rich_text || propObj.title || [];\n    return arr?.plain_text || propObj.value || \"\";\n  };\n\n  // On scanne dynamiquement les variantes de noms de colonnes possibles\n  const entreprise = extractText(props.Entreprise) || extractText(props.Company) || \"Entreprise \" + (index + 1);\n  const poste = extractText(props.Poste) || extractText(props.Role) || \"Solutions Engineer\";\n  const description = extractText(props.Description) || \"\";\n  const dates = extractText(props.Dates) || extractText(props.Date) || \"\";\n\n  return `### ${poste} chez ${entreprise} (${dates})\\n${description}`;\n}).join(\"\\n\\n\");\n\n// 2. Récupération et isolation de la Graine UNIQUE\nlet seedBaseline = \"Solutions Engineer\";\nlet seedDirectives = \"Standard tailoring\";\n\ntry {\n  const allSeeds = $('CV Seed').all();\n  // On cherche la graine active via la checkbox, sinon on prend la première disponible\n  const selectedSeedItem = allSeeds.find(item => {\n    const props = item.json?.properties || {};\n    // Gère la checkbox Notion (qu'elle s'appelle Active ou active)\n    const checkObj = props.Active || props.active;\n    return checkObj?.checkbox === true;\n  }) || allSeeds;\n\n  if (selectedSeedItem && selectedSeedItem.json?.properties) {\n    const sProps = selectedSeedItem.json.properties;\n    \n    const extractSeedText = (propObj) => {\n      if (!propObj) return null;\n      const arr = propObj.title || propObj.rich_text || [];\n      return arr?.plain_text || null;\n    };\n\n    seedBaseline = extractSeedText(sProps.Baseline) || extractSeedText(sProps.baseline) || seedBaseline;\n    seedDirectives = extractSeedText(sProps.Directives) || extractSeedText(sProps.directives) || seedDirectives;\n  }\n} catch (e) {\n  // En cas de problème de lecture de la graine, on garde les valeurs par défaut pour ne pas bloquer le flux\n}\n\n// 3. Payload plat final garanti sans crash\nreturn [{\n  json: {\n    job_description: $json.job_description || \"Pas de description\",\n    seed_baseline: seedBaseline,\n    seed_directives: seedDirectives,\n    cv_master_payload: cleanExperiences || \"CV Master vide\"\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        128,
+        48
+      ],
+      "id": "6fc7730a-c6d3-48db-919d-c700c1c6bed1",
+      "name": "Clean CV"
+    },
+    {
+      "parameters": {
+        "errorMessage": "={{ $('AI Agent').item.json.error }}"
+      },
+      "type": "n8n-nodes-base.stopAndError",
+      "typeVersion": 1,
+      "position": [
+        704,
+        144
+      ],
+      "id": "0334fb31-bc67-410f-89bc-7e0de9ccaa43",
+      "name": "Stop and Error"
+    }
+  ],
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "JSON Cleaner",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Stop and Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        []
+      ]
+    },
+    "JSON Cleaner": {
+      "main": [
+        [
+          {
+            "node": "update prospect",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        []
+      ]
+    },
+    "Get CV data": {
+      "main": [
+        [
+          {
+            "node": "CV Seed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CV Seed": {
+      "main": [
+        [
+          {
+            "node": "Clean CV",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "update prospect": {
+      "main": [
+        [],
+        []
+      ]
+    },
+    "CV Factory": {
+      "main": [
+        [
+          {
+            "node": "Get CV data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clean CV": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timeSavedMode": "fixed",
+    "timezone": "Europe/Paris",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "CV Factory": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.eole.me",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
+            "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "en-US,en;q=0.9,fr;q=0.8",
+            "cookie": "rl_page_init_referrer=RudderEncrypt%3AU2FsdGVkX1%2B8kFV5p%2B3HAj3Son4FMJUEk4%2BqxIx7UWc%3D; rl_page_init_referring_domain=RudderEncrypt%3AU2FsdGVkX19n86jBmCOvZ4Wcb8Nqnk3ZjYzMHoWGGZo%3D; rl_anonymous_id=RudderEncrypt%3AU2FsdGVkX19dq6dMs%2B%2B1hfuFbeCZQ5qPDBEUjrUyooY0cOF924umj6j0IVbg3qguoMd8w7B2khYShgj9CwXoiQ%3D%3D; rl_user_id=RudderEncrypt%3AU2FsdGVkX19hGVedlMd5DBinnJnRgI9lfTDukn7tHCOjXqRDuVwSByddZslC15Xnh8kksm5X4BpKBj2RAajADYz8yNHxroHnO2NO5l1cdsJd0cgnyZl3NyC29Bx8dJOMsdlOyOdCTTNsHs7iOc1EqzxqC%2BshkdmFdMUc2Nub9PI%3D; rl_trait=RudderEncrypt%3AU2FsdGVkX1%2FEx3EfpM%2BZY9sEq0Qz8j%2BSd%2F7AnjFJHnTDmIy8QzUBiZFF%2FEPu7AU0ueVFTq4JY98i2mt9Fyd4gr43myIUw%2F8v6HlQ0S3FJHv57gAlsCURjfQoxNlmfxEGGQCsJRDY8jHdEuXmucmz%2Bcy2e4u5vUa1499j67jRLJvihhyCfHL9cb1Z5xvvy9ATHUqkEp8UapZXpy8os1QUkg%3D%3D; rl_session=RudderEncrypt%3AU2FsdGVkX1%2B4P0LGLoRl8uEoeZegFHu5T6Tr29wOFnblVdw1p5I6dFPEzpBVFBtQu9PB%2BpsXm5MH%2Ff7FHHVC6rg3S1eZHyG45kkrL0wfjhCxH2vu6FcLGeHk%2FzibmJhC1tZ%2BFWJt4DFNiOrWPdqpPg%3D%3D; ph_phc_kMstNfAgBcBkWSh6KdsgN09heqqNe5VNmalHP1Ni9Q4_posthog=%7B%22%24device_id%22%3A%22019e1b19-8798-7500-9c38-01c093f6b68e%22%2C%22distinct_id%22%3A%2253cbaa32121366d355af3e3f2eb2d42a33c0bffe309b3f0f597c923db082ae29%232792484d-cba3-4156-adba-fbc49134eb55%22%2C%22%24sesid%22%3A%5B1779721754711%2C%22019e5f67-63a1-742f-ac1e-0500fc488204%22%2C1779717071777%5D%2C%22%24epp%22%3Atrue%2C%22%24initial_person_info%22%3A%7B%22r%22%3A%22%24direct%22%2C%22u%22%3A%22https%3A%2F%2Fn8n.eole.me%2Fsignin%3Fredirect%3D%25252F%22%7D%2C%22%24user_state%22%3A%22identified%22%7D",
+            "if-none-match": "W/\"18-u4VS43Duo4gxS1w+mEwu+tPAZ1g\"",
+            "priority": "u=0, i",
+            "referer": "https://www.linkedin.com/",
+            "sec-ch-ua": "\"Google Chrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "sec-fetch-dest": "document",
+            "sec-fetch-mode": "navigate",
+            "sec-fetch-site": "cross-site",
+            "sec-fetch-user": "?1",
+            "upgrade-insecure-requests": "1",
+            "x-forwarded-for": "176.173.197.207",
+            "x-forwarded-host": "n8n.eole.me",
+            "x-forwarded-port": "443",
+            "x-forwarded-proto": "https",
+            "x-forwarded-server": "1f7ad518ac8c",
+            "x-real-ip": "176.173.197.207"
+          },
+          "params": {},
+          "query": {
+            "job_title": "Solutions Sales Engineer",
+            "company": "Dust",
+            "job_url": "https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4411718983",
+            "job_description": "About the job\n\nAbout Dust\n\n\n\n\nWork is being rewritten, and the people holding the pen are the ones who actually run it.\n\n\n\n\nWe call them AI operators: the employees inside companies who build, deploy, and run AI agents for their teams, without waiting for someone to hand them a tool. Dust is the platform they choose to rewire how their company works.\n\n\n\n\nWith 70%+ weekly active users, people stick with Dust as much as they do with Slack and Notion. We don't get piloted and shelved. We land once, and spread. We're at an exciting stage of our journey, and growing fast.\n\n\n\n\nWe're serving great customers like Datadog, 1Password, Cursor, Clay, and Persona, and aim to x5 our growth by the end of 2026.\n\n\n\n\nDust is backed by Sequoia with a determined team of optimists (coming from Stripe, OpenAI, and Stanford) who like to focus on users, ship fast, and don't take themselves too seriously while doing so. The Generalist named us among the Future 50.\n\nTLDR;\n\nAs a Post-Sales Solutions Engineer at Dust, you will act as the technical partner for our existing customers, ensuring they maximize value from our AI operating system throughout their journey with us. Your primary focus will be driving long-term customer success through value realization, identifying expansion opportunities, and creating high-value, sticky use cases that make Dust indispensable to their operations. You will work closely with our Customer Success and Product & Engineering teams to deepen customer relationships and drive retention.\n\n\n\n\nResponsibilities\n\nDevelop and maintain deep expertise in Dust's product, platform capabilities, and prompt engineering best practices to serve as the internal expert for customer scenarios\nServe as a trusted technical advisor to our Enterprise customers, building deep relationshi"
+          },
+          "body": {},
+          "webhookUrl": "https://n8n.eole.me/webhook/cv-factory",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "versionId": "1f38b6c8-cab7-4bb2-a645-f6c092f23ca5",
+  "activeVersionId": "1f38b6c8-cab7-4bb2-a645-f6c092f23ca5",
+  "versionCounter": 167,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2026-05-25T13:51:11.748Z",
+      "createdAt": "2026-05-25T13:51:11.748Z",
+      "role": "workflow:owner",
+      "workflowId": "olgL8wb7nrJumkct",
+      "projectId": "GfFdmZTqGEJQkrXG",
+      "project": {
+        "updatedAt": "2026-05-11T09:44:44.757Z",
+        "createdAt": "2026-05-11T09:34:45.695Z",
+        "id": "GfFdmZTqGEJQkrXG",
+        "name": "Éole Wind <megazef@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "2792484d-cba3-4156-adba-fbc49134eb55"
+      }
+    }
+  ],
+  "tags": [
+    {
+      "updatedAt": "2026-05-29T11:31:39.972Z",
+      "createdAt": "2026-05-29T11:31:39.972Z",
+      "id": "5zynHpPHQi9PRMyD",
+      "name": "jobby"
+    },
+    {
+      "updatedAt": "2026-05-11T12:19:25.326Z",
+      "createdAt": "2026-05-11T12:19:25.326Z",
+      "id": "8yiCAJZW8fFXfFqI",
+      "name": "notion"
+    },
+    {
+      "updatedAt": "2026-05-29T11:33:37.867Z",
+      "createdAt": "2026-05-29T11:33:37.867Z",
+      "id": "oVl5DgcCQROKFX7w",
+      "name": "AI"
+    },
+    {
+      "updatedAt": "2026-05-29T11:33:25.261Z",
+      "createdAt": "2026-05-29T11:33:25.261Z",
+      "id": "sTPsdvgfTYjdu5g7",
+      "name": "live"
+    }
+  ],
+  "activeVersion": {
+    "updatedAt": "2026-06-03T10:12:33.000Z",
+    "createdAt": "2026-06-03T10:11:59.138Z",
+    "versionId": "1f38b6c8-cab7-4bb2-a645-f6c092f23ca5",
+    "workflowId": "olgL8wb7nrJumkct",
+    "nodes": [
+      {
+        "parameters": {
+          "promptType": "define",
+          "text": "=Company: {{ $('CV Factory').item.json.query.company }}\njon title : {{ $('CV Factory').item.json.query.job_title }}\njob Url: {{ $('CV Factory').item.json.query.job_url }}\nDescription: {{ $('CV Factory').item.json.query.job_description }}\n",
+          "options": {
+            "systemMessage": "=# Tu es Jobby 3.0\nL'assistant stratégique de recherche d'imploi pour Julien. \n\n## Identity & Tone\nTon ton est neutre, analytique et orienté résultats, comme un coach en recrutement senior. Ta valeur ajoutée réside dans la détection précise des écarts techniques et organisationnels.\n\n## Purpose\nÉvaluer l'adéquation entre le profil de Julien (Solutions Engineer, expert automation/IA) et une offre d'emploi spécifique, puis générer le CV Markdown optimal pour maximiser le score ATS.\n\n## Context & Data\nPour réaliser cette analyse et cette génération, voici les données consolidées issues du système :\n\n## 1. Fiche de Poste Aspirée (LinkedIn)\n{{ $json.job_description }}\n\n## 2. Directives de Positionnement (La Graine)\n- Baseline attendue : {{ $json.seed_baseline }}\n- Consignes de filtrage : {{ $json.seed_directives }}\n\n## 3. Graphe de Compétences & Expériences (CV Atomique)\n{{ $json.cv_master_payload }}\n\n# Evaluation Criteria\n1. Score (1-10) : Basé strictement sur l'adéquation technique, l'expérience passée et le niveau de séniorité requis.\n2. Gap Analysis : Identifier les technologies ou méthodologies manquantes sans fioritures.\n3. Reskilling & Tailoring : Sélectionner uniquement les 4 dernières activités du CV Atomique et adapter subtilement les puces d'impact en utilisant les mots-clés de la fiche de poste et l'orientation de la Graine.\n\n**CRITICAL NOTION LIMIT**: Le texte dans `\"generated_cv_markdown\"` doit être concis et synthétique. Chaque section `(Summary, Expérience, etc.)``  doit être séparée par le caractère \"|\" pour nous permettre de découper le texte après coup et éviter de dépasser la limite de 2000 caractères par bloc imposée par l'API Notion.\n\n# Output Format (STRICT JSON)\nRéponds exclusivement par un objet JSON valide. Le CV au format Markdown et en anglais doit être entièrement encapsulé dans la clé \"generated_cv_markdown\". Ne mets pas de balises de code (comme `markdown`) à l'intérieur du JSON.\n\n```{\n  \"domain\": \"string (ex: Generative AI, Automation, API Management)\",\n  \"job_title\": \"string (Titre exact)\",\n  \"company\": \"string\",\n  \"match_score\": number,\n  \"quick_summary\": \"string (MAX 150 caractères)\",\n  \"analysis_pros\": \"string (Points forts techniques et métier - Max 800 caractères)\",\n  \"analysis_cons\": \"string (Points de friction et manques - Max 800 caractères)\",\n  \"action_plan\": \"string (Conseil immédiat pour la candidature - Max 400 caractères)\",\n  \"generated_cv_markdown\": \"string (Le CV V2.0 complet en Markdown, structuré avec l'Aside de départ contenant la baseline, puis les 4 derniers jobs adaptés aux critères ATS)\"\n}"
+          }
+        },
+        "type": "@n8n/n8n-nodes-langchain.agent",
+        "typeVersion": 3.1,
+        "position": [
+          352,
+          48
+        ],
+        "id": "b28e3fb0-c3bf-42f4-9a63-a95c5c8d4055",
+        "name": "AI Agent",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "modelName": "models/gemini-2.5-flash-lite",
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+        "typeVersion": 1.1,
+        "position": [
+          352,
+          320
+        ],
+        "id": "c09c542b-80ca-4d47-a542-15fc14eabccd",
+        "name": "Google Gemini Chat Model",
+        "credentials": {
+          "googlePalmApi": {
+            "id": "QZGttnIQoPa4rsAg",
+            "name": "Google Gemini(PaLM) Api account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "model": {
+            "__rl": true,
+            "mode": "list",
+            "value": "claude-sonnet-4-6",
+            "cachedResultName": "Claude Sonnet 4.6"
+          },
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+        "typeVersion": 1.4,
+        "position": [
+          -544,
+          384
+        ],
+        "id": "29dd6f16-98a6-48f5-ad0b-7a76b5eb335a",
+        "name": "Anthropic Chat Model",
+        "credentials": {
+          "anthropicApi": {
+            "id": "ZLxe6Yv6rEgDYs00",
+            "name": "Anthropic account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "// 1. On récupère le texte généré par l'Agent\nconst text = $json.output || \"\"; \nconst match = text.match(/\\{[\\s\\S]*\\}/);\n\nif (match) {\n  try {\n    // On parse uniquement le bloc JSON trouvé\n    const data = JSON.parse(match);\n\n    // Helper pour les tableaux Notion (Multi-select)\n    const toSimpleArray = (val) => {\n      if (!val) return [];\n      const rawItems = Array.isArray(val) ? val : val.toString().split(/[|,\\/&]|\\band\\b/);\n      return rawItems.map(i => i.trim()).filter(i => i.length > 1);\n    };\n\n    // 2. On reconstruit l'objet propre pour alimenter le nœud \"Update Notion\"\n    return [{\n      json: {\n        domain: toSimpleArray(data.domain),\n        category: toSimpleArray(data.category || data.job_title),\n        job_title: data.job_title || \"Position inconnue\",\n        company: data.company || \"Entreprise inconnue\",\n        score: parseInt(data.match_score) || 0,\n        status: \"To review\",\n        summary: data.quick_summary || \"Analyse terminée\",\n        analysis_pros: data.analysis_pros || \"N/A\",\n        analysis_cons: data.analysis_cons || \"N/A\",\n        action_plan: data.action_plan || \"N/A\",\n        generated_cv_markdown: data.generated_cv_markdown || \"\",\n        response_date: new Date().toISOString().split('T')\n      }\n    }];\n\n  } catch (e) {\n    return [{ json: { error: \"JSON Parsing Error\", message: e.message, raw: text.substring(0, 200) } }];\n  }\n}\n\nreturn [{ json: { error: \"No JSON found in AI output\", raw: text.substring(0, 100) } }];"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          704,
+          -48
+        ],
+        "id": "bc6d9e53-7c47-4b19-97f4-e78868ea7cdd",
+        "name": "JSON Cleaner",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "resource": "database",
+          "databaseId": {
+            "__rl": true,
+            "value": "5ea1407d-50b4-4527-bd86-21f3c58535fa",
+            "mode": "list",
+            "cachedResultName": "Complete Resume DB",
+            "cachedResultUrl": "https://www.notion.so/5ea1407d50b44527bd8621f3c58535fa"
+          }
+        },
+        "type": "n8n-nodes-base.notion",
+        "typeVersion": 2.2,
+        "position": [
+          -320,
+          48
+        ],
+        "id": "98b735c7-3087-4ff3-83a7-c749cba35b8b",
+        "name": "Get CV data",
+        "credentials": {
+          "notionApi": {
+            "id": "KYrsxF0plfLkPpqW",
+            "name": "Notion LinkedIn Auto"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "database",
+          "databaseId": {
+            "__rl": true,
+            "value": "642d04c9-1c1f-4c01-a4d3-89822f02556b",
+            "mode": "list",
+            "cachedResultName": "CV Seeds",
+            "cachedResultUrl": "https://www.notion.so/642d04c91c1f4c01a4d389822f02556b"
+          }
+        },
+        "type": "n8n-nodes-base.notion",
+        "typeVersion": 2.2,
+        "position": [
+          -96,
+          48
+        ],
+        "id": "1c3e6440-cbf2-472c-ab63-959a496a7e6f",
+        "name": "CV Seed",
+        "credentials": {
+          "notionApi": {
+            "id": "KYrsxF0plfLkPpqW",
+            "name": "Notion LinkedIn Auto"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "databasePage",
+          "databaseId": {
+            "__rl": true,
+            "value": "127bad1f-b25a-4b6b-8eec-7b342e3aa504",
+            "mode": "list",
+            "cachedResultName": "Linked Detector",
+            "cachedResultUrl": "https://www.notion.so/127bad1fb25a4b6b8eec7b342e3aa504"
+          },
+          "title": "LinkedIn Detector",
+          "simple": false,
+          "propertiesUi": {
+            "propertyValues": [
+              {
+                "key": "Job Title|title",
+                "title": "={{ $json.job_title || \"Nouvelle offre LinkedIn (Titre non extrait)\" }}\n"
+              },
+              {
+                "key": "category|multi_select",
+                "multiSelectValue": "={{ $json.category }}"
+              },
+              {
+                "key": "URL|url",
+                "urlValue": "={{ $('CV Factory').item.json.query.job_url }}"
+              },
+              {
+                "key": "Match Score|number",
+                "numberValue": "={{ $json.score }}"
+              },
+              {
+                "key": "Status|status",
+                "statusValue": "={{ $json.status }}"
+              },
+              {
+                "key": "Company|select",
+                "selectValue": "={{ $json.company }}"
+              },
+              {
+                "key": "domain|multi_select",
+                "multiSelectValue": "={{ $json.domain }}S"
+              },
+              {
+                "key": "analysis|rich_text",
+                "textContent": "={{ $json.summary }}"
+              }
+            ]
+          },
+          "blockUi": {
+            "blockValues": [
+              {
+                "type": "heading_1",
+                "textContent": "Analyse complète"
+              },
+              {
+                "textContent": "={{ $json.summary }}"
+              },
+              {
+                "type": "heading_2",
+                "textContent": "Pros"
+              },
+              {
+                "textContent": "={{ $json.analysis_pros }}"
+              },
+              {
+                "type": "heading_2",
+                "textContent": "Cons"
+              },
+              {
+                "textContent": "={{ $json.analysis_cons }}"
+              },
+              {
+                "type": "heading_2",
+                "textContent": "Action Plan"
+              },
+              {
+                "textContent": "={{ $json.action_plan }}"
+              },
+              {
+                "type": "heading_1",
+                "textContent": "Raw job description "
+              },
+              {
+                "type": "toggle",
+                "textContent": "=About the job"
+              },
+              {
+                "textContent": "={{ $('CV Factory').item.json.query.job_description }}"
+              }
+            ]
+          },
+          "options": {
+            "iconType": "emoji",
+            "icon": "🆕"
+          }
+        },
+        "type": "n8n-nodes-base.notion",
+        "typeVersion": 2.2,
+        "position": [
+          928,
+          -48
+        ],
+        "id": "a801be3c-190f-4c32-a564-050e9ba194f2",
+        "name": "update prospect",
+        "retryOnFail": false,
+        "executeOnce": false,
+        "credentials": {
+          "notionApi": {
+            "id": "KYrsxF0plfLkPpqW",
+            "name": "Notion LinkedIn Auto"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "path": "cv-factory",
+          "authentication": "headerAuth",
+          "options": {
+            "responseData": "{\"status\": \"processing\"}"
+          }
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          -544,
+          48
+        ],
+        "id": "4f70d8ad-1003-4506-b630-04d85c94d2e1",
+        "name": "CV Factory",
+        "webhookId": "44786c94-5bac-493e-a778-8d065668d8b2",
+        "credentials": {
+          "httpHeaderAuth": {
+            "id": "QDm4dLNTsiXmLpmM",
+            "name": "Header Auth account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "// 1. Récupération des lignes du CV Atomique\nlet cvRows = [];\ntry {\n  cvRows = $('Get CV data').all();\n} catch (e) {\n  cvRows = [];\n}\n\n// Extraction universelle pour le CV\nconst cleanExperiences = cvRows.map((row, index) => {\n  const props = row.json?.properties || {};\n  \n  // Fonction helper pour extraire le texte brut d'une propriété Notion, quel que soit son type (title ou rich_text)\n  const extractText = (propObj) => {\n    if (!propObj) return \"\";\n    const arr = propObj.rich_text || propObj.title || [];\n    return arr?.plain_text || propObj.value || \"\";\n  };\n\n  // On scanne dynamiquement les variantes de noms de colonnes possibles\n  const entreprise = extractText(props.Entreprise) || extractText(props.Company) || \"Entreprise \" + (index + 1);\n  const poste = extractText(props.Poste) || extractText(props.Role) || \"Solutions Engineer\";\n  const description = extractText(props.Description) || \"\";\n  const dates = extractText(props.Dates) || extractText(props.Date) || \"\";\n\n  return `### ${poste} chez ${entreprise} (${dates})\\n${description}`;\n}).join(\"\\n\\n\");\n\n// 2. Récupération et isolation de la Graine UNIQUE\nlet seedBaseline = \"Solutions Engineer\";\nlet seedDirectives = \"Standard tailoring\";\n\ntry {\n  const allSeeds = $('CV Seed').all();\n  // On cherche la graine active via la checkbox, sinon on prend la première disponible\n  const selectedSeedItem = allSeeds.find(item => {\n    const props = item.json?.properties || {};\n    // Gère la checkbox Notion (qu'elle s'appelle Active ou active)\n    const checkObj = props.Active || props.active;\n    return checkObj?.checkbox === true;\n  }) || allSeeds;\n\n  if (selectedSeedItem && selectedSeedItem.json?.properties) {\n    const sProps = selectedSeedItem.json.properties;\n    \n    const extractSeedText = (propObj) => {\n      if (!propObj) return null;\n      const arr = propObj.title || propObj.rich_text || [];\n      return arr?.plain_text || null;\n    };\n\n    seedBaseline = extractSeedText(sProps.Baseline) || extractSeedText(sProps.baseline) || seedBaseline;\n    seedDirectives = extractSeedText(sProps.Directives) || extractSeedText(sProps.directives) || seedDirectives;\n  }\n} catch (e) {\n  // En cas de problème de lecture de la graine, on garde les valeurs par défaut pour ne pas bloquer le flux\n}\n\n// 3. Payload plat final garanti sans crash\nreturn [{\n  json: {\n    job_description: $json.job_description || \"Pas de description\",\n    seed_baseline: seedBaseline,\n    seed_directives: seedDirectives,\n    cv_master_payload: cleanExperiences || \"CV Master vide\"\n  }\n}];"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          128,
+          48
+        ],
+        "id": "6fc7730a-c6d3-48db-919d-c700c1c6bed1",
+        "name": "Clean CV"
+      },
+      {
+        "parameters": {
+          "errorMessage": "={{ $('AI Agent').item.json.error }}"
+        },
+        "type": "n8n-nodes-base.stopAndError",
+        "typeVersion": 1,
+        "position": [
+          704,
+          144
+        ],
+        "id": "0334fb31-bc67-410f-89bc-7e0de9ccaa43",
+        "name": "Stop and Error"
+      }
+    ],
+    "connections": {
+      "Google Gemini Chat Model": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "AI Agent": {
+        "main": [
+          [
+            {
+              "node": "JSON Cleaner",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Stop and Error",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Anthropic Chat Model": {
+        "ai_languageModel": [
+          []
+        ]
+      },
+      "JSON Cleaner": {
+        "main": [
+          [
+            {
+              "node": "update prospect",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          []
+        ]
+      },
+      "Get CV data": {
+        "main": [
+          [
+            {
+              "node": "CV Seed",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "CV Seed": {
+        "main": [
+          [
+            {
+              "node": "Clean CV",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "update prospect": {
+        "main": [
+          [],
+          []
+        ]
+      },
+      "CV Factory": {
+        "main": [
+          [
+            {
+              "node": "Get CV data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Clean CV": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Éole Wind",
+    "name": "Version 1f38b6c8",
+    "description": "Authorization",
+    "autosaved": true,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-06-03T10:12:33.619Z",
+        "id": 208,
+        "workflowId": "olgL8wb7nrJumkct",
+        "versionId": "1f38b6c8-cab7-4bb2-a645-f6c092f23ca5",
+        "event": "activated",
+        "userId": "2792484d-cba3-4156-adba-fbc49134eb55"
+      }
+    ]
+  }
+}

@@ -4,11 +4,18 @@ sources:
     exclude_containers:
       - "vector"
 
+transforms:
+  filter_project_logs:
+    type: "filter"
+    inputs:
+      - "docker_logs"
+    condition: '.label."com.docker.compose.project" == "${COMPOSE_PROJECT_NAME}"'
+
 sinks:
   axiom_sink:
     type: "http"
     inputs:
-      - "docker_logs"
+      - "filter_project_logs"
     uri: "https://eu-central-1.aws.edge.axiom.co/v1/ingest/${AXIOM_DATASET}"
     encoding:
       codec: "json"

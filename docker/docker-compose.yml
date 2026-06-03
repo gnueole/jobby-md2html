@@ -169,6 +169,7 @@ services:
     environment:
       - AXIOM_TOKEN=${AXIOM_TOKEN}
       - AXIOM_DATASET=${AXIOM_DATASET}
+      - COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME:-n8n-eole-prod}
     logging:
       driver: "json-file"
       options:

@@ -1,0 +1,317 @@
+{
+  "updatedAt": "2026-06-03T10:12:15.960Z",
+  "createdAt": "2026-05-29T10:00:44.806Z",
+  "id": "wfIyU3rWwTpk9cXk",
+  "name": "Jobby - sync conf",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "jobby-sync",
+        "authentication": "headerAuth",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "0114af63-c3d6-4783-861d-19fac541df68",
+      "name": "Webhook Jobby Sync",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "85acc1c2-9244-4ca7-b75e-1d129d879c13",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "QDm4dLNTsiXmLpmM",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $input.item.json.body || {};\nreturn [\n  {\n    json: {\n      key: \"config\",\n      value: JSON.stringify(body.config || {})\n    }\n  },\n  {\n    json: {\n      key: \"css\",\n      value: body.css || \"\"\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        256,
+        0
+      ],
+      "id": "c138b1b6-59cb-490b-a890-ea2eea9c06bf",
+      "name": "Split Payload"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "dataTableId": {
+          "__rl": true,
+          "value": "OtWoNuYUmoj7knoz",
+          "mode": "id"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "key",
+              "condition": "like",
+              "keyValue": "={{$json.key}}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "key": "={{$json.key}}",
+            "value": "={{$json.value}}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "key",
+              "displayName": "key",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "value",
+              "displayName": "value",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        512,
+        0
+      ],
+      "id": "t498b1b6-59cb-490b-a890-ea2eea9c06cd",
+      "name": "Save to Table"
+    }
+  ],
+  "connections": {
+    "Webhook Jobby Sync": {
+      "main": [
+        [
+          {
+            "node": "Split Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Payload": {
+      "main": [
+        [
+          {
+            "node": "Save to Table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "8a29ec96-4071-4940-8fe8-a2f978070ada",
+  "activeVersionId": "8a29ec96-4071-4940-8fe8-a2f978070ada",
+  "versionCounter": 7,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2026-05-29T10:00:44.808Z",
+      "createdAt": "2026-05-29T10:00:44.808Z",
+      "role": "workflow:owner",
+      "workflowId": "wfIyU3rWwTpk9cXk",
+      "projectId": "GfFdmZTqGEJQkrXG",
+      "project": {
+        "updatedAt": "2026-05-11T09:44:44.757Z",
+        "createdAt": "2026-05-11T09:34:45.695Z",
+        "id": "GfFdmZTqGEJQkrXG",
+        "name": "Éole Wind <megazef@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "2792484d-cba3-4156-adba-fbc49134eb55"
+      }
+    }
+  ],
+  "tags": [
+    {
+      "updatedAt": "2026-05-29T11:31:39.972Z",
+      "createdAt": "2026-05-29T11:31:39.972Z",
+      "id": "5zynHpPHQi9PRMyD",
+      "name": "jobby"
+    }
+  ],
+  "activeVersion": {
+    "updatedAt": "2026-06-03T10:12:19.000Z",
+    "createdAt": "2026-06-03T10:12:15.961Z",
+    "versionId": "8a29ec96-4071-4940-8fe8-a2f978070ada",
+    "workflowId": "wfIyU3rWwTpk9cXk",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "jobby-sync",
+          "authentication": "headerAuth",
+          "responseMode": "lastNode",
+          "options": {}
+        },
+        "id": "0114af63-c3d6-4783-861d-19fac541df68",
+        "name": "Webhook Jobby Sync",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 1,
+        "position": [
+          0,
+          0
+        ],
+        "webhookId": "85acc1c2-9244-4ca7-b75e-1d129d879c13",
+        "credentials": {
+          "httpHeaderAuth": {
+            "id": "QDm4dLNTsiXmLpmM",
+            "name": "Header Auth account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "const body = $input.item.json.body || {};\nreturn [\n  {\n    json: {\n      key: \"config\",\n      value: JSON.stringify(body.config || {})\n    }\n  },\n  {\n    json: {\n      key: \"css\",\n      value: body.css || \"\"\n    }\n  }\n];"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          256,
+          0
+        ],
+        "id": "c138b1b6-59cb-490b-a890-ea2eea9c06bf",
+        "name": "Split Payload"
+      },
+      {
+        "parameters": {
+          "operation": "upsert",
+          "dataTableId": {
+            "__rl": true,
+            "value": "OtWoNuYUmoj7knoz",
+            "mode": "id"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "key",
+                "condition": "like",
+                "keyValue": "={{$json.key}}"
+              }
+            ]
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "key": "={{$json.key}}",
+              "value": "={{$json.value}}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "key",
+                "displayName": "key",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              },
+              {
+                "id": "value",
+                "displayName": "value",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "readOnly": false,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1,
+        "position": [
+          512,
+          0
+        ],
+        "id": "t498b1b6-59cb-490b-a890-ea2eea9c06cd",
+        "name": "Save to Table"
+      }
+    ],
+    "connections": {
+      "Webhook Jobby Sync": {
+        "main": [
+          [
+            {
+              "node": "Split Payload",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split Payload": {
+        "main": [
+          [
+            {
+              "node": "Save to Table",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Éole Wind",
+    "name": "Version 8a29ec96",
+    "description": "Authorization",
+    "autosaved": true,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-06-03T10:12:19.433Z",
+        "id": 206,
+        "workflowId": "wfIyU3rWwTpk9cXk",
+        "versionId": "8a29ec96-4071-4940-8fe8-a2f978070ada",
+        "event": "activated",
+        "userId": "2792484d-cba3-4156-adba-fbc49134eb55"
+      }
+    ]
+  }
+}

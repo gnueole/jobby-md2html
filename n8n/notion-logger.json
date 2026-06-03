@@ -1,0 +1,119 @@
+{
+  "updatedAt": "2026-05-12T22:39:07.787Z",
+  "createdAt": "2026-05-11T12:19:20.435Z",
+  "id": "BZdZ90J7AYNZDM89",
+  "name": "Notion logger",
+  "description": "Notion n8n lab",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "block",
+        "blockId": {
+          "__rl": true,
+          "value": "https://www.notion.so/eole/n8n-eole-me-logger-35dee932db1280639372f7e4274f59f6?source=copy_link",
+          "mode": "url"
+        },
+        "blockUi": {
+          "blockValues": [
+            {
+              "textContent": "={{$now.format('YYYY-MM-DD HH:mm:ss')}} - {{$nodeName || 'Unknown Node'}}\"\n{{$json.error ? 'Critical' : 'Warning'}} - {{$json.error || $json.message || 'Erreur inconnue'}} - {{JSON.stringify($json)}}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "94318370-e222-4088-8415-efa3935fdbe5",
+      "name": "Append a block",
+      "credentials": {
+        "notionApi": {
+          "id": "KYrsxF0plfLkPpqW",
+          "name": "Notion LinkedIn Auto"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputSource": "jsonExample",
+        "jsonExample": "{\n  \"workflow_name\": \"string\",\n  \"node_name\": \"string\",\n  \"error_message\": \"string\",\n  \"timestamp\": \"string\",\n  \"raw_data\": \"string\"\n}"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "55aad9bd-ee53-4e17-bd60-8060b2904389",
+      "name": "When Executed by Another Workflow"
+    }
+  ],
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Append a block",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "log": "test"
+        }
+      }
+    ]
+  },
+  "versionId": "70e51e8d-d2ec-4a3c-919d-b3d4b042987a",
+  "activeVersionId": null,
+  "versionCounter": 87,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-05-11T12:19:20.438Z",
+      "createdAt": "2026-05-11T12:19:20.438Z",
+      "role": "workflow:owner",
+      "workflowId": "BZdZ90J7AYNZDM89",
+      "projectId": "GfFdmZTqGEJQkrXG",
+      "project": {
+        "updatedAt": "2026-05-11T09:44:44.757Z",
+        "createdAt": "2026-05-11T09:34:45.695Z",
+        "id": "GfFdmZTqGEJQkrXG",
+        "name": "Éole Wind <megazef@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "2792484d-cba3-4156-adba-fbc49134eb55"
+      }
+    }
+  ],
+  "tags": [
+    {
+      "updatedAt": "2026-05-11T12:19:25.326Z",
+      "createdAt": "2026-05-11T12:19:25.326Z",
+      "id": "8yiCAJZW8fFXfFqI",
+      "name": "notion"
+    }
+  ],
+  "activeVersion": null
+}

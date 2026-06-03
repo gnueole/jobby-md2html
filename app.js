@@ -171,7 +171,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const btnDeveloperToggle = document.getElementById('btn-developer-toggle');
     const developerModal = document.getElementById('developer-modal');
     const btnCloseDeveloperModal = document.getElementById('btn-close-developer-modal');
-    const bookmarkletDragLink = document.getElementById('bookmarklet-drag-link');
+    const bookmarkletDragLinkProd = document.getElementById('bookmarklet-drag-link-prod');
+    const bookmarkletDragLinkDev = document.getElementById('bookmarklet-drag-link-dev');
+    const prodWebhookUrl = document.getElementById('prod-webhook-url');
+    const prodWebhookToken = document.getElementById('prod-webhook-token');
     const devWebhookUrl = document.getElementById('dev-webhook-url');
     const devWebhookToken = document.getElementById('dev-webhook-token');
     const btnSaveDevSettings = document.getElementById('btn-save-dev-settings');
@@ -951,9 +954,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (data.success) {
                     developerModal.classList.add('show');
                     // Sync values with current state
-                    devWebhookUrl.value = localStorage.getItem('n8n_webhook_url') || '';
-                    devWebhookToken.value = localStorage.getItem('n8n_webhook_token') || '';
-                    updateBookmarkletLink();
+                    prodWebhookUrl.value = localStorage.getItem('prod_webhook_url') || 'https://n8n.eole.me/webhook/cv-factory';
+                    prodWebhookToken.value = localStorage.getItem('prod_webhook_token') || '';
+                    devWebhookUrl.value = localStorage.getItem('dev_webhook_url') || 'http://localhost:5678/webhook-test/cv-factory';
+                    devWebhookToken.value = localStorage.getItem('dev_webhook_token') || '';
+                    updateBookmarkletLinks();
                 } else {
                     showToast("Unauthorized: Invalid Developer Token.");
                 }
@@ -985,35 +990,45 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    function updateBookmarkletLink() {
-        if (!bookmarkletDragLink) return;
-        const url = devWebhookUrl.value.trim() || 'https://n8n.eole.me/webhook/cv-factory';
-        const token = devWebhookToken.value.trim() || '';
-
-        // Compile bookmarklet dynamically
-        const bookmarkletCode = `javascript:(function(){const token="${token}";const webhookUrl="${url}";const getTxt=(s)=>document.querySelector(s)?.innerText?.trim()||"";let description=getTxt('#job-details')||getTxt('.jobs-description')||getTxt('.jobs-box__html-content')||"";if(description.length<50){description=window.getSelection().toString();}const title=encodeURIComponent(getTxt('.job-details-jobs-unified-top-card__job-title')||document.title);const company=encodeURIComponent(getTxt('.job-details-jobs-unified-top-card__company-name')||"");const url=encodeURIComponent(window.location.href);const shortDesc=encodeURIComponent(description.substring(0,1800));const n8nUrl=\`\${webhookUrl}?token=\${token}&job_title=\${title}&company=\${company}&job_url=\${url}&job_description=\${shortDesc}\`;window.open(n8nUrl,'_blank');})();`;
-
-        bookmarkletDragLink.setAttribute('href', bookmarkletCode);
+    function compileBookmarkletCode(url, token) {
+        return `javascript:(function(){const token="${token}";const webhookUrl="${url}";const getTxt=(s)=>document.querySelector(s)?.innerText?.trim()||"";let description=getTxt('#job-details')||getTxt('.jobs-description')||getTxt('.jobs-box__html-content')||"";if(description.length<50){description=window.getSelection().toString();}const title=encodeURIComponent(getTxt('.job-details-jobs-unified-top-card__job-title')||document.title);const company=encodeURIComponent(getTxt('.job-details-jobs-unified-top-card__company-name')||"");const url=encodeURIComponent(window.location.href);const shortDesc=encodeURIComponent(description.substring(0,1800));const n8nUrl=\`\${webhookUrl}?token=\${token}&job_title=\${title}&company=\${company}&job_url=\${url}&job_description=\${shortDesc}\`;window.open(n8nUrl,'_blank');})();`;
     }
 
-    if (devWebhookUrl) {
-        devWebhookUrl.addEventListener('input', updateBookmarkletLink);
+    function updateBookmarkletLinks() {
+        if (bookmarkletDragLinkProd && prodWebhookUrl) {
+            const url = prodWebhookUrl.value.trim() || 'https://n8n.eole.me/webhook/cv-factory';
+            const token = prodWebhookToken.value.trim();
+            bookmarkletDragLinkProd.setAttribute('href', compileBookmarkletCode(url, token));
+        }
+        if (bookmarkletDragLinkDev && devWebhookUrl) {
+            const url = devWebhookUrl.value.trim() || 'http://localhost:5678/webhook-test/cv-factory';
+            const token = devWebhookToken.value.trim() || '';
+            bookmarkletDragLinkDev.setAttribute('href', compileBookmarkletCode(url, token));
+        }
     }
-    if (devWebhookToken) {
-        devWebhookToken.addEventListener('input', updateBookmarkletLink);
-    }
+
+    if (prodWebhookUrl) prodWebhookUrl.addEventListener('input', updateBookmarkletLinks);
+    if (prodWebhookToken) prodWebhookToken.addEventListener('input', updateBookmarkletLinks);
+    if (devWebhookUrl) devWebhookUrl.addEventListener('input', updateBookmarkletLinks);
+    if (devWebhookToken) devWebhookToken.addEventListener('input', updateBookmarkletLinks);
 
     if (btnSaveDevSettings) {
         btnSaveDevSettings.addEventListener('click', () => {
-            const url = devWebhookUrl.value.trim();
-            const token = devWebhookToken.value.trim();
+            const prodUrl = prodWebhookUrl.value.trim();
+            const prodToken = prodWebhookToken.value.trim();
+            const devUrl = devWebhookUrl.value.trim();
+            const devToken = devWebhookToken.value.trim();
 
-            localStorage.setItem('n8n_webhook_url', url);
-            localStorage.setItem('n8n_webhook_token', token);
+            localStorage.setItem('prod_webhook_url', prodUrl);
+            localStorage.setItem('prod_webhook_token', prodToken);
+            localStorage.setItem('dev_webhook_url', devUrl);
+            localStorage.setItem('dev_webhook_token', devToken);
 
-            // Also keep standard inputs updated
-            if (n8nWebhookUrl) n8nWebhookUrl.value = url;
-            if (n8nWebhookToken) n8nWebhookToken.value = token;
+            // Backwards compatibility / main page panel sync
+            localStorage.setItem('n8n_webhook_url', prodUrl);
+            localStorage.setItem('n8n_webhook_token', prodToken);
+            if (n8nWebhookUrl) n8nWebhookUrl.value = prodUrl;
+            if (n8nWebhookToken) n8nWebhookToken.value = prodToken;
 
             showToast("Settings saved successfully!");
             developerModal.classList.remove('show');
