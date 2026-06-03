@@ -8,6 +8,19 @@ It serves as a **quick and clean manual overdrive** for immediate layout tweaks 
 
 All your content and style changes (colors, fonts, margins) are automatically saved in your working folder, allowing you to resume work across machines via Git.
 
+## 📋 Requirements
+
+Before setting up Jobby, review the following platform and service requirements:
+
+* **Host / Infrastructure:** 
+  * Localhost: **Free** (for local development and testing).
+  * Host VPS: **Cheap / Low cost** (required if you want a public, custom domain name).
+* **n8n:** **Free** (self-hosted workflow automation platform running in Docker).
+* **Traefik:** **Free** (secure HTTPS reverse proxy used for SSL certificate management).
+* **Gotenberg (PDF Engine):** **Free** (handles PDF printing and compilation from HTML).
+* **Gemini / Claude APIs:** **Free tier** available (but note that free tiers can be very rate-limited).
+* **Notion:** **Free tier** available (but note that using an AI agent to generate Markdown inside Notion is currently very limited on the free tier).
+
 ## 📦 Installation & Setup
 
 For step-by-step local running instructions (using either local Node.js or Docker WSL), please refer to the:
