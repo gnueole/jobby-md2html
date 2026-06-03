@@ -5,6 +5,38 @@ const crypto = require('crypto');
 
 const PORT = 3000;
 
+// Load .env file manually if it exists
+const envPaths = [
+    path.join(__dirname, '.env'),
+    path.join(__dirname, 'docker', '.env')
+];
+
+for (const envPath of envPaths) {
+    if (fs.existsSync(envPath)) {
+        try {
+            const envContent = fs.readFileSync(envPath, 'utf8');
+            envContent.split(/\r?\n/).forEach(line => {
+                const trimmed = line.trim();
+                if (!trimmed || trimmed.startsWith('#')) return;
+                const match = trimmed.match(/^([^=]+)=(.*)$/);
+                if (match) {
+                    const key = match[1].trim();
+                    let val = match[2].trim();
+                    if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+                        val = val.slice(1, -1);
+                    }
+                    if (!process.env[key]) {
+                        process.env[key] = val;
+                    }
+                }
+            });
+            break;
+        } catch (e) {
+            console.error(`Error loading env file ${envPath}:`, e);
+        }
+    }
+}
+
 // Initialize developer token securely
 const serverToken = process.env.N8N_WEBHOOK_TOKEN || process.env.X_N8N_TOKEN || crypto.randomBytes(24).toString('hex');
 if (!process.env.N8N_WEBHOOK_TOKEN && !process.env.X_N8N_TOKEN) {
