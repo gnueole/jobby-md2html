@@ -14,7 +14,7 @@ Use this option if you only want to run the resume editor without local n8n work
 
 1. **Navigate to the project folder:**
    ```bash
-   cd "path/to/resume-md2html"
+   cd "path/to/jobby"
    ```
 
 2. **Start the local server:**

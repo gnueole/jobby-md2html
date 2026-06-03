@@ -2,7 +2,7 @@
   "updatedAt": "2026-05-29T11:43:39.200Z",
   "createdAt": "2026-05-25T16:32:59.047Z",
   "id": "K2acY4kGijPJGop0",
-  "name": "Md2Pdf - static",
+  "name": "Jobby - PDF - static",
   "description": "retrieves a MD file and returns a printed version in PDF",
   "active": false,
   "isArchived": false,
@@ -10,7 +10,7 @@
     {
       "parameters": {
         "httpMethod": "POST",
-        "path": "md2pdf",
+        "path": "jobby-pdf",
         "options": {
           "responseCode": {
             "values": {}
@@ -670,7 +670,7 @@
               "request_id": "40ee7dc8-66ff-47e0-8127-8e2b0e56d877"
             }
           },
-          "webhookUrl": "https://n8n.eole.me/webhook/md2pdf",
+          "webhookUrl": "https://n8n.eole.me/webhook/jobby-pdf",
           "executionMode": "production"
         },
         "pairedItem": {

@@ -133,7 +133,7 @@ services:
 
   # Jobby ATS Markdown Resume Editor
   jobby-editor:
-    image: ghcr.io/gnueole/resume-md2html:latest
+    image: ghcr.io/gnueole/jobby:latest
     container_name: jobby-editor
     restart: unless-stopped
     depends_on:
@@ -161,7 +161,7 @@ services:
 
   # Vector Log Shipper to Axiom
   vector:
-    image: ghcr.io/gnueole/resume-md2html-vector:latest
+    image: ghcr.io/gnueole/jobby-vector:latest
     container_name: vector
     restart: unless-stopped
     volumes:
