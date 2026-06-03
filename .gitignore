@@ -37,4 +37,8 @@ node_modules/
 .env.prod
 docker/.env
 
+# Local cloned Wiki
+.github-wiki/
+
+
 
