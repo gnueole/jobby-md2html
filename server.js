@@ -1,8 +1,15 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 const PORT = 3000;
+
+// Initialize developer token securely
+const serverToken = process.env.N8N_WEBHOOK_TOKEN || crypto.randomBytes(24).toString('hex');
+if (!process.env.N8N_WEBHOOK_TOKEN) {
+    console.warn(`[WARNING] N8N_WEBHOOK_TOKEN environment variable is not set. A temporary random developer token has been generated: ${serverToken}`);
+}
 
 const MIME_TYPES = {
     '.html': 'text/html; charset=utf-8',
@@ -20,12 +27,39 @@ const MIME_TYPES = {
 const server = http.createServer((req, res) => {
     // Add CORS headers for development safety
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
     if (req.method === 'OPTIONS') {
         res.writeHead(204);
         res.end();
+        return;
+    }
+
+    // Resolve file path safely and strip query parameters/hash
+    const cleanUrl = req.url.split('?')[0].split('#')[0];
+
+    if (cleanUrl === '/api/verify-token') {
+        if (req.method !== 'POST') {
+            res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8' });
+            res.end('Method Not Allowed');
+            return;
+        }
+        
+        let body = '';
+        req.on('data', chunk => { body += chunk.toString(); });
+        req.on('end', () => {
+            let payload;
+            try { payload = JSON.parse(body); } catch(e) { payload = {}; }
+            
+            if (payload.token === serverToken) {
+                res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+                res.end(JSON.stringify({ success: true }));
+            } else {
+                res.writeHead(401, { 'Content-Type': 'application/json; charset=utf-8' });
+                res.end(JSON.stringify({ success: false, error: 'Unauthorized' }));
+            }
+        });
         return;
     }
 
@@ -35,12 +69,24 @@ const server = http.createServer((req, res) => {
         return;
     }
 
-    // Resolve file path safely and strip query parameters/hash
-    const cleanUrl = req.url.split('?')[0].split('#')[0];
-
     if (cleanUrl === '/api/config') {
         res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
         res.end(JSON.stringify({ GOOGLE_TAG_ID: process.env.GOOGLE_TAG_ID || '' }));
+        return;
+    }
+
+    if (cleanUrl === '/bookmarklet.js') {
+        const fs = require('fs');
+        const bookmarkletPath = path.join(__dirname, 'toolkit', 'bookmarklet.js');
+        fs.readFile(bookmarkletPath, 'utf8', (err, data) => {
+            if (err) {
+                res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
+                res.end('Error loading bookmarklet source');
+                return;
+            }
+            res.writeHead(200, { 'Content-Type': 'text/javascript; charset=utf-8' });
+            res.end(data);
+        });
         return;
     }
 

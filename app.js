@@ -31,6 +31,34 @@ const ICONS = {
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
+    // --- Dev Platform Customization ---
+    const isDev = window.location.hostname === 'localhost' || 
+                  window.location.hostname === '127.0.0.1' || 
+                  window.location.hostname.endsWith('.local');
+    if (isDev) {
+        document.title = "[DEV] " + document.title;
+        const favicon = document.querySelector('link[rel="icon"]');
+        if (favicon) {
+            let svgText = favicon.getAttribute('href');
+            if (svgText && svgText.startsWith('data:image/svg+xml,')) {
+                svgText = svgText
+                    .replace(/%2378350f/g, '%230f766e')
+                    .replace(/%23451a03/g, '%23115e59')
+                    .replace(/%23b45309/g, '%2314b8a6');
+                favicon.setAttribute('href', svgText);
+            }
+        }
+        const brandIcon = document.querySelector('.brand-icon');
+        if (brandIcon) {
+            brandIcon.style.color = '#14b8a6';
+            brandIcon.style.filter = 'drop-shadow(0 0 8px rgba(20, 184, 166, 0.4))';
+        }
+        const modalLogo = document.querySelector('.modal-logo svg');
+        if (modalLogo) {
+            modalLogo.setAttribute('stroke', '#14b8a6');
+        }
+    }
+
     let currentResumeTitle = "resume";
 
     // --- DOM Elements Cache ---
@@ -134,6 +162,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     const btnSyncN8n = document.getElementById('btn-sync-n8n');
     const n8nWebhookUrl = document.getElementById('n8n-webhook-url');
     const n8nWebhookToken = document.getElementById('n8n-webhook-token');
+
+    // Developer Tools Modal
+    const btnDeveloperToggle = document.getElementById('btn-developer-toggle');
+    const developerModal = document.getElementById('developer-modal');
+    const btnCloseDeveloperModal = document.getElementById('btn-close-developer-modal');
+    const bookmarkletDragLink = document.getElementById('bookmarklet-drag-link');
+    const devWebhookUrl = document.getElementById('dev-webhook-url');
+    const devWebhookToken = document.getElementById('dev-webhook-token');
+    const btnSaveDevSettings = document.getElementById('btn-save-dev-settings');
 
     // Toast Alert
     const toast = document.getElementById('toast');
@@ -893,6 +930,91 @@ document.addEventListener('DOMContentLoaded', async () => {
             aboutModal.classList.remove('show');
         }
     });
+
+    // --- Developer Tools Modal Listeners ---
+    if (btnDeveloperToggle) {
+        btnDeveloperToggle.addEventListener('click', () => {
+            const enteredToken = prompt("Enter Developer Token to access Developer Tools:");
+            if (!enteredToken) return;
+
+            fetch('/api/verify-token', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token: enteredToken })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    developerModal.classList.add('show');
+                    // Sync values with current state
+                    devWebhookUrl.value = localStorage.getItem('n8n_webhook_url') || '';
+                    devWebhookToken.value = localStorage.getItem('n8n_webhook_token') || '';
+                    updateBookmarkletLink();
+                } else {
+                    showToast("Unauthorized: Invalid Developer Token.");
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                showToast("Error verifying token.");
+            });
+        });
+    }
+
+    if (btnCloseDeveloperModal) {
+        btnCloseDeveloperModal.addEventListener('click', () => {
+            developerModal.classList.remove('show');
+        });
+    }
+
+    if (developerModal) {
+        developerModal.addEventListener('click', (e) => {
+            if (e.target === developerModal) {
+                developerModal.classList.remove('show');
+            }
+        });
+    }
+
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && developerModal && developerModal.classList.contains('show')) {
+            developerModal.classList.remove('show');
+        }
+    });
+
+    function updateBookmarkletLink() {
+        if (!bookmarkletDragLink) return;
+        const url = devWebhookUrl.value.trim() || 'https://n8n.eole.me/webhook/cv-factory';
+        const token = devWebhookToken.value.trim() || '';
+
+        // Compile bookmarklet dynamically
+        const bookmarkletCode = `javascript:(function(){const token="${token}";const webhookUrl="${url}";const getTxt=(s)=>document.querySelector(s)?.innerText?.trim()||"";let description=getTxt('#job-details')||getTxt('.jobs-description')||getTxt('.jobs-box__html-content')||"";if(description.length<50){description=window.getSelection().toString();}const title=encodeURIComponent(getTxt('.job-details-jobs-unified-top-card__job-title')||document.title);const company=encodeURIComponent(getTxt('.job-details-jobs-unified-top-card__company-name')||"");const url=encodeURIComponent(window.location.href);const shortDesc=encodeURIComponent(description.substring(0,1800));const n8nUrl=\`\${webhookUrl}?token=\${token}&job_title=\${title}&company=\${company}&job_url=\${url}&job_description=\${shortDesc}\`;window.open(n8nUrl,'_blank');})();`;
+
+        bookmarkletDragLink.setAttribute('href', bookmarkletCode);
+    }
+
+    if (devWebhookUrl) {
+        devWebhookUrl.addEventListener('input', updateBookmarkletLink);
+    }
+    if (devWebhookToken) {
+        devWebhookToken.addEventListener('input', updateBookmarkletLink);
+    }
+
+    if (btnSaveDevSettings) {
+        btnSaveDevSettings.addEventListener('click', () => {
+            const url = devWebhookUrl.value.trim();
+            const token = devWebhookToken.value.trim();
+
+            localStorage.setItem('n8n_webhook_url', url);
+            localStorage.setItem('n8n_webhook_token', token);
+
+            // Also keep standard inputs updated
+            if (n8nWebhookUrl) n8nWebhookUrl.value = url;
+            if (n8nWebhookToken) n8nWebhookToken.value = token;
+
+            showToast("Settings saved successfully!");
+            developerModal.classList.remove('show');
+        });
+    }
 
     // --- Action Listeners ---
     markdownInput.addEventListener('input', (e) => {
