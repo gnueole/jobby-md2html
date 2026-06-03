@@ -6,9 +6,9 @@ const crypto = require('crypto');
 const PORT = 3000;
 
 // Initialize developer token securely
-const serverToken = process.env.N8N_WEBHOOK_TOKEN || crypto.randomBytes(24).toString('hex');
-if (!process.env.N8N_WEBHOOK_TOKEN) {
-    console.warn(`[WARNING] N8N_WEBHOOK_TOKEN environment variable is not set. A temporary random developer token has been generated: ${serverToken}`);
+const serverToken = process.env.N8N_WEBHOOK_TOKEN || process.env.X_N8N_TOKEN || crypto.randomBytes(24).toString('hex');
+if (!process.env.N8N_WEBHOOK_TOKEN && !process.env.X_N8N_TOKEN) {
+    console.warn(`[WARNING] Neither N8N_WEBHOOK_TOKEN nor X_N8N_TOKEN environment variable is set. A temporary random developer token has been generated: ${serverToken}`);
 }
 
 const MIME_TYPES = {

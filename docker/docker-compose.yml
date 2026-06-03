@@ -138,6 +138,9 @@ services:
     restart: unless-stopped
     depends_on:
       - traefik
+    environment:
+      - N8N_WEBHOOK_TOKEN=${X_N8N_TOKEN}
+      - X_N8N_TOKEN=${X_N8N_TOKEN}
     labels:
       - traefik.enable=true
       - traefik.http.routers.jobby.rule=Host(`cv.eole.me`)
