@@ -31,6 +31,11 @@ Use this option if you only want to run the resume editor without local n8n work
 
 Use this option to spin up the Jobby Editor along with a local `n8n` instance, `gotenberg` (PDF renderer), and `mcp-notion` support containers.
 
+*Note on layout: The Docker orchestration files are structured explicitly inside the `docker/` directory:*
+* *`docker/dev/docker-compose.yml` is used for local WSL/Linux development.*
+* *`docker/prod/docker-compose.yml` is used for remote production/staging deployments.*
+* *Shared build assets (`Dockerfile`, `vector.Dockerfile`, and `vector.yaml`) are located directly inside `docker/` as they are environment-agnostic.*
+
 1. **Configure Docker Permissions (Recommended for WSL)**
    To run Docker without `sudo` and prevent socket connection permission errors:
    ```bash
