@@ -57,6 +57,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (modalLogo) {
             modalLogo.setAttribute('stroke', '#14b8a6');
         }
+        const brandH1 = document.querySelector('.brand h1');
+        if (brandH1) {
+            brandH1.innerHTML = 'Jobby <span>Markdown</span> Editor <span style="font-size: 10px; background: #14b8a6; color: #0f172a; padding: 2px 6px; border-radius: 4px; margin-left: 8px; vertical-align: middle; font-weight: 700; letter-spacing: 0.05em;">DEV</span>';
+        }
     }
 
     let currentResumeTitle = "resume";
