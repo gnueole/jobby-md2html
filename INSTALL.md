@@ -42,7 +42,7 @@ Use this option to spin up the Jobby Editor along with a local `n8n` instance, `
 2. **Start the services:**
    Run the following command at the root of the project:
    ```bash
-   docker compose up -d
+    docker compose -f docker/dev/docker-compose.yml up -d
    ```
 
 3. **Access the services in your browser:**
@@ -53,7 +53,7 @@ Use this option to spin up the Jobby Editor along with a local `n8n` instance, `
 
 4. **Stop the services:**
    ```bash
-   docker compose down
+    docker compose -f docker/dev/docker-compose.yml down
    ```
 
 ---
@@ -80,7 +80,7 @@ The easiest way to configure both your local development and production environm
 ```bash
 python3 setup_wizard.py
 ```
-This wizard will prompt you for variables, guide you on where to retrieve them, auto-generate secure tokens if skipped, and write them to the correct `.env` files (root `.env`, `docker/.env`, and `toolkit/.env`) with secure file permissions.
+This wizard will prompt you for variables, guide you on where to retrieve them, auto-generate secure tokens if skipped, and write them to the correct `.env` files (`.env.dev`, `.env.prod`, and `toolkit/.env`) with secure file permissions.
 
 ### 2. Backup All Workflows from Production
 To download all workflows from your production n8n instance to the local `n8n/` directory:

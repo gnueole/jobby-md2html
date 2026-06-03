@@ -1,7 +1,7 @@
 name: n8n-eole-prod
 
 services:
-  # Initialisation des droits pour le certificat SSL (indispensable après un dump/restore)
+  # Initialize SSL certificate permissions (essential after a backup restore)
   traefik-acme-init:
     image: alpine:3.20
     container_name: traefik-acme-init
@@ -18,7 +18,7 @@ services:
         max-size: "10m"
         max-file: "3"
 
-  # Le "Videur" de ton infrastructure
+  # Traefik Reverse Proxy & SSL Manager
   traefik:
     image: traefik:latest
     container_name: traefik-n8n
@@ -55,15 +55,15 @@ services:
           cpus: '0.50'
           memory: 256M
 
-  # Ton nouveau serveur MCP pour Notion
-  # Note : n8n l'appellera via http://mcp-notion:3000
+  # Notion MCP Server
+  # Note: Accessible by n8n at http://mcp-notion:3000
   mcp-notion:
     image: mcp/notion:latest 
     container_name: mcp-notion
     restart: unless-stopped
     command: --transport http --disable-auth
     environment:
-      - NOTION_TOKEN=${NOTION_TOKEN} # À définir dans tes variables Hostinger
+      - NOTION_TOKEN=${NOTION_TOKEN} # Configure in your host environment variables
       - TZ=${TZ}
     logging:
       driver: "json-file"
@@ -76,7 +76,7 @@ services:
           cpus: '0.25'
           memory: 256M
 
-  # Le moteur de rendu PDF (Gotenberg)
+  # Gotenberg PDF Rendering Engine
   gotenberg:
     image: gotenberg/gotenberg:8
     container_name: gotenberg
@@ -95,7 +95,7 @@ services:
           cpus: '1.0'
           memory: 512M
 
-  # n8n en version 2.21.0 avec support IA et MCP
+  # n8n Automation Server (v2.21.0 with AI & MCP support)
   n8n:
     image: docker.n8n.io/n8nio/n8n:2.21.0
     container_name: n8n-server

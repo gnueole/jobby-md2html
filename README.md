@@ -108,7 +108,7 @@ To ensure logs from different environments (production, test, development) are k
 
 ### 1. HTTP Endpoint Segregation (Axiom Datasets)
 Each environment should write to its own separate dataset in Axiom. This is configured via the `AXIOM_DATASET` variable in the environment file:
-* **Production (`docker/.env`):**
+* **Production (`.env.prod`):**
   ```env
   AXIOM_DATASET="your-dataset-name"
   AXIOM_TOKEN="your-axiom-token"

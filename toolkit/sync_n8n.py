@@ -303,7 +303,7 @@ def backup_all(n8n_dir, use_dev):
                 sys.exit(1)
             elif "true" not in check_res.stdout.lower():
                 print(f"Error: Docker container '{container_name}' is not running.")
-                print("Please start your dev environment using 'docker compose up -d' first.")
+                print("Please start your dev environment using 'docker compose -f docker/dev/docker-compose.yml up -d' first.")
                 sys.exit(1)
             
             print("Exporting workflows inside the container...")
@@ -399,7 +399,7 @@ def push_all(n8n_dir, use_dev):
                 sys.exit(1)
             elif "true" not in check_res.stdout.lower():
                 print(f"Error: Docker container '{container_name}' is not running.")
-                print("Please start your dev environment using 'docker compose up -d' first.")
+                print("Please start your dev environment using 'docker compose -f docker/dev/docker-compose.yml up -d' first.")
                 sys.exit(1)
             
             print(f"Copying workflows to container '{container_name}'...")

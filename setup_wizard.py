@@ -54,6 +54,41 @@ def main():
     print("Welcome! This wizard will guide you to set up your environment variables")
     print("for Development, Production, or both.\n")
     
+    # Migrate legacy configurations if they exist
+    if os.path.exists(".env") and not os.path.exists(".env.dev"):
+        try:
+            os.rename(".env", ".env.dev")
+            print(f"{YELLOW}Migrated legacy configuration .env to .env.dev{RESET}\n")
+        except Exception as e:
+            print(f"Error migrating .env to .env.dev: {e}\n")
+            
+    if os.path.exists(os.path.join("docker", ".env")) and not os.path.exists(".env.prod"):
+        try:
+            os.rename(os.path.join("docker", ".env"), ".env.prod")
+            print(f"{YELLOW}Migrated legacy configuration docker/.env to .env.prod{RESET}\n")
+        except Exception as e:
+            print(f"Error migrating docker/.env to .env.prod: {e}\n")
+
+    # Detect already created files
+    env_files = [".env.dev", ".env.prod", "toolkit/.env"]
+    existing_files = [f for f in env_files if os.path.exists(f)]
+    if existing_files:
+        print(f"{YELLOW}{BOLD}⚠️  Detected existing configuration files:{RESET}")
+        for filepath in existing_files:
+            print(f"   - {GREEN}{BOLD}{filepath}{RESET}")
+        print()
+        
+        for filepath in existing_files:
+            show = input(f"{YELLOW}Would you like to display the content of {GREEN}{BOLD}{filepath}{RESET}{YELLOW}? (y/n, default: n): {RESET}").lower().strip()
+            if show == 'y':
+                print(f"\n{BOLD}--- Content of {filepath} ---{RESET}")
+                try:
+                    with open(filepath, "r", encoding="utf-8") as f:
+                        print(f.read().strip())
+                except Exception as e:
+                    print(f"Error reading file: {e}")
+                print(f"{BOLD}----------------------{RESET}\n")
+    
     print(f"{BOLD}1. Select your target environment:{RESET}")
     print("   [d] Local Development (WSL / Local Linux)")
     print("   [p] Remote Production Server")
@@ -70,7 +105,7 @@ def main():
         print(f"{BOLD}{CYAN}🛠️  Configuring Local Development Environment{RESET}")
         print(f"{BOLD}{CYAN}-------------------------------------------------------------{RESET}")
         print("First, make sure your local Docker environment is running by executing:")
-        print(f"   {BOLD}docker compose up -d{RESET}\n")
+        print(f"   {BOLD}docker compose -f docker/dev/docker-compose.yml up -d{RESET}\n")
         
         print(f"{BOLD}Step 1: Local n8n Connection{RESET}")
         print("Connect to your local n8n instance at: http://localhost:5678")
@@ -172,26 +207,29 @@ def main():
         
     if dev_values:
         save_env(
-            ".env",
+            ".env.dev",
             dev_values,
             "# Local Development Docker Compose Variables"
         )
-        print(f"✅ Saved development variables to: {GREEN}.env{RESET}")
+        print(f"✅ Saved development variables to: {GREEN}.env.dev{RESET}")
         for k, v in dev_values.items():
             print(f"   - {k}: {mask_secret(v)}")
         
     if prod_values:
-        os.makedirs("docker", exist_ok=True)
         save_env(
-            os.path.join("docker", ".env"),
+            ".env.prod",
             prod_values,
             "# Production Stack Docker Compose Variables"
         )
-        print(f"✅ Saved production variables to: {GREEN}docker/.env{RESET}")
+        print(f"✅ Saved production variables to: {GREEN}.env.prod{RESET}")
         for k, v in prod_values.items():
             print(f"   - {k}: {mask_secret(v)}")
         
     print(f"\n{BOLD}{GREEN}🎉 Wizard setup completed successfully!{RESET}\n")
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\n\n\033[93m\033[1m👋 Setup cancelled by user. Exiting...\033[0m\n")
+        sys.exit(0)

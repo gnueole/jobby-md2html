@@ -5,18 +5,17 @@ services:
     container_name: jobby-editor-dev
     working_dir: /app
     volumes:
-      - .:/app
+      - ../../:/app
     ports:
       # Bound to 127.0.0.1 to comply with local security testing guidelines
       - "127.0.0.1:3000:3000"
     command: node server.js
+    env_file:
+      - ../../.env.dev
     environment:
       - NODE_ENV=development
-      # Reference the X_N8N_TOKEN from your environment variables.
-      # If not set, server.js will generate a random secure token at startup.
-      - X_N8N_TOKEN=${X_N8N_TOKEN:-}
 
-  # Le moteur de rendu PDF (Gotenberg)
+  # Gotenberg PDF Rendering Engine
   gotenberg:
     image: gotenberg/gotenberg:8
     container_name: gotenberg-dev
@@ -25,17 +24,16 @@ services:
       - GOTENBERG_CHROMIUM_DISABLE_JAVASCRIPT=true
       - GOTENBERG_ALLOW_LIST_ACCESS_LOCAL_FILES=false
 
-  # Serveur MCP pour Notion
+  # Notion MCP Server
   mcp-notion:
     image: mcp/notion:latest
     container_name: mcp-notion-dev
     restart: unless-stopped
     command: --transport http --disable-auth
-    environment:
-      - NOTION_TOKEN=${NOTION_TOKEN:-}
-      - TZ=${TZ:-UTC}
+    env_file:
+      - ../../.env.dev
 
-  # n8n en version 2.21.0 avec support IA et MCP
+  # n8n Automation Server (v2.21.0 with AI & MCP support)
   n8n:
     image: docker.n8n.io/n8nio/n8n:2.21.0
     container_name: n8n-server-dev
@@ -46,8 +44,9 @@ services:
     ports:
       # Bound to 127.0.0.1 to satisfy local testing security guidelines
       - "127.0.0.1:5678:5678"
+    env_file:
+      - ../../.env.dev
     environment:
-      - TZ=${TZ:-UTC}
       - N8N_HOST=localhost
       - N8N_PORT=5678
       - N8N_PROTOCOL=http

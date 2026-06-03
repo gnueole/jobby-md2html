@@ -7,6 +7,8 @@ const PORT = 3000;
 
 // Load .env file manually if it exists
 const envPaths = [
+    path.join(__dirname, '.env.dev'),
+    path.join(__dirname, '.env.prod'),
     path.join(__dirname, '.env'),
     path.join(__dirname, 'docker', '.env')
 ];

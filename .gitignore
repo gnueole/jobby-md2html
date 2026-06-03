@@ -33,6 +33,8 @@ node_modules/
 
 # Secrets / Environment files
 .env
+.env.dev
+.env.prod
 docker/.env
 
 
