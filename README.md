@@ -1,4 +1,4 @@
-# jobby MD Editor
+# jobby Project: An AI automated resume with a Markdown editor
 
 A premium, modern Markdown resume editor that respects ATS (Applicant Tracking System) standards, designed to run locally without heavy external dependencies.
 
