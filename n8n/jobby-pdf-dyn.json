@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-06-03T10:09:37.954Z",
+  "updatedAt": "2026-06-03T11:51:05.014Z",
   "createdAt": "2026-05-29T09:56:13.800Z",
   "id": "dSX8vdBy3PnPdiOU",
   "name": "Jobby - PDF - dyn",
@@ -29,7 +29,7 @@
       "webhookId": "ce00eb54-6844-400c-9aa6-8c1ceb15d940",
       "credentials": {
         "httpHeaderAuth": {
-          "id": "2ZRDZQ7Th8zDgz3p",
+          "id": "QDm4dLNTsiXmLpmM",
           "name": "Header Auth account"
         }
       }
@@ -811,7 +811,7 @@
               "request_id": "e8712edc-8c05-486e-8d31-12a42a3950ef"
             }
           },
-          "webhookUrl": "https://n8n.eole.me/webhook-test/jobby-pdf",
+          "webhookUrl": "https://n8n.eole.me/webhook-test/md2pdf",
           "executionMode": "test"
         },
         "pairedItem": {
@@ -820,9 +820,9 @@
       }
     ]
   },
-  "versionId": "b901e4ce-f182-4341-99b5-6298c99b8cfe",
-  "activeVersionId": "b901e4ce-f182-4341-99b5-6298c99b8cfe",
-  "versionCounter": 64,
+  "versionId": "a9ab848d-0d02-43a2-8728-ca1997482ade",
+  "activeVersionId": "a9ab848d-0d02-43a2-8728-ca1997482ade",
+  "versionCounter": 65,
   "triggerCount": 1,
   "shared": [
     {
@@ -864,9 +864,9 @@
     }
   ],
   "activeVersion": {
-    "updatedAt": "2026-06-03T10:11:43.000Z",
-    "createdAt": "2026-06-03T10:09:37.956Z",
-    "versionId": "b901e4ce-f182-4341-99b5-6298c99b8cfe",
+    "updatedAt": "2026-06-03T11:51:05.017Z",
+    "createdAt": "2026-06-03T11:51:05.017Z",
+    "versionId": "a9ab848d-0d02-43a2-8728-ca1997482ade",
     "workflowId": "dSX8vdBy3PnPdiOU",
     "nodes": [
       {
@@ -891,7 +891,7 @@
         "webhookId": "ce00eb54-6844-400c-9aa6-8c1ceb15d940",
         "credentials": {
           "httpHeaderAuth": {
-            "id": "2ZRDZQ7Th8zDgz3p",
+            "id": "QDm4dLNTsiXmLpmM",
             "name": "Header Auth account"
           }
         }
@@ -1304,16 +1304,40 @@
       }
     },
     "authors": "Éole Wind",
-    "name": "Version b901e4ce",
-    "description": "authentication",
-    "autosaved": true,
+    "name": null,
+    "description": null,
+    "autosaved": false,
     "workflowPublishHistory": [
       {
-        "createdAt": "2026-06-03T10:11:43.672Z",
-        "id": 204,
+        "createdAt": "2026-06-03T11:51:05.164Z",
+        "id": 210,
         "workflowId": "dSX8vdBy3PnPdiOU",
-        "versionId": "b901e4ce-f182-4341-99b5-6298c99b8cfe",
+        "versionId": "a9ab848d-0d02-43a2-8728-ca1997482ade",
         "event": "activated",
+        "userId": "2792484d-cba3-4156-adba-fbc49134eb55"
+      },
+      {
+        "createdAt": "2026-06-03T11:51:05.476Z",
+        "id": 212,
+        "workflowId": "dSX8vdBy3PnPdiOU",
+        "versionId": "a9ab848d-0d02-43a2-8728-ca1997482ade",
+        "event": "activated",
+        "userId": "2792484d-cba3-4156-adba-fbc49134eb55"
+      },
+      {
+        "createdAt": "2026-06-03T11:51:05.094Z",
+        "id": 209,
+        "workflowId": "dSX8vdBy3PnPdiOU",
+        "versionId": "a9ab848d-0d02-43a2-8728-ca1997482ade",
+        "event": "deactivated",
+        "userId": "2792484d-cba3-4156-adba-fbc49134eb55"
+      },
+      {
+        "createdAt": "2026-06-03T11:51:05.453Z",
+        "id": 211,
+        "workflowId": "dSX8vdBy3PnPdiOU",
+        "versionId": "a9ab848d-0d02-43a2-8728-ca1997482ade",
+        "event": "deactivated",
         "userId": "2792484d-cba3-4156-adba-fbc49134eb55"
       }
     ]

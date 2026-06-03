@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-05-29T11:43:39.200Z",
+  "updatedAt": "2026-06-03T11:51:05.635Z",
   "createdAt": "2026-05-25T16:32:59.047Z",
   "id": "K2acY4kGijPJGop0",
   "name": "Jobby - PDF - static",
@@ -670,7 +670,7 @@
               "request_id": "40ee7dc8-66ff-47e0-8127-8e2b0e56d877"
             }
           },
-          "webhookUrl": "https://n8n.eole.me/webhook/jobby-pdf",
+          "webhookUrl": "https://n8n.eole.me/webhook/md2pdf",
           "executionMode": "production"
         },
         "pairedItem": {
@@ -679,9 +679,9 @@
       }
     ]
   },
-  "versionId": "b06e63d0-4a14-4f73-82fc-f086c1c19bbe",
+  "versionId": "66c2ab48-3155-43cb-a8dd-6869d5974fb1",
   "activeVersionId": null,
-  "versionCounter": 615,
+  "versionCounter": 616,
   "triggerCount": 1,
   "shared": [
     {
