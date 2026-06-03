@@ -110,13 +110,13 @@ To ensure logs from different environments (production, test, development) are k
 Each environment should write to its own separate dataset in Axiom. This is configured via the `AXIOM_DATASET` variable in the environment file:
 * **Production (`docker/.env`):**
   ```env
-  AXIOM_DATASET="vps-eole-me"
-  AXIOM_TOKEN="prod-token"
+  AXIOM_DATASET="your-dataset-name"
+  AXIOM_TOKEN="your-axiom-token"
   ```
 * **Test/Staging:**
   ```env
-  AXIOM_DATASET="vps-eole-me-test"
-  AXIOM_TOKEN="test-token"
+  AXIOM_DATASET="your-dataset-name-test"
+  AXIOM_TOKEN="your-axiom-token"
   ```
 
 ### 2. Docker Daemon Log Filtering (Vector Project Isolation)
