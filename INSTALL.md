@@ -75,12 +75,12 @@ To scrape jobs from LinkedIn and send them directly to your webhook:
 
 To manage and backup your workflows, the project includes a Python sync toolkit in `toolkit/sync_n8n.py`.
 
-### 1. Configure the Toolkit
-Generate a `.env` template in the `toolkit/` directory if it does not exist:
+### 1. Configure the Project (Setup Wizard)
+The easiest way to configure both your local development and production environments (including n8n, Notion, and Axiom keys) is to run the interactive setup wizard:
 ```bash
-python3 toolkit/sync_n8n.py --init-env
+python3 setup_wizard.py
 ```
-Fill in your API keys and settings in `toolkit/.env`.
+This wizard will prompt you for variables, guide you on where to retrieve them, auto-generate secure tokens if skipped, and write them to the correct `.env` files (root `.env`, `docker/.env`, and `toolkit/.env`) with secure file permissions.
 
 ### 2. Backup All Workflows from Production
 To download all workflows from your production n8n instance to the local `n8n/` directory:
