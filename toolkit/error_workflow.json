@@ -1,0 +1,49 @@
+{
+  "name": "Error Trigger to Axiom (via stdout)",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "e44d3725-d72b-426c-9a4f-56bb4979e262",
+      "name": "Error Trigger",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        80,
+        220
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const execution = $input.item.json.execution;\nconst workflow = $input.item.json.workflow;\n\nconst logPayload = {\n  timestamp: new Date().toISOString(),\n  level: \"error\",\n  service: \"n8n\",\n  workflow: {\n    id: workflow.id,\n    name: workflow.name\n  },\n  execution: {\n    id: execution.id,\n    url: execution.url,\n    failedNode: execution.lastNodeExecuted,\n    error: {\n      message: execution.error?.message || \"Unknown error\",\n      stack: execution.error?.stack\n    }\n  }\n};\n\n// Print to container stdout (Vector will automatically ship this to Axiom)\nconsole.log(JSON.stringify(logPayload));\n\nreturn { json: logPayload };"
+      },
+      "id": "4020de29-7988-4c12-9c17-bfbe362096a6",
+      "name": "Format & Log to Console",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        300,
+        220
+      ]
+    }
+  ],
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Format & Log to Console",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  }
+}

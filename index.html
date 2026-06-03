@@ -3,12 +3,25 @@
 
 <head>
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BLZSKHC2KE"></script>
     <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-BLZSKHC2KE');
+        fetch('/api/config')
+            .then(res => res.json())
+            .then(config => {
+                if (config.GOOGLE_TAG_ID && /^G-[A-Z0-9]+$/.test(config.GOOGLE_TAG_ID)) {
+                    const script = document.createElement('script');
+                    script.async = true;
+                    script.src = 'https://www.googletagmanager.com/gtag/js?id=' + config.GOOGLE_TAG_ID;
+                    document.head.appendChild(script);
+
+                    window.dataLayer = window.dataLayer || [];
+                    window.gtag = function() { dataLayer.push(arguments); };
+                    gtag('js', new Date());
+                    gtag('config', config.GOOGLE_TAG_ID);
+                }
+            })
+            .catch(err => {
+                // Fail silently in development/offline modes
+            });
     </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,7 +54,7 @@
                     <line x1="16" y1="17" x2="8" y2="17" />
                     <line x1="10" y1="9" x2="8" y2="9" />
                 </svg>
-                <h1>jobby MD Editor</h1>
+                <h1>Jobby <span>Markdown</span> Editor</h1>
             </div>
             <div class="actions">
                 <button id="btn-theme-toggle" class="btn btn-secondary" title="Toggle application theme">

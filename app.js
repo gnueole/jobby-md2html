@@ -31,13 +31,15 @@ const ICONS = {
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
+    let currentResumeTitle = "resume";
+
     // --- DOM Elements Cache ---
     const markdownInput = document.getElementById('markdown-input');
     const resumeOutput = document.getElementById('resume-output');
     const btnPanToggle = document.getElementById('btn-pan-toggle');
     const btnPageBreaks = document.getElementById('btn-page-breaks');
     const selectPageFormat = document.getElementById('select-page-format');
-    
+
     // Highlight Sync State
     let lastCleanHTML = "";
     let isHighlightActive = false;
@@ -54,13 +56,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     const previewCanvas = document.getElementById('preview-canvas');
     const canvasWrapper = document.querySelector('.preview-canvas-wrapper');
     const zoomResetBtn = document.getElementById('zoom-reset');
-    
+
     // Toolbar Actions
     const btnLoadSample = document.getElementById('btn-load-sample');
     const btnCopyMd = document.getElementById('btn-copy-md');
     const btnClear = document.getElementById('btn-clear');
     const btnPrint = document.getElementById('btn-print');
-    
+
     // Theme switch elements
     const btnThemeToggle = document.getElementById('btn-theme-toggle');
     const themeBtnIcon = document.getElementById('theme-btn-icon');
@@ -70,7 +72,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const btnAbout = document.getElementById('btn-about');
     const aboutModal = document.getElementById('about-modal');
     const btnCloseModal = document.getElementById('btn-close-modal');
-    
+
     // Style Customizer Controls
     const fontTiles = document.querySelectorAll('.font-tile');
     const fontSizeSlider = document.getElementById('font-size');
@@ -79,7 +81,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const marginXSlider = document.getElementById('margin-x');
     const marginYSlider = document.getElementById('margin-y');
     const sectionSpacingSlider = document.getElementById('section-spacing');
-    
+
     const layoutModeSelect = document.getElementById('layout-mode');
     const sidebarOnlyControls = document.getElementById('sidebar-only-controls');
     const sidebarPositionSelect = document.getElementById('sidebar-position');
@@ -88,20 +90,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     const colorSidebarText = document.getElementById('color-sidebar-text');
     const hexSidebarText = document.getElementById('hex-sidebar-text');
     const sidebarChecklistContainer = document.getElementById('sidebar-sections-checklist');
-    
+
     const colorBg = document.getElementById('color-bg');
     const hexBg = document.getElementById('hex-bg');
     const colorHeadings = document.getElementById('color-headings');
     const colorBody = document.getElementById('color-body');
     const colorLinks = document.getElementById('color-links');
     const colorAccent = document.getElementById('color-accent');
-    
+
     // Color preset buttons
     const presetClassicNb = document.getElementById('preset-classic-nb');
     const presetDarkMode = document.getElementById('preset-dark-mode');
     const presetCleanBlue = document.getElementById('preset-clean-blue');
     const presetCustom = document.getElementById('preset-custom');
-    
+
     // Sliders value label updates
     const valFontSize = document.getElementById('val-font-size');
     const valLineHeight = document.getElementById('val-line-height');
@@ -109,13 +111,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     const valMarginX = document.getElementById('val-margin-x');
     const valMarginY = document.getElementById('val-margin-y');
     const valSectionSpacing = document.getElementById('val-section-spacing');
-    
+
     // Hex Color Labels
     const hexHeadings = document.getElementById('hex-headings');
     const hexBody = document.getElementById('hex-body');
     const hexLinks = document.getElementById('hex-links');
     const hexAccent = document.getElementById('hex-accent');
-    
+
     // ATS Checklist and Score
     const scoreRingProgress = document.getElementById('score-ring-progress');
     const scoreValueText = document.getElementById('score-value');
@@ -123,7 +125,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const verdictDesc = document.getElementById('verdict-desc');
     const atsChecklistContainer = document.getElementById('ats-checklist');
     const charWordCount = document.getElementById('char-word-count');
-    
+
     // Export Clipboard buttons
     const btnCopyStandalone = document.getElementById('btn-copy-standalone');
     const btnCopyCss = document.getElementById('btn-copy-css');
@@ -131,7 +133,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const btnDownloadMd = document.getElementById('btn-download-md');
     const btnSyncN8n = document.getElementById('btn-sync-n8n');
     const n8nWebhookUrl = document.getElementById('n8n-webhook-url');
-    
+
     // Toast Alert
     const toast = document.getElementById('toast');
 
@@ -152,7 +154,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // --- Core Methods ---
-    
+
     // Toast helper
     function showToast(message) {
         toast.textContent = message;
@@ -172,13 +174,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         root.style.setProperty('--resume-margin-x', styleConfig.marginX + 'px');
         root.style.setProperty('--resume-margin-y', styleConfig.marginY + 'px');
         root.style.setProperty('--resume-section-spacing', styleConfig.sectionSpacing + 'px');
-        
+
         root.style.setProperty('--resume-color-bg', styleConfig.colorBg || '#ffffff');
         root.style.setProperty('--resume-color-headings', styleConfig.colorHeadings);
         root.style.setProperty('--resume-color-body', styleConfig.colorBody);
         root.style.setProperty('--resume-color-links', styleConfig.colorLinks);
         root.style.setProperty('--resume-color-accent', styleConfig.colorAccent);
-        
+
         root.style.setProperty('--resume-sidebar-bg', styleConfig.sidebarBg || '#2d3748');
         root.style.setProperty('--resume-sidebar-text', styleConfig.sidebarText || '#ffffff');
 
@@ -305,14 +307,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const isPreset = (
             (bg === '#ffffff' && headings === '#111111' &&
-             body === '#222222' && links === '#000000' &&
-             accent === '#444444') ||
+                body === '#222222' && links === '#000000' &&
+                accent === '#444444') ||
             (bg === '#0f172a' && headings === '#f8fafc' &&
-             body === '#cbd5e1' && links === '#38bdf8' &&
-             accent === '#34d399') ||
+                body === '#cbd5e1' && links === '#38bdf8' &&
+                accent === '#34d399') ||
             (bg === '#ffffff' && headings === '#0f172a' &&
-             body === '#334155' && links === '#2563eb' &&
-             accent === '#0ea5e9')
+                body === '#334155' && links === '#2563eb' &&
+                accent === '#0ea5e9')
         );
         if (!isPreset) {
             customColors.colorBg = styleConfig.colorBg;
@@ -328,7 +330,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Debounce helper for server saves
     function debounce(func, delay) {
         let timeoutId;
-        return function(...args) {
+        return function (...args) {
             clearTimeout(timeoutId);
             timeoutId = setTimeout(() => {
                 func.apply(this, args);
@@ -355,9 +357,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         styleConfig.marginX = marginXSlider.value;
         styleConfig.marginY = marginYSlider.value;
         styleConfig.sectionSpacing = sectionSpacingSlider.value;
-        
+
         styleConfig.layoutMode = layoutModeSelect.value;
-        
+
         // Detect if any color picker changed
         if (styleConfig.colorBg !== colorBg.value ||
             styleConfig.colorHeadings !== colorHeadings.value ||
@@ -378,15 +380,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         styleConfig.colorBody = colorBody.value;
         styleConfig.colorLinks = colorLinks.value;
         styleConfig.colorAccent = colorAccent.value;
-        
+
         // Save current color states to custom colors
         saveCustomColorsState();
-        
+
         applyStyles();
-        
+
         // Recompile markdown since layout modes affect DOM structure
         compileMarkdown(markdownInput.value);
-        
+
         saveToLocalStorage();
     }
 
@@ -398,7 +400,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         marginXSlider.value = styleConfig.marginX;
         marginYSlider.value = styleConfig.marginY;
         sectionSpacingSlider.value = styleConfig.sectionSpacing;
-        
+
         layoutModeSelect.value = styleConfig.layoutMode || "1-column";
         colorSidebarBg.value = styleConfig.sidebarBg || "#2d3748";
         colorSidebarText.value = styleConfig.sidebarText || "#ffffff";
@@ -409,25 +411,25 @@ document.addEventListener('DOMContentLoaded', async () => {
         colorBody.value = styleConfig.colorBody;
         colorLinks.value = styleConfig.colorLinks;
         colorAccent.value = styleConfig.colorAccent;
-        
+
         applyStyles();
     }
 
     // Auto-Fit Zoom calculation to prevent canvas clipping
     function autoFitZoom() {
         if (isUserZoomed) return; // Don't override manual zooms
-        
+
         if (!canvasWrapper) return;
-        
+
         const wrapperWidth = canvasWrapper.clientWidth - 60; // Include margins
         const sheetWidth = 794; // 210mm in pixels at 96dpi (793.7px)
-        
+
         if (wrapperWidth < sheetWidth) {
             zoomFactor = wrapperWidth / sheetWidth;
         } else {
             zoomFactor = 1.0;
         }
-        
+
         updateZoomDisplay();
         updatePageBreaks();
 
@@ -441,7 +443,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     let lastSectionsJSON = "";
-    
+
     function escapeRegExp(string) {
         return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
@@ -450,7 +452,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const mdText = markdownInput.value;
         const lines = mdText.split('\n');
         const targetTitle = title.trim().toLowerCase();
-        
+
         let updated = false;
         const newLines = lines.map(line => {
             const trimmed = line.trim();
@@ -465,7 +467,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
             return line;
         });
-        
+
         if (updated) {
             markdownInput.value = newLines.join('\n');
             // Recompile markdown to update preview
@@ -486,37 +488,37 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
             return;
         }
-        
+
         lastSectionsJSON = sectionsJSON;
         sidebarChecklistContainer.innerHTML = '';
-        
+
         if (sections.length === 0) {
             sidebarChecklistContainer.innerHTML = '<span style="font-size:10px; color:var(--text-muted); font-style:italic; padding: 4px;">No sections detected (headers starting with "##" or "###")</span>';
             return;
         }
-        
+
         sections.forEach(section => {
             const title = section.title;
             const isSidebar = section.isSidebar;
-            
+
             const item = document.createElement('label');
             item.className = 'sidebar-checklist-item';
-            
+
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
             checkbox.value = title;
             checkbox.checked = isSidebar;
-            
+
             checkbox.addEventListener('change', () => {
                 updateHeaderInMarkdown(title, checkbox.checked);
             });
-            
+
             item.appendChild(checkbox);
             item.appendChild(document.createTextNode(title));
             sidebarChecklistContainer.appendChild(item);
         });
     }
- 
+
     // Markdown Parser with Guide Custom Directives & delimiters
     function compileMarkdown(mdText) {
         isHighlightActive = false;
@@ -587,14 +589,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             const parser = new DOMParser();
             const doc = parser.parseFromString(html, 'text/html');
             const bodyElements = Array.from(doc.body.children);
-            
+
             const headerElements = [];
             const mainColElements = [];
             const sidebarColElements = [];
-            
+
             let currentDest = null;
             let foundFirstHeading = false;
-            
+
             for (let el of bodyElements) {
                 if (el.tagName === 'H2') {
                     foundFirstHeading = true;
@@ -614,18 +616,18 @@ document.addEventListener('DOMContentLoaded', async () => {
                     }
                 }
             }
-            
+
             // Build checklist of all sections (all H2 and H3 headings)
             const allSections = Array.from(doc.querySelectorAll('h2, h3')).map(h => ({
                 title: h.textContent.trim(),
                 isSidebar: h.tagName.toLowerCase() === 'h3'
             }));
             updateSidebarChecklist(allSections);
-            
+
             const headerHtml = headerElements.map(el => el.outerHTML).join('\n');
             const mainHtml = mainColElements.map(el => el.outerHTML).join('\n');
             const sidebarHtml = sidebarColElements.map(el => el.outerHTML).join('\n');
-            
+
             finalHtml = `
                 <div class="resume-header">
                     ${headerHtml}
@@ -702,15 +704,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
         if (positionKey) {
-            document.title = `${nameKey}_${positionKey}`;
+            currentResumeTitle = `${nameKey}_${positionKey}`;
         } else {
-            document.title = nameKey;
+            currentResumeTitle = nameKey;
         }
 
         // Perform ATS validation on the actual structured HTML content
         runAtsChecker(mdText, finalHtml);
         lastCleanHTML = resumeOutput.innerHTML;
-        
+
         // Refresh page break indicators
         updatePageBreaks();
     }
@@ -724,7 +726,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
         const plainText = doc.body.textContent || "";
-        
+
         // Count words/chars
         const wordCount = plainText.trim().split(/\s+/).filter(w => w.length > 0).length;
         const charCount = plainText.length;
@@ -900,7 +902,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Wire customizer sliders and pickers
     const uiElements = [
-        fontSizeSlider, lineHeightSlider, headingScaleSlider, 
+        fontSizeSlider, lineHeightSlider, headingScaleSlider,
         marginXSlider, marginYSlider, sectionSpacingSlider,
         layoutModeSelect, sidebarPositionSelect,
         colorSidebarBg, colorSidebarText,
@@ -917,7 +919,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         tile.addEventListener('click', () => {
             styleConfig.fontFamily = tile.getAttribute('data-font');
             applyStyles();
-            
+
             // Recompile markdown since typography changes might affect auto zoom
             compileMarkdown(markdownInput.value);
             saveToLocalStorage();
@@ -996,7 +998,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
             activeTheme = isDark ? 'dark' : 'light';
         }
-        
+
         document.documentElement.setAttribute('data-theme', activeTheme);
         themeBtnIcon.innerHTML = theme === 'system' ? themeIcons.system : (theme === 'light' ? themeIcons.light : themeIcons.dark);
         themeBtnText.textContent = theme === 'system' ? themeTexts.system : (theme === 'light' ? themeTexts.light : themeTexts.dark);
@@ -1036,7 +1038,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 .catch(err => console.error(err));
         }
     });
-    
+
     btnClear.addEventListener('click', () => {
         if (confirm("Are you sure you want to clear the editor?")) {
             markdownInput.value = "";
@@ -1044,7 +1046,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             saveToLocalStorage();
         }
     });
-    
+
     if (btnCopyMd) {
         btnCopyMd.addEventListener('click', () => {
             const mdContent = markdownInput.value;
@@ -1060,6 +1062,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Handle Auto-Fit Zoom on window resize
     window.addEventListener('resize', autoFitZoom);
+
+    // Print helper to temporarily set document.title for browser print PDF naming
+    window.addEventListener('beforeprint', () => {
+        document.title = currentResumeTitle;
+    });
+    window.addEventListener('afterprint', () => {
+        document.title = "jobby MD Editor";
+    });
 
     // --- Panning Hand Mode Feature ---
     let isPanMode = true; // Enabled by default
@@ -1089,7 +1099,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         canvasWrapper.addEventListener('mousedown', (e) => {
             if (!isPanMode) return;
             if (e.button !== 0) return; // Only left click
-            
+
             isDragging = true;
             startX = e.clientX;
             startY = e.clientY;
@@ -1128,15 +1138,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     function highlightNonWsRangeInElement(element, startNonWsCount, targetNonWsLen) {
         if (targetNonWsLen <= 0) return;
-        
+
         let currentNonWsCount = 0;
         const endNonWsCount = startNonWsCount + targetNonWsLen;
-        
+
         function walk(node) {
             if (node.nodeType === Node.TEXT_NODE) {
                 const content = node.nodeValue;
                 const parent = node.parentNode;
-                
+
                 let nodeNonWsCount = 0;
                 const nonWsIndices = [];
                 for (let i = 0; i < content.length; i++) {
@@ -1145,33 +1155,33 @@ document.addEventListener('DOMContentLoaded', async () => {
                         nodeNonWsCount++;
                     }
                 }
-                
+
                 const nodeStartNonWs = currentNonWsCount;
                 const nodeEndNonWs = currentNonWsCount + nodeNonWsCount;
-                
+
                 if (nodeEndNonWs > startNonWsCount && nodeStartNonWs < endNonWsCount) {
                     const overlapStartNonWsIdx = Math.max(0, startNonWsCount - nodeStartNonWs);
                     const overlapEndNonWsIdx = Math.min(nodeNonWsCount, endNonWsCount - nodeStartNonWs);
-                    
+
                     const charStart = nonWsIndices.at(overlapStartNonWsIdx);
                     const charEnd = nonWsIndices.at(overlapEndNonWsIdx - 1) + 1;
-                    
+
                     if (parent && parent.tagName !== 'MARK' && parent.tagName !== 'SCRIPT' && parent.tagName !== 'STYLE') {
                         const fragment = document.createDocumentFragment();
-                        
+
                         if (charStart > 0) {
                             fragment.appendChild(document.createTextNode(content.substring(0, charStart)));
                         }
-                        
+
                         const mark = document.createElement('mark');
                         mark.className = 'editor-twin-highlight';
                         mark.textContent = content.substring(charStart, charEnd);
                         fragment.appendChild(mark);
-                        
+
                         if (charEnd < content.length) {
                             fragment.appendChild(document.createTextNode(content.substring(charEnd)));
                         }
-                        
+
                         parent.replaceChild(fragment, node);
                     }
                 }
@@ -1185,16 +1195,16 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             }
         }
-        
+
         walk(element);
     }
 
     function handleSelectionChange() {
         if (!markdownInput || !resumeOutput || !currentTokens || currentTokens.length === 0) return;
-        
+
         const start = markdownInput.selectionStart;
         const end = markdownInput.selectionEnd;
-        
+
         if (start === end) {
             if (isHighlightActive) {
                 resumeOutput.innerHTML = lastCleanHTML;
@@ -1202,52 +1212,52 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
             return;
         }
-        
+
         // Find all tokens overlapping with the selection [start, end]
         const overlappingTokens = currentTokens.filter(token => {
             return token.endOffset > start && token.startOffset < end;
         });
-        
+
         if (overlappingTokens.length === 0) return;
-        
+
         // Restore HTML first
         resumeOutput.innerHTML = lastCleanHTML;
         isHighlightActive = false;
-        
+
         let firstHighlightEl = null;
-        
+
         overlappingTokens.forEach(token => {
             const tokenIndex = currentTokens.indexOf(token);
             const activeEl = resumeOutput.querySelector(`[data-token-index="${tokenIndex}"]`);
             if (!activeEl) return;
-            
+
             const overlapStart = Math.max(token.startOffset, start);
             const overlapEnd = Math.min(token.endOffset, end);
-            
+
             if (overlapStart >= overlapEnd) return;
-            
+
             const tokenRelativeStart = overlapStart - token.startOffset;
             const tokenRelativeEnd = overlapEnd - token.startOffset;
-            
+
             const prefix = token.raw.substring(0, tokenRelativeStart);
             const selectedText = token.raw.substring(tokenRelativeStart, tokenRelativeEnd);
-            
+
             const cleanPrefix = cleanMarkdown(prefix);
             const cleanSelected = cleanMarkdown(selectedText);
-            
+
             const startNonWsCount = countNonWsChars(cleanPrefix);
             const targetNonWsLen = countNonWsChars(cleanSelected);
-            
+
             if (targetNonWsLen > 0) {
                 highlightNonWsRangeInElement(activeEl, startNonWsCount, targetNonWsLen);
-                
+
                 if (!firstHighlightEl) {
                     firstHighlightEl = activeEl.querySelector('.editor-twin-highlight');
                 }
                 isHighlightActive = true;
             }
         });
-        
+
         if (firstHighlightEl) {
             firstHighlightEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
@@ -1269,19 +1279,19 @@ document.addEventListener('DOMContentLoaded', async () => {
             mirror.id = 'textarea-mirror';
             document.body.appendChild(mirror);
         }
-        
+
         const styles = window.getComputedStyle(textarea);
-        
+
         mirror.style.position = 'absolute';
         mirror.style.visibility = 'hidden';
         mirror.style.whiteSpace = 'pre-wrap';
         mirror.style.wordBreak = 'break-word';
         mirror.style.overflow = 'hidden';
-        
+
         // Match physical layout and padding
         mirror.style.width = textarea.clientWidth + 'px';
         mirror.style.boxSizing = 'border-box';
-        
+
         mirror.style.fontFamily = styles.fontFamily;
         mirror.style.fontSize = styles.fontSize;
         mirror.style.fontWeight = styles.fontWeight;
@@ -1291,65 +1301,65 @@ document.addEventListener('DOMContentLoaded', async () => {
         mirror.style.paddingRight = styles.paddingRight;
         mirror.style.paddingBottom = styles.paddingBottom;
         mirror.style.paddingLeft = styles.paddingLeft;
-        
+
         const text = textarea.value.substring(0, selectionStart);
         mirror.textContent = text;
-        
+
         const marker = document.createElement('span');
         marker.textContent = '|';
         mirror.appendChild(marker);
-        
+
         const markerOffsetLeft = marker.offsetLeft;
         const markerOffsetTop = marker.offsetTop;
-        
+
         const rect = textarea.getBoundingClientRect();
-        
+
         // Center the radar vertically relative to the line height
         let lineHeight = parseFloat(styles.lineHeight);
         if (isNaN(lineHeight)) {
             const fontSize = parseFloat(styles.fontSize) || 12.5;
             lineHeight = fontSize * 1.5;
         }
-        
+
         const x = rect.left + window.scrollX + markerOffsetLeft - textarea.scrollLeft;
         const y = rect.top + window.scrollY + markerOffsetTop - textarea.scrollTop + (lineHeight / 2);
-        
+
         return { x, y };
     }
 
     let cursorRadarTimeout;
     function showFlashingCursorRadar() {
         if (!markdownInput) return;
-        
+
         const selectionStart = markdownInput.selectionStart;
         const coords = getCursorCoordinates(markdownInput, selectionStart);
-        
+
         let radar = document.getElementById('editor-cursor-radar');
         if (!radar) {
             radar = document.createElement('div');
             radar.id = 'editor-cursor-radar';
             radar.className = 'cursor-radar';
-            
+
             const r1 = document.createElement('div');
             r1.className = 'ripple ripple-1';
             const r2 = document.createElement('div');
             r2.className = 'ripple ripple-2';
             const r3 = document.createElement('div');
             r3.className = 'ripple ripple-3';
-            
+
             radar.appendChild(r1);
             radar.appendChild(r2);
             radar.appendChild(r3);
             document.body.appendChild(radar);
         }
-        
+
         radar.style.left = `${coords.x}px`;
         radar.style.top = `${coords.y}px`;
-        
+
         radar.classList.remove('show');
         void radar.offsetWidth; // Force animation reflow
         radar.classList.add('show');
-        
+
         clearTimeout(cursorRadarTimeout);
         cursorRadarTimeout = setTimeout(() => {
             radar.classList.remove('show');
@@ -1409,7 +1419,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (targetText.length > 0) {
                 // Try exact match within the token raw block
                 let relativeIdx = tokenRaw.indexOf(targetText);
-                
+
                 // If not found, try a fuzzy match by stripping formatting chars from a snippet
                 if (relativeIdx === -1) {
                     const cleanSnippet = targetText.substring(0, 15).replace(/[\*\#_`~\[\]]/g, '').trim();
@@ -1549,7 +1559,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${document.title || 'Resume'}</title>
+    <title>${currentResumeTitle || 'Resume'}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Raleway:wght@300;400;500;600;700;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
@@ -1671,18 +1681,18 @@ document.addEventListener('DOMContentLoaded', async () => {
                 showToast("Please enter an n8n webhook URL first!");
                 return;
             }
-            
+
             localStorage.setItem('n8n_webhook_url', url);
-            
+
             const payload = {
                 config: styleConfig,
                 css: templatesCssText
             };
-            
+
             btnSyncN8n.disabled = true;
             const originalText = btnSyncN8n.textContent;
             btnSyncN8n.textContent = "Syncing...";
-            
+
             fetch(url, {
                 method: 'POST',
                 headers: {
@@ -1690,21 +1700,21 @@ document.addEventListener('DOMContentLoaded', async () => {
                 },
                 body: JSON.stringify(payload)
             })
-            .then(res => {
-                if (res.ok) {
-                    showToast("Design configuration synced successfully!");
-                } else {
-                    throw new Error("HTTP " + res.status);
-                }
-            })
-            .catch(err => {
-                console.error("n8n sync failed:", err);
-                showToast("Sync failed: " + err.message);
-            })
-            .finally(() => {
-                btnSyncN8n.disabled = false;
-                btnSyncN8n.textContent = originalText;
-            });
+                .then(res => {
+                    if (res.ok) {
+                        showToast("Design configuration synced successfully!");
+                    } else {
+                        throw new Error("HTTP " + res.status);
+                    }
+                })
+                .catch(err => {
+                    console.error("n8n sync failed:", err);
+                    showToast("Sync failed: " + err.message);
+                })
+                .finally(() => {
+                    btnSyncN8n.disabled = false;
+                    btnSyncN8n.textContent = originalText;
+                });
         });
     }
 
@@ -1720,22 +1730,22 @@ document.addEventListener('DOMContentLoaded', async () => {
             e.preventDefault();
             const startX = e.clientX;
             const startWidth = editorPanel.getBoundingClientRect().width;
-            
+
             handleLeft.classList.add('dragging');
-            
+
             function onMouseMove(moveEvent) {
                 const deltaX = moveEvent.clientX - startX;
                 const newWidth = Math.max(250, Math.min(600, startWidth + deltaX));
                 editorPanel.style.width = `${newWidth}px`;
                 autoFitZoom();
             }
-            
+
             function onMouseUp() {
                 handleLeft.classList.remove('dragging');
                 document.removeEventListener('mousemove', onMouseMove);
                 document.removeEventListener('mouseup', onMouseUp);
             }
-            
+
             document.addEventListener('mousemove', onMouseMove);
             document.addEventListener('mouseup', onMouseUp);
         });
@@ -1745,9 +1755,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             e.preventDefault();
             const startX = e.clientX;
             const startWidth = controlsPanel.getBoundingClientRect().width;
-            
+
             handleRight.classList.add('dragging');
-            
+
             function onMouseMove(moveEvent) {
                 // Dragging to the left increases controls panel width
                 const deltaX = startX - moveEvent.clientX;
@@ -1755,13 +1765,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 controlsPanel.style.width = `${newWidth}px`;
                 autoFitZoom();
             }
-            
+
             function onMouseUp() {
                 handleRight.classList.remove('dragging');
                 document.removeEventListener('mousemove', onMouseMove);
                 document.removeEventListener('mouseup', onMouseUp);
             }
-            
+
             document.addEventListener('mousemove', onMouseMove);
             document.addEventListener('mouseup', onMouseUp);
         });
@@ -1793,7 +1803,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const mdResponse = await fetch('resume.md');
                 if (mdResponse.ok) {
                     loadedMarkdown = await mdResponse.text();
-                    
+
                     // Try fetching config.json as well
                     const configResponse = await fetch('config.json');
                     if (configResponse.ok) {

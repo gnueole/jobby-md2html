@@ -105,7 +105,8 @@
     color: var(--resume-color-headings, #1e293b);
     font-weight: 800;
     line-height: 1.15;
-    margin-bottom: 6px;
+    margin-top: 12px;
+    margin-bottom: 12px;
     letter-spacing: -0.02em;
 }
 
@@ -177,7 +178,7 @@
     text-transform: uppercase;
     letter-spacing: 0.04em;
     margin-top: calc(var(--resume-section-spacing, 12px) * 1.8);
-    margin-bottom: calc(var(--resume-section-spacing, 12px) * 0.8);
+    margin-bottom: calc(var(--resume-section-spacing, 12px) * 1.2);
     border-bottom: 1.5px solid var(--resume-color-accent, #0d9488);
     padding-bottom: 4px;
     display: block;
