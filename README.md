@@ -6,7 +6,7 @@ It serves as a **quick and clean manual overdrive** for immediate layout tweaks 
 
 👉 **Production URL:** **[https://cv.eole.me](https://cv.eole.me)**
 
-All your content and style changes (colors, fonts, margins) are automatically saved in your working folder, allowing you to resume work across machines via Git.
+All your content and style changes (colors, fonts, margins) are safely stored in your browser's local storage (`localStorage`). You can copy your layout configurations or download your resume as Markdown from the UI.
 
 ## 📋 Requirements
 
@@ -72,10 +72,10 @@ To manage your application history and personalize your CV, the system is backed
 - `index.html`, `style.css`, `app.js`: Source code for the editing UI, auto‑zoom system, and ATS analyzer.
 - `templates.css`: Rendering styles for A4 page (screen + PDF print rules).
 - `sample.md`: Default resume template (example author) provided as a starting point.
-- `resume.md`: **[Generated]** Your Markdown resume content.
-- `config.json`: **[Generated]** Your custom layout settings (chosen fonts, sizes, line spacing, colors).
+- `resume.md`: **[Optional Backup]** A Markdown resume file placed on disk to bootstrap the editor if browser `localStorage` is empty.
+- `config.json`: **[Optional Backup]** Custom layout configuration settings placed on disk to bootstrap the styles if browser `localStorage` is empty.
 
-*Note: Committing and pushing `resume.md` and `config.json` to Git lets you synchronize all your text and style changes across machines.*
+*Note: Placing `resume.md` and `config.json` in the root of the project allows you to version-control and distribute default templates via Git.*
 
 ## 📝 Specific Resume Directives (Guide)
 

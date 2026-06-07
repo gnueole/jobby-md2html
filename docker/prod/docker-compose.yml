@@ -1,7 +1,7 @@
 name: n8n-eole-prod
 
 services:
-  # Initialize SSL certificate permissions (essential after a backup restore)
+  # Initialisation des droits pour le certificat SSL (indispensable après un dump/restore)
   traefik-acme-init:
     image: alpine:3.20
     container_name: traefik-acme-init
@@ -18,7 +18,7 @@ services:
         max-size: "10m"
         max-file: "3"
 
-  # Traefik Reverse Proxy & SSL Manager
+  # Le "Videur" de ton infrastructure
   traefik:
     image: traefik:latest
     container_name: traefik-n8n
@@ -55,15 +55,15 @@ services:
           cpus: '0.50'
           memory: 256M
 
-  # Notion MCP Server
-  # Note: Accessible by n8n at http://mcp-notion:3000
+  # Ton nouveau serveur MCP pour Notion
+  # Note : n8n l'appellera via http://mcp-notion:3000
   mcp-notion:
     image: mcp/notion:latest 
     container_name: mcp-notion
     restart: unless-stopped
     command: --transport http --disable-auth
     environment:
-      - NOTION_TOKEN=${NOTION_TOKEN} # Configure in your host environment variables
+      - NOTION_TOKEN=${NOTION_TOKEN} # À définir dans tes variables Hostinger
       - TZ=${TZ}
     logging:
       driver: "json-file"
@@ -76,7 +76,7 @@ services:
           cpus: '0.25'
           memory: 256M
 
-  # Gotenberg PDF Rendering Engine
+  # Le moteur de rendu PDF (Gotenberg)
   gotenberg:
     image: gotenberg/gotenberg:8
     container_name: gotenberg
@@ -95,9 +95,9 @@ services:
           cpus: '1.0'
           memory: 512M
 
-  # n8n Automation Server (v2.21.0 with AI & MCP support)
+  # n8n en version 2.25.2 avec support IA et MCP
   n8n:
-    image: docker.n8n.io/n8nio/n8n:2.21.0
+    image: docker.n8n.io/n8nio/n8n:2.25.2
     container_name: n8n-server
     restart: unless-stopped
     depends_on:
@@ -133,7 +133,7 @@ services:
 
   # Jobby ATS Markdown Resume Editor
   jobby-editor:
-    image: ghcr.io/gnueole/jobby:latest
+    image: ghcr.io/gnueole/resume-md2html:latest
     container_name: jobby-editor
     restart: unless-stopped
     depends_on:
@@ -161,7 +161,7 @@ services:
 
   # Vector Log Shipper to Axiom
   vector:
-    image: ghcr.io/gnueole/jobby-vector:latest
+    image: ghcr.io/gnueole/resume-md2html-vector:latest
     container_name: vector
     restart: unless-stopped
     volumes:
@@ -169,7 +169,6 @@ services:
     environment:
       - AXIOM_TOKEN=${AXIOM_TOKEN}
       - AXIOM_DATASET=${AXIOM_DATASET}
-      - COMPOSE_PROJECT_NAME=${COMPOSE_PROJECT_NAME:-n8n-eole-prod}
     logging:
       driver: "json-file"
       options:
