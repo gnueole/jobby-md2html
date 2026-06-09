@@ -141,6 +141,7 @@ services:
     environment:
       - N8N_WEBHOOK_TOKEN=${X_N8N_TOKEN}
       - X_N8N_TOKEN=${X_N8N_TOKEN}
+      - GOOGLE_TAG_ID=${GOOGLE_TAG_ID}
     labels:
       - traefik.enable=true
       - traefik.http.routers.jobby.rule=Host(`cv.eole.me`)

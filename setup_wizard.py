@@ -133,6 +133,11 @@ def configure_dev(toolkit_values, dev_values):
         print(f"Generated secure random token: {GREEN}{dev_web_token}{RESET}")
     dev_values["X_N8N_TOKEN"] = dev_web_token
     dev_values["TZ"] = "UTC"
+    
+    print(f"\n{BOLD}Step 4: Google Analytics (optional){RESET}")
+    dev_gtag = input(f"{YELLOW}Enter your Google Analytics Measurement ID (e.g., G-BLZSKHC2KE, or press Enter to skip): {RESET}").strip()
+    if dev_gtag:
+        dev_values["GOOGLE_TAG_ID"] = dev_gtag
 
 def configure_prod(toolkit_values, prod_values):
     print(f"\n{BOLD}{CYAN}-------------------------------------------------------------{RESET}")
@@ -190,6 +195,11 @@ def configure_prod(toolkit_values, prod_values):
         print(f"Generated secure random token: {GREEN}{prod_web_token}{RESET}")
     prod_values["X_N8N_TOKEN"] = prod_web_token
     prod_values["TZ"] = "Europe/Paris"
+
+    print(f"\n{BOLD}Step 6: Google Analytics Configuration (optional){RESET}")
+    prod_gtag = input(f"{YELLOW}Enter your production Google Analytics Measurement ID (e.g., G-BLZSKHC2KE, or press Enter to skip): {RESET}").strip()
+    if prod_gtag:
+        prod_values["GOOGLE_TAG_ID"] = prod_gtag
 
 def save_configurations(toolkit_values, dev_values, prod_values):
     print(f"\n{BOLD}{BLUE}============================================================={RESET}")
