@@ -941,32 +941,52 @@ document.addEventListener('DOMContentLoaded', async () => {
     // --- Developer Tools Modal Listeners ---
     if (btnDeveloperToggle) {
         btnDeveloperToggle.addEventListener('click', () => {
-            const enteredToken = prompt("Enter Developer Token to access Developer Tools:");
-            if (!enteredToken) return;
+            const savedToken = localStorage.getItem('developer_token');
+            
+            const verifyAndOpen = (token, isFromStorage = false) => {
+                fetch('/api/verify-token', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        localStorage.setItem('developer_token', token);
+                        developerModal.classList.add('show');
+                        // Sync values with current state
+                        prodWebhookUrl.value = localStorage.getItem('prod_webhook_url') || 'https://n8n.eole.me/webhook/cv-factory';
+                        prodWebhookToken.value = localStorage.getItem('prod_webhook_token') || '';
+                        devWebhookUrl.value = localStorage.getItem('dev_webhook_url') || 'http://localhost:5678/webhook-test/cv-factory';
+                        devWebhookToken.value = localStorage.getItem('dev_webhook_token') || '';
+                        updateBookmarkletLinks();
+                    } else {
+                        if (isFromStorage) {
+                            // Clear invalid stored token and prompt the user
+                            localStorage.removeItem('developer_token');
+                            promptUserForToken();
+                        } else {
+                            showToast("Unauthorized: Invalid Developer Token.");
+                        }
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    showToast("Error verifying token.");
+                });
+            };
 
-            fetch('/api/verify-token', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ token: enteredToken })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    developerModal.classList.add('show');
-                    // Sync values with current state
-                    prodWebhookUrl.value = localStorage.getItem('prod_webhook_url') || 'https://n8n.eole.me/webhook/cv-factory';
-                    prodWebhookToken.value = localStorage.getItem('prod_webhook_token') || '';
-                    devWebhookUrl.value = localStorage.getItem('dev_webhook_url') || 'http://localhost:5678/webhook-test/cv-factory';
-                    devWebhookToken.value = localStorage.getItem('dev_webhook_token') || '';
-                    updateBookmarkletLinks();
-                } else {
-                    showToast("Unauthorized: Invalid Developer Token.");
-                }
-            })
-            .catch(err => {
-                console.error(err);
-                showToast("Error verifying token.");
-            });
+            const promptUserForToken = () => {
+                const enteredToken = prompt("Enter Developer Token to access Developer Tools:");
+                if (!enteredToken) return;
+                verifyAndOpen(enteredToken, false);
+            };
+
+            if (savedToken) {
+                verifyAndOpen(savedToken, true);
+            } else {
+                promptUserForToken();
+            }
         });
     }
 
