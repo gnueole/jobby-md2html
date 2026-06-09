@@ -39,6 +39,7 @@ graph TD
     C -->|3. Analyzes Job & Matches Skills| D[Notion CV DB]
     D -->|4. Updates Layout & Highlights| E[Jobby MD Editor]
     E -->|5. Print Button| F[ATS-Compliant PDF]
+    E -.-> G["Lateral Print (Print Layout Configuration)"]
 ```
 
 ### 1. Friendly LinkedIn Scraper
