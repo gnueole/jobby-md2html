@@ -148,3 +148,44 @@ export function updateActivePresetBtn(styleConfig) {
         presetCustom.classList.add('active');
     }
 }
+
+export function updateControlsFromConfig(styleConfig) {
+    const fontSizeSlider = document.getElementById('font-size');
+    const lineHeightSlider = document.getElementById('line-height');
+    const headingScaleSlider = document.getElementById('heading-scale');
+    const marginXSlider = document.getElementById('margin-x');
+    const marginYSlider = document.getElementById('margin-y');
+    const sectionSpacingSlider = document.getElementById('section-spacing');
+
+    const layoutModeSelect = document.getElementById('layout-mode');
+    const sidebarPositionSelect = document.getElementById('sidebar-position');
+    const colorSidebarBg = document.getElementById('color-sidebar-bg');
+    const colorSidebarText = document.getElementById('color-sidebar-text');
+
+    const colorBg = document.getElementById('color-bg');
+    const colorHeadings = document.getElementById('color-headings');
+    const colorBody = document.getElementById('color-body');
+    const colorLinks = document.getElementById('color-links');
+    const colorAccent = document.getElementById('color-accent');
+
+    if (fontSizeSlider) fontSizeSlider.value = styleConfig.fontSize;
+    if (lineHeightSlider) lineHeightSlider.value = styleConfig.lineHeight;
+    if (headingScaleSlider) headingScaleSlider.value = styleConfig.headingScale;
+    if (marginXSlider) marginXSlider.value = styleConfig.marginX;
+    if (marginYSlider) marginYSlider.value = styleConfig.marginY;
+    if (sectionSpacingSlider) sectionSpacingSlider.value = styleConfig.sectionSpacing;
+
+    if (layoutModeSelect) layoutModeSelect.value = styleConfig.layoutMode || "1-column";
+    if (sidebarPositionSelect) sidebarPositionSelect.value = styleConfig.sidebarPosition || "right";
+    if (colorSidebarBg) colorSidebarBg.value = styleConfig.sidebarBg || "#2d3748";
+    if (colorSidebarText) colorSidebarText.value = styleConfig.sidebarText || "#ffffff";
+
+    if (colorBg) colorBg.value = styleConfig.colorBg || "#ffffff";
+    if (colorHeadings) colorHeadings.value = styleConfig.colorHeadings;
+    if (colorBody) colorBody.value = styleConfig.colorBody;
+    if (colorLinks) colorLinks.value = styleConfig.colorLinks;
+    if (colorAccent) colorAccent.value = styleConfig.colorAccent;
+
+    applyStyles(styleConfig);
+}
+

@@ -7,7 +7,7 @@ import { updateBookmarkletLinks } from './js/bookmarklet.js';
 import { applyStyles, updateControlsFromConfig } from './js/styles.js';
 import { compileMarkdown, updateHeaderInMarkdown } from './js/parser.js';
 
-document.addEventListener('DOMContentLoaded', async () => {
+async function initializeJobby() {
     // --- Load public component bricks dynamically ---
     const publicBricks = [
         { id: 'header-container', url: 'bricks/header.html' },
@@ -1032,7 +1032,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         customColors.sidebarBg = styleConfig.sidebarBg || DEFAULT_STYLE_CONFIG.sidebarBg;
         customColors.sidebarText = styleConfig.sidebarText || DEFAULT_STYLE_CONFIG.sidebarText;
 
-        applyStyles(styleConfig);
+        updateControlsFromConfig(styleConfig);
         runCompileMarkdown(loadedMarkdown);
 
         if (!savedMd) {
@@ -1191,4 +1191,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Launch loading
     await loadWorkspaceData();
     updateSyncButtonState();
-});
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeJobby);
+} else {
+    initializeJobby();
+}
