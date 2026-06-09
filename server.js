@@ -97,6 +97,39 @@ const server = http.createServer((req, res) => {
         return;
     }
 
+    if (cleanUrl === '/api/developer-tools-html') {
+        if (req.method !== 'GET') {
+            res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8' });
+            res.end('Method Not Allowed');
+            return;
+        }
+
+        const authHeader = req.headers['authorization'] || '';
+        let token = '';
+        if (authHeader.startsWith('Bearer ')) {
+            token = authHeader.substring(7).trim();
+        }
+
+        if (token && token === serverToken) {
+            const fs = require('fs');
+            const brickPath = path.join(__dirname, 'private-bricks', 'developer-modal.html');
+            fs.readFile(brickPath, 'utf8', (err, data) => {
+                if (err) {
+                    res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
+                    res.end('Error loading developer brick');
+                    return;
+                }
+                res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+                res.end(data);
+            });
+        } else {
+            res.writeHead(401, { 'Content-Type': 'application/json; charset=utf-8' });
+            res.end(JSON.stringify({ success: false, error: 'Unauthorized' }));
+        }
+        return;
+    }
+
+
     if (req.method !== 'GET') {
         res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8' });
         res.end('Method Not Allowed');
@@ -164,6 +197,10 @@ const server = http.createServer((req, res) => {
     });
 });
 
-server.listen(PORT, '0.0.0.0', () => {
-    console.log(`jobby MD Editor Server running at http://0.0.0.0:${PORT}`);
+const os = require('os');
+const isWSL = os.release().toLowerCase().includes('microsoft');
+const HOST = process.env.HOST || (isWSL || fs.existsSync('/.dockerenv') ? '0.0.0.0' : '127.0.0.1');
+
+server.listen(PORT, HOST, () => {
+    console.log(`jobby MD Editor Server running at http://${HOST}:${PORT}`);
 });

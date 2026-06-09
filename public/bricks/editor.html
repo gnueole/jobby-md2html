@@ -1,0 +1,35 @@
+<div class="panel-header">
+    <span class="status-indicator markdown-dot">✍ MARKDOWN (EDITABLE)</span>
+    <div class="header-actions">
+        <button id="btn-load-sample" class="btn-icon" title="Load sample: Julien Avarre">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2">
+                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
+            </svg>
+            Sample
+        </button>
+        <button id="btn-copy-md" class="btn-icon" title="Copy Markdown to clipboard">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+            </svg>
+            Copy
+        </button>
+        <button id="btn-clear" class="btn-icon text-danger" title="Clear editor">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2">
+                <polyline points="3 6 5 6 21 6" />
+                <path
+                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+            </svg>
+            Clear
+        </button>
+    </div>
+</div>
+<div class="editor-container">
+    <textarea id="markdown-input" spellcheck="false" placeholder="# YOUR NAME..."></textarea>
+</div>
+<div class="panel-footer">
+    <span id="char-word-count">Words: 0 | Characters: 0</span>
+</div>

@@ -1,0 +1,54 @@
+<div class="panel-header">
+    <span class="status-indicator preview-dot">● PREVIEW</span>
+    <div class="preview-controls">
+        <button id="btn-pan-toggle" class="btn-circle-sm active" title="Toggle Pan Mode (Hand)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v5" />
+                <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v6" />
+                <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8" />
+                <path d="M6 14v4a5 5 0 0 0 10 0v-3.5" />
+            </svg>
+        </button>
+        <button id="btn-page-breaks" class="btn-circle-sm" title="Toggle Page Outlines & Breaks">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                <line x1="3" y1="12" x2="21" y2="12" stroke-dasharray="3,3" />
+            </svg>
+        </button>
+        <select id="select-page-format" class="select-sm" title="Choose Page Format">
+            <option value="A4">A4</option>
+            <option value="letter">Letter</option>
+        </select>
+        <button id="zoom-out" class="btn-circle-sm" title="Zoom out">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.5">
+                <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
+        </button>
+        <span id="zoom-level" style="cursor: pointer;" title="Double click to reset">100%</span>
+        <button id="zoom-in" class="btn-circle-sm" title="Zoom in">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.5">
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+            </svg>
+        </button>
+        <button id="zoom-reset" class="btn-circle-sm" title="Reset view">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+            </svg>
+        </button>
+    </div>
+</div>
+
+<div class="preview-canvas-wrapper pan-mode">
+    <div class="preview-canvas" id="preview-canvas">
+        <!-- Simulated A4 Document sheet -->
+        <article class="a4-sheet" id="resume-output">
+            <!-- Injected HTML compiled from markdown -->
+        </article>
+    </div>
+</div>
