@@ -69,13 +69,13 @@ To manage your application history and personalize your CV, the system is backed
 ## 📁 Project File Structure
 
 - `server.js`: Ultra‑lightweight local server written in Node.js. It serves the application.
-- `index.html`, `style.css`, `app.js`: Source code for the editing UI, auto‑zoom system, and ATS analyzer.
-- `templates.css`: Rendering styles for A4 page (screen + PDF print rules).
-- `sample.md`: Default resume template (example author) provided as a starting point.
-- `resume.md`: **[Optional Backup]** A Markdown resume file placed on disk to bootstrap the editor if browser `localStorage` is empty.
-- `config.json`: **[Optional Backup]** Custom layout configuration settings placed on disk to bootstrap the styles if browser `localStorage` is empty.
+- `public/index.html`, `public/style.css`, `public/app.js`: Source code for the editing UI, auto‑zoom system, and ATS analyzer.
+- `public/templates.css`: Rendering styles for A4 page (screen + PDF print rules).
+- `public/sample.md`: Default resume template (example author) provided as a starting point.
+- `public/resume.md`: **[Optional Backup]** A Markdown resume file placed on disk to bootstrap the editor if browser `localStorage` is empty.
+- `public/config.json`: **[Optional Backup]** Custom layout configuration settings placed on disk to bootstrap the styles if browser `localStorage` is empty.
 
-*Note: Placing `resume.md` and `config.json` in the root of the project allows you to version-control and distribute default templates via Git.*
+*Note: Placing `resume.md` and `config.json` in the `public` directory allows you to version-control and distribute default templates via Git.*
 
 ## 📝 Specific Resume Directives (Guide)
 

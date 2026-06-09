@@ -20,6 +20,6 @@ node_modules
 npm-debug.log
 
 # Unused assets and backups
-screenshot.png
+public/screenshot.png
 toolkit/__pycache__/
 toolkit/workflow_backup.json

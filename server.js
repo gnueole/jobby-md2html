@@ -134,7 +134,7 @@ const server = http.createServer((req, res) => {
     }
 
     // Resolve absolute path to the file
-    const rootDir = path.resolve(__dirname);
+    const rootDir = path.resolve(__dirname, 'public');
     const safeRootDir = rootDir.endsWith(path.sep) ? rootDir : rootDir + path.sep;
     const filePath = path.normalize(path.resolve(rootDir, decodedUrl === '/' ? 'index.html' : '.' + decodedUrl));
 
