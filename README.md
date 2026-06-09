@@ -33,13 +33,50 @@ For step-by-step local running instructions (using either local Node.js or Docke
 Jobby is designed to be an automated, AI-assisted resume personalization pipeline that integrates your editor, a scraper bookmarklet, n8n, and Notion.
 
 ```mermaid
-graph TD
-    A[LinkedIn Job Page] -->|1. Friendly Scraper Bookmarklet| B[n8n Webhook / Collect Table]
-    B -->|2. Notion Collect Table| C[Notion AI Agent]
-    C -->|3. Analyzes Job & Matches Skills| D[Notion CV DB]
-    D -->|4. Updates Layout & Highlights| E[Jobby MD Editor]
-    E -->|5. Print Button| F[ATS-Compliant PDF]
-    E -.-> G["Lateral Print (Print Layout Configuration)"]
+---
+config:
+  theme: redux
+  look: handDrawn
+  fontFamily: '''Source Code Pro Variable'', monospace'
+  themeVariables:
+    fontFamily: '''Source Code Pro Variable'', monospace'
+  layout: elk
+---
+flowchart TB
+    A["LinkedIn Job Page"] L_A_n4_0@-- "1. Friendly Scraper Bookmarklet" --> n4["n8n workflow"]
+
+    D["Notion CV DB"] -.-> C["Notion AI Agent"] & n5["Gemini"]
+
+    C -- "3. Update database with md ready CV" --> B["Notion Collect Table"]
+    B L_B_F_0@-- "4. Generate PDF" --> F["n8n md 2 pdf"]
+    B L_B_C_0@-- "2. Notion Collect Table" --> C
+    n4 L_n4_B_0@-- "2. Push analysis and details" --> B
+    B -. "Manual Copy paste (for now)" .-> E["Jobby MD Editor"]
+    E -. "update Print Layout Configuration" .-> F
+
+    %% Anchor n7 directly below E on the right side
+    E --> n7["Your bespoked CV"]
+    F --> n6["Your bespoked CV"]
+    n5 --> n4
+
+    D@{ shape: disk }
+    n5@{ shape: rect }
+    B@{ shape: db }
+    F@{ shape: lean-r }
+    A@{ shape: div-proc }
+    n4@{ shape: in-out }
+    n7@{ shape: tag-doc }
+    n6@{ shape: tag-doc }
+
+    style C stroke:#D50000,stroke-width:4px,stroke-dasharray: 0
+    style n5 stroke:#D50000,stroke-width:4px,stroke-dasharray: 0
+    style E fill:transparent,stroke-width:4px,stroke-dasharray: 0,stroke:#FFD600
+    style A stroke:#2962FF,stroke-width:4px,stroke-dasharray: 0
+
+    L_B_F_0@{ animation: slow }
+    L_B_C_0@{ animation: slow }
+    L_A_n4_0@{ animation: slow }
+    L_n4_B_0@{ animation: slow }
 ```
 
 ### 1. Friendly LinkedIn Scraper
