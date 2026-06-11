@@ -1,4 +1,4 @@
-.PHONY: help setup dev docker-dev-up docker-dev-down docker-prod-up docker-prod-down n8n-backup n8n-push n8n-backup-dev n8n-push-dev n8n-deploy-error
+.PHONY: help setup dev dev-up dev-down prod-up prod-down docker-dev-up docker-dev-down docker-prod-up docker-prod-down n8n-backup n8n-push n8n-backup-dev n8n-push-dev n8n-deploy-error
 
 # Default target: display help
 help:
@@ -10,12 +10,12 @@ help:
 	@echo ""
 	@echo "Local Development:"
 	@echo "  make dev              - Start the local lightweight node resume editor"
-	@echo "  make docker-dev-up    - Start the local dev Docker containers (n8n, Gotenberg, mcp)"
-	@echo "  make docker-dev-down  - Stop the local dev Docker containers"
+	@echo "  make dev-up           - Start the local dev Docker containers (n8n, Gotenberg, mcp)"
+	@echo "  make dev-down         - Stop the local dev Docker containers"
 	@echo ""
 	@echo "Production Deployment:"
-	@echo "  make docker-prod-up   - Start the production Docker containers (Traefik, n8n, Gotenberg)"
-	@echo "  make docker-prod-down - Stop the production Docker containers"
+	@echo "  make prod-up          - Start the production Docker containers (Traefik, n8n, Gotenberg)"
+	@echo "  make prod-down        - Stop the production Docker containers"
 	@echo ""
 	@echo "n8n Workflow Syncing:"
 	@echo "  make n8n-backup       - Backup all workflows from Production n8n to local n8n/"
@@ -34,18 +34,24 @@ dev:
 	npm run dev
 
 # Local Dev Docker Containers (WSL / Local Linux)
-docker-dev-up:
+dev-up:
 	docker compose --env-file .env.dev -f docker/dev/docker-compose.yml up -d
 
-docker-dev-down:
+dev-down:
 	docker compose --env-file .env.dev -f docker/dev/docker-compose.yml down
 
 # Production Docker Containers (Remote / VPS)
-docker-prod-up:
+prod-up:
 	docker compose --env-file .env.prod -f docker/prod/docker-compose.yml up -d
 
-docker-prod-down:
+prod-down:
 	docker compose --env-file .env.prod -f docker/prod/docker-compose.yml down
+
+# Compatibility Aliases
+docker-dev-up: dev-up
+docker-dev-down: dev-down
+docker-prod-up: prod-up
+docker-prod-down: prod-down
 
 # n8n Sync Commands
 n8n-backup:
