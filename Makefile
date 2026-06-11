@@ -35,17 +35,17 @@ dev:
 
 # Local Dev Docker Containers (WSL / Local Linux)
 docker-dev-up:
-	docker compose -f docker/dev/docker-compose.yml up -d
+	docker compose --env-file .env.dev -f docker/dev/docker-compose.yml up -d
 
 docker-dev-down:
-	docker compose -f docker/dev/docker-compose.yml down
+	docker compose --env-file .env.dev -f docker/dev/docker-compose.yml down
 
 # Production Docker Containers (Remote / VPS)
 docker-prod-up:
-	docker compose -f docker/prod/docker-compose.yml up -d
+	docker compose --env-file .env.prod -f docker/prod/docker-compose.yml up -d
 
 docker-prod-down:
-	docker compose -f docker/prod/docker-compose.yml down
+	docker compose --env-file .env.prod -f docker/prod/docker-compose.yml down
 
 # n8n Sync Commands
 n8n-backup:
