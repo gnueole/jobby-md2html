@@ -7,7 +7,7 @@
         fetch('/api/config')
             .then(res => res.json())
             .then(config => {
-                if (config.GOOGLE_TAG_ID && /^G-[A-Z0-9]+$/.test(config.GOOGLE_TAG_ID)) {
+                if (config.GOOGLE_TAG_ID && /^(G|GT|AW|DC)-[A-Z0-9]+$/.test(config.GOOGLE_TAG_ID)) {
                     const script = document.createElement('script');
                     script.async = true;
                     script.src = 'https://www.googletagmanager.com/gtag/js?id=' + config.GOOGLE_TAG_ID;
