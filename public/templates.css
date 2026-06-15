@@ -29,7 +29,7 @@
 }
 
 .a4-sheet.has-border .resume-sidebar-col {
-    border: 2px solid var(--resume-color-accent, #0d9488) !important;
+    border: var(--column-border-width, 2px) solid color-mix(in srgb, var(--resume-color-accent, #0d9488) var(--column-border-opacity, 100%), transparent) !important;
 }
 
 .a4-sheet.has-gradient .resume-sidebar-col {

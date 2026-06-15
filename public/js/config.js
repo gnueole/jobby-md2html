@@ -26,7 +26,9 @@ export const DEFAULT_STYLE_CONFIG = {
     expertMode: false,
     columnShadowDistance: 10,
     columnGradientLength: 150,
-    columnGradientColor: "#000000"
+    columnGradientColor: "#000000",
+    columnBorderWidth: 2,
+    columnBorderOpacity: 100
 };
 
 // SVG Icons for the ATS Checklist

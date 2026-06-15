@@ -63,6 +63,8 @@ export function applyStyles(styleConfig) {
     resumeOutput.style.setProperty('--column-shadow-distance', (styleConfig.columnShadowDistance || 10) + 'px');
     resumeOutput.style.setProperty('--column-gradient-length', (styleConfig.columnGradientLength || 150) + '%');
     resumeOutput.style.setProperty('--column-gradient-color', styleConfig.columnGradientColor || '#000000');
+    resumeOutput.style.setProperty('--column-border-width', (styleConfig.columnBorderWidth || 2) + 'px');
+    resumeOutput.style.setProperty('--column-border-opacity', (styleConfig.columnBorderOpacity || 100) + '%');
 
     // Apply Live Column Classes
     const sidebarCol = resumeOutput.querySelector('.resume-sidebar-col');
@@ -123,16 +125,53 @@ export function applyStyles(styleConfig) {
     const valColGradient = document.getElementById('val-column-gradient');
     if (valColGradient) valColGradient.textContent = (styleConfig.columnGradientLength || 150) + '%';
 
+    const valBorderWidth = document.getElementById('val-column-border-width');
+    if (valBorderWidth) valBorderWidth.textContent = (styleConfig.columnBorderWidth || 2) + 'px';
+
+    const valBorderOpacity = document.getElementById('val-column-border-opacity');
+    if (valBorderOpacity) valBorderOpacity.textContent = (styleConfig.columnBorderOpacity || 100) + '%';
+
     const splitMainPct = document.getElementById('split-main-pct');
     const splitSidebarPct = document.getElementById('split-sidebar-pct');
     const splitMainVisual = document.getElementById('split-main-visual');
     const splitSidebarVisual = document.getElementById('split-sidebar-visual');
 
     const splitVal = styleConfig.columnSplit || 58;
-    if (splitMainPct) splitMainPct.textContent = splitVal + '%';
-    if (splitSidebarPct) splitSidebarPct.textContent = (100 - splitVal) + '%';
-    if (splitMainVisual) splitMainVisual.style.width = splitVal + '%';
-    if (splitSidebarVisual) splitSidebarVisual.style.width = (100 - splitVal) + '%';
+    const isLeft = (styleConfig.sidebarPosition === 'left');
+    const uiSliderVal = isLeft ? (100 - splitVal) : splitVal;
+
+    const columnSplitSlider = document.getElementById('column-split');
+    if (columnSplitSlider) {
+        columnSplitSlider.value = uiSliderVal;
+    }
+
+    if (isLeft) {
+        if (splitMainVisual) {
+            splitMainVisual.style.width = (100 - splitVal) + '%';
+            const nameEl = splitMainVisual.querySelector('.col-name');
+            if (nameEl) nameEl.textContent = "Sidebar";
+            if (splitMainPct) splitMainPct.textContent = (100 - splitVal) + '%';
+        }
+        if (splitSidebarVisual) {
+            splitSidebarVisual.style.width = splitVal + '%';
+            const nameEl = splitSidebarVisual.querySelector('.col-name');
+            if (nameEl) nameEl.textContent = "Main";
+            if (splitSidebarPct) splitSidebarPct.textContent = splitVal + '%';
+        }
+    } else {
+        if (splitMainVisual) {
+            splitMainVisual.style.width = splitVal + '%';
+            const nameEl = splitMainVisual.querySelector('.col-name');
+            if (nameEl) nameEl.textContent = "Main";
+            if (splitMainPct) splitMainPct.textContent = splitVal + '%';
+        }
+        if (splitSidebarVisual) {
+            splitSidebarVisual.style.width = (100 - splitVal) + '%';
+            const nameEl = splitSidebarVisual.querySelector('.col-name');
+            if (nameEl) nameEl.textContent = "Sidebar";
+            if (splitSidebarPct) splitSidebarPct.textContent = (100 - splitVal) + '%';
+        }
+    }
 
     // Disable/fade checkbox rows if unchecked
     const rowShadow = document.getElementById('row-cosmetic-shadow');
@@ -141,6 +180,14 @@ export function applyStyles(styleConfig) {
             rowShadow.classList.remove('disabled');
         } else {
             rowShadow.classList.add('disabled');
+        }
+    }
+    const rowBorder = document.getElementById('row-cosmetic-border');
+    if (rowBorder) {
+        if (styleConfig.cosmeticBorder) {
+            rowBorder.classList.remove('disabled');
+        } else {
+            rowBorder.classList.add('disabled');
         }
     }
     const rowGradient = document.getElementById('row-cosmetic-gradient');
@@ -302,7 +349,10 @@ export function updateControlsFromConfig(styleConfig) {
     }
 
     const columnSplitSlider = document.getElementById('column-split');
-    if (columnSplitSlider) columnSplitSlider.value = styleConfig.columnSplit || 58;
+    if (columnSplitSlider) {
+        const isLeft = (styleConfig.sidebarPosition === 'left');
+        columnSplitSlider.value = isLeft ? (100 - (styleConfig.columnSplit || 58)) : (styleConfig.columnSplit || 58);
+    }
 
     const columnShadowDistanceSlider = document.getElementById('column-shadow-distance');
     if (columnShadowDistanceSlider) columnShadowDistanceSlider.value = styleConfig.columnShadowDistance || 10;
@@ -312,6 +362,12 @@ export function updateControlsFromConfig(styleConfig) {
 
     const columnGradientColorPicker = document.getElementById('column-gradient-color');
     if (columnGradientColorPicker) columnGradientColorPicker.value = styleConfig.columnGradientColor || '#000000';
+
+    const columnBorderWidthSlider = document.getElementById('column-border-width');
+    if (columnBorderWidthSlider) columnBorderWidthSlider.value = styleConfig.columnBorderWidth || 2;
+
+    const columnBorderOpacitySlider = document.getElementById('column-border-opacity');
+    if (columnBorderOpacitySlider) columnBorderOpacitySlider.value = styleConfig.columnBorderOpacity || 100;
 
     applyStyles(styleConfig);
 }

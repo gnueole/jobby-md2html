@@ -169,6 +169,8 @@ async function initializeJobby() {
     const columnShadowDistanceSlider = document.getElementById('column-shadow-distance');
     const columnGradientLengthSlider = document.getElementById('column-gradient-length');
     const columnGradientColorPicker = document.getElementById('column-gradient-color');
+    const columnBorderWidthSlider = document.getElementById('column-border-width');
+    const columnBorderOpacitySlider = document.getElementById('column-border-opacity');
 
     const presetClassicNb = document.getElementById('preset-classic-nb');
     const presetDarkMode = document.getElementById('preset-dark-mode');
@@ -345,10 +347,11 @@ async function initializeJobby() {
         styleConfig.layoutMode = layoutModeSelect.value;
 
         // Customizer Advanced Column Values
-        if (columnSplitSlider) styleConfig.columnSplit = parseInt(columnSplitSlider.value);
         if (columnShadowDistanceSlider) styleConfig.columnShadowDistance = parseInt(columnShadowDistanceSlider.value);
         if (columnGradientLengthSlider) styleConfig.columnGradientLength = parseInt(columnGradientLengthSlider.value);
         if (columnGradientColorPicker) styleConfig.columnGradientColor = columnGradientColorPicker.value;
+        if (columnBorderWidthSlider) styleConfig.columnBorderWidth = parseInt(columnBorderWidthSlider.value);
+        if (columnBorderOpacitySlider) styleConfig.columnBorderOpacity = parseInt(columnBorderOpacitySlider.value);
         if (advancedModeToggle) styleConfig.expertMode = advancedModeToggle.checked;
 
         if (styleConfig.colorBg !== colorBg.value ||
@@ -363,7 +366,6 @@ async function initializeJobby() {
 
         styleConfig.sidebarBg = colorSidebarBg.value;
         styleConfig.sidebarText = colorSidebarText.value;
-        styleConfig.sidebarPosition = sidebarPositionSelect.value;
 
         styleConfig.colorBg = colorBg.value;
         styleConfig.colorHeadings = colorHeadings.value;
@@ -414,6 +416,20 @@ async function initializeJobby() {
             if (bulletMatch) {
                 const [_, bullet, rest] = bulletMatch;
                 escaped = `<span class="md-bullet">${bullet}</span>${rest}`;
+            }
+
+            // 2b. Blockquotes: > text
+            const quoteMatch = escaped.match(/^(\s*&gt;)(\s*)(.*)$/);
+            if (quoteMatch) {
+                const [_, gtSym, spaces, content] = quoteMatch;
+                let highlightedContent = content;
+                highlightedContent = highlightedContent.replace(/\*\*(.*?)\*\*/g, '<span class="md-bold">**$1**</span>');
+                highlightedContent = highlightedContent.replace(/\*(.*?)\*/g, '<span class="md-italic">*$1*</span>');
+                highlightedContent = highlightedContent.replace(/_(.*?)_/g, '<span class="md-italic">_$1_</span>');
+                highlightedContent = highlightedContent.replace(/\[(.*?)\]\((.*?)\)/g, '<span class="md-link-text">[$1]</span><span class="md-link-url">($2)</span>');
+                highlightedContent = highlightedContent.replace(/`(.*?)`/g, '<span class="md-inline-code">`$1`</span>');
+
+                return `<span class="md-quote-symbol">${gtSym}</span>${spaces}<span class="md-quote-text">${highlightedContent}</span>`;
             }
 
             // 3. Bold: **text**
@@ -854,7 +870,7 @@ async function initializeJobby() {
         }
     });
 
-    // Real-time Visual Split Slider feedback
+    // Real-time Visual Split Slider feedback and custom Position-aware drag handling
     if (columnSplitSlider) {
         const splitMainPct = document.getElementById('split-main-pct');
         const splitSidebarPct = document.getElementById('split-sidebar-pct');
@@ -869,7 +885,52 @@ async function initializeJobby() {
         };
 
         columnSplitSlider.addEventListener('input', (e) => {
-            updateSplitVisual(e.target.value);
+            let val = parseInt(e.target.value);
+            if (val < 30) {
+                val = 30;
+                e.target.value = 30;
+            } else if (val > 70) {
+                val = 70;
+                e.target.value = 70;
+            }
+            
+            updateSplitVisual(val);
+
+            // Update styleConfig split based on sidebar position
+            const isLeft = (styleConfig.sidebarPosition === 'left');
+            if (isLeft) {
+                styleConfig.columnSplit = 100 - val;
+            } else {
+                styleConfig.columnSplit = val;
+            }
+            
+            applyStyles(styleConfig);
+        });
+
+        columnSplitSlider.addEventListener('change', () => {
+            runCompileMarkdown(markdownInput.value);
+            saveToLocalStorage();
+        });
+    }
+
+    if (sidebarPositionSelect) {
+        sidebarPositionSelect.addEventListener('change', () => {
+            const oldPosition = styleConfig.sidebarPosition;
+            const newPosition = sidebarPositionSelect.value;
+            
+            if (oldPosition !== newPosition) {
+                styleConfig.sidebarPosition = newPosition;
+                
+                // Invert the split slider UI value
+                if (columnSplitSlider) {
+                    const currentSliderVal = parseInt(columnSplitSlider.value);
+                    columnSplitSlider.value = 100 - currentSliderVal;
+                }
+                
+                applyStyles(styleConfig);
+                runCompileMarkdown(markdownInput.value);
+                saveToLocalStorage();
+            }
         });
     }
 
@@ -952,10 +1013,11 @@ async function initializeJobby() {
     const uiElements = [
         fontSizeSlider, lineHeightSlider, headingScaleSlider,
         marginXSlider, marginYSlider, sectionSpacingSlider,
-        layoutModeSelect, sidebarPositionSelect,
+        layoutModeSelect,
         colorSidebarBg, colorSidebarText,
         colorBg, colorHeadings, colorBody, colorLinks, colorAccent,
-        columnSplitSlider, columnShadowDistanceSlider, columnGradientLengthSlider, columnGradientColorPicker
+        columnShadowDistanceSlider, columnGradientLengthSlider, columnGradientColorPicker,
+        columnBorderWidthSlider, columnBorderOpacitySlider
     ];
 
     uiElements.forEach(el => {

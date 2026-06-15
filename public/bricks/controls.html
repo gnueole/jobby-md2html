@@ -215,25 +215,25 @@
                             <span class="col-pct" id="split-sidebar-pct">42%</span>
                         </div>
                     </div>
-                    <input type="range" id="column-split" min="30" max="70" value="58" class="split-slider-range">
+                    <input type="range" id="column-split" min="0" max="100" value="58" class="split-slider-range">
                 </div>
             </div>
 
-            <!-- Column Font Size Toggle -->
-            <div class="control-item expert-only">
-                <label>Column Font Size</label>
-                <div class="btn-group-toggle compact-toggle" id="column-font-size-group">
-                    <button type="button" class="toggle-btn active" data-value="normal" id="btn-colfont-std">Standard</button>
-                    <button type="button" class="toggle-btn" data-value="smaller" id="btn-colfont-sm">Smaller</button>
+            <!-- Column Font Preferences (Size & Family side-by-side) -->
+            <div class="control-item expert-only font-preferences-row">
+                <div class="font-pref-col">
+                    <label>Column Font Size</label>
+                    <div class="btn-group-toggle compact-toggle" id="column-font-size-group">
+                        <button type="button" class="toggle-btn active" data-value="normal" id="btn-colfont-std">Standard</button>
+                        <button type="button" class="toggle-btn" data-value="smaller" id="btn-colfont-sm">Smaller</button>
+                    </div>
                 </div>
-            </div>
-
-            <!-- Column Font Style Toggle -->
-            <div class="control-item expert-only">
-                <label>Column Font Family</label>
-                <div class="btn-group-toggle compact-toggle" id="column-font-style-group">
-                    <button type="button" class="toggle-btn active" data-value="inherit" id="btn-colfont-inherit">Default</button>
-                    <button type="button" class="toggle-btn" data-value="alternative" id="btn-colfont-alt">Alternative</button>
+                <div class="font-pref-col">
+                    <label>Column Font Family</label>
+                    <div class="btn-group-toggle compact-toggle" id="column-font-style-group">
+                        <button type="button" class="toggle-btn active" data-value="inherit" id="btn-colfont-inherit">Default</button>
+                        <button type="button" class="toggle-btn" data-value="alternative" id="btn-colfont-alt">Alternative</button>
+                    </div>
                 </div>
             </div>
 
@@ -258,6 +258,12 @@
                             <input type="checkbox" id="cosmetic-border">
                             <span>Border</span>
                         </label>
+                        <div class="inline-slider-container" id="border-slider-container">
+                            <input type="range" id="column-border-width" min="1" max="10" value="2" title="Border width (px)">
+                            <span class="slider-val" id="val-column-border-width">2px</span>
+                            <input type="range" id="column-border-opacity" min="10" max="100" step="5" value="100" title="Border opacity (%)">
+                            <span class="slider-val" id="val-column-border-opacity">100%</span>
+                        </div>
                     </div>
                     <!-- Gradient inline row -->
                     <div class="compact-option-row" id="row-cosmetic-gradient">
