@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.6.0] - 2026-06-16
 
 ### Added
-- **Markdown Editor Syntax Highlighting:** Interactive syntax coloring (headers, lists, bold, italic, links, code blocks) custom-designed for Dark and Light (Paper Cream) themes.
+- **Markdown Editor Syntax Highlighting:** Interactive syntax coloring (headers, lists, bold, italic, links, code blocks, and blockquotes) custom-designed for Dark and Light (Paper Cream) themes.
 - **Syntax Highlighting Toggle:** "Syntax Color" switch in the editor's header to enable or disable the overlay.
 - **Keyboard Shortcuts:**
   - `Ctrl + B` for Bold
@@ -24,9 +24,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Interactive Guide:** Floating keyboard shortcuts legend/tooltip helper `ⓘ Shortcuts` inside the editor header.
 - **Layout Button groups:** Sleek pill-style toggle button groups replacing traditional layout dropdown selects.
 - **Expert Mode (Advanced Mode):** Added an Expert Mode toggle switch at the top of the controls panel with a popover help menu detailing the unlocked settings. Unlocks advanced color pickers, section spacing, dynamic column splits, alternate fonts, and n8n webhook sync.
-- **Dynamic Column Split Slider:** A modern, slick visual percentage split slider allowing real-time column resizing between Main and Sidebar.
-- **Column Cosmetic Options:** Inline compact checkboxes and sliders for Column Shadow (with distance adjustment), Column Border, and Column Gradient (with length and color customization).
-- **Column Font Preferences:** Options to adjust the column font size (smaller/standard) and apply a clean alternative sans-serif font family.
+- **Dynamic Column Split Slider:** A modern, slick visual percentage split slider allowing real-time column resizing. Styled with a vertical divider bar handle fitting the widget height (48px), 1-to-1 mouse drag tracking (no parallax), and automatic value inversion when swapping Sidebar Position (Left <> Right) to keep the split aligned.
+- **Column Cosmetic Options:** Inline compact checkboxes and sliders for Column Shadow (with distance adjustment), Column Border (with pixel width and transparency/opacity sliders), and Column Gradient (with length and color customization).
+- **Column Font Preferences:** Options to adjust the column font size (smaller/standard) and apply a clean alternative sans-serif font family, grouped side-by-side in a compact row.
+- **Blockquote Editor Highlighting:** Added support for blockquote `> text` syntax highlighting in the editor with a bold colored `>` symbol and italicized quote body.
 - **Colors before Layout:** Reordered sections in the Customizer panel to present color palettes before structural settings.
 - **Centralized Versioning:** Read and inject `version` from `package.json` dynamically into static resource imports cache-busting, header about badge, API endpoints, and Makefile.
 
