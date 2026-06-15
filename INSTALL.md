@@ -1,5 +1,8 @@
 # Jobby MD Editor - Installation Guide
 
+*Author: Julien (Éole) Avarre (<hi@eole.me>)*
+
+
 This guide provides instructions to run the Jobby Markdown Resume Editor locally on your machine.
 
 ---
@@ -23,7 +26,7 @@ Use this option if you only want to run the resume editor without local n8n work
    ```
 
 3. **Access the editor:**
-   👉 **[http://localhost:3000](http://localhost:3000)**
+   👉 **[http://localhost:3010](http://localhost:3010)**
 
 ---
 
@@ -31,10 +34,10 @@ Use this option if you only want to run the resume editor without local n8n work
 
 Use this option to spin up the Jobby Editor along with a local `n8n` instance, `gotenberg` (PDF renderer), and `mcp-notion` support containers.
 
-*Note on layout: The Docker orchestration files are structured explicitly inside the `docker/` directory:*
-* *`docker/dev/docker-compose.yml` is used for local WSL/Linux development.*
-* *`docker/prod/docker-compose.yml` is used for remote production/staging deployments.*
-* *Shared build assets (`Dockerfile`, `vector.Dockerfile`, and `vector.yaml`) are located directly inside `docker/` as they are environment-agnostic.*
+*Note on layout: The Docker orchestration files are located inside the `docker/` directory:*
+* *`docker/docker-compose.yml` is used for local WSL/Linux development.*
+* *`docker/docker-compose.prod.yml` is used for remote production deployments.*
+* *Shared build assets (`Dockerfile`, `vector.Dockerfile`, and `vector.yaml`) are located directly inside `docker/`.*
 
 1. **Configure Docker Permissions (Recommended for WSL)**
    To run Docker without `sudo` and prevent socket connection permission errors:
@@ -47,19 +50,21 @@ Use this option to spin up the Jobby Editor along with a local `n8n` instance, `
 2. **Start the services:**
    Run the following command at the root of the project:
    ```bash
-    docker compose -f docker/dev/docker-compose.yml up -d
+   make up
    ```
+   *(Or alternatively: `docker compose -f docker/docker-compose.yml up -d`)*
 
 3. **Access the services in your browser:**
-   - 👉 **Resume Editor:** [http://localhost:3000](http://localhost:3000)
+   - 👉 **Resume Editor:** [http://localhost:3010](http://localhost:3010)
    - 👉 **n8n Dashboard:** [http://localhost:5678](http://localhost:5678)
 
    *Note: For security, both ports are bound to `127.0.0.1` (localhost) on the host. We bypass Traefik entirely in development, so no domain configuration or SSL setup is required.*
 
 4. **Stop the services:**
    ```bash
-    docker compose -f docker/dev/docker-compose.yml down
+   make down
    ```
+   *(Or alternatively: `docker compose -f docker/docker-compose.yml down`)*
 
 ---
 
@@ -80,12 +85,14 @@ To scrape jobs from LinkedIn and send them directly to your webhook:
 
 To manage and backup your workflows, the project includes a Python sync toolkit in `toolkit/sync_n8n.py`.
 
-### 1. Configure the Project (Setup Wizard)
-The easiest way to configure both your local development and production environments (including n8n, Notion, and Axiom keys) is to run the interactive setup wizard:
+### 1. Configure the Project
+To check dependencies and initialize your local configuration (`.env` file and npm dependencies), run:
 ```bash
-python3 setup_wizard.py
+make configure
 ```
-This wizard will prompt you for variables, guide you on where to retrieve them, auto-generate secure tokens if skipped, and write them to the correct `.env` files (`.env.dev`, `.env.prod`, and `toolkit/.env`) with secure file permissions.
+*(Or alternatively: `bash configure`)*
+
+This script verifies system dependencies (Node.js, npm, Docker, Python 3) and initializes the local environment file. If Doppler CLI is installed, the Makefile targets (`make dev`, `make up`, etc.) will automatically fetch secrets from Doppler. Otherwise, configure your environment secrets inside the local `.env` file manually.
 
 ### 2. Backup All Workflows from Production
 To download all workflows from your production n8n instance to the local `n8n/` directory:
@@ -105,4 +112,14 @@ To push all workflows from the `n8n/` directory into your local n8n instance:
   python3 toolkit/sync_n8n.py --push-all --dev
   ```
   *(Note: If the script encounters docker daemon connection issues on WSL, it will print copy-pasteable commands to run manually).*
+
+---
+
+## 🔗 Jobby Project Links
+* **[README](README.md)** - Project overview, architecture, directives and guide.
+* **[Changelog](CHANGELOG.md)** - Review releases and change history.
+* **[Security Policy](SECURITY.md)** - View our security policy and vulnerability reporting instructions.
+* **[License](LICENSE)** - View the MIT License terms.
+
+
 

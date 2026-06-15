@@ -2,6 +2,43 @@ export function applyStyles(styleConfig) {
     const resumeOutput = document.getElementById('resume-output');
     if (!resumeOutput) return;
 
+    // Apply cosmetic classes
+    if (styleConfig.cosmeticShadow !== false) {
+        resumeOutput.classList.add('has-shadow');
+    } else {
+        resumeOutput.classList.remove('has-shadow');
+    }
+
+    if (styleConfig.cosmeticBorder) {
+        resumeOutput.classList.add('has-border');
+    } else {
+        resumeOutput.classList.remove('has-border');
+    }
+
+    if (styleConfig.cosmeticGradient) {
+        resumeOutput.classList.add('has-gradient');
+    } else {
+        resumeOutput.classList.remove('has-gradient');
+    }
+
+
+    // Update button group toggles active state
+    const syncGroup = (groupId, val) => {
+        const group = document.getElementById(groupId);
+        if (!group) return;
+        const buttons = group.querySelectorAll('.toggle-btn');
+        buttons.forEach(btn => {
+            if (btn.getAttribute('data-value') === val) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    };
+    syncGroup('layout-mode-group', styleConfig.layoutMode || '1-column');
+    syncGroup('sidebar-position-group', styleConfig.sidebarPosition || 'right');
+
+
     resumeOutput.style.setProperty('--resume-font-family', styleConfig.fontFamily);
     resumeOutput.style.setProperty('--resume-font-size', styleConfig.fontSize + 'px');
     resumeOutput.style.setProperty('--resume-line-height', styleConfig.lineHeight);
@@ -185,6 +222,14 @@ export function updateControlsFromConfig(styleConfig) {
     if (colorBody) colorBody.value = styleConfig.colorBody;
     if (colorLinks) colorLinks.value = styleConfig.colorLinks;
     if (colorAccent) colorAccent.value = styleConfig.colorAccent;
+
+    const cosmeticShadow = document.getElementById('cosmetic-shadow');
+    const cosmeticBorder = document.getElementById('cosmetic-border');
+    const cosmeticGradient = document.getElementById('cosmetic-gradient');
+
+    if (cosmeticShadow) cosmeticShadow.checked = styleConfig.cosmeticShadow !== false;
+    if (cosmeticBorder) cosmeticBorder.checked = !!styleConfig.cosmeticBorder;
+    if (cosmeticGradient) cosmeticGradient.checked = !!styleConfig.cosmeticGradient;
 
     applyStyles(styleConfig);
 }

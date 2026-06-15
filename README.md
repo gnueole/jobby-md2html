@@ -1,5 +1,8 @@
 # jobby Project: An AI automated resume with a Markdown editor
 
+*Author: Julien (Éole) Avarre (<hi@eole.me>)*
+
+
 A premium, modern Markdown resume editor that respects ATS (Applicant Tracking System) standards, designed to run locally without heavy external dependencies.
 
 It serves as a **quick and clean manual overdrive** for immediate layout tweaks and content changes, while also acting as the **HTML/CSS rendering configuration plane** for the PDF engine.
@@ -24,7 +27,7 @@ Before setting up Jobby, review the following platform and service requirements:
 ## 📦 Installation & Setup
 
 For step-by-step local running instructions (using either local Node.js or Docker WSL), please refer to the:
-👉 **[Installation Guide (INSTALL.md)](file:///home/eole/projects/resume-md2html/INSTALL.md)**
+👉 **[Installation Guide](INSTALL.md)**
 
 ---
 
@@ -127,6 +130,39 @@ Following standard guidelines, you can use special shortcuts in your Markdown to
   - `##` (H2) sections are placed in the **Main Column (right)**.
   *(Note: In 1-column layout, they are both displayed sequentially in a single column).*
 
+---
+
+## ⚡ Interactive Editing & Layout Customizations
+
+The editor contains several premium UX enhancements to make document composition and layout adjustment seamless:
+
+### 1. Keyboard Edition Shortcuts
+Speed up your writing in the Markdown editor with the following shortcuts:
+* **`Ctrl + B`**: Toggle **Bold** (adds/wraps selection in `**`).
+* **`Ctrl + I`**: Toggle *Italic* (adds/wraps selection in `*`).
+* **`Ctrl + K`**: Insert **Link** or transform selection to Link `[text](url)` (prompts for URL).
+* **`Ctrl + 1` / `2` / `3`**: Set Heading level (`#`, `##`, or `###`) for the current line.
+* **`Ctrl + UpArrow` / `DownArrow`**: 
+  * If editing standard text: moves the current line above/below.
+  * If inside/selecting a section (defined by a heading): moves the **entire section** (heading and text body) above/below the neighboring sections, maintaining complete structure.
+
+### 2. Live Syntax Highlighting & Toggle
+* The Markdown editor features a dynamic color highlighting system (customized for both Dark and Light UI modes) that color-codes headers, lists, links, and bold text as you type.
+* To deactivate highlighting, simply uncheck the **Syntax Color** toggle in the editor's header to fallback to clean plain-text editing.
+
+### 3. Layout Control Buttons
+* Dropdown menus for **Resume Structure** and **Sidebar Position** have been replaced with modern, tactile active-toggle buttons.
+* **Customizer Repositioning:** You can switch the customizer controls panel to the **Left Side** of your screen instead of the default **Right Side** to suit your preferred workflow.
+
+### 4. Cosmetic Page Canvas Options
+You can configure the style of your A4 resume sheet inside the preview canvas with three toggles:
+* **Page Shadow:** Adds a subtle ambient drop shadow around the A4 sheet.
+* **Page Border:** Wraps the sheet in a refined double-line border tinted with your accent color.
+* **Subtle Gradient:** Infuses a gentle gradient starting from your canvas background color and fading into a soft tint.
+
+### 5. Centralized Versioning
+* Versioning is centralized dynamically in `package.json`. It is automatically parsed and injected as the single source of truth across the server, CLI, static resources (via query cache-busting), and the interface's "About" modal.
+
 ## 🖨️ Generate PDF for Recruiters
 
 When you are satisfied with your layout:
@@ -162,7 +198,7 @@ Since Vector mounts `/var/run/docker.sock` to listen to all container stdout/std
 
 To prevent cross-environment log mixing on shared hosts:
 1. All containers are associated with their respective Docker Compose project.
-2. Vector’s configuration ([vector.yaml](file:///home/eole/projects/resume-md2html/docker/vector.yaml)) contains a filter transform that matches the container’s Docker Compose project label against the current stack's name:
+2. Vector’s configuration ([vector.yaml](docker/vector.yaml)) contains a filter transform that matches the container’s Docker Compose project label against the current stack's name:
    ```yaml
    transforms:
      filter_project_logs:
@@ -171,7 +207,18 @@ To prevent cross-environment log mixing on shared hosts:
          - "docker_logs"
        condition: '.label."com.docker.compose.project" == "${COMPOSE_PROJECT_NAME}"'
    ```
-3. The `COMPOSE_PROJECT_NAME` is passed directly from [docker-compose.yml](file:///home/eole/projects/resume-md2html/docker/docker-compose.yml) into the Vector container environment (defaulting to the production project name `n8n-eole-prod`).
+3. The `COMPOSE_PROJECT_NAME` is passed directly from [docker-compose.yml](docker/docker-compose.yml) into the Vector container environment (defaulting to the production project name `n8n-eole-prod`).
 
 This ensures that only logs produced by containers belonging to the local environment stack are forwarded to the configured Axiom dataset.
+
+---
+
+## 🔗 Jobby Project Links
+* **[Installation Guide](INSTALL.md)** - Learn how to set up Jobby locally or via Docker.
+* **[Changelog](CHANGELOG.md)** - Review releases and change history.
+* **[Security Policy](SECURITY.md)** - View our security policy and vulnerability reporting instructions.
+
+## 📄 License
+This project is open-source and available under the [MIT License](LICENSE).
+
 

@@ -54,29 +54,44 @@ def ensure_env(require_workflow_id=True, use_dev=False, api_key_override=None, w
                 key, val = line.split("=", 1)
                 val = val.strip().strip('"').strip("'")
                 config[key.strip()] = val
-    elif not use_dev:
-        print(f"Error: .env file is missing or empty at {env_path}")
-        print("Please run this script with the --init-env option to generate a template.")
-        sys.exit(1)
         
     if use_dev:
-        API_KEY = api_key_override or config.get("DEV_N8N_API_KEY")
-        WORKFLOW_ID = workflow_id_override or config.get("DEV_N8N_WORKFLOW_ID")
-        BASE_URL = base_url_override or config.get("DEV_N8N_BASE_URL") or "http://localhost:5678"
+        API_KEY = (api_key_override or 
+                   os.environ.get("DEV_N8N_API_KEY") or 
+                   os.environ.get("N8N_API_KEY") or 
+                   config.get("DEV_N8N_API_KEY") or 
+                   config.get("N8N_API_KEY"))
+        WORKFLOW_ID = (workflow_id_override or 
+                       os.environ.get("DEV_N8N_WORKFLOW_ID") or 
+                       os.environ.get("N8N_WORKFLOW_ID") or 
+                       config.get("DEV_N8N_WORKFLOW_ID") or 
+                       config.get("N8N_WORKFLOW_ID"))
+        BASE_URL = (base_url_override or 
+                    os.environ.get("DEV_N8N_BASE_URL") or 
+                    os.environ.get("N8N_BASE_URL") or 
+                    config.get("DEV_N8N_BASE_URL") or 
+                    config.get("DEV_N8N_BASE_URL") or 
+                    "http://localhost:5678")
     else:
-        API_KEY = api_key_override or config.get("N8N_API_KEY")
-        WORKFLOW_ID = workflow_id_override or config.get("N8N_WORKFLOW_ID")
-        BASE_URL = base_url_override or config.get("N8N_BASE_URL", "https://n8n.eole.me")
+        API_KEY = (api_key_override or 
+                   os.environ.get("N8N_API_KEY") or 
+                   config.get("N8N_API_KEY"))
+        WORKFLOW_ID = (workflow_id_override or 
+                       os.environ.get("N8N_WORKFLOW_ID") or 
+                       config.get("N8N_WORKFLOW_ID"))
+        BASE_URL = (base_url_override or 
+                    os.environ.get("N8N_BASE_URL") or 
+                    config.get("N8N_BASE_URL") or 
+                    "https://n8n.eole.me")
         
     BASE_URL = BASE_URL.rstrip("/")
     
     if not API_KEY and not use_dev:
-        print("Error: Missing credentials in .env file.")
-        print("Please ensure N8N_API_KEY and N8N_BASE_URL are populated in your .env file.")
+        print("Error: Missing credentials. N8N_API_KEY must be set in environment variables or toolkit/.env file.")
         sys.exit(1)
         
     if require_workflow_id and not WORKFLOW_ID:
-        print("Error: Missing WORKFLOW_ID in .env file or command override (--id).")
+        print("Error: Missing WORKFLOW_ID. N8N_WORKFLOW_ID must be set in environment variables, toolkit/.env file, or command override (--id).")
         sys.exit(1)
         
     if WORKFLOW_ID:
@@ -303,7 +318,7 @@ def backup_all(n8n_dir, use_dev):
                 sys.exit(1)
             elif "true" not in check_res.stdout.lower():
                 print(f"Error: Docker container '{container_name}' is not running.")
-                print("Please start your dev environment using 'docker compose -f docker/dev/docker-compose.yml up -d' first.")
+                print("Please start your dev environment using 'make up' or 'docker compose -f docker/docker-compose.yml up -d' first.")
                 sys.exit(1)
             
             print("Exporting workflows inside the container...")
@@ -399,7 +414,7 @@ def push_all(n8n_dir, use_dev):
                 sys.exit(1)
             elif "true" not in check_res.stdout.lower():
                 print(f"Error: Docker container '{container_name}' is not running.")
-                print("Please start your dev environment using 'docker compose -f docker/dev/docker-compose.yml up -d' first.")
+                print("Please start your dev environment using 'make up' or 'docker compose -f docker/docker-compose.yml up -d' first.")
                 sys.exit(1)
             
             print(f"Copying workflows to container '{container_name}'...")

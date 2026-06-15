@@ -1,5 +1,8 @@
 # Security Policy
 
+*Author: Julien (Éole) Avarre (<hi@eole.me>)*
+
+
 We take the security of Jobby seriously. If you believe you have found a security vulnerability, please report it to us privately so we can resolve it before public disclosure.
 
 ## Supported Versions
@@ -25,3 +28,13 @@ Please do not open a public issue for security vulnerabilities. Instead, report 
 * **Acknowledgment**: We will acknowledge receipt of your report within 48 hours.
 * **Triage**: We will investigate the issue and coordinate with you on confirmation and timeline.
 * **Resolution**: If confirmed, we will develop a patch and release an update. We ask that you give us reasonable time to fix the issue before public disclosure.
+
+---
+
+## 🔗 Jobby Project Links
+* **[README](README.md)** - Project overview, architecture, directives and guide.
+* **[Installation Guide](INSTALL.md)** - Learn how to set up Jobby locally or via Docker.
+* **[Changelog](CHANGELOG.md)** - Review releases and change history.
+* **[License](LICENSE)** - View the MIT License terms.
+
+

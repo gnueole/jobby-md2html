@@ -8,6 +8,20 @@ import { applyStyles, updateControlsFromConfig } from './js/styles.js';
 import { compileMarkdown, updateHeaderInMarkdown } from './js/parser.js';
 
 async function initializeJobby() {
+    // --- Fetch config (including dynamic version) ---
+    let appVersion = '1.5.0';
+    try {
+        const configRes = await fetch('/api/config');
+        if (configRes.ok) {
+            const configData = await configRes.json();
+            if (configData.VERSION) {
+                appVersion = configData.VERSION;
+            }
+        }
+    } catch (e) {
+        console.warn("Could not fetch version config:", e);
+    }
+
     // --- Load public component bricks dynamically ---
     const publicBricks = [
         { id: 'header-container', url: 'bricks/header.html' },
@@ -23,9 +37,13 @@ async function initializeJobby() {
             const res = await fetch(brick.url);
             if (!res.ok) throw new Error(`Failed to fetch ${brick.url}: ${res.statusText}`);
             const htmlText = await res.text();
+            
+            // Replace version dynamically
+            const processedHtml = htmlText.replace(/{{VERSION}}/g, appVersion);
+            
             const container = document.getElementById(brick.id);
             if (container) {
-                const doc = parser.parseFromString(htmlText, 'text/html');
+                const doc = parser.parseFromString(processedHtml, 'text/html');
                 container.replaceChildren(...doc.body.childNodes);
             }
         }));
@@ -278,6 +296,7 @@ async function initializeJobby() {
 
         runAtsChecker(text, result.html);
         updatePageBreaks();
+        updateSyntaxHighlight();
     }
 
     function saveCustomColorsState() {
@@ -349,6 +368,441 @@ async function initializeJobby() {
     initHighlighting(markdownInput, resumeOutput, highlightState);
     initCursorRadar(markdownInput);
     initBidirectionalSync(markdownInput, resumeOutput, canvasWrapper, highlightState);
+
+    // --- Dynamic Syntax Highlighting ---
+    const markdownHighlight = document.getElementById('markdown-highlight');
+    const highlightCode = document.getElementById('highlight-code');
+    const cbSyntaxHighlight = document.getElementById('cb-syntax-highlight');
+    const textareaWrapper = document.querySelector('.textarea-syntax-wrapper');
+
+    function escapeHTML(text) {
+        return text
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+    }
+
+    function highlightMarkdown(text) {
+        if (!text) return "";
+        const lines = text.split('\n');
+        const highlightedLines = lines.map(line => {
+            let escaped = escapeHTML(line);
+            
+            // 1. Headings
+            const headingMatch = escaped.match(/^(\s*)(#{1,6})(\s+)(.*)$/);
+            if (headingMatch) {
+                const [_, indent, hashes, spaces, content] = headingMatch;
+                return `${indent}<span class="md-hash">${hashes}</span>${spaces}<span class="md-heading">${content}</span>`;
+            }
+
+            // 2. Bullet Lists
+            const bulletMatch = escaped.match(/^(\s*[-\*]\s+)(.*)$/);
+            if (bulletMatch) {
+                const [_, bullet, rest] = bulletMatch;
+                escaped = `<span class="md-bullet">${bullet}</span>${rest}`;
+            }
+
+            // 3. Bold: **text**
+            escaped = escaped.replace(/\*\*(.*?)\*\*/g, '<span class="md-bold">**$1**</span>');
+
+            // 4. Italic: *text* or _text_
+            escaped = escaped.replace(/\*(.*?)\*/g, '<span class="md-italic">*$1*</span>');
+            escaped = escaped.replace(/_(.*?)_/g, '<span class="md-italic">_$1_</span>');
+
+            // 5. Links: [text](url)
+            escaped = escaped.replace(/\[(.*?)\]\((.*?)\)/g, '<span class="md-link-text">[$1]</span><span class="md-link-url">($2)</span>');
+
+            // 6. Inline backticks
+            escaped = escaped.replace(/`(.*?)`/g, '<span class="md-inline-code">`$1`</span>');
+
+            return escaped;
+        });
+
+        return highlightedLines.join('\n') + (text.endsWith('\n') ? '\n' : '');
+    }
+
+    function updateSyntaxHighlight() {
+        if (highlightCode && cbSyntaxHighlight && cbSyntaxHighlight.checked) {
+            highlightCode.innerHTML = highlightMarkdown(markdownInput.value);
+        }
+    }
+
+    if (markdownInput && markdownHighlight) {
+        // Scroll synchronization
+        markdownInput.addEventListener('scroll', () => {
+            markdownHighlight.scrollTop = markdownInput.scrollTop;
+            markdownHighlight.scrollLeft = markdownInput.scrollLeft;
+        });
+    }
+
+    if (cbSyntaxHighlight) {
+        // Load default/saved preference
+        const savedSyntax = localStorage.getItem('syntax_highlight_active') !== 'false';
+        cbSyntaxHighlight.checked = savedSyntax;
+        if (textareaWrapper) {
+            textareaWrapper.classList.toggle('syntax-active', savedSyntax);
+        }
+
+        cbSyntaxHighlight.addEventListener('change', () => {
+            const active = cbSyntaxHighlight.checked;
+            localStorage.setItem('syntax_highlight_active', active);
+            if (textareaWrapper) {
+                textareaWrapper.classList.toggle('syntax-active', active);
+            }
+            if (active) {
+                updateSyntaxHighlight();
+                if (markdownHighlight) {
+                    markdownHighlight.scrollTop = markdownInput.scrollTop;
+                    markdownHighlight.scrollLeft = markdownInput.scrollLeft;
+                }
+            }
+        });
+    }
+
+    // --- Keyboard Edition Shortcuts ---
+    if (markdownInput) {
+        markdownInput.addEventListener('keydown', (e) => {
+            const isCtrl = e.ctrlKey || e.metaKey;
+            if (!isCtrl) return;
+
+            const start = markdownInput.selectionStart;
+            const end = markdownInput.selectionEnd;
+            const value = markdownInput.value;
+            const selection = value.substring(start, end);
+
+            const replaceSelection = (newText, cursorOffset = 0) => {
+                markdownInput.value = value.substring(0, start) + newText + value.substring(end);
+                const newCursorPos = start + newText.length - cursorOffset;
+                markdownInput.setSelectionRange(newCursorPos, newCursorPos);
+                markdownInput.dispatchEvent(new Event('input'));
+            };
+
+            const toggleFormatting = (symbol) => {
+                const symLen = symbol.length;
+                let s = start;
+                let eSel = end;
+                let sel = value.substring(s, eSel);
+
+                // 1. Separate leading and trailing whitespace of the selection
+                const matchLeading = sel.match(/^\s+/);
+                const matchTrailing = sel.match(/\s+$/);
+                const leading = matchLeading ? matchLeading[0] : '';
+                const trailing = matchTrailing ? matchTrailing[0] : '';
+                
+                // Trimmed selection
+                let trimmed = sel.substring(leading.length, sel.length - trailing.length);
+                
+                // Adjust indices to match the trimmed selection in the textarea
+                let trimStart = s + leading.length;
+                let trimEnd = eSel - trailing.length;
+
+                // 2. Check if the trimmed selection itself is wrapped in symbol
+                if (trimmed.startsWith(symbol) && trimmed.endsWith(symbol) && trimmed.length >= symLen * 2) {
+                    const unwrapped = trimmed.substring(symLen, trimmed.length - symLen);
+                    const newText = leading + unwrapped + trailing;
+                    
+                    markdownInput.value = value.substring(0, start) + newText + value.substring(end);
+                    const newStart = start + leading.length;
+                    const newEnd = newStart + unwrapped.length;
+                    markdownInput.setSelectionRange(newStart, newEnd);
+                    markdownInput.dispatchEvent(new Event('input'));
+                    return;
+                }
+
+                // 3. Check if the characters immediately outside the trimmed selection are the symbol
+                const hasOutsideSymbol = 
+                    trimStart - symLen >= 0 &&
+                    trimEnd + symLen <= value.length &&
+                    value.substring(trimStart - symLen, trimStart) === symbol &&
+                    value.substring(trimEnd, trimEnd + symLen) === symbol;
+
+                if (hasOutsideSymbol) {
+                    const unwrapped = trimmed;
+                    markdownInput.value = value.substring(0, trimStart - symLen) + unwrapped + value.substring(trimEnd + symLen);
+                    
+                    const newStart = trimStart - symLen;
+                    const newEnd = newStart + unwrapped.length;
+                    markdownInput.setSelectionRange(newStart, newEnd);
+                    markdownInput.dispatchEvent(new Event('input'));
+                    return;
+                }
+
+                // 4. Toggle ON (wrap in symbol)
+                if (!trimmed) {
+                    const newText = leading + symbol + symbol + trailing;
+                    markdownInput.value = value.substring(0, start) + newText + value.substring(end);
+                    const newCursorPos = start + leading.length + symLen;
+                    markdownInput.setSelectionRange(newCursorPos, newCursorPos);
+                } else {
+                    const wrapped = symbol + trimmed + symbol;
+                    const newText = leading + wrapped + trailing;
+                    markdownInput.value = value.substring(0, start) + newText + value.substring(end);
+                    const newStart = start + leading.length;
+                    const newEnd = newStart + wrapped.length;
+                    markdownInput.setSelectionRange(newStart, newEnd);
+                }
+                markdownInput.dispatchEvent(new Event('input'));
+            };
+
+            const key = e.key.toLowerCase();
+            if (key === 'b') {
+                e.preventDefault();
+                toggleFormatting('**');
+            } else if (key === 'i') {
+                e.preventDefault();
+                toggleFormatting('*');
+            } else if (key === 'k') {
+                e.preventDefault();
+                
+                const matchLeading = selection.match(/^\s+/);
+                const matchTrailing = selection.match(/\s+$/);
+                const leading = matchLeading ? matchLeading[0] : '';
+                const trailing = matchTrailing ? matchTrailing[0] : '';
+                const trimmed = selection.substring(leading.length, selection.length - trailing.length);
+
+                if (trimmed.startsWith('http://') || trimmed.startsWith('https://') || trimmed.startsWith('mailto:')) {
+                    replaceSelection(`${leading}[Link](${trimmed})${trailing}`, 0);
+                } else {
+                    const url = prompt("Enter URL:", "https://");
+                    if (url) {
+                        const newText = `${leading}[${trimmed || 'Link'}](${url})${trailing}`;
+                        markdownInput.value = value.substring(0, start) + newText + value.substring(end);
+                        const newCursorPos = start + leading.length + `[${trimmed || 'Link'}](${url})`.length;
+                        markdownInput.setSelectionRange(newCursorPos, newCursorPos);
+                        markdownInput.dispatchEvent(new Event('input'));
+                    }
+                }
+            } else if (key === '1') {
+                e.preventDefault();
+                applyHeading(1);
+            } else if (key === '2') {
+                e.preventDefault();
+                applyHeading(2);
+            } else if (key === '3') {
+                e.preventDefault();
+                applyHeading(3);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                moveSectionOrLine(-1);
+            } else if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                moveSectionOrLine(1);
+            }
+        });
+    }
+
+    function applyHeading(level) {
+        const text = markdownInput.value;
+        const start = markdownInput.selectionStart;
+        const end = markdownInput.selectionEnd;
+        
+        const lineStart = text.lastIndexOf('\n', start - 1) + 1;
+        let lineEnd = text.indexOf('\n', end);
+        if (lineEnd === -1) lineEnd = text.length;
+        
+        const before = text.substring(0, lineStart);
+        const after = text.substring(lineEnd);
+        const lineText = text.substring(lineStart, lineEnd);
+        
+        const cleanedLine = lineText.replace(/^#{1,6}\s*/, '');
+        const hashes = '#'.repeat(level) + ' ';
+        const newLineText = hashes + cleanedLine;
+        
+        markdownInput.value = before + newLineText + after;
+        const offset = newLineText.length - lineText.length;
+        markdownInput.setSelectionRange(start + offset, end + offset);
+        markdownInput.dispatchEvent(new Event('input'));
+    }
+
+    function moveSectionOrLine(direction) {
+        const text = markdownInput.value;
+        const start = markdownInput.selectionStart;
+        const end = markdownInput.selectionEnd;
+        
+        const lineStart = text.lastIndexOf('\n', start - 1) + 1;
+        let lineEnd = text.indexOf('\n', end);
+        if (lineEnd === -1) lineEnd = text.length;
+        const selectionFirstLine = text.substring(lineStart, text.indexOf('\n', lineStart) === -1 ? text.length : text.indexOf('\n', lineStart));
+        
+        const headingMatch = selectionFirstLine.match(/^(\s*)(#{1,6})\s+/);
+        if (headingMatch) {
+            const level = headingMatch[2].length;
+            const sectionStart = lineStart;
+            
+            let sectionEnd = text.length;
+            const lines = text.split('\n');
+            let currentPos = 0;
+            
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i];
+                const lineStartPos = currentPos;
+                currentPos += line.length + 1;
+                
+                if (lineStartPos <= sectionStart) continue;
+                
+                const match = line.match(/^(\s*)(#{1,6})\s+/);
+                if (match) {
+                    const headingLevel = match[2].length;
+                    if (headingLevel <= level) {
+                        sectionEnd = lineStartPos - 1;
+                        break;
+                    }
+                }
+            }
+            
+            const sectionText = text.substring(sectionStart, sectionEnd);
+            
+            if (direction === -1) { // Move Up
+                if (sectionStart === 0) return;
+                
+                let prevSectionStart = -1;
+                currentPos = 0;
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i];
+                    const lineStartPos = currentPos;
+                    currentPos += line.length + 1;
+                    
+                    if (lineStartPos >= sectionStart) break;
+                    
+                    const match = line.match(/^(\s*)(#{1,6})\s+/);
+                    if (match) {
+                        const headingLevel = match[2].length;
+                        if (headingLevel === level) {
+                            prevSectionStart = lineStartPos;
+                        }
+                    }
+                }
+                
+                if (prevSectionStart === -1) {
+                    moveLine(direction);
+                    return;
+                }
+                
+                const prevSectionText = text.substring(prevSectionStart, sectionStart - 1);
+                const before = text.substring(0, prevSectionStart);
+                const after = text.substring(sectionEnd);
+                
+                markdownInput.value = before + sectionText + '\n' + prevSectionText + after;
+                markdownInput.setSelectionRange(prevSectionStart, prevSectionStart + sectionText.length);
+            } else { // Move Down
+                if (sectionEnd === text.length) return;
+                
+                let nextSectionStart = sectionEnd + 1;
+                let nextSectionEnd = text.length;
+                
+                currentPos = 0;
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i];
+                    const lineStartPos = currentPos;
+                    currentPos += line.length + 1;
+                    
+                    if (lineStartPos < nextSectionStart) continue;
+                    
+                    const match = line.match(/^(\s*)(#{1,6})\s+/);
+                    if (match) {
+                        const headingLevel = match[2].length;
+                        if (headingLevel <= level) {
+                            nextSectionEnd = lineStartPos - 1;
+                            break;
+                        }
+                    }
+                }
+                
+                const nextSectionText = text.substring(nextSectionStart, nextSectionEnd);
+                const before = text.substring(0, sectionStart);
+                const after = text.substring(nextSectionEnd);
+                
+                markdownInput.value = before + nextSectionText + '\n' + sectionText + after;
+                const newStart = sectionStart + nextSectionText.length + 1;
+                markdownInput.setSelectionRange(newStart, newStart + sectionText.length);
+            }
+        } else {
+            moveLine(direction);
+        }
+        
+        markdownInput.dispatchEvent(new Event('input'));
+    }
+
+    function moveLine(direction) {
+        const text = markdownInput.value;
+        const start = markdownInput.selectionStart;
+        const end = markdownInput.selectionEnd;
+        
+        const lineStart = text.lastIndexOf('\n', start - 1) + 1;
+        let lineEnd = text.indexOf('\n', end);
+        if (lineEnd === -1) lineEnd = text.length;
+        
+        const selectedLines = text.substring(lineStart, lineEnd);
+        
+        if (direction === -1) { // Move Up
+            if (lineStart === 0) return;
+            const prevLineStart = text.lastIndexOf('\n', lineStart - 2) + 1;
+            const prevLine = text.substring(prevLineStart, lineStart - 1);
+            
+            const before = text.substring(0, prevLineStart);
+            const after = text.substring(lineEnd);
+            
+            markdownInput.value = before + selectedLines + '\n' + prevLine + after;
+            markdownInput.setSelectionRange(prevLineStart, prevLineStart + selectedLines.length);
+        } else { // Move Down
+            if (lineEnd === text.length) return;
+            let nextLineEnd = text.indexOf('\n', lineEnd + 1);
+            if (nextLineEnd === -1) nextLineEnd = text.length;
+            const nextLine = text.substring(lineEnd + 1, nextLineEnd);
+            
+            const before = text.substring(0, lineStart);
+            const after = text.substring(nextLineEnd);
+            
+            markdownInput.value = before + nextLine + '\n' + selectedLines + after;
+            const newStart = lineStart + nextLine.length + 1;
+            markdownInput.setSelectionRange(newStart, newStart + selectedLines.length);
+        }
+    }
+
+    // --- Layout & Customizer Repositioning Button Toggles ---
+    function setupButtonGroup(groupId, hiddenSelectId, onChangeCallback) {
+        const group = document.getElementById(groupId);
+        if (!group) return;
+        
+        const buttons = group.querySelectorAll('.toggle-btn');
+        buttons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                buttons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                const val = btn.getAttribute('data-value');
+                if (hiddenSelectId) {
+                    const hiddenSelect = document.getElementById(hiddenSelectId);
+                    if (hiddenSelect) {
+                        hiddenSelect.value = val;
+                        hiddenSelect.dispatchEvent(new Event('change'));
+                    }
+                }
+                if (onChangeCallback) onChangeCallback(val);
+            });
+        });
+    }
+
+    setupButtonGroup('layout-mode-group', 'layout-mode');
+    setupButtonGroup('sidebar-position-group', 'sidebar-position');
+
+
+    // --- Cosmetic Options Checkboxes Binding ---
+    const cosmeticShadow = document.getElementById('cosmetic-shadow');
+    const cosmeticBorder = document.getElementById('cosmetic-border');
+    const cosmeticGradient = document.getElementById('cosmetic-gradient');
+
+    const updateCosmetics = () => {
+        styleConfig.cosmeticShadow = cosmeticShadow ? cosmeticShadow.checked : true;
+        styleConfig.cosmeticBorder = cosmeticBorder ? cosmeticBorder.checked : false;
+        styleConfig.cosmeticGradient = cosmeticGradient ? cosmeticGradient.checked : false;
+        applyStyles(styleConfig);
+        saveToLocalStorage();
+    };
+
+    if (cosmeticShadow) cosmeticShadow.addEventListener('change', updateCosmetics);
+    if (cosmeticBorder) cosmeticBorder.addEventListener('change', updateCosmetics);
+    if (cosmeticGradient) cosmeticGradient.addEventListener('change', updateCosmetics);
 
 
 
@@ -629,8 +1083,12 @@ async function initializeJobby() {
             }
 
             const htmlText = await res.text();
+            
+            // Replace version dynamically
+            const processedHtml = htmlText.replace(/{{VERSION}}/g, appVersion);
+            
             const parser = new DOMParser();
-            const doc = parser.parseFromString(htmlText, 'text/html');
+            const doc = parser.parseFromString(processedHtml, 'text/html');
             developerModal.replaceChildren(...doc.body.childNodes);
 
             bindDeveloperToolsEvents();

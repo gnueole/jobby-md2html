@@ -1,5 +1,31 @@
 <div class="panel-header">
-    <span class="status-indicator markdown-dot">✍ MARKDOWN (EDITABLE)</span>
+    <div class="header-left">
+        <span class="status-indicator markdown-dot">✍ MARKDOWN (EDITABLE)</span>
+        <label class="syntax-toggle" title="Toggle syntax highlighting in editor">
+            <input type="checkbox" id="cb-syntax-highlight" checked>
+            <span class="toggle-switch"></span>
+            <span class="toggle-label">Syntax Color</span>
+        </label>
+        <div class="shortcut-tooltip-container">
+            <button class="btn-circle-sm shortcut-help-btn" title="Keyboard Shortcuts Help" type="button">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                    <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+            </button>
+            <div class="shortcut-tooltip-dropdown">
+                <h4>Editor Shortcuts</h4>
+                <ul>
+                    <li><kbd>Ctrl + B</kbd> <span>Bold</span></li>
+                    <li><kbd>Ctrl + I</kbd> <span>Italic</span></li>
+                    <li><kbd>Ctrl + K</kbd> <span>Insert Link</span></li>
+                    <li><kbd>Ctrl + 1/2/3</kbd> <span>H1/H2/H3 Headings</span></li>
+                    <li><kbd>Ctrl + ▲/▼</kbd> <span>Move Line / Section</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
     <div class="header-actions">
         <button id="btn-load-sample" class="btn-icon" title="Load sample: Julien Avarre">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -28,7 +54,10 @@
     </div>
 </div>
 <div class="editor-container">
-    <textarea id="markdown-input" spellcheck="false" placeholder="# YOUR NAME..."></textarea>
+    <div class="textarea-syntax-wrapper syntax-active">
+        <pre id="markdown-highlight" aria-hidden="true"><code id="highlight-code"></code></pre>
+        <textarea id="markdown-input" spellcheck="false" placeholder="# YOUR NAME..."></textarea>
+    </div>
 </div>
 <div class="panel-footer">
     <span id="char-word-count">Words: 0 | Characters: 0</span>

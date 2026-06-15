@@ -5,15 +5,16 @@ services:
     container_name: jobby-editor-dev
     working_dir: /app
     volumes:
-      - ../../:/app
+      - ../:/app
     ports:
       # Bound to 127.0.0.1 to comply with local security testing guidelines
-      - "127.0.0.1:3000:3000"
+      - "127.0.0.1:${PORT:-3010}:${PORT:-3010}"
     command: node server.js
     env_file:
-      - ../../.env.dev
+      - ../.env
     environment:
       - NODE_ENV=development
+      - PORT=${PORT:-3010}
 
   # Gotenberg PDF Rendering Engine
   gotenberg:
@@ -31,7 +32,7 @@ services:
     restart: unless-stopped
     command: --transport http --disable-auth
     env_file:
-      - ../../.env.dev
+      - ../.env
 
   # n8n Automation Server (v2.25.2 with AI & MCP support)
   n8n:
@@ -45,7 +46,7 @@ services:
       # Bound to 127.0.0.1 to satisfy local testing security guidelines
       - "127.0.0.1:5678:5678"
     env_file:
-      - ../../.env.dev
+      - ../.env
     environment:
       - N8N_HOST=localhost
       - N8N_PORT=5678

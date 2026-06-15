@@ -63,7 +63,7 @@ services:
     restart: unless-stopped
     command: --transport http --disable-auth
     environment:
-      - NOTION_TOKEN=${NOTION_TOKEN} # À définir dans tes variables Hostinger
+      - NOTION_TOKEN=${NOTION_API_KEY:-$NOTION_TOKEN}
       - TZ=${TZ}
     logging:
       driver: "json-file"
@@ -111,6 +111,8 @@ services:
       - WEBHOOK_URL=https://${DOMAIN_NAME}/
       - N8N_SECURE_COOKIE=true
       - NODE_OPTIONS=--max-old-space-size=2048
+      - N8N_TRUST_PROXY=true
+      - N8N_PROXY_HOPS=1
     volumes:
       - n8n_data:/home/node/.n8n
     labels:
@@ -139,6 +141,8 @@ services:
     depends_on:
       - traefik
     environment:
+      - PORT=3000
+      - NODE_ENV=production
       - N8N_WEBHOOK_TOKEN=${X_N8N_TOKEN}
       - X_N8N_TOKEN=${X_N8N_TOKEN}
       - GOOGLE_TAG_ID=${GOOGLE_TAG_ID}

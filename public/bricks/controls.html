@@ -1,5 +1,29 @@
 <div class="panel-header">
     <span>● DESIGN & EXPORTS</span>
+    <div class="advanced-toggle-wrapper">
+        <label class="syntax-toggle" title="Toggle Expert Mode settings">
+            <input type="checkbox" id="advanced-mode-toggle">
+            <div class="toggle-switch"></div>
+            <span>Expert Mode</span>
+        </label>
+        <span class="expert-help-trigger" id="btn-expert-help" title="What is Expert Mode?">?</span>
+        
+        <div class="expert-popup" id="expert-popup-box">
+            <div class="expert-popup-header">
+                <h4>Expert Mode Unlocked</h4>
+                <button type="button" class="expert-popup-close" id="btn-close-expert-popup">&times;</button>
+            </div>
+            <ul>
+                <li><strong>Typography:</strong> Line Height & Heading Scale</li>
+                <li><strong>Spacing:</strong> Section Spacing</li>
+                <li><strong>Column Width:</strong> Custom Main/Sidebar split slider</li>
+                <li><strong>Column Typography:</strong> Font Size & Alternative Font style</li>
+                <li><strong>Column Aesthetics:</strong> Shadow blur, Gradient length & color</li>
+                <li><strong>Custom Colors:</strong> 5 Custom Color pickers</li>
+                <li><strong>n8n Pipeline:</strong> Direct webhook sync button</li>
+            </ul>
+        </div>
+    </div>
 </div>
 <div class="controls-content">
 
@@ -86,8 +110,12 @@
             Layout
         </h3>
         <div class="control-item">
-            <label for="layout-mode">Resume Structure</label>
-            <select id="layout-mode">
+            <label>Resume Structure</label>
+            <div class="btn-group-toggle" id="layout-mode-group">
+                <button type="button" class="toggle-btn" data-value="1-column" id="btn-layout-1col">1 Column</button>
+                <button type="button" class="toggle-btn" data-value="2-column" id="btn-layout-2col">2 Columns</button>
+            </div>
+            <select id="layout-mode" style="display: none;">
                 <option value="1-column">1 Column (Standard)</option>
                 <option value="2-column">2 Columns (Modern)</option>
             </select>
@@ -97,11 +125,33 @@
         <div id="sidebar-only-controls"
             style="display: none; margin-top: 12px; border-top: 1px solid var(--border-color); padding-top: 12px;">
             <div class="control-item">
-                <label for="sidebar-position">Sidebar Position</label>
-                <select id="sidebar-position">
+                <label>Sidebar Position</label>
+                <div class="btn-group-toggle" id="sidebar-position-group">
+                    <button type="button" class="toggle-btn" data-value="left" id="btn-sidebar-left">Left</button>
+                    <button type="button" class="toggle-btn" data-value="right" id="btn-sidebar-right">Right</button>
+                </div>
+                <select id="sidebar-position" style="display: none;">
                     <option value="right">Right</option>
                     <option value="left">Left</option>
                 </select>
+            </div>
+
+            <div class="control-item">
+                <label>Column Options</label>
+                <div class="cosmetic-options-grid">
+                    <label class="checkbox-label" title="Enable column shadow">
+                        <input type="checkbox" id="cosmetic-shadow" checked>
+                        <span>Column Shadow</span>
+                    </label>
+                    <label class="checkbox-label" title="Enable column border">
+                        <input type="checkbox" id="cosmetic-border">
+                        <span>Column Border</span>
+                    </label>
+                    <label class="checkbox-label" title="Enable column gradient">
+                        <input type="checkbox" id="cosmetic-gradient">
+                        <span>Column Gradient</span>
+                    </label>
+                </div>
             </div>
 
             <div class="control-item color-picker-row">

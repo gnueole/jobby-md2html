@@ -3,15 +3,20 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 
-const PORT = 3000;
+// Read version from package.json dynamically as the single source of truth
+let appVersion = '1.6.0';
+try {
+    const pkg = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8'));
+    appVersion = pkg.version;
+} catch (e) {
+    console.error('Error loading version from package.json:', e);
+}
 
 // Load .env file manually if it exists
 const envPaths = [
-    path.join(__dirname, '.env.dev'),
-    path.join(__dirname, '.env.prod'),
-    path.join(__dirname, '.env'),
-    path.join(__dirname, 'docker', '.env')
+    path.join(__dirname, '.env')
 ];
+
 
 for (const envPath of envPaths) {
     if (fs.existsSync(envPath)) {
@@ -38,6 +43,8 @@ for (const envPath of envPaths) {
         }
     }
 }
+
+const PORT = parseInt(process.env.PORT, 10) || 3010;
 
 // Initialize developer token securely
 const serverToken = process.env.N8N_WEBHOOK_TOKEN || process.env.X_N8N_TOKEN || crypto.randomBytes(24).toString('hex');
@@ -138,7 +145,9 @@ const server = http.createServer((req, res) => {
 
     if (cleanUrl === '/api/config') {
         res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
-        res.end(JSON.stringify({ GOOGLE_TAG_ID: process.env.GOOGLE_TAG_ID || '' }));
+        const rawTagId = process.env.GOOGLE_TAG_ID || process.env.NEXT_PUBLIC_GA_ID || "";
+        const googleTagId = rawTagId.trim().replace(/^['"]|['"]$/g, "");
+        res.end(JSON.stringify({ GOOGLE_TAG_ID: googleTagId, VERSION: appVersion }));
         return;
     }
 
@@ -191,9 +200,22 @@ const server = http.createServer((req, res) => {
         const ext = path.extname(filePath).toLowerCase();
         const contentType = MIME_TYPES[ext] || 'application/octet-stream';
 
-        res.writeHead(200, { 'Content-Type': contentType });
-        const stream = fs.createReadStream(filePath);
-        stream.pipe(res);
+        if (filePath.endsWith('index.html')) {
+            fs.readFile(filePath, 'utf8', (err, html) => {
+                if (err) {
+                    res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
+                    res.end('Internal Server Error');
+                    return;
+                }
+                const modifiedHtml = html.replace(/\?v=[0-9.]+/g, `?v=${appVersion}`);
+                res.writeHead(200, { 'Content-Type': contentType });
+                res.end(modifiedHtml);
+            });
+        } else {
+            res.writeHead(200, { 'Content-Type': contentType });
+            const stream = fs.createReadStream(filePath);
+            stream.pipe(res);
+        }
     });
 });
 

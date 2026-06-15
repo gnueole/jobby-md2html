@@ -20,7 +20,20 @@
     text-align: left;
     
     /* Smooth transitions for slider adjustments */
-    transition: padding 0.15s ease-out;
+    transition: padding 0.15s ease-out, border 0.15s ease, background 0.15s ease;
+}
+
+/* Cosmetic Toggles styling for the Sidebar Column (in 2-column mode) */
+.a4-sheet.has-shadow .resume-sidebar-col {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15) !important;
+}
+
+.a4-sheet.has-border .resume-sidebar-col {
+    border: 2px solid var(--resume-color-accent, #0d9488) !important;
+}
+
+.a4-sheet.has-gradient .resume-sidebar-col {
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(0, 0, 0, 0.18) 100%) !important;
 }
 
 /* 2-Column Layout CSS Rules */
@@ -35,6 +48,15 @@
 .resume-columns.sidebar-left {
     grid-template-columns: 1.3fr 1.7fr;
 }
+
+.resume-columns.sidebar-left .resume-sidebar-col {
+    grid-column: 1;
+}
+
+.resume-columns.sidebar-left .resume-main-col {
+    grid-column: 2;
+}
+
 
 .resume-main-col {
     display: flex;
