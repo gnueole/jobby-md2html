@@ -25,7 +25,7 @@
 
 /* Cosmetic Toggles styling for the Sidebar Column (in 2-column mode) */
 .a4-sheet.has-shadow .resume-sidebar-col {
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 4px var(--column-shadow-distance, 10px) rgba(0, 0, 0, 0.15) !important;
 }
 
 .a4-sheet.has-border .resume-sidebar-col {
@@ -33,20 +33,39 @@
 }
 
 .a4-sheet.has-gradient .resume-sidebar-col {
-    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(0, 0, 0, 0.18) 100%) !important;
+    background: linear-gradient(135deg, var(--resume-sidebar-bg, #2d3748) 0%, var(--column-gradient-color, #000000) var(--column-gradient-length, 150%)) !important;
+}
+
+/* Column Font Adjustments (Expert settings) */
+.resume-sidebar-col.column-font-smaller,
+.resume-sidebar-col.column-font-smaller p,
+.resume-sidebar-col.column-font-smaller li,
+.resume-sidebar-col.column-font-smaller span,
+.resume-sidebar-col.column-font-smaller a {
+    font-size: calc(var(--resume-font-size, 14px) * 0.82) !important;
+}
+
+.resume-sidebar-col.column-font-smaller h2,
+.resume-sidebar-col.column-font-smaller h3 {
+    font-size: calc(var(--resume-font-size, 14px) * var(--resume-heading-scale, 1.6) * 0.65) !important;
+}
+
+.resume-sidebar-col.column-font-alternative,
+.resume-sidebar-col.column-font-alternative * {
+    font-family: 'Inter', sans-serif !important;
 }
 
 /* 2-Column Layout CSS Rules */
 .resume-columns {
     display: grid;
-    grid-template-columns: 1.7fr 1.3fr;
+    grid-template-columns: var(--column-split-main, 1.7fr) var(--column-split-sidebar, 1.3fr);
     gap: 20px;
     align-items: stretch;
     margin-top: 16px;
 }
 
 .resume-columns.sidebar-left {
-    grid-template-columns: 1.3fr 1.7fr;
+    grid-template-columns: var(--column-split-sidebar, 1.3fr) var(--column-split-main, 1.7fr);
 }
 
 .resume-columns.sidebar-left .resume-sidebar-col {
@@ -382,11 +401,11 @@
         flex-direction: row-reverse !important;
     }
     .resume-main-col {
-        width: 58% !important;
+        width: calc(var(--column-split-main, 58%) - 2%) !important;
         flex-shrink: 0 !important;
     }
     .resume-sidebar-col {
-        width: 38% !important;
+        width: calc(var(--column-split-sidebar, 42%) - 2%) !important;
         flex-shrink: 0 !important;
     }
 }

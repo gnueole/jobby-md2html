@@ -37,7 +37,8 @@ export function applyStyles(styleConfig) {
     };
     syncGroup('layout-mode-group', styleConfig.layoutMode || '1-column');
     syncGroup('sidebar-position-group', styleConfig.sidebarPosition || 'right');
-
+    syncGroup('column-font-size-group', styleConfig.columnFontSize || 'normal');
+    syncGroup('column-font-style-group', styleConfig.columnFontStyle || 'inherit');
 
     resumeOutput.style.setProperty('--resume-font-family', styleConfig.fontFamily);
     resumeOutput.style.setProperty('--resume-font-size', styleConfig.fontSize + 'px');
@@ -55,6 +56,28 @@ export function applyStyles(styleConfig) {
 
     resumeOutput.style.setProperty('--resume-sidebar-bg', styleConfig.sidebarBg || '#2d3748');
     resumeOutput.style.setProperty('--resume-sidebar-text', styleConfig.sidebarText || '#ffffff');
+
+    // Dynamic Column and Cosmetic Styling Variables
+    resumeOutput.style.setProperty('--column-split-main', (styleConfig.columnSplit || 58) + '%');
+    resumeOutput.style.setProperty('--column-split-sidebar', (100 - (styleConfig.columnSplit || 58)) + '%');
+    resumeOutput.style.setProperty('--column-shadow-distance', (styleConfig.columnShadowDistance || 10) + 'px');
+    resumeOutput.style.setProperty('--column-gradient-length', (styleConfig.columnGradientLength || 150) + '%');
+    resumeOutput.style.setProperty('--column-gradient-color', styleConfig.columnGradientColor || '#000000');
+
+    // Apply Live Column Classes
+    const sidebarCol = resumeOutput.querySelector('.resume-sidebar-col');
+    if (sidebarCol) {
+        if (styleConfig.columnFontSize === 'smaller') {
+            sidebarCol.classList.add('column-font-smaller');
+        } else {
+            sidebarCol.classList.remove('column-font-smaller');
+        }
+        if (styleConfig.columnFontStyle === 'alternative') {
+            sidebarCol.classList.add('column-font-alternative');
+        } else {
+            sidebarCol.classList.remove('column-font-alternative');
+        }
+    }
 
     // Update dynamic print margins style
     let printPageStyle = document.getElementById('print-page-style');
@@ -92,6 +115,42 @@ export function applyStyles(styleConfig) {
     if (valMarginX) valMarginX.textContent = styleConfig.marginX + 'px';
     if (valMarginY) valMarginY.textContent = styleConfig.marginY + 'px';
     if (valSectionSpacing) valSectionSpacing.textContent = styleConfig.sectionSpacing + 'px';
+
+    // Update expert mode slider labels and visuals
+    const valColShadow = document.getElementById('val-column-shadow');
+    if (valColShadow) valColShadow.textContent = (styleConfig.columnShadowDistance || 10) + 'px';
+
+    const valColGradient = document.getElementById('val-column-gradient');
+    if (valColGradient) valColGradient.textContent = (styleConfig.columnGradientLength || 150) + '%';
+
+    const splitMainPct = document.getElementById('split-main-pct');
+    const splitSidebarPct = document.getElementById('split-sidebar-pct');
+    const splitMainVisual = document.getElementById('split-main-visual');
+    const splitSidebarVisual = document.getElementById('split-sidebar-visual');
+
+    const splitVal = styleConfig.columnSplit || 58;
+    if (splitMainPct) splitMainPct.textContent = splitVal + '%';
+    if (splitSidebarPct) splitSidebarPct.textContent = (100 - splitVal) + '%';
+    if (splitMainVisual) splitMainVisual.style.width = splitVal + '%';
+    if (splitSidebarVisual) splitSidebarVisual.style.width = (100 - splitVal) + '%';
+
+    // Disable/fade checkbox rows if unchecked
+    const rowShadow = document.getElementById('row-cosmetic-shadow');
+    if (rowShadow) {
+        if (styleConfig.cosmeticShadow !== false) {
+            rowShadow.classList.remove('disabled');
+        } else {
+            rowShadow.classList.add('disabled');
+        }
+    }
+    const rowGradient = document.getElementById('row-cosmetic-gradient');
+    if (rowGradient) {
+        if (styleConfig.cosmeticGradient) {
+            rowGradient.classList.remove('disabled');
+        } else {
+            rowGradient.classList.add('disabled');
+        }
+    }
 
     // Update Hex Texts
     const hexBg = document.getElementById('hex-bg');
@@ -230,6 +289,29 @@ export function updateControlsFromConfig(styleConfig) {
     if (cosmeticShadow) cosmeticShadow.checked = styleConfig.cosmeticShadow !== false;
     if (cosmeticBorder) cosmeticBorder.checked = !!styleConfig.cosmeticBorder;
     if (cosmeticGradient) cosmeticGradient.checked = !!styleConfig.cosmeticGradient;
+
+    // Expert Mode sync
+    const advancedModeToggle = document.getElementById('advanced-mode-toggle');
+    if (advancedModeToggle) {
+        advancedModeToggle.checked = !!styleConfig.expertMode;
+        if (styleConfig.expertMode) {
+            document.body.classList.add('expert-mode-active');
+        } else {
+            document.body.classList.remove('expert-mode-active');
+        }
+    }
+
+    const columnSplitSlider = document.getElementById('column-split');
+    if (columnSplitSlider) columnSplitSlider.value = styleConfig.columnSplit || 58;
+
+    const columnShadowDistanceSlider = document.getElementById('column-shadow-distance');
+    if (columnShadowDistanceSlider) columnShadowDistanceSlider.value = styleConfig.columnShadowDistance || 10;
+
+    const columnGradientLengthSlider = document.getElementById('column-gradient-length');
+    if (columnGradientLengthSlider) columnGradientLengthSlider.value = styleConfig.columnGradientLength || 150;
+
+    const columnGradientColorPicker = document.getElementById('column-gradient-color');
+    if (columnGradientColorPicker) columnGradientColorPicker.value = styleConfig.columnGradientColor || '#000000';
 
     applyStyles(styleConfig);
 }

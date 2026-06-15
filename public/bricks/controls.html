@@ -83,19 +83,84 @@
             </div>
             <input type="range" id="font-size" min="11" max="18" step="0.5" value="14">
         </div>
-        <div class="control-item">
+        <div class="control-item expert-only">
             <div class="slider-header">
                 <label for="line-height">Line Height</label>
                 <span id="val-line-height">1.4</span>
             </div>
             <input type="range" id="line-height" min="1.1" max="2.0" step="0.05" value="1.4">
         </div>
-        <div class="control-item">
+        <div class="control-item expert-only">
             <div class="slider-header">
                 <label for="heading-scale">Heading Scale</label>
                 <span id="val-heading-scale">1.6</span>
             </div>
             <input type="range" id="heading-scale" min="1.2" max="2.5" step="0.1" value="1.6">
+        </div>
+    </div>
+
+    <!-- COLORS SECTION -->
+    <div class="control-group">
+        <h3>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2">
+                <path
+                    d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" />
+                <path d="M12 6V18" />
+                <path d="M6 12H18" />
+            </svg>
+            Colors
+        </h3>
+
+        <!-- Color presets -->
+        <div class="color-presets-container">
+            <label>Color Presets</label>
+            <div class="color-presets-grid">
+                <button type="button" class="preset-btn" id="preset-classic-nb"
+                    title="Classic B&W (Black and White)">B&W</button>
+                <button type="button" class="preset-btn" id="preset-dark-mode"
+                    title="Dark Mode">Dark</button>
+                <button type="button" class="preset-btn" id="preset-clean-blue"
+                    title="Clean Blue">Blue</button>
+                <button type="button" class="preset-btn active" id="preset-custom"
+                    title="Custom (User Colors)">Custom</button>
+            </div>
+        </div>
+
+        <div class="control-item color-picker-row expert-only">
+            <label for="color-bg">Canvas Background</label>
+            <div class="color-input-wrapper">
+                <span class="hex-text" id="hex-bg">#ffffff</span>
+                <input type="color" id="color-bg" value="#ffffff">
+            </div>
+        </div>
+        <div class="control-item color-picker-row expert-only">
+            <label for="color-headings">Headings</label>
+            <div class="color-input-wrapper">
+                <span class="hex-text" id="hex-headings">#1e293b</span>
+                <input type="color" id="color-headings" value="#1e293b">
+            </div>
+        </div>
+        <div class="control-item color-picker-row expert-only">
+            <label for="color-body">Body Text</label>
+            <div class="color-input-wrapper">
+                <span class="hex-text" id="hex-body">#334155</span>
+                <input type="color" id="color-body" value="#334155">
+            </div>
+        </div>
+        <div class="control-item color-picker-row expert-only">
+            <label for="color-links">Links & Contact</label>
+            <div class="color-input-wrapper">
+                <span class="hex-text" id="hex-links">#7c3aed</span>
+                <input type="color" id="color-links" value="#7c3aed">
+            </div>
+        </div>
+        <div class="control-item color-picker-row expert-only">
+            <label for="color-accent">Accent Details</label>
+            <div class="color-input-wrapper">
+                <span class="hex-text" id="hex-accent">#0d9488</span>
+                <input type="color" id="color-accent" value="#0d9488">
+            </div>
         </div>
     </div>
 
@@ -136,21 +201,78 @@
                 </select>
             </div>
 
-            <div class="control-item">
-                <label>Column Options</label>
-                <div class="cosmetic-options-grid">
-                    <label class="checkbox-label" title="Enable column shadow">
-                        <input type="checkbox" id="cosmetic-shadow" checked>
-                        <span>Column Shadow</span>
-                    </label>
-                    <label class="checkbox-label" title="Enable column border">
-                        <input type="checkbox" id="cosmetic-border">
-                        <span>Column Border</span>
-                    </label>
-                    <label class="checkbox-label" title="Enable column gradient">
-                        <input type="checkbox" id="cosmetic-gradient">
-                        <span>Column Gradient</span>
-                    </label>
+            <!-- Visual Split Slider -->
+            <div class="control-item expert-only">
+                <label>Column Split</label>
+                <div class="slick-split-container">
+                    <div class="slick-split-visual">
+                        <div class="slick-split-col main-col" id="split-main-visual" style="width: 58%;">
+                            <span class="col-name">Main</span>
+                            <span class="col-pct" id="split-main-pct">58%</span>
+                        </div>
+                        <div class="slick-split-col sidebar-col" id="split-sidebar-visual" style="width: 42%;">
+                            <span class="col-name">Sidebar</span>
+                            <span class="col-pct" id="split-sidebar-pct">42%</span>
+                        </div>
+                    </div>
+                    <input type="range" id="column-split" min="30" max="70" value="58" class="split-slider-range">
+                </div>
+            </div>
+
+            <!-- Column Font Size Toggle -->
+            <div class="control-item expert-only">
+                <label>Column Font Size</label>
+                <div class="btn-group-toggle compact-toggle" id="column-font-size-group">
+                    <button type="button" class="toggle-btn active" data-value="normal" id="btn-colfont-std">Standard</button>
+                    <button type="button" class="toggle-btn" data-value="smaller" id="btn-colfont-sm">Smaller</button>
+                </div>
+            </div>
+
+            <!-- Column Font Style Toggle -->
+            <div class="control-item expert-only">
+                <label>Column Font Family</label>
+                <div class="btn-group-toggle compact-toggle" id="column-font-style-group">
+                    <button type="button" class="toggle-btn active" data-value="inherit" id="btn-colfont-inherit">Default</button>
+                    <button type="button" class="toggle-btn" data-value="alternative" id="btn-colfont-alt">Alternative</button>
+                </div>
+            </div>
+
+            <!-- Compact Options (Shadow/Border/Gradient inline) -->
+            <div class="control-item expert-only">
+                <label>Column Cosmetics</label>
+                <div class="compact-options-block">
+                    <!-- Shadow inline row -->
+                    <div class="compact-option-row" id="row-cosmetic-shadow">
+                        <label class="checkbox-label" title="Enable column shadow">
+                            <input type="checkbox" id="cosmetic-shadow" checked>
+                            <span>Shadow</span>
+                        </label>
+                        <div class="inline-slider-container" id="shadow-slider-container">
+                            <input type="range" id="column-shadow-distance" min="2" max="25" value="10" title="Shadow blur distance">
+                            <span class="slider-val" id="val-column-shadow">10px</span>
+                        </div>
+                    </div>
+                    <!-- Border inline row -->
+                    <div class="compact-option-row" id="row-cosmetic-border">
+                        <label class="checkbox-label" title="Enable column border">
+                            <input type="checkbox" id="cosmetic-border">
+                            <span>Border</span>
+                        </label>
+                    </div>
+                    <!-- Gradient inline row -->
+                    <div class="compact-option-row" id="row-cosmetic-gradient">
+                        <label class="checkbox-label" title="Enable column gradient">
+                            <input type="checkbox" id="cosmetic-gradient">
+                            <span>Gradient</span>
+                        </label>
+                        <div class="inline-slider-container" id="gradient-slider-container">
+                            <input type="range" id="column-gradient-length" min="50" max="300" value="150" step="5" title="Gradient angle/scale">
+                            <span class="slider-val" id="val-column-gradient">150%</span>
+                            <div class="compact-color-wrapper" title="Gradient end color">
+                                <input type="color" id="column-gradient-color" value="#000000">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -204,77 +326,12 @@
             </div>
             <input type="range" id="margin-y" min="15" max="60" step="1" value="25">
         </div>
-        <div class="control-item">
+        <div class="control-item expert-only">
             <div class="slider-header">
                 <label for="section-spacing">Section Spacing</label>
                 <span id="val-section-spacing">12px</span>
             </div>
             <input type="range" id="section-spacing" min="5" max="30" step="1" value="12">
-        </div>
-    </div>
-
-    <!-- COLORS SECTION -->
-    <div class="control-group">
-        <h3>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2">
-                <path
-                    d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" />
-                <path d="M12 6V18" />
-                <path d="M6 12H18" />
-            </svg>
-            Colors
-        </h3>
-
-        <!-- Color presets -->
-        <div class="color-presets-container">
-            <label>Color Presets</label>
-            <div class="color-presets-grid">
-                <button type="button" class="preset-btn" id="preset-classic-nb"
-                    title="Classic B&W (Black and White)">B&W</button>
-                <button type="button" class="preset-btn" id="preset-dark-mode"
-                    title="Dark Mode">Dark</button>
-                <button type="button" class="preset-btn" id="preset-clean-blue"
-                    title="Clean Blue">Blue</button>
-                <button type="button" class="preset-btn active" id="preset-custom"
-                    title="Custom (User Colors)">Custom</button>
-            </div>
-        </div>
-
-        <div class="control-item color-picker-row">
-            <label for="color-bg">Canvas Background</label>
-            <div class="color-input-wrapper">
-                <span class="hex-text" id="hex-bg">#ffffff</span>
-                <input type="color" id="color-bg" value="#ffffff">
-            </div>
-        </div>
-        <div class="control-item color-picker-row">
-            <label for="color-headings">Headings</label>
-            <div class="color-input-wrapper">
-                <span class="hex-text" id="hex-headings">#1e293b</span>
-                <input type="color" id="color-headings" value="#1e293b">
-            </div>
-        </div>
-        <div class="control-item color-picker-row">
-            <label for="color-body">Body Text</label>
-            <div class="color-input-wrapper">
-                <span class="hex-text" id="hex-body">#334155</span>
-                <input type="color" id="color-body" value="#334155">
-            </div>
-        </div>
-        <div class="control-item color-picker-row">
-            <label for="color-links">Links & Contact</label>
-            <div class="color-input-wrapper">
-                <span class="hex-text" id="hex-links">#7c3aed</span>
-                <input type="color" id="color-links" value="#7c3aed">
-            </div>
-        </div>
-        <div class="control-item color-picker-row">
-            <label for="color-accent">Accent Details</label>
-            <div class="color-input-wrapper">
-                <span class="hex-text" id="hex-accent">#0d9488</span>
-                <input type="color" id="color-accent" value="#0d9488">
-            </div>
         </div>
     </div>
 
@@ -343,7 +400,7 @@
                 title="Download Markdown source">
                 Download Markdown (.md)
             </button>
-            <div class="n8n-webhook-sync"
+            <div class="n8n-webhook-sync expert-only"
                  style="margin-top: 16px; border-top: 1px solid var(--border-color); padding-top: 12px;">
                 <button id="btn-sync-n8n" class="btn btn-primary btn-full"
                     style="cursor: pointer;"

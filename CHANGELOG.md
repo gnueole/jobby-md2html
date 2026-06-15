@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [1.6.0] - 2026-06-15
+## [1.6.0] - 2026-06-16
 
 ### Added
 - **Markdown Editor Syntax Highlighting:** Interactive syntax coloring (headers, lists, bold, italic, links, code blocks) custom-designed for Dark and Light (Paper Cream) themes.
@@ -23,8 +23,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `Ctrl + UpArrow` / `DownArrow` to move lines or **entire sections** structurally.
 - **Interactive Guide:** Floating keyboard shortcuts legend/tooltip helper `ⓘ Shortcuts` inside the editor header.
 - **Layout Button groups:** Sleek pill-style toggle button groups replacing traditional layout dropdown selects.
-- **Customizer Repositioning:** Alignment settings to position the Customizer panel on the **Left Side** or **Right Side** of the workspace.
-- **Cosmetic Canvas options:** Interactive checkbox settings to toggle **Page Shadow**, **Page Border**, and **Subtle Gradient** effects on the A4 page preview sheet.
+- **Expert Mode (Advanced Mode):** Added an Expert Mode toggle switch at the top of the controls panel with a popover help menu detailing the unlocked settings. Unlocks advanced color pickers, section spacing, dynamic column splits, alternate fonts, and n8n webhook sync.
+- **Dynamic Column Split Slider:** A modern, slick visual percentage split slider allowing real-time column resizing between Main and Sidebar.
+- **Column Cosmetic Options:** Inline compact checkboxes and sliders for Column Shadow (with distance adjustment), Column Border, and Column Gradient (with length and color customization).
+- **Column Font Preferences:** Options to adjust the column font size (smaller/standard) and apply a clean alternative sans-serif font family.
+- **Colors before Layout:** Reordered sections in the Customizer panel to present color palettes before structural settings.
 - **Centralized Versioning:** Read and inject `version` from `package.json` dynamically into static resource imports cache-busting, header about badge, API endpoints, and Makefile.
 
 ---

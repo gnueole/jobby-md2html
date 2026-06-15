@@ -163,6 +163,13 @@ async function initializeJobby() {
     const colorLinks = document.getElementById('color-links');
     const colorAccent = document.getElementById('color-accent');
 
+    // Advanced & Column Customizer Elements
+    const advancedModeToggle = document.getElementById('advanced-mode-toggle');
+    const columnSplitSlider = document.getElementById('column-split');
+    const columnShadowDistanceSlider = document.getElementById('column-shadow-distance');
+    const columnGradientLengthSlider = document.getElementById('column-gradient-length');
+    const columnGradientColorPicker = document.getElementById('column-gradient-color');
+
     const presetClassicNb = document.getElementById('preset-classic-nb');
     const presetDarkMode = document.getElementById('preset-dark-mode');
     const presetCleanBlue = document.getElementById('preset-clean-blue');
@@ -336,6 +343,13 @@ async function initializeJobby() {
         styleConfig.marginY = marginYSlider.value;
         styleConfig.sectionSpacing = sectionSpacingSlider.value;
         styleConfig.layoutMode = layoutModeSelect.value;
+
+        // Customizer Advanced Column Values
+        if (columnSplitSlider) styleConfig.columnSplit = parseInt(columnSplitSlider.value);
+        if (columnShadowDistanceSlider) styleConfig.columnShadowDistance = parseInt(columnShadowDistanceSlider.value);
+        if (columnGradientLengthSlider) styleConfig.columnGradientLength = parseInt(columnGradientLengthSlider.value);
+        if (columnGradientColorPicker) styleConfig.columnGradientColor = columnGradientColorPicker.value;
+        if (advancedModeToggle) styleConfig.expertMode = advancedModeToggle.checked;
 
         if (styleConfig.colorBg !== colorBg.value ||
             styleConfig.colorHeadings !== colorHeadings.value ||
@@ -786,6 +800,78 @@ async function initializeJobby() {
     setupButtonGroup('layout-mode-group', 'layout-mode');
     setupButtonGroup('sidebar-position-group', 'sidebar-position');
 
+    // Column Font settings button groups
+    setupButtonGroup('column-font-size-group', null, (val) => {
+        styleConfig.columnFontSize = val;
+        applyStyles(styleConfig);
+        runCompileMarkdown(markdownInput.value);
+        saveToLocalStorage();
+    });
+
+    setupButtonGroup('column-font-style-group', null, (val) => {
+        styleConfig.columnFontStyle = val;
+        applyStyles(styleConfig);
+        runCompileMarkdown(markdownInput.value);
+        saveToLocalStorage();
+    });
+
+    // Expert Mode Toggle and Help Popup
+    if (advancedModeToggle) {
+        advancedModeToggle.addEventListener('change', () => {
+            styleConfig.expertMode = advancedModeToggle.checked;
+            if (styleConfig.expertMode) {
+                document.body.classList.add('expert-mode-active');
+            } else {
+                document.body.classList.remove('expert-mode-active');
+            }
+            saveToLocalStorage();
+        });
+    }
+
+    const btnExpertHelp = document.getElementById('btn-expert-help');
+    const btnCloseExpertPopup = document.getElementById('btn-close-expert-popup');
+    const expertPopupBox = document.getElementById('expert-popup-box');
+
+    if (btnExpertHelp && expertPopupBox) {
+        btnExpertHelp.addEventListener('click', (e) => {
+            e.stopPropagation();
+            expertPopupBox.classList.toggle('show');
+        });
+    }
+
+    if (btnCloseExpertPopup && expertPopupBox) {
+        btnCloseExpertPopup.addEventListener('click', (e) => {
+            e.stopPropagation();
+            expertPopupBox.classList.remove('show');
+        });
+    }
+
+    document.addEventListener('click', (e) => {
+        if (expertPopupBox && expertPopupBox.classList.contains('show')) {
+            if (!expertPopupBox.contains(e.target) && e.target !== btnExpertHelp) {
+                expertPopupBox.classList.remove('show');
+            }
+        }
+    });
+
+    // Real-time Visual Split Slider feedback
+    if (columnSplitSlider) {
+        const splitMainPct = document.getElementById('split-main-pct');
+        const splitSidebarPct = document.getElementById('split-sidebar-pct');
+        const splitMainVisual = document.getElementById('split-main-visual');
+        const splitSidebarVisual = document.getElementById('split-sidebar-visual');
+
+        const updateSplitVisual = (val) => {
+            if (splitMainPct) splitMainPct.textContent = val + '%';
+            if (splitSidebarPct) splitSidebarPct.textContent = (100 - val) + '%';
+            if (splitMainVisual) splitMainVisual.style.width = val + '%';
+            if (splitSidebarVisual) splitSidebarVisual.style.width = (100 - val) + '%';
+        };
+
+        columnSplitSlider.addEventListener('input', (e) => {
+            updateSplitVisual(e.target.value);
+        });
+    }
 
     // --- Cosmetic Options Checkboxes Binding ---
     const cosmeticShadow = document.getElementById('cosmetic-shadow');
@@ -868,7 +954,8 @@ async function initializeJobby() {
         marginXSlider, marginYSlider, sectionSpacingSlider,
         layoutModeSelect, sidebarPositionSelect,
         colorSidebarBg, colorSidebarText,
-        colorBg, colorHeadings, colorBody, colorLinks, colorAccent
+        colorBg, colorHeadings, colorBody, colorLinks, colorAccent,
+        columnSplitSlider, columnShadowDistanceSlider, columnGradientLengthSlider, columnGradientColorPicker
     ];
 
     uiElements.forEach(el => {

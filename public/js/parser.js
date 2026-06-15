@@ -182,6 +182,9 @@ export function compileMarkdown(mdText, styleConfig, markdownInput, onUpdate) {
         const mainHtml = mainColElements.map(el => el.outerHTML).join('\n');
         const sidebarHtml = sidebarColElements.map(el => el.outerHTML).join('\n');
 
+        const fontSizeClass = styleConfig.columnFontSize === 'smaller' ? 'column-font-smaller' : '';
+        const fontStyleClass = styleConfig.columnFontStyle === 'alternative' ? 'column-font-alternative' : '';
+
         finalHtml = `
             <div class="resume-header">
                 ${headerHtml}
@@ -190,7 +193,7 @@ export function compileMarkdown(mdText, styleConfig, markdownInput, onUpdate) {
                 <div class="resume-main-col">
                     ${mainHtml}
                 </div>
-                <div class="resume-sidebar-col" style="background-color: ${styleConfig.sidebarBg || '#2d3748'}; color: ${styleConfig.sidebarText || '#ffffff'};">
+                <div class="resume-sidebar-col ${fontSizeClass} ${fontStyleClass}" style="background-color: ${styleConfig.sidebarBg || '#2d3748'}; color: ${styleConfig.sidebarText || '#ffffff'};">
                     ${sidebarHtml}
                 </div>
             </div>

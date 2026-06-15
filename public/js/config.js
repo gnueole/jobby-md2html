@@ -19,7 +19,14 @@ export const DEFAULT_STYLE_CONFIG = {
     sidebarSections: "EDUCATION,TECHNICAL SKILLS",
     cosmeticShadow: true,
     cosmeticBorder: false,
-    cosmeticGradient: false
+    cosmeticGradient: false,
+    columnSplit: 58,
+    columnFontSize: "normal",
+    columnFontStyle: "inherit",
+    expertMode: false,
+    columnShadowDistance: 10,
+    columnGradientLength: 150,
+    columnGradientColor: "#000000"
 };
 
 // SVG Icons for the ATS Checklist
