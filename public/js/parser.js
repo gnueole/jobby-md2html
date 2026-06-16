@@ -3,6 +3,8 @@
  * Markdown parsing and HTML compilation.
  */
 
+import { getDailyVersionString } from './utils.js';
+
 let lastSectionsJSON = "";
 
 export function updateHeaderInMarkdown(markdownInput, title, toSidebar, onUpdate) {
@@ -185,18 +187,10 @@ export function compileMarkdown(mdText, styleConfig, markdownInput, onUpdate) {
 
         // Append version suffix to sidebar if enabled
         if (styleConfig.showVersion) {
-            // Retrieve today's daily increment
-            const todayStr = new Date().toISOString().split('T')[0];
-            const storedDate = localStorage.getItem('print_counter_date');
-            let counter = 1;
-            if (storedDate === todayStr) {
-                const storedCounter = localStorage.getItem('print_counter_val');
-                counter = storedCounter ? parseInt(storedCounter, 10) : 1;
-            }
-            const increment = String(counter).padStart(2, '0');
+            const versionStr = getDailyVersionString();
             const verEl = doc2.createElement('div');
             verEl.className = 'resume-version-sidebar';
-            verEl.textContent = `v${increment}`;
+            verEl.textContent = versionStr;
             sidebarColElements.push(verEl);
         }
 
@@ -226,15 +220,8 @@ export function compileMarkdown(mdText, styleConfig, markdownInput, onUpdate) {
         updateSidebarChecklist(doc3, markdownInput, onUpdate);
         
         if (styleConfig.showVersion) {
-            const todayStr = new Date().toISOString().split('T')[0];
-            const storedDate = localStorage.getItem('print_counter_date');
-            let counter = 1;
-            if (storedDate === todayStr) {
-                const storedCounter = localStorage.getItem('print_counter_val');
-                counter = storedCounter ? parseInt(storedCounter, 10) : 1;
-            }
-            const increment = String(counter).padStart(2, '0');
-            finalHtml = html + `<div class="resume-version-footer">v${increment}</div>`;
+            const versionStr = getDailyVersionString();
+            finalHtml = html + `<div class="resume-version-footer">${versionStr}</div>`;
         }
     }
 

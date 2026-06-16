@@ -46,3 +46,33 @@ export function countNonWsChars(text) {
     if (!text) return 0;
     return text.replace(/\s/g, '').length;
 }
+
+// Get daily version string (Format: YYYY-MM-DD_VERSIONNUM)
+export function getDailyVersionString() {
+    const today = new Date().toISOString().split('T')[0];
+    const storedDate = localStorage.getItem('print_counter_date');
+    let counter = 1;
+    if (storedDate === today) {
+        const storedCounter = localStorage.getItem('print_counter_val');
+        counter = storedCounter ? parseInt(storedCounter, 10) : 1;
+    } else {
+        localStorage.setItem('print_counter_date', today);
+        localStorage.setItem('print_counter_val', 1);
+    }
+    const increment = String(counter).padStart(2, '0');
+    return `${today}_${increment}`;
+}
+
+// Increment daily version counter and return the new counter value
+export function incrementDailyVersionCounter() {
+    const today = new Date().toISOString().split('T')[0];
+    const storedDate = localStorage.getItem('print_counter_date');
+    let counter = 1;
+    if (storedDate === today) {
+        const storedCounter = localStorage.getItem('print_counter_val');
+        counter = storedCounter ? parseInt(storedCounter, 10) + 1 : 1;
+    }
+    localStorage.setItem('print_counter_date', today);
+    localStorage.setItem('print_counter_val', counter);
+    return counter;
+}

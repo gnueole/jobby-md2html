@@ -685,7 +685,8 @@ async function initializeJobby() {
         selectPageFormat,
         resumeOutput,
         getCurrentResumeTitle: () => currentResumeTitle,
-        autoFitZoom: () => autoFitZoom(canvasWrapper, previewCanvas, zoomLevelText, () => updatePageBreaks(resumeOutput))
+        autoFitZoom: () => autoFitZoom(canvasWrapper, previewCanvas, zoomLevelText, () => updatePageBreaks(resumeOutput)),
+        triggerCompile: () => runCompileMarkdown(markdownInput.value)
     });
 
     // Load sample

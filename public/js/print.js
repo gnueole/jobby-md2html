@@ -4,6 +4,8 @@
  * Refactored from app.js to modularize page layout and print configuration.
  */
 
+import { incrementDailyVersionCounter } from './utils.js';
+
 let showPageBreaks = localStorage.getItem('show_page_breaks') === 'true';
 let pageFormat = localStorage.getItem('page_format') || 'A4';
 
@@ -68,7 +70,8 @@ export function initPrint({
     selectPageFormat,
     resumeOutput,
     getCurrentResumeTitle,
-    autoFitZoom
+    autoFitZoom,
+    triggerCompile
 }) {
     if (btnPageBreaks) {
         btnPageBreaks.classList.toggle('active', showPageBreaks);
@@ -97,15 +100,12 @@ export function initPrint({
     }
 
     window.addEventListener('beforeprint', () => {
-        const today = new Date().toISOString().split('T')[0];
-        const storedDate = localStorage.getItem('print_counter_date');
-        let counter = 1;
-        if (storedDate === today) {
-            const storedCounter = localStorage.getItem('print_counter_val');
-            counter = storedCounter ? parseInt(storedCounter, 10) + 1 : 1;
+        // Increment daily counter and trigger re-render of sheet contents
+        const counter = incrementDailyVersionCounter();
+        if (triggerCompile) {
+            triggerCompile();
         }
-        localStorage.setItem('print_counter_date', today);
-        localStorage.setItem('print_counter_val', counter);
+        
         const increment = String(counter).padStart(2, '0');
         const currentTitle = getCurrentResumeTitle ? getCurrentResumeTitle() : "resume";
         document.title = `${currentTitle}-${increment}`;
