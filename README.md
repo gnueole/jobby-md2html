@@ -9,7 +9,11 @@ It serves as a **quick and clean manual overdrive** for immediate layout tweaks 
 
 👉 **Production URL:** **[https://cv.eole.me](https://cv.eole.me)**
 
-[![Jobby Markdown Editor - Simple Mode](public/screenshots/screenshot01-simple_small.png)](public/screenshots/screenshot01-simple.png)
+<p align="center">
+  <a href="public/screenshots/screenshot01-simple.png">
+    <img src="public/screenshots/screenshot01-simple_small.png" alt="Jobby Markdown Editor - Simple Mode" width="850" />
+  </a>
+</p>
 
 All your content and style changes (colors, fonts, margins) are safely stored in your browser's local storage (`localStorage`). You can copy your layout configurations or download your resume as Markdown from the UI.
 
@@ -216,7 +220,7 @@ Here are some screenshots demonstrating Jobby's premium user interface in variou
 
 | Advanced Customizer Panel | Column Accent Alignments & Light Mode | Dark Canvas Mode & PDF Setup |
 | :---: | :---: | :---: |
-| [![Jobby Advanced Mode](public/screenshots/screenshot02-advancedmode%20_small.png)](public/screenshots/screenshot02-advancedmode.png) | [![Jobby Light Mode Column Right](public/screenshots/screenshot03-lightmode-colright%20_small.png)](public/screenshots/screenshot03-lightmode-colright.png) | [![Jobby Dark Page Mode](public/screenshots/screenshot-04-lightmode-darkpage%20_small.png)](public/screenshots/screenshot-04-lightmode-darkpage.png) |
+| <a href="public/screenshots/screenshot02-advancedmode.png"><img src="public/screenshots/screenshot02-advancedmode_small.png" alt="Jobby Advanced Mode" width="300" /></a> | <a href="public/screenshots/screenshot03-lightmode-colright.png"><img src="public/screenshots/screenshot03-lightmode-colright_small.png" alt="Jobby Light Mode Column Right" width="300" /></a> | <a href="public/screenshots/screenshot-04-lightmode-darkpage.png"><img src="public/screenshots/screenshot-04-lightmode-darkpage_small.png" alt="Jobby Dark Page Mode" width="300" /></a> |
 | *Expert customizations, visual grid splitting, and cosmetic card dropdowns.* | *Alternate column backgrounds, margins/padding rules, and cream colors.* | *Dual-tone high-contrast layouts tailored for recruiters and dark-theme lovers.* |
 
 ---
