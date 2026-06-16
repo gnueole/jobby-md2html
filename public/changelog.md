@@ -14,4 +14,8 @@ Votre document est numéroté de manière intelligente.
 
 ## ⚙️ STABILITÉ GÉNÉRALE
 * **Fluidité Renforcée** : Correction de bugs en arrière-plan pour garantir que l'application reste rapide et disponible à tout moment.
-* **Interface Technique Épurée** : Les scripts de démarrage ont été nettoyés pour ne laisser apparaître que les informations essentielles.
+* **Interface Technique Épurée** : Les scripts de démarrage ont been nettoyés pour ne laisser apparaître que les informations essentielles.
+
+## Pour plus d'informations : 
+* **Changelog** --> Consultez le [CHANGELOG](https://github.com/gnueole/jobby-md2html/blob/main/CHANGELOG.md) complet.
+* **README.md** --> Consultez le [README](https://github.com/gnueole/jobby-md2html/blob/main/README.md) complet du projet.
