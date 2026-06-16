@@ -69,26 +69,33 @@ async function initializeJobby() {
     }
 
     // --- Logo Rolling Easter Egg ---
-    const setupLogoRolling = (el) => {
-        if (!el) return;
-        el.style.cursor = 'pointer';
-        el.addEventListener('click', () => {
-            el.classList.remove('logo-roll');
-            void el.offsetWidth; // Force layout reflow
-            el.classList.add('logo-roll');
-        });
-        el.addEventListener('animationend', () => {
-            el.classList.remove('logo-roll');
+    const setupLogoRolling = (triggerEl, animateEl) => {
+        if (!triggerEl) return;
+        const target = animateEl || triggerEl;
+        triggerEl.style.cursor = 'pointer';
+        
+        const triggerRoll = () => {
+            target.classList.remove('logo-roll');
+            void target.offsetWidth; // Force layout reflow
+            target.classList.add('logo-roll');
+        };
+        
+        triggerEl.addEventListener('mouseenter', triggerRoll);
+        triggerEl.addEventListener('click', triggerRoll);
+        target.addEventListener('animationend', () => {
+            target.classList.remove('logo-roll');
         });
     };
 
     const mainHeaderLogo = document.querySelector('.brand-icon');
-    const aboutModalLogo = document.querySelector('#about-modal .modal-logo');
-    const helpModalLogo = document.querySelector('#help-modal .modal-logo');
+    const aboutModalLogoTrigger = document.querySelector('#about-modal .modal-logo');
+    const aboutModalLogoAnimate = document.querySelector('#about-modal .modal-logo svg');
+    const helpModalLogoTrigger = document.querySelector('#help-modal .modal-logo');
+    const helpModalLogoAnimate = document.querySelector('#help-modal .modal-logo svg');
 
-    setupLogoRolling(mainHeaderLogo);
-    setupLogoRolling(aboutModalLogo);
-    setupLogoRolling(helpModalLogo);
+    setupLogoRolling(mainHeaderLogo, mainHeaderLogo);
+    setupLogoRolling(aboutModalLogoTrigger, aboutModalLogoAnimate);
+    setupLogoRolling(helpModalLogoTrigger, helpModalLogoAnimate);
 
     // --- Dev Platform Customization ---
     const isDev = window.location.hostname === 'localhost' || 
@@ -182,6 +189,7 @@ async function initializeJobby() {
 
     const btnAbout = document.getElementById('btn-about');
     const aboutModal = document.getElementById('about-modal');
+    const tooltipHelpLink = document.getElementById('tooltip-help-link');
     const btnCloseModal = document.getElementById('btn-close-modal');
 
     const fontTiles = document.querySelectorAll('.font-tile');
@@ -830,10 +838,20 @@ async function initializeJobby() {
     // --- Modal Overlay Listeners ---
     const helpModal = document.getElementById('help-modal');
 
+    const triggerLogoRoll = (logoAnimateEl) => {
+        if (logoAnimateEl) {
+            logoAnimateEl.classList.remove('logo-roll');
+            void logoAnimateEl.offsetWidth; // Force layout reflow
+            logoAnimateEl.classList.add('logo-roll');
+        }
+    };
+
     if (btnAbout && aboutModal) {
         btnAbout.addEventListener('click', () => {
             aboutModal.classList.add('show');
             startOpeningFireworks();
+            // Auto roll logo when popping about
+            triggerLogoRoll(aboutModalLogoAnimate);
         });
         const closeBtn = aboutModal.querySelector('.modal-close-btn');
         if (closeBtn) {
@@ -852,6 +870,8 @@ async function initializeJobby() {
                 e.preventDefault();
                 aboutModal.classList.remove('show');
                 helpModal.classList.add('show');
+                // Auto roll logo when popping help
+                triggerLogoRoll(helpModalLogoAnimate);
             });
         }
     }
@@ -865,6 +885,15 @@ async function initializeJobby() {
         }
         helpModal.addEventListener('click', (e) => {
             if (e.target === helpModal) helpModal.classList.remove('show');
+        });
+    }
+
+    if (tooltipHelpLink && helpModal) {
+        tooltipHelpLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            helpModal.classList.add('show');
+            // Auto roll logo when popping help from cheatsheet tooltip
+            triggerLogoRoll(helpModalLogoAnimate);
         });
     }
 
