@@ -107,10 +107,10 @@ restart: down up
 
 # 🚀 AUTOMATED DEPLOYMENT PIPELINE (VPS)
 deploy:
-	@$(MAKE) --no-print-directory _deploy SERVICES="jobby-editor vector"
+	@$(MAKE) --no-print-directory _deploy SERVICES="jobby-editor"
 
 deploy-infra:
-	@$(MAKE) --no-print-directory _deploy SERVICES="traefik mcp-notion gotenberg n8n"
+	@$(MAKE) --no-print-directory _deploy SERVICES="traefik mcp-notion gotenberg n8n vector"
 
 deploy-all:
 	@$(MAKE) --no-print-directory _deploy SERVICES=""
@@ -146,7 +146,7 @@ _deploy:
 	fi
 	@echo "✅ Deployment of version $(VERSION) successfully completed on production server !"
 
-checklogs:
+check-logs:
 	@echo "📟 Fetching real-time production logs from VPS [$(VPS_SSH)]..."
 	ssh $(VPS_SSH) "cd $(VPS_PATH) && docker compose -f docker-compose.prod.yml logs -f"
 
