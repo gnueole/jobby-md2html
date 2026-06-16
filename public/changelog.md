@@ -1,6 +1,9 @@
-# 1.6.2 - Mise à jour Jobby.
-## Nouveautés simples & intelligentes.
+# 1.6.4 - Mise à jour Jobby du 16/06/2026.
+Nouveautés simples & intelligentes.
 [CONTACT : hi@eole.me | +33 6 50 83 68 09 | cv.eole.me]
+
+## Nouveautés
+* **Interface** : Ajout d'un bouton « What's New » à côté du bouton Sample pour charger ce guide interactif directement dans l'éditeur.
 
 ### 📑 VERSION AUTOMATIQUE
 Votre document est numéroté de manière intelligente.
@@ -14,7 +17,7 @@ Votre document est numéroté de manière intelligente.
 
 ## ⚙️ STABILITÉ GÉNÉRALE
 * **Fluidité Renforcée** : Correction de bugs en arrière-plan pour garantir que l'application reste rapide et disponible à tout moment.
-* **Interface Technique Épurée** : Les scripts de démarrage ont been nettoyés pour ne laisser apparaître que les informations essentielles.
+* **Interface Technique Épurée** : Les scripts de démarrage ont été nettoyés pour ne laisser apparaître que les informations essentielles.
 
 ## Pour plus d'informations : 
 * **Changelog** --> Consultez le [CHANGELOG](https://github.com/gnueole/jobby-md2html/blob/main/CHANGELOG.md) complet.
