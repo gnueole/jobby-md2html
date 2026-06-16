@@ -107,13 +107,13 @@ restart: down up
 
 # 🚀 AUTOMATED DEPLOYMENT PIPELINE (VPS)
 deploy:
-	@$(MAKE) _deploy SERVICES="jobby-editor vector"
+	@$(MAKE) --no-print-directory _deploy SERVICES="jobby-editor vector"
 
 deploy-infra:
-	@$(MAKE) _deploy SERVICES="traefik mcp-notion gotenberg n8n"
+	@$(MAKE) --no-print-directory _deploy SERVICES="traefik mcp-notion gotenberg n8n"
 
 deploy-all:
-	@$(MAKE) _deploy SERVICES=""
+	@$(MAKE) --no-print-directory _deploy SERVICES=""
 
 _deploy:
 	@echo "🚀 Deploying Jobby stack to VPS Target [$(VPS_SSH)]..."
@@ -148,7 +148,7 @@ check-build:
 
 deploy-delay:
 	@echo "⏳ Waiting 150 seconds for GitHub Actions build to complete..."
-	git push && sleep 150 && $(MAKE) deploy
+	git push && sleep 150 && $(MAKE) --no-print-directory deploy
 
 # 🔄 N8N SYNC COMMANDS (DOPPLER ENHANCED)
 n8n-backup:
