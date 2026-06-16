@@ -193,7 +193,7 @@ export function compileMarkdown(mdText, styleConfig, markdownInput, onUpdate) {
                 <div class="resume-main-col">
                     ${mainHtml}
                 </div>
-                <div class="resume-sidebar-col ${fontSizeClass} ${fontStyleClass}" style="background-color: ${styleConfig.sidebarBg || '#2d3748'}; color: ${styleConfig.sidebarText || '#ffffff'};">
+                <div class="resume-sidebar-col ${fontSizeClass} ${fontStyleClass}">
                     ${sidebarHtml}
                 </div>
             </div>

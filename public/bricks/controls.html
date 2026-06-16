@@ -237,45 +237,76 @@
                 </div>
             </div>
 
-            <!-- Compact Options (Shadow/Border/Gradient inline) -->
+            <!-- Compact Options (Shadow/Border/Gradient cards with aligned sub-grids) -->
             <div class="control-item expert-only">
                 <label>Column Cosmetics</label>
                 <div class="compact-options-block">
-                    <!-- Shadow inline row -->
-                    <div class="compact-option-row" id="row-cosmetic-shadow">
-                        <label class="checkbox-label" title="Enable column shadow">
-                            <input type="checkbox" id="cosmetic-shadow" checked>
-                            <span>Shadow</span>
-                        </label>
-                        <div class="inline-slider-container" id="shadow-slider-container">
-                            <input type="range" id="column-shadow-distance" min="2" max="25" value="10" title="Shadow blur distance">
-                            <span class="slider-val" id="val-column-shadow">10px</span>
+                    <!-- Shadow Group -->
+                    <div class="cosmetic-group" id="group-cosmetic-shadow">
+                        <div class="compact-option-row">
+                            <label class="checkbox-label" title="Enable column shadow">
+                                <input type="checkbox" id="cosmetic-shadow" checked>
+                                <span>Shadow</span>
+                            </label>
+                        </div>
+                        <div class="cosmetic-details" id="details-cosmetic-shadow">
+                            <div class="details-row">
+                                <span class="details-label">Blur</span>
+                                <input type="range" id="column-shadow-distance" min="2" max="25" value="10" title="Shadow blur distance">
+                                <span class="details-val" id="val-column-shadow">10px</span>
+                            </div>
+                            <div class="details-row">
+                                <span class="details-label">Color</span>
+                                <div class="compact-color-wrapper" title="Shadow color">
+                                    <input type="color" id="column-shadow-color" value="#000000">
+                                </div>
+                                <span class="details-val hex-val" id="val-column-shadow-color">#000000</span>
+                            </div>
                         </div>
                     </div>
-                    <!-- Border inline row -->
-                    <div class="compact-option-row" id="row-cosmetic-border">
-                        <label class="checkbox-label" title="Enable column border">
-                            <input type="checkbox" id="cosmetic-border">
-                            <span>Border</span>
-                        </label>
-                        <div class="inline-slider-container" id="border-slider-container">
-                            <input type="range" id="column-border-width" min="1" max="10" value="2" title="Border width (px)">
-                            <span class="slider-val" id="val-column-border-width">2px</span>
-                            <input type="range" id="column-border-opacity" min="10" max="100" step="5" value="100" title="Border opacity (%)">
-                            <span class="slider-val" id="val-column-border-opacity">100%</span>
+
+                    <!-- Border Group -->
+                    <div class="cosmetic-group" id="group-cosmetic-border">
+                        <div class="compact-option-row">
+                            <label class="checkbox-label" title="Enable column border">
+                                <input type="checkbox" id="cosmetic-border">
+                                <span>Border</span>
+                            </label>
+                        </div>
+                        <div class="cosmetic-details" id="details-cosmetic-border">
+                            <div class="details-row">
+                                <span class="details-label">Width</span>
+                                <input type="range" id="column-border-width" min="1" max="10" value="2" title="Border width (px)">
+                                <span class="details-val" id="val-column-border-width">2px</span>
+                            </div>
+                            <div class="details-row">
+                                <span class="details-label">Opacity</span>
+                                <input type="range" id="column-border-opacity" min="10" max="100" step="5" value="100" title="Border opacity (%)">
+                                <span class="details-val" id="val-column-border-opacity">100%</span>
+                            </div>
                         </div>
                     </div>
-                    <!-- Gradient inline row -->
-                    <div class="compact-option-row" id="row-cosmetic-gradient">
-                        <label class="checkbox-label" title="Enable column gradient">
-                            <input type="checkbox" id="cosmetic-gradient">
-                            <span>Gradient</span>
-                        </label>
-                        <div class="inline-slider-container" id="gradient-slider-container">
-                            <input type="range" id="column-gradient-length" min="50" max="300" value="150" step="5" title="Gradient angle/scale">
-                            <span class="slider-val" id="val-column-gradient">150%</span>
-                            <div class="compact-color-wrapper" title="Gradient end color">
-                                <input type="color" id="column-gradient-color" value="#000000">
+
+                    <!-- Gradient Group -->
+                    <div class="cosmetic-group" id="group-cosmetic-gradient">
+                        <div class="compact-option-row">
+                            <label class="checkbox-label" title="Enable column gradient">
+                                <input type="checkbox" id="cosmetic-gradient">
+                                <span>Gradient</span>
+                            </label>
+                        </div>
+                        <div class="cosmetic-details" id="details-cosmetic-gradient">
+                            <div class="details-row">
+                                <span class="details-label">Length</span>
+                                <input type="range" id="column-gradient-length" min="50" max="300" value="150" step="5" title="Gradient end color distance percentage">
+                                <span class="details-val" id="val-column-gradient">150%</span>
+                            </div>
+                            <div class="details-row">
+                                <span class="details-label">Color</span>
+                                <div class="compact-color-wrapper" title="Gradient end color">
+                                    <input type="color" id="column-gradient-color" value="#000000">
+                                </div>
+                                <span class="details-val hex-val" id="val-column-gradient-color">#000000</span>
                             </div>
                         </div>
                     </div>
@@ -283,7 +314,7 @@
             </div>
 
             <div class="control-item color-picker-row">
-                <label for="color-sidebar-bg">Sidebar BG</label>
+                <label for="color-sidebar-bg">Sidebar Background</label>
                 <div class="color-input-wrapper">
                     <span class="hex-text" id="hex-sidebar-bg">#2d3748</span>
                     <input type="color" id="color-sidebar-bg" value="#2d3748">

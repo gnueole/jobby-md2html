@@ -25,6 +25,7 @@ export const DEFAULT_STYLE_CONFIG = {
     columnFontStyle: "inherit",
     expertMode: false,
     columnShadowDistance: 10,
+    columnShadowColor: "#000000",
     columnGradientLength: 150,
     columnGradientColor: "#000000",
     columnBorderWidth: 2,

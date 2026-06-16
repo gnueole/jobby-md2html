@@ -234,12 +234,6 @@ export function showFlashingCursorRadar(markdownInput) {
 export function initCursorRadar(markdownInput) {
     if (!markdownInput) return;
 
-    markdownInput.addEventListener('click', () => {
-        setTimeout(() => {
-            showFlashingCursorRadar(markdownInput);
-        }, 50);
-    });
-
     markdownInput.addEventListener('keyup', (e) => {
         const arrowKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'PageUp', 'PageDown', 'Home', 'End'];
         if (arrowKeys.includes(e.key)) {

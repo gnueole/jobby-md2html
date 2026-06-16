@@ -154,13 +154,20 @@ Speed up your writing in the Markdown editor with the following shortcuts:
 * Dropdown menus for **Resume Structure** and **Sidebar Position** have been replaced with modern, tactile active-toggle buttons.
 * **Customizer Repositioning:** You can switch the customizer controls panel to the **Left Side** of your screen instead of the default **Right Side** to suit your preferred workflow.
 
-### 4. Cosmetic Page Canvas Options
-You can configure the style of your A4 resume sheet inside the preview canvas with three toggles:
-* **Page Shadow:** Adds a subtle ambient drop shadow around the A4 sheet.
-* **Page Border:** Wraps the sheet in a refined double-line border tinted with your accent color.
-* **Subtle Gradient:** Infuses a gentle gradient starting from your canvas background color and fading into a soft tint.
+### 4. Cosmetic Column Options (Expert Settings)
+You can configure the appearance of your sidebar column in 2-column mode inside a set of beautifully aligned, card-styled collapsible groups:
+* **Column Shadow:** Toggle a soft drop shadow (with customizable blur distance and shadow color picker, mixed with CSS `color-mix` for a professional soft ambient effect).
+* **Column Border:** Toggle a border around the sidebar (with custom width in px and opacity/transparency percentage range sliders).
+* **Column Gradient:** Toggle a background gradient starting from the sidebar base color and fading into a custom secondary color (with adjustable gradient length percentage).
 
-### 5. Centralized Versioning
+### 5. Perfect Column Alignment
+* Fixed vertical alignment between columns in 2-column mode by forcing both panels to occupy the same CSS Grid row (`grid-row: 1`). This prevents grid auto-placement from stacking columns vertically (e.g. when sidebar is toggled left).
+
+### 6. Decoupled, Debounced Parser for Performance
+* The Markdown editor syntax highlighter updates synchronously on typing for instant visual highlighting.
+* The heavier HTML rendering engine, page-break layout engine, and saving operations are debounced by 200ms to keep the editing experience buttery-smooth even for long resumes.
+
+### 7. Centralized Versioning
 * Versioning is centralized dynamically in `package.json`. It is automatically parsed and injected as the single source of truth across the server, CLI, static resources (via query cache-busting), and the interface's "About" modal.
 
 ## 🖨️ Generate PDF for Recruiters

@@ -61,6 +61,7 @@ export function applyStyles(styleConfig) {
     resumeOutput.style.setProperty('--column-split-main', (styleConfig.columnSplit || 58) + '%');
     resumeOutput.style.setProperty('--column-split-sidebar', (100 - (styleConfig.columnSplit || 58)) + '%');
     resumeOutput.style.setProperty('--column-shadow-distance', (styleConfig.columnShadowDistance || 10) + 'px');
+    resumeOutput.style.setProperty('--column-shadow-color', styleConfig.columnShadowColor || '#000000');
     resumeOutput.style.setProperty('--column-gradient-length', (styleConfig.columnGradientLength || 150) + '%');
     resumeOutput.style.setProperty('--column-gradient-color', styleConfig.columnGradientColor || '#000000');
     resumeOutput.style.setProperty('--column-border-width', (styleConfig.columnBorderWidth || 2) + 'px');
@@ -122,8 +123,14 @@ export function applyStyles(styleConfig) {
     const valColShadow = document.getElementById('val-column-shadow');
     if (valColShadow) valColShadow.textContent = (styleConfig.columnShadowDistance || 10) + 'px';
 
+    const valShadowColor = document.getElementById('val-column-shadow-color');
+    if (valShadowColor) valShadowColor.textContent = styleConfig.columnShadowColor || '#000000';
+
     const valColGradient = document.getElementById('val-column-gradient');
     if (valColGradient) valColGradient.textContent = (styleConfig.columnGradientLength || 150) + '%';
+
+    const valGradientColor = document.getElementById('val-column-gradient-color');
+    if (valGradientColor) valGradientColor.textContent = styleConfig.columnGradientColor || '#000000';
 
     const valBorderWidth = document.getElementById('val-column-border-width');
     if (valBorderWidth) valBorderWidth.textContent = (styleConfig.columnBorderWidth || 2) + 'px';
@@ -173,29 +180,29 @@ export function applyStyles(styleConfig) {
         }
     }
 
-    // Disable/fade checkbox rows if unchecked
-    const rowShadow = document.getElementById('row-cosmetic-shadow');
-    if (rowShadow) {
+    // Update active class on cosmetic-group elements to collapse/expand details
+    const shadowGroup = document.getElementById('group-cosmetic-shadow');
+    if (shadowGroup) {
         if (styleConfig.cosmeticShadow !== false) {
-            rowShadow.classList.remove('disabled');
+            shadowGroup.classList.add('active');
         } else {
-            rowShadow.classList.add('disabled');
+            shadowGroup.classList.remove('active');
         }
     }
-    const rowBorder = document.getElementById('row-cosmetic-border');
-    if (rowBorder) {
+    const borderGroup = document.getElementById('group-cosmetic-border');
+    if (borderGroup) {
         if (styleConfig.cosmeticBorder) {
-            rowBorder.classList.remove('disabled');
+            borderGroup.classList.add('active');
         } else {
-            rowBorder.classList.add('disabled');
+            borderGroup.classList.remove('active');
         }
     }
-    const rowGradient = document.getElementById('row-cosmetic-gradient');
-    if (rowGradient) {
+    const gradientGroup = document.getElementById('group-cosmetic-gradient');
+    if (gradientGroup) {
         if (styleConfig.cosmeticGradient) {
-            rowGradient.classList.remove('disabled');
+            gradientGroup.classList.add('active');
         } else {
-            rowGradient.classList.add('disabled');
+            gradientGroup.classList.remove('active');
         }
     }
 
@@ -356,6 +363,9 @@ export function updateControlsFromConfig(styleConfig) {
 
     const columnShadowDistanceSlider = document.getElementById('column-shadow-distance');
     if (columnShadowDistanceSlider) columnShadowDistanceSlider.value = styleConfig.columnShadowDistance || 10;
+
+    const columnShadowColorPicker = document.getElementById('column-shadow-color');
+    if (columnShadowColorPicker) columnShadowColorPicker.value = styleConfig.columnShadowColor || '#000000';
 
     const columnGradientLengthSlider = document.getElementById('column-gradient-length');
     if (columnGradientLengthSlider) columnGradientLengthSlider.value = styleConfig.columnGradientLength || 150;

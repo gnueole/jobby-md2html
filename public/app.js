@@ -97,6 +97,7 @@ async function initializeJobby() {
     let currentTokens = [];
     let lastCleanHTML = "";
     let isHighlightActive = false;
+    const syntaxHighlightCache = new Map();
 
     const highlightState = {
         get currentTokens() { return currentTokens; },
@@ -167,6 +168,7 @@ async function initializeJobby() {
     const advancedModeToggle = document.getElementById('advanced-mode-toggle');
     const columnSplitSlider = document.getElementById('column-split');
     const columnShadowDistanceSlider = document.getElementById('column-shadow-distance');
+    const columnShadowColorPicker = document.getElementById('column-shadow-color');
     const columnGradientLengthSlider = document.getElementById('column-gradient-length');
     const columnGradientColorPicker = document.getElementById('column-gradient-color');
     const columnBorderWidthSlider = document.getElementById('column-border-width');
@@ -337,7 +339,7 @@ async function initializeJobby() {
         }
     }
 
-    function updateConfigFromControls() {
+    function updateConfigFromControlsFull() {
         styleConfig.fontSize = fontSizeSlider.value;
         styleConfig.lineHeight = lineHeightSlider.value;
         styleConfig.headingScale = headingScaleSlider.value;
@@ -348,6 +350,7 @@ async function initializeJobby() {
 
         // Customizer Advanced Column Values
         if (columnShadowDistanceSlider) styleConfig.columnShadowDistance = parseInt(columnShadowDistanceSlider.value);
+        if (columnShadowColorPicker) styleConfig.columnShadowColor = columnShadowColorPicker.value;
         if (columnGradientLengthSlider) styleConfig.columnGradientLength = parseInt(columnGradientLengthSlider.value);
         if (columnGradientColorPicker) styleConfig.columnGradientColor = columnGradientColorPicker.value;
         if (columnBorderWidthSlider) styleConfig.columnBorderWidth = parseInt(columnBorderWidthSlider.value);
@@ -379,6 +382,49 @@ async function initializeJobby() {
         saveToLocalStorage();
     }
 
+    function updateConfigFromControlsLight() {
+        styleConfig.fontSize = fontSizeSlider.value;
+        styleConfig.lineHeight = lineHeightSlider.value;
+        styleConfig.headingScale = headingScaleSlider.value;
+        styleConfig.marginX = marginXSlider.value;
+        styleConfig.marginY = marginYSlider.value;
+        styleConfig.sectionSpacing = sectionSpacingSlider.value;
+        styleConfig.layoutMode = layoutModeSelect.value;
+
+        // Customizer Advanced Column Values
+        if (columnShadowDistanceSlider) styleConfig.columnShadowDistance = parseInt(columnShadowDistanceSlider.value);
+        if (columnShadowColorPicker) styleConfig.columnShadowColor = columnShadowColorPicker.value;
+        if (columnGradientLengthSlider) styleConfig.columnGradientLength = parseInt(columnGradientLengthSlider.value);
+        if (columnGradientColorPicker) styleConfig.columnGradientColor = columnGradientColorPicker.value;
+        if (columnBorderWidthSlider) styleConfig.columnBorderWidth = parseInt(columnBorderWidthSlider.value);
+        if (columnBorderOpacitySlider) styleConfig.columnBorderOpacity = parseInt(columnBorderOpacitySlider.value);
+        if (advancedModeToggle) styleConfig.expertMode = advancedModeToggle.checked;
+
+        if (styleConfig.colorBg !== colorBg.value ||
+            styleConfig.colorHeadings !== colorHeadings.value ||
+            styleConfig.colorBody !== colorBody.value ||
+            styleConfig.colorLinks !== colorLinks.value ||
+            styleConfig.colorAccent !== colorAccent.value ||
+            styleConfig.sidebarBg !== colorSidebarBg.value ||
+            styleConfig.sidebarText !== colorSidebarText.value) {
+            styleConfig.activePreset = 'custom';
+        }
+
+        styleConfig.sidebarBg = colorSidebarBg.value;
+        styleConfig.sidebarText = colorSidebarText.value;
+
+        styleConfig.colorBg = colorBg.value;
+        styleConfig.colorHeadings = colorHeadings.value;
+        styleConfig.colorBody = colorBody.value;
+        styleConfig.colorLinks = colorLinks.value;
+        styleConfig.colorAccent = colorAccent.value;
+
+        saveCustomColorsState();
+        applyStyles(styleConfig);
+        updatePageBreaks();
+        saveToLocalStorage();
+    }
+
     // --- Sub-modules Init ---
     initPanning(canvasWrapper, btnPanToggle);
     initHighlighting(markdownInput, resumeOutput, highlightState);
@@ -400,52 +446,68 @@ async function initializeJobby() {
 
     function highlightMarkdown(text) {
         if (!text) return "";
+        
+        // Prevent indefinite cache growth
+        if (syntaxHighlightCache.size > 10000) {
+            syntaxHighlightCache.clear();
+        }
+
         const lines = text.split('\n');
         const highlightedLines = lines.map(line => {
+            if (syntaxHighlightCache.has(line)) {
+                return syntaxHighlightCache.get(line);
+            }
+
             let escaped = escapeHTML(line);
+            let highlighted = escaped;
             
             // 1. Headings
             const headingMatch = escaped.match(/^(\s*)(#{1,6})(\s+)(.*)$/);
             if (headingMatch) {
                 const [_, indent, hashes, spaces, content] = headingMatch;
-                return `${indent}<span class="md-hash">${hashes}</span>${spaces}<span class="md-heading">${content}</span>`;
+                highlighted = `${indent}<span class="md-hash">${hashes}</span>${spaces}<span class="md-heading">${content}</span>`;
+            } else {
+                // 2b. Blockquotes: > text
+                const quoteMatch = escaped.match(/^(\s*&gt;)(\s*)(.*)$/);
+                if (quoteMatch) {
+                    const [_, gtSym, spaces, content] = quoteMatch;
+                    let highlightedContent = content;
+                    highlightedContent = highlightedContent.replace(/\*\*(.*?)\*\*/g, '<span class="md-bold">**$1**</span>');
+                    highlightedContent = highlightedContent.replace(/\*(.*?)\*/g, '<span class="md-italic">*$1*</span>');
+                    highlightedContent = highlightedContent.replace(/_(.*?)_/g, '<span class="md-italic">_$1_</span>');
+                    highlightedContent = highlightedContent.replace(/\[(.*?)\]\((.*?)\)/g, '<span class="md-link-text">[$1]</span><span class="md-link-url">($2)</span>');
+                    highlightedContent = highlightedContent.replace(/`(.*?)`/g, '<span class="md-inline-code">`$1`</span>');
+
+                    highlighted = `<span class="md-quote-symbol">${gtSym}</span>${spaces}<span class="md-quote-text">${highlightedContent}</span>`;
+                } else {
+                    // 2. Bullet Lists - escape asterisks as HTML entities to prevent cross-tagging
+                    const bulletMatch = escaped.match(/^(\s*([-\*])\s+)(.*)$/);
+                    if (bulletMatch) {
+                        const [_, prefix, char, rest] = bulletMatch;
+                        const safeChar = char === '*' ? '&#42;' : char;
+                        const bullet = prefix.replace(char, safeChar);
+                        escaped = `<span class="md-bullet">${bullet}</span>${rest}`;
+                    }
+
+                    // 3. Bold: **text**
+                    escaped = escaped.replace(/\*\*(.*?)\*\*/g, '<span class="md-bold">**$1**</span>');
+
+                    // 4. Italic: *text* or _text_
+                    escaped = escaped.replace(/\*(.*?)\*/g, '<span class="md-italic">*$1*</span>');
+                    escaped = escaped.replace(/_(.*?)_/g, '<span class="md-italic">_$1_</span>');
+
+                    // 5. Links: [text](url)
+                    escaped = escaped.replace(/\[(.*?)\]\((.*?)\)/g, '<span class="md-link-text">[$1]</span><span class="md-link-url">($2)</span>');
+
+                    // 6. Inline backticks
+                    escaped = escaped.replace(/`(.*?)`/g, '<span class="md-inline-code">`$1`</span>');
+
+                    highlighted = escaped;
+                }
             }
 
-            // 2. Bullet Lists
-            const bulletMatch = escaped.match(/^(\s*[-\*]\s+)(.*)$/);
-            if (bulletMatch) {
-                const [_, bullet, rest] = bulletMatch;
-                escaped = `<span class="md-bullet">${bullet}</span>${rest}`;
-            }
-
-            // 2b. Blockquotes: > text
-            const quoteMatch = escaped.match(/^(\s*&gt;)(\s*)(.*)$/);
-            if (quoteMatch) {
-                const [_, gtSym, spaces, content] = quoteMatch;
-                let highlightedContent = content;
-                highlightedContent = highlightedContent.replace(/\*\*(.*?)\*\*/g, '<span class="md-bold">**$1**</span>');
-                highlightedContent = highlightedContent.replace(/\*(.*?)\*/g, '<span class="md-italic">*$1*</span>');
-                highlightedContent = highlightedContent.replace(/_(.*?)_/g, '<span class="md-italic">_$1_</span>');
-                highlightedContent = highlightedContent.replace(/\[(.*?)\]\((.*?)\)/g, '<span class="md-link-text">[$1]</span><span class="md-link-url">($2)</span>');
-                highlightedContent = highlightedContent.replace(/`(.*?)`/g, '<span class="md-inline-code">`$1`</span>');
-
-                return `<span class="md-quote-symbol">${gtSym}</span>${spaces}<span class="md-quote-text">${highlightedContent}</span>`;
-            }
-
-            // 3. Bold: **text**
-            escaped = escaped.replace(/\*\*(.*?)\*\*/g, '<span class="md-bold">**$1**</span>');
-
-            // 4. Italic: *text* or _text_
-            escaped = escaped.replace(/\*(.*?)\*/g, '<span class="md-italic">*$1*</span>');
-            escaped = escaped.replace(/_(.*?)_/g, '<span class="md-italic">_$1_</span>');
-
-            // 5. Links: [text](url)
-            escaped = escaped.replace(/\[(.*?)\]\((.*?)\)/g, '<span class="md-link-text">[$1]</span><span class="md-link-url">($2)</span>');
-
-            // 6. Inline backticks
-            escaped = escaped.replace(/`(.*?)`/g, '<span class="md-inline-code">`$1`</span>');
-
-            return escaped;
+            syntaxHighlightCache.set(line, highlighted);
+            return highlighted;
         });
 
         return highlightedLines.join('\n') + (text.endsWith('\n') ? '\n' : '');
@@ -543,8 +605,8 @@ async function initializeJobby() {
                 const hasOutsideSymbol = 
                     trimStart - symLen >= 0 &&
                     trimEnd + symLen <= value.length &&
-                    value.substring(trimStart - symLen, trimStart) === symbol &&
-                    value.substring(trimEnd, trimEnd + symLen) === symbol;
+                    value.substring(trimStart - symLen, start) === symbol &&
+                    value.substring(end, end + symLen) === symbol;
 
                 if (hasOutsideSymbol) {
                     const unwrapped = trimmed;
@@ -574,6 +636,75 @@ async function initializeJobby() {
                 markdownInput.dispatchEvent(new Event('input'));
             };
 
+            const toggleAsymmetricFormatting = (prefix, suffix) => {
+                const preLen = prefix.length;
+                const sufLen = suffix.length;
+                let s = start;
+                let eSel = end;
+                let sel = value.substring(s, eSel);
+
+                const matchLeading = sel.match(/^\s+/);
+                const matchTrailing = sel.match(/\s+$/);
+                const leading = matchLeading ? matchLeading[0] : '';
+                const trailing = matchTrailing ? matchTrailing[0] : '';
+
+                let trimmed = sel.substring(leading.length, sel.length - trailing.length);
+                let trimStart = s + leading.length;
+                let trimEnd = eSel - trailing.length;
+
+                if (trimmed.startsWith(prefix) && trimmed.endsWith(suffix) && trimmed.length >= preLen + sufLen) {
+                    const unwrapped = trimmed.substring(preLen, trimmed.length - sufLen);
+                    const newText = leading + unwrapped + trailing;
+                    
+                    markdownInput.value = value.substring(0, start) + newText + value.substring(end);
+                    const newStart = start + leading.length;
+                    const newEnd = newStart + unwrapped.length;
+                    markdownInput.setSelectionRange(newStart, newEnd);
+                    markdownInput.dispatchEvent(new Event('input'));
+                    return;
+                }
+
+                const hasOutsideSymbol = 
+                    trimStart - preLen >= 0 &&
+                    trimEnd + sufLen <= value.length &&
+                    value.substring(trimStart - preLen, trimStart) === prefix &&
+                    value.substring(trimEnd, trimEnd + sufLen) === suffix;
+
+                if (hasOutsideSymbol) {
+                    const unwrapped = trimmed;
+                    markdownInput.value = value.substring(0, trimStart - preLen) + unwrapped + value.substring(trimEnd + sufLen);
+                    
+                    const newStart = trimStart - preLen;
+                    const newEnd = newStart + unwrapped.length;
+                    markdownInput.setSelectionRange(newStart, newEnd);
+                    markdownInput.dispatchEvent(new Event('input'));
+                    return;
+                }
+
+                if (!trimmed) {
+                    const newText = leading + prefix + suffix + trailing;
+                    markdownInput.value = value.substring(0, start) + newText + value.substring(end);
+                    const newCursorPos = start + leading.length + preLen;
+                    markdownInput.setSelectionRange(newCursorPos, newCursorPos);
+                } else {
+                    const wrapped = prefix + trimmed + suffix;
+                    const newText = leading + wrapped + trailing;
+                    markdownInput.value = value.substring(0, start) + newText + value.substring(end);
+                    const newStart = start + leading.length;
+                    const newEnd = newStart + wrapped.length;
+                    markdownInput.setSelectionRange(newStart, newEnd);
+                }
+                markdownInput.dispatchEvent(new Event('input'));
+            };
+
+            const toggleAccent = () => {
+                toggleAsymmetricFormatting(':accent[', ']');
+            };
+
+            const toggleMuted = () => {
+                toggleAsymmetricFormatting(':muted[', ']');
+            };
+
             const key = e.key.toLowerCase();
             if (key === 'b') {
                 e.preventDefault();
@@ -581,6 +712,12 @@ async function initializeJobby() {
             } else if (key === 'i') {
                 e.preventDefault();
                 toggleFormatting('*');
+            } else if (key === 'e') {
+                e.preventDefault();
+                toggleAccent();
+            } else if (key === 'm') {
+                e.preventDefault();
+                toggleMuted();
             } else if (key === 'k') {
                 e.preventDefault();
                 
@@ -1004,28 +1141,43 @@ async function initializeJobby() {
 
     applyAppTheme(appTheme);
 
+    // Debounced compilation to prevent typing lag
+    const debouncedCompile = debounce((text) => {
+        runCompileMarkdown(text);
+        saveToLocalStorage();
+    }, 200);
+
     // --- UI Controls Event Binding ---
     markdownInput.addEventListener('input', (e) => {
-        runCompileMarkdown(e.target.value);
-        saveToLocalStorage();
+        // 1. Update syntax highlighting immediately for fast visual feedback
+        updateSyntaxHighlight();
+        
+        // 2. Debounce the heavier Marked parsing, page layout measuring, and saving
+        debouncedCompile(e.target.value);
     });
 
-    const uiElements = [
+    // Bind light styling updates to sliders and color pickers (instant render)
+    const stylingElements = [
         fontSizeSlider, lineHeightSlider, headingScaleSlider,
         marginXSlider, marginYSlider, sectionSpacingSlider,
-        layoutModeSelect,
         colorSidebarBg, colorSidebarText,
         colorBg, colorHeadings, colorBody, colorLinks, colorAccent,
-        columnShadowDistanceSlider, columnGradientLengthSlider, columnGradientColorPicker,
+        columnShadowDistanceSlider, columnShadowColorPicker,
+        columnGradientLengthSlider, columnGradientColorPicker,
         columnBorderWidthSlider, columnBorderOpacitySlider
     ];
 
-    uiElements.forEach(el => {
+    stylingElements.forEach(el => {
         if (el) {
-            el.addEventListener('input', updateConfigFromControls);
-            el.addEventListener('change', updateConfigFromControls);
+            el.addEventListener('input', updateConfigFromControlsLight);
+            el.addEventListener('change', updateConfigFromControlsLight);
         }
     });
+
+    // Layout mode change requires full restructuring of DOM
+    if (layoutModeSelect) {
+        layoutModeSelect.addEventListener('change', updateConfigFromControlsFull);
+    }
 
     // Font family tiles
     fontTiles.forEach(tile => {

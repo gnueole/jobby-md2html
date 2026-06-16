@@ -1737,7 +1737,6 @@ body.expert-mode-active .expert-only.color-picker-row {
 
 .slick-split-col.main-col {
     background-color: rgba(37, 99, 235, 0.08); /* accent light blue */
-    border-right: 1px dashed var(--border-color);
 }
 
 .slick-split-col.sidebar-col {
@@ -1766,7 +1765,9 @@ body.expert-mode-active .expert-only.color-picker-row {
     left: 0;
     width: 100%;
     height: 100%;
-    margin: 0;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
     background: transparent !important;
     -webkit-appearance: none;
     appearance: none;
@@ -1778,17 +1779,35 @@ body.expert-mode-active .expert-only.color-picker-row {
     outline: none;
 }
 
+/* Webkit track overrides to prevent thumb height clipping */
+.split-slider-range::-webkit-slider-runnable-track {
+    height: 100% !important;
+    background: transparent !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.split-slider-range::-moz-range-track {
+    height: 100% !important;
+    background: transparent !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
 /* Specific styling for the split slider thumb (vertical handle fitting the widget height) */
 input[type="range"].split-slider-range::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
     width: 6px;
-    height: 48px;
+    height: 46px; /* 48px widget height minus 1px top and 1px bottom border */
     border-radius: 0;
     background: var(--accent);
     box-shadow: 0 0 8px var(--accent-glow);
     cursor: ew-resize;
     border: none;
+    margin-top: 0px !important;
     transition: width var(--transition-speed), background-color var(--transition-speed);
 }
 
@@ -1799,7 +1818,7 @@ input[type="range"].split-slider-range::-webkit-slider-thumb:hover {
 
 input[type="range"].split-slider-range::-moz-range-thumb {
     width: 6px;
-    height: 48px;
+    height: 46px;
     border-radius: 0;
     background: var(--accent);
     box-shadow: 0 0 8px var(--accent-glow);
@@ -1813,47 +1832,69 @@ input[type="range"].split-slider-range::-moz-range-thumb:hover {
     background-color: var(--accent-hover);
 }
 
-/* Compact double slider sizing for border */
-#border-slider-container input[type="range"] {
-    max-width: 60px;
-    min-width: 30px;
-}
-
-/* Compact option row container */
+/* Compact option group container */
 .compact-options-block {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
     margin-top: 6px;
+}
+
+.cosmetic-group {
+    background-color: var(--bg-control-group);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.cosmetic-group:focus-within {
+    border-color: var(--accent);
 }
 
 .compact-option-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
-    min-height: 28px;
+    min-height: 20px;
 }
 
-.compact-option-row.disabled .inline-slider-container {
-    opacity: 0.25;
-    pointer-events: none;
+.cosmetic-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--border-color);
+    transition: all var(--transition-speed) ease-in-out;
 }
 
-.inline-slider-container {
+/* Collapse sub-controls when checkbox is unchecked */
+.cosmetic-group:not(.active) .cosmetic-details {
+    display: none;
+}
+
+.details-row {
     display: flex;
     align-items: center;
-    gap: 8px;
-    flex: 1;
-    justify-content: flex-end;
-    transition: opacity var(--transition-speed);
+    gap: 12px;
 }
 
-.inline-slider-container input[type="range"] {
+.details-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-secondary);
+    width: 60px;
+    flex-shrink: 0;
+}
+
+.details-row input[type="range"] {
     flex: 1;
     width: 100%;
-    max-width: 160px;
-    min-width: 80px;
     height: 4px;
     border-radius: 2px;
     background: var(--bg-button-secondary);
@@ -1862,7 +1903,7 @@ input[type="range"].split-slider-range::-moz-range-thumb:hover {
     appearance: none;
 }
 
-.inline-slider-container input[type="range"]::-webkit-slider-thumb {
+.details-row input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
     width: 12px;
@@ -1873,7 +1914,7 @@ input[type="range"].split-slider-range::-moz-range-thumb:hover {
     box-shadow: 0 0 4px var(--accent-glow);
 }
 
-.inline-slider-container input[type="range"]::-moz-range-thumb {
+.details-row input[type="range"]::-moz-range-thumb {
     width: 12px;
     height: 12px;
     border-radius: 50%;
@@ -1883,11 +1924,17 @@ input[type="range"].split-slider-range::-moz-range-thumb:hover {
     border: none;
 }
 
-.inline-slider-container .slider-val {
+.details-val {
     font-size: 10px;
     color: var(--text-secondary);
     min-width: 32px;
     text-align: right;
+    flex-shrink: 0;
+}
+
+.details-val.hex-val {
+    font-family: monospace;
+    min-width: 55px;
 }
 
 /* Compact color picker styling */
@@ -1916,8 +1963,8 @@ input[type="range"].split-slider-range::-moz-range-thumb:hover {
 }
 
 /* Side-by-side Font Preferences layout */
-.font-preferences-row {
-    display: grid;
+body.expert-mode-active .font-preferences-row {
+    display: grid !important;
     grid-template-columns: 1fr 1fr;
     gap: 12px;
 }
