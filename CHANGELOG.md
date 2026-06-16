@@ -10,6 +10,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.6.5] - 2026-06-16
+
+### Added
+- **Help Modal & Detailed Markdown Documentation:** Added a dedicated Help modal accessible via a link in the About dialog. It fully explains standard Markdown formatting, layout split rules, custom Jobby tags, and links to Markdown best practices.
+- **3 Renameable Design Preset Slots:** Replaced the single custom slot with Custom 1, Custom 2, and Custom 3 presets arranged in a 3x2 grid. Supports click-to-load/save, auto-save synchronization, and double-click to rename with strict input validation (character allowlist, length limit, XSS tag stripping).
+- **SPA Client-Side Routing:** Configured Node server and frontend loader to support direct routing for `/sample` and `/whatsnew` to load template documents automatically without prompt warnings.
+- **Header & Editor Layout Polishing:** Simplified editor header actions (Copy/Clear) to be icon-only. Configured CSS Container Queries on `.editor-panel` to hide button text and toggle labels dynamically when the panel is narrow.
+- **Editor Navigation Cursor Echo:** Added cursor tracking to trigger the flashing cursor radar echo immediately on ArrowUp/Down/Left/Right navigations (keydown/keyup).
+- **Logo Roll Easter Egg:** Embedded a 360-degree rotation animation when clicking the Jobby logo icon in the main header, About modal, or Help modal.
+
+---
+
 ## [1.6.0] - 2026-06-16
 
 ### Added

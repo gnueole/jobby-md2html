@@ -1,7 +1,7 @@
 <div class="modal-card">
     <div class="modal-header">
         <h2>About jobby MD Editor</h2>
-        <button id="btn-close-modal" class="modal-close-btn">&times;</button>
+        <button class="modal-close-btn">&times;</button>
     </div>
     <div class="modal-body">
         <div class="modal-brand-section">
@@ -23,20 +23,31 @@
         <p class="modal-desc">
             A premium Markdown resume editor designed to blend elegant aesthetics with flawless ATS (Applicant
             Tracking System) compliance. <br><br>
+            <span style="font-size: 12px; font-weight: 500; display: block; margin: 8px 0; background: var(--bg-modal-directives); padding: 8px 12px; border-radius: 6px; border-left: 3px solid var(--accent);">
+                Besoin d'aide ? Consultez notre <a href="#" id="link-to-help" style="color: var(--accent); text-decoration: underline; font-weight: 600;">Guide d'Aide & Syntaxe Markdown</a>.
+            </span>
             <span style="font-size: 11px; opacity: 0.85;">Inspired by <a
                     href="https://github.com/rozita-hasani/markdown-resume" target="_blank"
                     style="color: var(--resume-color-links); text-decoration: underline;">rozita-hasani/markdown-resume</a>.</span>
         </p>
+
         <div class="modal-directives">
-            <h4>📝 Specific Resume Directives (Guide)</h4>
-            <ul>
-                <li><strong>Accent Color</strong>: Use <code>:accent[your text]</code> to color important elements (e.g., <code>:accent[Immediately available]</code>).</li>
-                <li><strong>Muted Text (gray)</strong>: Use <code>:muted[your text]</code> to visually de‑emphasize secondary information while keeping it indexable by ATS (e.g., <code>:muted[Driver's license B · Own vehicle]</code>).</li>
-                <li><strong>Contact Bar</strong>: Automatically formats emails or links. Force a centered block with <code>[CONTACT : email | phone | linkedin]</code>.</li>
-                <li><strong>Two-Column Layout</strong>: If 2-column mode is enabled, <code>###</code> (H3) headings go to the left Sidebar, and <code>##</code> (H2) headings go to the right Main column.</li>
+            <h4>🔒 Privacy & Data Policy</h4>
+            <p style="font-size: 12.5px; line-height: 1.5; margin-bottom: 12px; color: var(--text-secondary);">
+                Jobby is a personal, non-commercial project that does not generate any revenue. We care deeply about your privacy:
+            </p>
+            <ul style="margin-left: 16px; font-size: 12.5px; line-height: 1.5; color: var(--text-secondary); margin-bottom: 16px;">
+                <li><strong>Zero Data Collection</strong>: We do not collect, store, or transmit any of your personal details, resumes, or editor contents.</li>
+                <li><strong>Local Storage Only</strong>: All your markdown draft data and layout preferences are saved locally in your own browser's <code>localStorage</code>.</li>
             </ul>
+
+            <h4 style="margin-top: 16px; color: var(--danger);">⚠️ Content Disclaimer</h4>
+            <p style="font-size: 12px; line-height: 1.5; color: var(--text-secondary); border-left: 3px solid var(--danger); padding-left: 10px; margin-top: 6px;">
+                The creator of Jobby explicitly disclaims all liability and responsibility for any user-generated content, resumes, or document outputs created using this editor. Users are solely responsible for the correctness, appropriateness, and legality of the files they compile.
+            </p>
         </div>
-        <div class="modal-github-section" style="margin-bottom: 24px; text-align: center;">
+
+        <div class="modal-github-section" style="margin-bottom: 24px; text-align: center; margin-top: 20px;">
             <a href="https://github.com/gnueole/jobby-md2html" target="_blank" class="btn btn-secondary"
                 style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; width: auto; padding: 8px 16px;">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">

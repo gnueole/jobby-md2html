@@ -239,12 +239,17 @@ export function showFlashingCursorRadar(markdownInput) {
 export function initCursorRadar(markdownInput) {
     if (!markdownInput) return;
 
-    markdownInput.addEventListener('keyup', (e) => {
+    const handleArrowNav = (e) => {
         const arrowKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'PageUp', 'PageDown', 'Home', 'End'];
         if (arrowKeys.includes(e.key)) {
-            showFlashingCursorRadar(markdownInput);
+            setTimeout(() => {
+                showFlashingCursorRadar(markdownInput);
+            }, 0);
         }
-    });
+    };
+
+    markdownInput.addEventListener('keydown', handleArrowNav);
+    markdownInput.addEventListener('keyup', handleArrowNav);
 }
 
 export function initBidirectionalSync(markdownInput, resumeOutput, canvasWrapper, state) {

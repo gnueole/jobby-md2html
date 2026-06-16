@@ -1,0 +1,97 @@
+<div class="modal-card">
+    <div class="modal-header">
+        <h2>Help & Markdown Guide</h2>
+        <button class="modal-close-btn">&times;</button>
+    </div>
+    <div class="modal-body" style="max-height: 80vh; overflow-y: auto;">
+        <div class="modal-brand-section">
+            <div class="modal-logo">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                    <line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+            </div>
+            <div class="modal-brand-text">
+                <h3>Jobby Markdown Documentation</h3>
+                <span class="version-badge">Version {{VERSION}}</span>
+            </div>
+        </div>
+
+        <p class="modal-desc" style="margin-bottom: 20px;">
+            Jobby leverages standard Markdown to compile premium, print-ready CV documents. Below is the complete reference of all standard Markdown features supported, custom styling tags, and recommendations.
+        </p>
+
+        <div class="modal-directives">
+            <h4 style="margin-bottom: 8px;">📖 Standard Markdown Syntax</h4>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
+                <div>
+                    <h5 style="color: var(--text-primary); font-size: 12px; margin-bottom: 4px;">Titres (Headings)</h5>
+                    <ul style="margin-left: 16px; font-size: 12px; color: var(--text-secondary); margin-bottom: 12px;">
+                        <li><code># Titre Principal</code> (H1 - Nom)</li>
+                        <li><code>## Titre Section</code> (H2 - Colonne Principale)</li>
+                        <li><code>### Sous-Titre</code> (H3 - Colonne Latérale)</li>
+                    </ul>
+                    
+                    <h5 style="color: var(--text-primary); font-size: 12px; margin-bottom: 4px;">Mise en forme (Emphasis)</h5>
+                    <ul style="margin-left: 16px; font-size: 12px; color: var(--text-secondary); margin-bottom: 12px;">
+                        <li>Gras : <code>**texte**</code> ou <code>__texte__</code></li>
+                        <li>Italique : <code>*texte*</code> ou <code>_texte_</code></li>
+                        <li>Gras & Italique : <code>***texte***</code></li>
+                    </ul>
+
+                    <h5 style="color: var(--text-primary); font-size: 12px; margin-bottom: 4px;">Listes (Lists)</h5>
+                    <ul style="margin-left: 16px; font-size: 12px; color: var(--text-secondary);">
+                        <li>Puces : <code>- élément</code> ou <code>* élément</code></li>
+                        <li>Numérotées : <code>1. élément</code></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h5 style="color: var(--text-primary); font-size: 12px; margin-bottom: 4px;">Liens & Images</h5>
+                    <ul style="margin-left: 16px; font-size: 12px; color: var(--text-secondary); margin-bottom: 12px;">
+                        <li>Lien : <code>[texte](url)</code></li>
+                        <li>Image : <code>![alt](url)</code></li>
+                    </ul>
+
+                    <h5 style="color: var(--text-primary); font-size: 12px; margin-bottom: 4px;">Citations & Séparateurs</h5>
+                    <ul style="margin-left: 16px; font-size: 12px; color: var(--text-secondary); margin-bottom: 12px;">
+                        <li>Citation : <code>&gt; votre texte</code></li>
+                        <li>Ligne de séparation : <code>---</code></li>
+                    </ul>
+
+                    <h5 style="color: var(--text-primary); font-size: 12px; margin-bottom: 4px;">Blocs de Code & Tableaux</h5>
+                    <ul style="margin-left: 16px; font-size: 12px; color: var(--text-secondary);">
+                        <li>En ligne : <code>`code`</code></li>
+                        <li>Bloc : <code>```lang\ncode\n```</code></li>
+                        <li>Tableaux : Syntaxe standard GFM (pipes & tirets)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h4 style="margin-bottom: 8px;">🎨 Custom Jobby Extensions</h4>
+            <ul style="margin-left: 16px; font-size: 12.5px; line-height: 1.5; color: var(--text-secondary); margin-bottom: 24px;">
+                <li style="margin-bottom: 6px;">
+                    <strong>Accent Color Tag</strong>: <code>:accent[votre texte]</code>
+                    <br><span style="font-size: 11px; opacity: 0.8;">Met en valeur des mots clés importants. Ex: <code>:accent[Disponible immédiatement]</code></span>
+                </li>
+                <li style="margin-bottom: 6px;">
+                    <strong>Muted Text Tag</strong>: <code>:muted[votre texte]</code>
+                    <br><span style="font-size: 11px; opacity: 0.8;">De-accentue le texte (gris clair) tout en le laissant 100% lisible par les robots ATS. Ex: <code>:muted[Permis B · Véhiculé]</code></span>
+                </li>
+                <li style="margin-bottom: 6px;">
+                    <strong>Contact Centered Block</strong>: <code>[CONTACT : email | phone | linkedin | site]</code>
+                    <br><span style="font-size: 11px; opacity: 0.8;">Format automatique d'une barre de contact avec icônes. Séparez les valeurs par des barres verticales <code>|</code>.</span>
+                </li>
+            </ul>
+
+            <h4 style="margin-bottom: 8px;">✨ Best Practices & Markdown Guide</h4>
+            <p style="font-size: 12.5px; line-height: 1.5; color: var(--text-secondary); margin-bottom: 12px;">
+                For comprehensive documentation and tips on structuring Markdown documents, refer to the official guide:
+                <br>
+                👉 <a href="https://www.markdownguide.org/basic-syntax/" target="_blank" style="color: var(--accent); text-decoration: underline; font-weight: 600;">Markdown Guide - Syntax & Best Practices</a>
+            </p>
+        </div>
+    </div>
+</div>

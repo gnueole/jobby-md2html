@@ -210,6 +210,23 @@ body {
     width: 30%;
     min-width: 250px;
     max-width: 600px;
+    container-type: inline-size;
+    container-name: editor;
+}
+
+@container editor (max-width: 420px) {
+    .editor-panel .btn-text {
+        display: none !important;
+    }
+    .editor-panel .syntax-toggle .toggle-label {
+        display: none !important;
+    }
+}
+
+@container editor (max-width: 310px) {
+    .editor-panel .status-indicator {
+        display: none !important;
+    }
 }
 
 .preview-panel {
@@ -824,6 +841,10 @@ input[type="color"]::-webkit-color-swatch {
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
+#help-modal .modal-card {
+    max-width: 800px;
+}
+
 .modal-overlay.show .modal-card {
     transform: translateY(0);
 }
@@ -1028,7 +1049,7 @@ input[type="color"]::-webkit-color-swatch {
 
 .color-presets-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 6px;
     margin-top: 6px;
 }
@@ -1455,7 +1476,7 @@ input[type="color"]::-webkit-color-swatch {
     position: absolute;
     top: calc(100% + 8px);
     left: 0;
-    width: 230px;
+    width: 275px;
     background-color: var(--bg-modal);
     border: 1px solid var(--border-color);
     border-radius: 8px;
@@ -1466,6 +1487,16 @@ input[type="color"]::-webkit-color-swatch {
     visibility: hidden;
     transform: translateY(5px);
     transition: opacity var(--transition-speed), transform var(--transition-speed), visibility var(--transition-speed);
+}
+
+.shortcut-tooltip-dropdown code {
+    background-color: var(--bg-button-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    padding: 1px 4px;
+    font-family: monospace;
+    font-size: 10px;
+    color: var(--text-primary);
 }
 
 .shortcut-tooltip-container:hover .shortcut-tooltip-dropdown {
@@ -1977,6 +2008,17 @@ body.expert-mode-active .font-preferences-row {
 .font-pref-col {
     display: flex;
     flex-direction: column;
+}
+
+/* Logo rolling easter egg */
+.logo-roll {
+    animation: roll 1s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center;
+}
+
+@keyframes roll {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 

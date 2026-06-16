@@ -43,7 +43,8 @@ async function initializeJobby() {
         { id: 'editor-container', url: 'bricks/editor.html' },
         { id: 'preview-container', url: 'bricks/preview.html' },
         { id: 'controls-container', url: 'bricks/controls.html' },
-        { id: 'about-modal', url: 'bricks/about-modal.html' }
+        { id: 'about-modal', url: 'bricks/about-modal.html' },
+        { id: 'help-modal', url: 'bricks/help-modal.html' }
     ];
 
     try {
@@ -66,6 +67,28 @@ async function initializeJobby() {
         console.error("Critical: Error loading public bricks:", err);
         return;
     }
+
+    // --- Logo Rolling Easter Egg ---
+    const setupLogoRolling = (el) => {
+        if (!el) return;
+        el.style.cursor = 'pointer';
+        el.addEventListener('click', () => {
+            el.classList.remove('logo-roll');
+            void el.offsetWidth; // Force layout reflow
+            el.classList.add('logo-roll');
+        });
+        el.addEventListener('animationend', () => {
+            el.classList.remove('logo-roll');
+        });
+    };
+
+    const mainHeaderLogo = document.querySelector('.brand-icon');
+    const aboutModalLogo = document.querySelector('#about-modal .modal-logo');
+    const helpModalLogo = document.querySelector('#help-modal .modal-logo');
+
+    setupLogoRolling(mainHeaderLogo);
+    setupLogoRolling(aboutModalLogo);
+    setupLogoRolling(helpModalLogo);
 
     // --- Dev Platform Customization ---
     const isDev = window.location.hostname === 'localhost' || 
@@ -118,14 +141,19 @@ async function initializeJobby() {
         set isHighlightActive(val) { isHighlightActive = val; }
     };
 
-    let customColors = {
-        colorBg: DEFAULT_STYLE_CONFIG.colorBg,
-        colorHeadings: DEFAULT_STYLE_CONFIG.colorHeadings,
-        colorBody: DEFAULT_STYLE_CONFIG.colorBody,
-        colorLinks: DEFAULT_STYLE_CONFIG.colorLinks,
-        colorAccent: DEFAULT_STYLE_CONFIG.colorAccent,
-        sidebarBg: DEFAULT_STYLE_CONFIG.sidebarBg,
-        sidebarText: DEFAULT_STYLE_CONFIG.sidebarText
+    let customPresets = {
+        'custom-1': {
+            name: localStorage.getItem('ats_custom_preset_name_1') || 'Custom 1',
+            styles: JSON.parse(localStorage.getItem('ats_custom_preset_1')) || null
+        },
+        'custom-2': {
+            name: localStorage.getItem('ats_custom_preset_name_2') || 'Custom 2',
+            styles: JSON.parse(localStorage.getItem('ats_custom_preset_2')) || null
+        },
+        'custom-3': {
+            name: localStorage.getItem('ats_custom_preset_name_3') || 'Custom 3',
+            styles: JSON.parse(localStorage.getItem('ats_custom_preset_3')) || null
+        }
     };
 
     // --- DOM Cache Elements ---
@@ -188,7 +216,9 @@ async function initializeJobby() {
     const presetClassicNb = document.getElementById('preset-classic-nb');
     const presetDarkMode = document.getElementById('preset-dark-mode');
     const presetCleanBlue = document.getElementById('preset-clean-blue');
-    const presetCustom = document.getElementById('preset-custom');
+    const presetCustom1 = document.getElementById('preset-custom-1');
+    const presetCustom2 = document.getElementById('preset-custom-2');
+    const presetCustom3 = document.getElementById('preset-custom-3');
 
     const btnCopyStandalone = document.getElementById('btn-copy-standalone');
     const btnCopyCss = document.getElementById('btn-copy-css');
@@ -213,6 +243,24 @@ async function initializeJobby() {
     const saveToLocalStorage = debounce(() => {
         try {
             localStorage.setItem('ats_resume_markdown', markdownInput.value);
+
+            // Auto-save custom preset state if active
+            const activePreset = styleConfig.activePreset;
+            if (activePreset === 'custom-1' || activePreset === 'custom-2' || activePreset === 'custom-3') {
+                const indexStr = activePreset === 'custom-1' ? '1' : activePreset === 'custom-2' ? '2' : '3';
+                const presetStyles = {
+                    colorBg: styleConfig.colorBg,
+                    colorHeadings: styleConfig.colorHeadings,
+                    colorBody: styleConfig.colorBody,
+                    colorLinks: styleConfig.colorLinks,
+                    colorAccent: styleConfig.colorAccent,
+                    sidebarBg: styleConfig.sidebarBg,
+                    sidebarText: styleConfig.sidebarText
+                };
+                customPresets[activePreset].styles = presetStyles;
+                localStorage.setItem(`ats_custom_preset_${indexStr}`, JSON.stringify(presetStyles));
+            }
+
             localStorage.setItem('ats_resume_styles', JSON.stringify(styleConfig));
             console.log("Configuration and markdown saved to localStorage.");
         } catch (e) {
@@ -249,38 +297,47 @@ async function initializeJobby() {
         updateSyntaxHighlight(markdownInput, highlightCode, cbSyntaxHighlight);
     }
 
-    function saveCustomColorsState() {
-        const bg = (styleConfig.colorBg || '#ffffff').toLowerCase();
-        const headings = styleConfig.colorHeadings.toLowerCase();
-        const body = styleConfig.colorBody.toLowerCase();
-        const links = styleConfig.colorLinks.toLowerCase();
-        const accent = styleConfig.colorAccent.toLowerCase();
-        const sidebarBg = (styleConfig.sidebarBg || '#2d3748').toLowerCase();
-        const sidebarText = (styleConfig.sidebarText || '#ffffff').toLowerCase();
-
-        const isPreset = (
-            (bg === '#ffffff' && headings === '#111111' &&
-                body === '#222222' && links === '#000000' &&
-                accent === '#444444' && sidebarBg === '#f1f5f9' &&
-                sidebarText === '#111111') ||
-            (bg === '#0f172a' && headings === '#f8fafc' &&
-                body === '#cbd5e1' && links === '#38bdf8' &&
-                accent === '#34d399' && sidebarBg === '#1e293b' &&
-                sidebarText === '#cbd5e1') ||
-            (bg === '#ffffff' && headings === '#0f172a' &&
-                body === '#334155' && links === '#2563eb' &&
-                accent === '#0ea5e9' && sidebarBg === '#0f172a' &&
-                sidebarText === '#ffffff')
-        );
-        if (!isPreset) {
-            customColors.colorBg = styleConfig.colorBg;
-            customColors.colorHeadings = styleConfig.colorHeadings;
-            customColors.colorBody = styleConfig.colorBody;
-            customColors.colorLinks = styleConfig.colorLinks;
-            customColors.colorAccent = styleConfig.colorAccent;
-            customColors.sidebarBg = styleConfig.sidebarBg;
-            customColors.sidebarText = styleConfig.sidebarText;
+    function sanitizePresetName(name) {
+        name = name.trim();
+        name = name.replace(/<[^>]*>/g, ''); // strip HTML tags
+        
+        if (name.length > 15) {
+            return { error: "Le nom ne doit pas dépasser 15 caractères." };
         }
+        if (name.length === 0) {
+            return { error: "Le nom ne peut pas être vide." };
+        }
+        
+        const regex = /^[a-zA-Z0-9\sàâäéèêëïîôöùûüçÀÂÄÉÈÊËÏÎÔÖÙÛÜÇ\-\'\!\?\(\)\#]+$/;
+        if (!regex.test(name)) {
+            return { error: "Le nom contient des caractères interdits." };
+        }
+        return { name };
+    }
+
+    function handleCustomPresetRename(key) {
+        const preset = customPresets[key];
+        const oldName = preset.name;
+        const newNameInput = prompt(`Renommer le preset "${oldName}" :`, oldName);
+        if (newNameInput === null) return;
+        
+        const result = sanitizePresetName(newNameInput);
+        if (result.error) {
+            alert(result.error);
+            return;
+        }
+        
+        preset.name = result.name;
+        const indexStr = key === 'custom-1' ? '1' : key === 'custom-2' ? '2' : '3';
+        localStorage.setItem(`ats_custom_preset_name_${indexStr}`, preset.name);
+        updateCustomPresetLabels();
+        showToast(`Preset renommé en "${preset.name}"`);
+    }
+
+    function updateCustomPresetLabels() {
+        if (presetCustom1) presetCustom1.textContent = customPresets['custom-1'].name;
+        if (presetCustom2) presetCustom2.textContent = customPresets['custom-2'].name;
+        if (presetCustom3) presetCustom3.textContent = customPresets['custom-3'].name;
     }
 
     function updateConfigFromControlsFull() {
@@ -308,7 +365,11 @@ async function initializeJobby() {
             styleConfig.colorAccent !== colorAccent.value ||
             styleConfig.sidebarBg !== colorSidebarBg.value ||
             styleConfig.sidebarText !== colorSidebarText.value) {
-            styleConfig.activePreset = 'custom';
+            if (styleConfig.activePreset !== 'custom-1' && 
+                styleConfig.activePreset !== 'custom-2' && 
+                styleConfig.activePreset !== 'custom-3') {
+                styleConfig.activePreset = 'custom-1';
+            }
         }
 
         styleConfig.sidebarBg = colorSidebarBg.value;
@@ -320,7 +381,6 @@ async function initializeJobby() {
         styleConfig.colorLinks = colorLinks.value;
         styleConfig.colorAccent = colorAccent.value;
 
-        saveCustomColorsState();
         applyStyles(styleConfig);
         runCompileMarkdown(markdownInput.value);
         saveToLocalStorage();
@@ -351,7 +411,11 @@ async function initializeJobby() {
             styleConfig.colorAccent !== colorAccent.value ||
             styleConfig.sidebarBg !== colorSidebarBg.value ||
             styleConfig.sidebarText !== colorSidebarText.value) {
-            styleConfig.activePreset = 'custom';
+            if (styleConfig.activePreset !== 'custom-1' && 
+                styleConfig.activePreset !== 'custom-2' && 
+                styleConfig.activePreset !== 'custom-3') {
+                styleConfig.activePreset = 'custom-1';
+            }
         }
 
         styleConfig.sidebarBg = colorSidebarBg.value;
@@ -363,7 +427,6 @@ async function initializeJobby() {
         styleConfig.colorLinks = colorLinks.value;
         styleConfig.colorAccent = colorAccent.value;
 
-        saveCustomColorsState();
         applyStyles(styleConfig);
         updatePageBreaks(resumeOutput);
         saveToLocalStorage();
@@ -652,20 +715,46 @@ async function initializeJobby() {
         });
     }
 
-    if (presetCustom) {
-        presetCustom.addEventListener('click', () => {
-            styleConfig.activePreset = 'custom';
-            styleConfig.colorBg = customColors.colorBg;
-            styleConfig.colorHeadings = customColors.colorHeadings;
-            styleConfig.colorBody = customColors.colorBody;
-            styleConfig.colorLinks = customColors.colorLinks;
-            styleConfig.colorAccent = customColors.colorAccent;
-            styleConfig.sidebarBg = customColors.sidebarBg;
-            styleConfig.sidebarText = customColors.sidebarText;
-            updateControlsFromConfig(styleConfig);
-            runCompileMarkdown(markdownInput.value);
-            saveToLocalStorage();
-        });
+    const handlePresetClick = (key) => {
+        const preset = customPresets[key];
+        if (!preset.styles) {
+            preset.styles = {
+                colorBg: styleConfig.colorBg,
+                colorHeadings: styleConfig.colorHeadings,
+                colorBody: styleConfig.colorBody,
+                colorLinks: styleConfig.colorLinks,
+                colorAccent: styleConfig.colorAccent,
+                sidebarBg: styleConfig.sidebarBg,
+                sidebarText: styleConfig.sidebarText
+            };
+            const indexStr = key === 'custom-1' ? '1' : key === 'custom-2' ? '2' : '3';
+            localStorage.setItem(`ats_custom_preset_${indexStr}`, JSON.stringify(preset.styles));
+            showToast(`${preset.name} sauvegardé avec les couleurs actuelles !`);
+        }
+        styleConfig.activePreset = key;
+        styleConfig.colorBg = preset.styles.colorBg;
+        styleConfig.colorHeadings = preset.styles.colorHeadings;
+        styleConfig.colorBody = preset.styles.colorBody;
+        styleConfig.colorLinks = preset.styles.colorLinks;
+        styleConfig.colorAccent = preset.styles.colorAccent;
+        styleConfig.sidebarBg = preset.styles.sidebarBg;
+        styleConfig.sidebarText = preset.styles.sidebarText;
+        updateControlsFromConfig(styleConfig);
+        runCompileMarkdown(markdownInput.value);
+        saveToLocalStorage();
+    };
+
+    if (presetCustom1) {
+        presetCustom1.addEventListener('click', () => handlePresetClick('custom-1'));
+        presetCustom1.addEventListener('dblclick', () => handleCustomPresetRename('custom-1'));
+    }
+    if (presetCustom2) {
+        presetCustom2.addEventListener('click', () => handlePresetClick('custom-2'));
+        presetCustom2.addEventListener('dblclick', () => handleCustomPresetRename('custom-2'));
+    }
+    if (presetCustom3) {
+        presetCustom3.addEventListener('click', () => handlePresetClick('custom-3'));
+        presetCustom3.addEventListener('dblclick', () => handleCustomPresetRename('custom-3'));
     }
 
     // Zoom Handlers
@@ -739,22 +828,54 @@ async function initializeJobby() {
     });
 
     // --- Modal Overlay Listeners ---
-    btnAbout.addEventListener('click', () => {
-        aboutModal.classList.add('show');
-        startOpeningFireworks();
-    });
+    const helpModal = document.getElementById('help-modal');
 
-    btnCloseModal.addEventListener('click', () => {
-        aboutModal.classList.remove('show');
-    });
+    if (btnAbout && aboutModal) {
+        btnAbout.addEventListener('click', () => {
+            aboutModal.classList.add('show');
+            startOpeningFireworks();
+        });
+        const closeBtn = aboutModal.querySelector('.modal-close-btn');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                aboutModal.classList.remove('show');
+            });
+        }
+        aboutModal.addEventListener('click', (e) => {
+            if (e.target === aboutModal) aboutModal.classList.remove('show');
+        });
 
-    aboutModal.addEventListener('click', (e) => {
-        if (e.target === aboutModal) aboutModal.classList.remove('show');
-    });
+        // Event listener for the "Aide" link inside About Modal
+        const linkToHelp = aboutModal.querySelector('#link-to-help');
+        if (linkToHelp && helpModal) {
+            linkToHelp.addEventListener('click', (e) => {
+                e.preventDefault();
+                aboutModal.classList.remove('show');
+                helpModal.classList.add('show');
+            });
+        }
+    }
+
+    if (helpModal) {
+        const closeBtn = helpModal.querySelector('.modal-close-btn');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                helpModal.classList.remove('show');
+            });
+        }
+        helpModal.addEventListener('click', (e) => {
+            if (e.target === helpModal) helpModal.classList.remove('show');
+        });
+    }
 
     window.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && aboutModal.classList.contains('show')) {
-            aboutModal.classList.remove('show');
+        if (e.key === 'Escape') {
+            if (aboutModal && aboutModal.classList.contains('show')) {
+                aboutModal.classList.remove('show');
+            }
+            if (helpModal && helpModal.classList.contains('show')) {
+                helpModal.classList.remove('show');
+            }
         }
     });
 
@@ -880,16 +1001,44 @@ async function initializeJobby() {
         let loadedMarkdown = null;
         let loadedConfig = null;
 
-        const savedMd = localStorage.getItem('ats_resume_markdown');
-        const savedStyles = localStorage.getItem('ats_resume_styles');
+        const path = window.location.pathname;
+        const isSampleRoute = path === '/sample' || path === '/sample/';
+        const isWhatsNewRoute = path === '/whatsnew' || path === '/whatsnew/';
 
-        if (savedMd) {
-            loadedMarkdown = savedMd;
+        if (isSampleRoute || isWhatsNewRoute) {
+            const fileName = isSampleRoute ? 'sample.md' : 'whatsnew.md';
+            try {
+                const response = await fetch(fileName);
+                if (response.ok) {
+                    loadedMarkdown = await response.text();
+                    console.log(`Loaded direct SPA route file: ${fileName}`);
+                }
+            } catch (e) {
+                console.error(`Failed to fetch direct SPA route file ${fileName}:`, e);
+            }
+            
+            const savedStyles = localStorage.getItem('ats_resume_styles');
             if (savedStyles) {
                 try {
                     loadedConfig = JSON.parse(savedStyles);
                 } catch (e) {
-                    console.error("Failed to parse saved styles:", e);
+                    console.error("Failed to parse saved styles for direct route:", e);
+                }
+            }
+        }
+
+        if (!loadedMarkdown) {
+            const savedMd = localStorage.getItem('ats_resume_markdown');
+            const savedStyles = localStorage.getItem('ats_resume_styles');
+
+            if (savedMd) {
+                loadedMarkdown = savedMd;
+                if (savedStyles) {
+                    try {
+                        loadedConfig = JSON.parse(savedStyles);
+                    } catch (e) {
+                        console.error("Failed to parse saved styles:", e);
+                    }
                 }
             }
         }
@@ -936,18 +1085,30 @@ async function initializeJobby() {
             styleConfig = { ...DEFAULT_STYLE_CONFIG };
         }
 
-        customColors.colorBg = styleConfig.colorBg || DEFAULT_STYLE_CONFIG.colorBg;
-        customColors.colorHeadings = styleConfig.colorHeadings;
-        customColors.colorBody = styleConfig.colorBody;
-        customColors.colorLinks = styleConfig.colorLinks;
-        customColors.colorAccent = styleConfig.colorAccent;
-        customColors.sidebarBg = styleConfig.sidebarBg || DEFAULT_STYLE_CONFIG.sidebarBg;
-        customColors.sidebarText = styleConfig.sidebarText || DEFAULT_STYLE_CONFIG.sidebarText;
+        // Migrate legacy activePreset
+        if (styleConfig.activePreset === 'custom' || !styleConfig.activePreset) {
+            styleConfig.activePreset = 'custom-1';
+        }
 
+        // Initialize custom presets styles if empty and it matches activePreset
+        if (styleConfig.activePreset === 'custom-1' && !customPresets['custom-1'].styles) {
+            customPresets['custom-1'].styles = {
+                colorBg: styleConfig.colorBg || DEFAULT_STYLE_CONFIG.colorBg,
+                colorHeadings: styleConfig.colorHeadings,
+                colorBody: styleConfig.colorBody,
+                colorLinks: styleConfig.colorLinks,
+                colorAccent: styleConfig.colorAccent,
+                sidebarBg: styleConfig.sidebarBg || DEFAULT_STYLE_CONFIG.sidebarBg,
+                sidebarText: styleConfig.sidebarText || DEFAULT_STYLE_CONFIG.sidebarText
+            };
+            localStorage.setItem('ats_custom_preset_1', JSON.stringify(customPresets['custom-1'].styles));
+        }
+
+        updateCustomPresetLabels();
         updateControlsFromConfig(styleConfig);
         runCompileMarkdown(loadedMarkdown);
 
-        if (!savedMd) {
+        if (!localStorage.getItem('ats_resume_markdown') || isSampleRoute || isWhatsNewRoute) {
             localStorage.setItem('ats_resume_markdown', loadedMarkdown);
             localStorage.setItem('ats_resume_styles', JSON.stringify(styleConfig));
         }

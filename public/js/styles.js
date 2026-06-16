@@ -256,14 +256,18 @@ export function updateActivePresetBtn(styleConfig) {
     const presetClassicNb = document.getElementById('preset-classic-nb');
     const presetDarkMode = document.getElementById('preset-dark-mode');
     const presetCleanBlue = document.getElementById('preset-clean-blue');
-    const presetCustom = document.getElementById('preset-custom');
+    const presetCustom1 = document.getElementById('preset-custom-1');
+    const presetCustom2 = document.getElementById('preset-custom-2');
+    const presetCustom3 = document.getElementById('preset-custom-3');
 
-    if (!presetClassicNb || !presetDarkMode || !presetCleanBlue || !presetCustom) return;
+    if (!presetClassicNb || !presetDarkMode || !presetCleanBlue) return;
 
     presetClassicNb.classList.remove('active');
     presetDarkMode.classList.remove('active');
     presetCleanBlue.classList.remove('active');
-    presetCustom.classList.remove('active');
+    if (presetCustom1) presetCustom1.classList.remove('active');
+    if (presetCustom2) presetCustom2.classList.remove('active');
+    if (presetCustom3) presetCustom3.classList.remove('active');
 
     if (styleConfig.activePreset) {
         if (styleConfig.activePreset === 'classic') {
@@ -275,8 +279,14 @@ export function updateActivePresetBtn(styleConfig) {
         } else if (styleConfig.activePreset === 'clean-blue') {
             presetCleanBlue.classList.add('active');
             return;
-        } else if (styleConfig.activePreset === 'custom') {
-            presetCustom.classList.add('active');
+        } else if (styleConfig.activePreset === 'custom-1') {
+            if (presetCustom1) presetCustom1.classList.add('active');
+            return;
+        } else if (styleConfig.activePreset === 'custom-2') {
+            if (presetCustom2) presetCustom2.classList.add('active');
+            return;
+        } else if (styleConfig.activePreset === 'custom-3') {
+            if (presetCustom3) presetCustom3.classList.add('active');
             return;
         }
     }
@@ -305,7 +315,7 @@ export function updateActivePresetBtn(styleConfig) {
         sidebarText === '#ffffff') {
         presetCleanBlue.classList.add('active');
     } else {
-        presetCustom.classList.add('active');
+        // Fallback to active preset if set or no highlight
     }
 }
 

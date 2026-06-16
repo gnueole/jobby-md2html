@@ -1,5 +1,5 @@
 # 1.6.4 - Mise à jour Jobby.
-Nouveautés simples & intelligentes.
+Mise à jour Jobby du 16/06/2026 · Nouveautés simples & intelligentes.
 [CONTACT : hi@eole.me | +33 6 50 83 68 09 | [cv.eole.me](https://cv.eole.me)]
 
 ## ✍️ ÉDITION SIMPLIFIÉE
@@ -29,3 +29,8 @@ Nouveautés simples & intelligentes.
 ### ⚡ SUPER-PERFORMANCES
 * **Mise à Jour Instantanée** : Les modifications s'affichent instantanément à l'écran sans aucun temps d'attente.
 * **Plus de Cache** : Plus besoin de vider l'historique ou de rafraîchir la page, les nouveautés se chargent :accent[immédiatement].
+
+## 🔗 EN SAVOIR PLUS
+* **Code Source & Documentation** : Découvrez les détails techniques et le fonctionnement du projet sur le [README Jobby sur GitHub](https://github.com/gnueole/jobby-md2html#readme).
+* **Historique Complet** : Retrouvez l'historique complet de toutes les versions précédentes dans le [CHANGELOG officiel sur GitHub](https://github.com/gnueole/jobby-md2html/blob/main/CHANGELOG.md).
+

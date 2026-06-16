@@ -78,7 +78,12 @@ const server = http.createServer((req, res) => {
     }
 
     // Resolve file path safely and strip query parameters/hash
-    const cleanUrl = req.url.split('?')[0].split('#')[0];
+    let cleanUrl = req.url.split('?')[0].split('#')[0];
+
+    // SPA routing: redirect /sample and /whatsnew paths to serve the main index.html
+    if (cleanUrl === '/sample' || cleanUrl === '/sample/' || cleanUrl === '/whatsnew' || cleanUrl === '/whatsnew/') {
+        cleanUrl = '/';
+    }
 
     if (cleanUrl === '/api/verify-token') {
         if (req.method !== 'POST') {
