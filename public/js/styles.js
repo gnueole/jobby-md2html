@@ -1,3 +1,8 @@
+/**
+ * Jobby Markdown Editor - styles.js
+ * Dynamic CSS rules and customization controls.
+ */
+
 export function applyStyles(styleConfig) {
     const resumeOutput = document.getElementById('resume-output');
     if (!resumeOutput) return;
@@ -281,18 +286,23 @@ export function updateActivePresetBtn(styleConfig) {
     const body = styleConfig.colorBody.toLowerCase();
     const links = styleConfig.colorLinks.toLowerCase();
     const accent = styleConfig.colorAccent.toLowerCase();
+    const sidebarBg = (styleConfig.sidebarBg || '#2d3748').toLowerCase();
+    const sidebarText = (styleConfig.sidebarText || '#ffffff').toLowerCase();
 
     if (bg === '#ffffff' && headings === '#111111' &&
         body === '#222222' && links === '#000000' &&
-        accent === '#444444') {
+        accent === '#444444' && sidebarBg === '#f1f5f9' &&
+        sidebarText === '#111111') {
         presetClassicNb.classList.add('active');
     } else if (bg === '#0f172a' && headings === '#f8fafc' &&
         body === '#cbd5e1' && links === '#38bdf8' &&
-        accent === '#34d399') {
+        accent === '#34d399' && sidebarBg === '#1e293b' &&
+        sidebarText === '#cbd5e1') {
         presetDarkMode.classList.add('active');
     } else if (bg === '#ffffff' && headings === '#0f172a' &&
         body === '#334155' && links === '#2563eb' &&
-        accent === '#0ea5e9') {
+        accent === '#0ea5e9' && sidebarBg === '#0f172a' &&
+        sidebarText === '#ffffff') {
         presetCleanBlue.classList.add('active');
     } else {
         presetCustom.classList.add('active');
@@ -339,10 +349,12 @@ export function updateControlsFromConfig(styleConfig) {
     const cosmeticShadow = document.getElementById('cosmetic-shadow');
     const cosmeticBorder = document.getElementById('cosmetic-border');
     const cosmeticGradient = document.getElementById('cosmetic-gradient');
+    const showVersion = document.getElementById('show-version');
 
     if (cosmeticShadow) cosmeticShadow.checked = styleConfig.cosmeticShadow !== false;
     if (cosmeticBorder) cosmeticBorder.checked = !!styleConfig.cosmeticBorder;
     if (cosmeticGradient) cosmeticGradient.checked = !!styleConfig.cosmeticGradient;
+    if (showVersion) showVersion.checked = !!styleConfig.showVersion;
 
     // Expert Mode sync
     const advancedModeToggle = document.getElementById('advanced-mode-toggle');

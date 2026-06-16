@@ -2,25 +2,25 @@
 
 **Target Job Title (e.g., Solutions Engineer)** :accent[· Available Immediately]
 
-[CONTACT : your.email@example.com | +33 6 00 00 00 00 | https://www.linkedin.com/in/your-profile]
+[CONTACT : your.email@example.com | +33 6 00 00 00 00 | [linkedin.com/in/your-profile](https://www.linkedin.com/in/your-profile) | [portfoliio](https://perdu.com)]
 
 > "Write a short 2 to 3 sentence introduction here. Highlight your core expertise, key achievements, and the unique value you bring to a team. Use target keywords that align with the jobs you are applying for to optimize for ATS algorithms."
 
 ## PROFESSIONAL EXPERIENCE
 
-**Current Job Title** | Company Name :muted[· City, Country] | 2024 - Present
+**Current Job Title** - Company Name :muted[· City, Country] - 2024 - Present
 - **Action & Impact**: Describe your key responsibilities and achievements starting each bullet point with a strong action verb.
 - **Quantifiable Data**: Bring credibility to your impact by including metrics, e.g.: :accent[Improved pipeline efficiency by 25%].
 - **ATS Keywords**: Naturally weave in technologies, methodologies, and skills mentioned in job descriptions to optimize your resume score.
 
-**Previous Job Title** | Company Name :muted[· City, Country] | 2021 - 2024
+**Previous Job Title** -  Company Name :muted[· City, Country] - 2021 - 2024
 - Describe a high-impact project or key system you built or maintained.
 - Outline your scope of responsibility, team size, or budget managed.
 - List tools and technologies used on a daily basis to solve problems.
 
 ## PROJECTS & PORTFOLIO
 
-**Personal Project Name** | Role / Tech Stack Used | 2023
+**Personal Project Name** - Role  :muted[Tech Stack Used] - 2023
 - Describe the project goal, your role, and what you built.
 - Link to the live application or Git repository if available.
 
@@ -44,7 +44,7 @@ This template serves as an interactive guide for the editor:
 - **Domain B**: Tool X, Tool Y, Tool Z.
 - **Methodologies**: Agile/Scrum, Project Management.
 
-### EDUCATION
+## EDUCATION
 
 **Master of Science in Information Technology** | University Name :muted[· 2018 - 2021]
 - Core specialization or thesis topic.

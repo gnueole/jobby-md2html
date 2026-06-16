@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated Google Tag ID regex validation inside `public/index.html` to support `GT-` prefixes.
 - Docker compose execution fixes in `Makefile` passing `--env-file` flags.
 - Makefile shortcut targets (`prod-up`, `prod-down`, `dev-up`, `dev-down`) and compatibility aliases.
+- Introduction of [doppler](https://www.doppler.com/) for secrets management.
 
 ---
 

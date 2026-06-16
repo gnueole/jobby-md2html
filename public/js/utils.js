@@ -1,3 +1,8 @@
+/**
+ * Jobby Markdown Editor - utils.js
+ * Common utility helper functions.
+ */
+
 // Show toast alerts
 export function showToast(message) {
     const toast = document.getElementById('toast');

@@ -1,5 +1,11 @@
+/**
+ * Jobby Markdown Editor - config.js
+ * Default style configuration and constants.
+ */
+
 // --- Default Configurations ---
 export const DEFAULT_STYLE_CONFIG = {
+    showVersion: false,
     fontFamily: "'Raleway', 'Inter', sans-serif",
     fontSize: "14",
     lineHeight: "1.45",

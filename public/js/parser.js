@@ -1,3 +1,8 @@
+/**
+ * Jobby Markdown Editor - parser.js
+ * Markdown parsing and HTML compilation.
+ */
+
 let lastSectionsJSON = "";
 
 export function updateHeaderInMarkdown(markdownInput, title, toSidebar, onUpdate) {
@@ -178,6 +183,23 @@ export function compileMarkdown(mdText, styleConfig, markdownInput, onUpdate) {
 
         updateSidebarChecklist(doc2, markdownInput, onUpdate);
 
+        // Append version suffix to sidebar if enabled
+        if (styleConfig.showVersion) {
+            // Retrieve today's daily increment
+            const todayStr = new Date().toISOString().split('T')[0];
+            const storedDate = localStorage.getItem('print_counter_date');
+            let counter = 1;
+            if (storedDate === todayStr) {
+                const storedCounter = localStorage.getItem('print_counter_val');
+                counter = storedCounter ? parseInt(storedCounter, 10) : 1;
+            }
+            const increment = String(counter).padStart(2, '0');
+            const verEl = doc2.createElement('div');
+            verEl.className = 'resume-version-sidebar';
+            verEl.textContent = `v${increment}`;
+            sidebarColElements.push(verEl);
+        }
+
         const headerHtml = headerElements.map(el => el.outerHTML).join('\n');
         const mainHtml = mainColElements.map(el => el.outerHTML).join('\n');
         const sidebarHtml = sidebarColElements.map(el => el.outerHTML).join('\n');
@@ -202,6 +224,18 @@ export function compileMarkdown(mdText, styleConfig, markdownInput, onUpdate) {
         const parser = new DOMParser();
         const doc3 = parser.parseFromString(html, 'text/html');
         updateSidebarChecklist(doc3, markdownInput, onUpdate);
+        
+        if (styleConfig.showVersion) {
+            const todayStr = new Date().toISOString().split('T')[0];
+            const storedDate = localStorage.getItem('print_counter_date');
+            let counter = 1;
+            if (storedDate === todayStr) {
+                const storedCounter = localStorage.getItem('print_counter_val');
+                counter = storedCounter ? parseInt(storedCounter, 10) : 1;
+            }
+            const increment = String(counter).padStart(2, '0');
+            finalHtml = html + `<div class="resume-version-footer">v${increment}</div>`;
+        }
     }
 
     // Temp wrapper to justify paragraph blocks containing bullets
@@ -217,49 +251,28 @@ export function compileMarkdown(mdText, styleConfig, markdownInput, onUpdate) {
     });
     finalHtml = tempDiv.innerHTML;
 
-    // Dynamic title configuration for PDF filename proposal on printing
+    // Dynamic title configuration for PDF filename proposal on printing ($name-resume-$date.pdf format)
     const titleParser = new DOMParser();
     const titleDoc = titleParser.parseFromString(finalHtml, 'text/html');
     const firstHeader = titleDoc.querySelector('h1');
     let nameKey = "resume";
     if (firstHeader) {
         const cleanNameText = firstHeader.textContent.replace(/\([^)]*\)/g, '');
-        const slugify = (text) => {
+        const slugifyName = (text) => {
             return text.toString().toLowerCase()
                 .normalize('NFD')
                 .replace(/[\u0300-\u036f]/g, '')
-                .replace(/[^a-z0-9]/g, '');
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '');
         };
-        const nameParts = cleanNameText.split(/\s+/).map(slugify).filter(Boolean);
-        if (nameParts.length >= 2) {
-            nameKey = nameParts.at(0).charAt(0) + nameParts.at(-1);
-        } else if (nameParts.length === 1) {
-            nameKey = nameParts[0];
+        const parts = cleanNameText.split(/\s+/).map(slugifyName).filter(Boolean);
+        if (parts.length > 0) {
+            nameKey = parts.join('-');
         }
     }
 
-    let positionKey = "";
-    if (firstHeader) {
-        let sibling = firstHeader.nextElementSibling;
-        while (sibling && (sibling.classList.contains('resume-contact-bar') || sibling.tagName !== 'P')) {
-            sibling = sibling.nextElementSibling;
-        }
-        if (sibling && sibling.tagName === 'P') {
-            const slugifyPosition = (text) => {
-                return text.toString().toLowerCase()
-                    .normalize('NFD')
-                    .replace(/[\u0300-\u036f]/g, '')
-                    .replace(/[^a-z0-9]+/g, '_')
-                    .replace(/^_+|_+$/g, '');
-            };
-            positionKey = slugifyPosition(sibling.textContent);
-        }
-    }
-
-    let currentResumeTitle = nameKey;
-    if (positionKey) {
-        currentResumeTitle = `${nameKey}_${positionKey}`;
-    }
+    const today = new Date().toISOString().split('T')[0];
+    const currentResumeTitle = `${nameKey}-resume-${today}`;
 
     return {
         html: finalHtml,

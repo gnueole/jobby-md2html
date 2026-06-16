@@ -1,3 +1,8 @@
+/**
+ * Jobby Markdown Editor - ats.js
+ * ATS formatting compliance checker and validator.
+ */
+
 import { ICONS } from './config.js';
 
 export function runAtsChecker(md, html) {

@@ -1,3 +1,8 @@
+/**
+ * Jobby Markdown Editor - panning.js
+ * Preview canvas click-and-drag panning.
+ */
+
 export function initPanning(canvasWrapper, btnPanToggle) {
     if (!btnPanToggle || !canvasWrapper) return;
 

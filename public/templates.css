@@ -1,3 +1,8 @@
+/**
+ * Jobby Markdown Editor - templates.css
+ * Core templates and print stylesheets for A4 resume layout.
+ */
+
 /* ==========================================
    ATS RESUME RENDERING AND PRINT TEMPLATES
    ========================================== */
@@ -410,4 +415,28 @@
         width: calc(var(--column-split-sidebar, 42%) - 2%) !important;
         flex-shrink: 0 !important;
     }
+}
+
+/* Version Display Styles (Subtle & Small) */
+.resume-version-footer {
+    text-align: right;
+    font-size: calc(var(--resume-font-size, 14px) * 0.75);
+    color: var(--resume-color-body, #334155);
+    opacity: 0.5;
+    margin-top: 15px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.resume-version-sidebar {
+    text-align: center;
+    font-size: calc(var(--resume-font-size, 14px) * 0.75);
+    color: var(--resume-sidebar-text, #ffffff);
+    opacity: 0.6;
+    margin-top: auto;
+    padding-top: 15px;
+    width: 100%;
+    box-sizing: border-box;
 }

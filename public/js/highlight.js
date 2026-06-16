@@ -1,3 +1,8 @@
+/**
+ * Jobby Markdown Editor - highlight.js
+ * Syntax highlighting and editor cursor radar sync.
+ */
+
 import { cleanMarkdown, countNonWsChars } from './utils.js';
 
 export function initHighlighting(markdownInput, resumeOutput, state) {
