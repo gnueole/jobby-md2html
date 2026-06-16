@@ -1,6 +1,6 @@
 # 1.6.4 - Mise à jour Jobby.
 Nouveautés simples & intelligentes.
-[CONTACT : hi@eole.me | +33 6 50 83 68 09 | cv.eole.me]
+[CONTACT : hi@eole.me | +33 6 50 83 68 09 | [cv.eole.me](https://cv.eole.me)]
 
 ## ✍️ ÉDITION SIMPLIFIÉE
 * **Coloration Syntaxique** : Votre texte se colore en :accent[temps réel] pour vous aider à visualiser la structure de votre document sans effort.
