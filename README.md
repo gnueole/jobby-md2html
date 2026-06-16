@@ -273,11 +273,11 @@ Here is a list of features and enhancements planned for future versions of Jobby
 - [ ] **Locale (fr-FR translation):** Implement a simple language switcher (easy to do as French translations are already drafted).
 - [ ] **Improve SEO:** Optimize meta tags, OpenGraph headers, and robot directives for public-facing resume pages.
 - [ ] **Add GitHub Actions:** Automate syntax checking and dependency building for local developers.
+- [ ] **Implement a download PDF button:** Download the PDF file directly via the running Gotenberg container instead of opening the browser's manual print dialog.
 - [ ] **Automated PDF Sync to Drive:** Append an n8n node to save generated PDF resumes to Google Drive or Dropbox on build automatically.
 - [ ] **Feedback Button:** Introduce a feedback button opening an inline questionnaire feeding into a Notion database.
 - [ ] **Gemini Credits:** Allow users to use their own Gemini/Claude API keys for AI resume personalization.
 - [ ] **Multi-Profile Support:** Switch between multiple resume profiles (e.g., Developer, Product Manager) stored in `localStorage`/Notion.
-- [ ] **Direct PDF Download Button:** Download the compiled PDF file directly (via a backend Gotenberg / Puppeteer endpoint) instead of opening the browser's manual print dialog.
 - [ ] **PDF Compression:** Integrate a ghostscript/pdfsizeopt wrapper within the PDF docker compiler to keep ATS files under 500KB.
 - [ ] **Telemetry:** Collect anonymous stats on chosen resume layout presets and font pairings.
 - [ ] **Cover Letter Generator:** Build a companion editor interface generating matching cover letters using identical color systems and spacing.
