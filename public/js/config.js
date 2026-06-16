@@ -14,12 +14,12 @@ export const DEFAULT_STYLE_CONFIG = {
     marginY: "25",
     sectionSpacing: "12",
     colorBg: "#ffffff",
-    colorHeadings: "#1e293b",
+    colorHeadings: "#0f172a",
     colorBody: "#334155",
-    colorLinks: "#7c3aed",
-    colorAccent: "#0d9488",
+    colorLinks: "#2563eb",
+    colorAccent: "#0ea5e9",
     layoutMode: "1-column",
-    sidebarBg: "#2d3748",
+    sidebarBg: "#0f172a",
     sidebarText: "#ffffff",
     sidebarPosition: "right",
     sidebarSections: "EDUCATION,TECHNICAL SKILLS",
@@ -33,9 +33,10 @@ export const DEFAULT_STYLE_CONFIG = {
     columnShadowDistance: 10,
     columnShadowColor: "#000000",
     columnGradientLength: 150,
-    columnGradientColor: "#000000",
+    columnGradientColor: "#70aef0",
     columnBorderWidth: 2,
-    columnBorderOpacity: 100
+    columnBorderOpacity: 100,
+    activePreset: "clean-blue"
 };
 
 // SVG Icons for the ATS Checklist

@@ -256,18 +256,22 @@ export function updateActivePresetBtn(styleConfig) {
     const presetClassicNb = document.getElementById('preset-classic-nb');
     const presetDarkMode = document.getElementById('preset-dark-mode');
     const presetCleanBlue = document.getElementById('preset-clean-blue');
+    const presetSoftBlue = document.getElementById('preset-soft-blue');
+    const presetGreen = document.getElementById('preset-green');
+    const presetSoftRed = document.getElementById('preset-soft-red');
     const presetCustom1 = document.getElementById('preset-custom-1');
     const presetCustom2 = document.getElementById('preset-custom-2');
-    const presetCustom3 = document.getElementById('preset-custom-3');
 
     if (!presetClassicNb || !presetDarkMode || !presetCleanBlue) return;
 
     presetClassicNb.classList.remove('active');
     presetDarkMode.classList.remove('active');
     presetCleanBlue.classList.remove('active');
+    if (presetSoftBlue) presetSoftBlue.classList.remove('active');
+    if (presetGreen) presetGreen.classList.remove('active');
+    if (presetSoftRed) presetSoftRed.classList.remove('active');
     if (presetCustom1) presetCustom1.classList.remove('active');
     if (presetCustom2) presetCustom2.classList.remove('active');
-    if (presetCustom3) presetCustom3.classList.remove('active');
 
     if (styleConfig.activePreset) {
         if (styleConfig.activePreset === 'classic') {
@@ -279,14 +283,20 @@ export function updateActivePresetBtn(styleConfig) {
         } else if (styleConfig.activePreset === 'clean-blue') {
             presetCleanBlue.classList.add('active');
             return;
+        } else if (styleConfig.activePreset === 'soft-blue') {
+            if (presetSoftBlue) presetSoftBlue.classList.add('active');
+            return;
+        } else if (styleConfig.activePreset === 'green') {
+            if (presetGreen) presetGreen.classList.add('active');
+            return;
+        } else if (styleConfig.activePreset === 'soft-red') {
+            if (presetSoftRed) presetSoftRed.classList.add('active');
+            return;
         } else if (styleConfig.activePreset === 'custom-1') {
             if (presetCustom1) presetCustom1.classList.add('active');
             return;
         } else if (styleConfig.activePreset === 'custom-2') {
             if (presetCustom2) presetCustom2.classList.add('active');
-            return;
-        } else if (styleConfig.activePreset === 'custom-3') {
-            if (presetCustom3) presetCustom3.classList.add('active');
             return;
         }
     }
@@ -299,10 +309,10 @@ export function updateActivePresetBtn(styleConfig) {
     const sidebarBg = (styleConfig.sidebarBg || '#2d3748').toLowerCase();
     const sidebarText = (styleConfig.sidebarText || '#ffffff').toLowerCase();
 
-    if (bg === '#ffffff' && headings === '#111111' &&
-        body === '#222222' && links === '#000000' &&
-        accent === '#444444' && sidebarBg === '#f1f5f9' &&
-        sidebarText === '#111111') {
+    if (bg === '#ffffff' && headings === '#000000' &&
+        body === '#000000' && links === '#000000' &&
+        accent === '#000000' && sidebarBg === '#ffffff' &&
+        sidebarText === '#000000') {
         presetClassicNb.classList.add('active');
     } else if (bg === '#0f172a' && headings === '#f8fafc' &&
         body === '#cbd5e1' && links === '#38bdf8' &&
@@ -314,8 +324,21 @@ export function updateActivePresetBtn(styleConfig) {
         accent === '#0ea5e9' && sidebarBg === '#0f172a' &&
         sidebarText === '#ffffff') {
         presetCleanBlue.classList.add('active');
-    } else {
-        // Fallback to active preset if set or no highlight
+    } else if (bg === '#f8fafc' && headings === '#1e40af' &&
+        body === '#475569' && links === '#2563eb' &&
+        accent === '#3b82f6' && sidebarBg === '#e0f2fe' &&
+        sidebarText === '#0369a1') {
+        if (presetSoftBlue) presetSoftBlue.classList.add('active');
+    } else if (bg === '#fcfdfc' && headings === '#166534' &&
+        body === '#374151' && links === '#15803d' &&
+        accent === '#4ade80' && sidebarBg === '#dcfce7' &&
+        sidebarText === '#166534') {
+        if (presetGreen) presetGreen.classList.add('active');
+    } else if (bg === '#ffffff' && headings === '#7f1d1d' &&
+        body === '#374151' && links === '#dc2626' &&
+        accent === '#f87171' && sidebarBg === '#fee2e2' &&
+        sidebarText === '#991b1b') {
+        if (presetSoftRed) presetSoftRed.classList.add('active');
     }
 }
 

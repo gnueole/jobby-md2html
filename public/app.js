@@ -151,15 +151,33 @@ async function initializeJobby() {
     let customPresets = {
         'custom-1': {
             name: localStorage.getItem('ats_custom_preset_name_1') || 'Custom 1',
-            styles: JSON.parse(localStorage.getItem('ats_custom_preset_1')) || null
+            styles: JSON.parse(localStorage.getItem('ats_custom_preset_1')) || {
+                colorBg: '#121212',
+                colorHeadings: '#f5f5f5',
+                colorBody: '#d4d4d4',
+                colorLinks: '#ffffff',
+                colorAccent: '#a3a3a3',
+                sidebarBg: '#171717',
+                sidebarText: '#f5f5f5',
+                cosmeticGradient: true,
+                columnGradientColor: '#262626',
+                columnGradientLength: 150
+            }
         },
         'custom-2': {
             name: localStorage.getItem('ats_custom_preset_name_2') || 'Custom 2',
-            styles: JSON.parse(localStorage.getItem('ats_custom_preset_2')) || null
-        },
-        'custom-3': {
-            name: localStorage.getItem('ats_custom_preset_name_3') || 'Custom 3',
-            styles: JSON.parse(localStorage.getItem('ats_custom_preset_3')) || null
+            styles: JSON.parse(localStorage.getItem('ats_custom_preset_2')) || {
+                colorBg: '#000000',
+                colorHeadings: '#39ff14',
+                colorBody: '#ff007f',
+                colorLinks: '#ffff00',
+                colorAccent: '#ff00ff',
+                sidebarBg: '#ffff00',
+                sidebarText: '#ff00ff',
+                cosmeticGradient: true,
+                columnGradientColor: '#00ffff',
+                columnGradientLength: 150
+            }
         }
     };
 
@@ -224,9 +242,13 @@ async function initializeJobby() {
     const presetClassicNb = document.getElementById('preset-classic-nb');
     const presetDarkMode = document.getElementById('preset-dark-mode');
     const presetCleanBlue = document.getElementById('preset-clean-blue');
+    const presetSoftBlue = document.getElementById('preset-soft-blue');
+    const presetGreen = document.getElementById('preset-green');
+    const presetSoftRed = document.getElementById('preset-soft-red');
+    const presetReset = document.getElementById('preset-reset');
+    const presetUpdate = document.getElementById('preset-update');
     const presetCustom1 = document.getElementById('preset-custom-1');
     const presetCustom2 = document.getElementById('preset-custom-2');
-    const presetCustom3 = document.getElementById('preset-custom-3');
 
     const btnCopyStandalone = document.getElementById('btn-copy-standalone');
     const btnCopyCss = document.getElementById('btn-copy-css');
@@ -254,8 +276,8 @@ async function initializeJobby() {
 
             // Auto-save custom preset state if active
             const activePreset = styleConfig.activePreset;
-            if (activePreset === 'custom-1' || activePreset === 'custom-2' || activePreset === 'custom-3') {
-                const indexStr = activePreset === 'custom-1' ? '1' : activePreset === 'custom-2' ? '2' : '3';
+            if (activePreset === 'custom-1' || activePreset === 'custom-2') {
+                const indexStr = activePreset === 'custom-1' ? '1' : '2';
                 const presetStyles = {
                     colorBg: styleConfig.colorBg,
                     colorHeadings: styleConfig.colorHeadings,
@@ -263,7 +285,10 @@ async function initializeJobby() {
                     colorLinks: styleConfig.colorLinks,
                     colorAccent: styleConfig.colorAccent,
                     sidebarBg: styleConfig.sidebarBg,
-                    sidebarText: styleConfig.sidebarText
+                    sidebarText: styleConfig.sidebarText,
+                    cosmeticGradient: styleConfig.cosmeticGradient,
+                    columnGradientColor: styleConfig.columnGradientColor,
+                    columnGradientLength: styleConfig.columnGradientLength
                 };
                 customPresets[activePreset].styles = presetStyles;
                 localStorage.setItem(`ats_custom_preset_${indexStr}`, JSON.stringify(presetStyles));
@@ -310,23 +335,23 @@ async function initializeJobby() {
         name = name.replace(/<[^>]*>/g, ''); // strip HTML tags
         
         if (name.length > 15) {
-            return { error: "Le nom ne doit pas dépasser 15 caractères." };
+            return { error: "The name must not exceed 15 characters." };
         }
         if (name.length === 0) {
-            return { error: "Le nom ne peut pas être vide." };
+            return { error: "The name cannot be empty." };
         }
         
         const regex = /^[a-zA-Z0-9\sàâäéèêëïîôöùûüçÀÂÄÉÈÊËÏÎÔÖÙÛÜÇ\-\'\!\?\(\)\#]+$/;
         if (!regex.test(name)) {
-            return { error: "Le nom contient des caractères interdits." };
+            return { error: "The name contains forbidden characters." };
         }
         return { name };
     }
-
+ 
     function handleCustomPresetRename(key) {
         const preset = customPresets[key];
         const oldName = preset.name;
-        const newNameInput = prompt(`Renommer le preset "${oldName}" :`, oldName);
+        const newNameInput = prompt(`Rename preset "${oldName}":`, oldName);
         if (newNameInput === null) return;
         
         const result = sanitizePresetName(newNameInput);
@@ -336,16 +361,15 @@ async function initializeJobby() {
         }
         
         preset.name = result.name;
-        const indexStr = key === 'custom-1' ? '1' : key === 'custom-2' ? '2' : '3';
+        const indexStr = key === 'custom-1' ? '1' : '2';
         localStorage.setItem(`ats_custom_preset_name_${indexStr}`, preset.name);
         updateCustomPresetLabels();
-        showToast(`Preset renommé en "${preset.name}"`);
+        showToast(`Preset renamed to "${preset.name}"`);
     }
 
     function updateCustomPresetLabels() {
         if (presetCustom1) presetCustom1.textContent = customPresets['custom-1'].name;
         if (presetCustom2) presetCustom2.textContent = customPresets['custom-2'].name;
-        if (presetCustom3) presetCustom3.textContent = customPresets['custom-3'].name;
     }
 
     function updateConfigFromControlsFull() {
@@ -355,7 +379,16 @@ async function initializeJobby() {
         styleConfig.marginX = marginXSlider.value;
         styleConfig.marginY = marginYSlider.value;
         styleConfig.sectionSpacing = sectionSpacingSlider.value;
+        
+        const prevLayout = styleConfig.layoutMode;
         styleConfig.layoutMode = layoutModeSelect.value;
+        if (styleConfig.layoutMode === '2-column' && prevLayout !== '2-column') {
+            styleConfig.cosmeticGradient = true;
+            const cosmeticGradientCheckbox = document.getElementById('cosmetic-gradient');
+            if (cosmeticGradientCheckbox) {
+                cosmeticGradientCheckbox.checked = true;
+            }
+        }
 
         // Customizer Advanced Column Values
         if (columnShadowDistanceSlider) styleConfig.columnShadowDistance = parseInt(columnShadowDistanceSlider.value);
@@ -374,8 +407,7 @@ async function initializeJobby() {
             styleConfig.sidebarBg !== colorSidebarBg.value ||
             styleConfig.sidebarText !== colorSidebarText.value) {
             if (styleConfig.activePreset !== 'custom-1' && 
-                styleConfig.activePreset !== 'custom-2' && 
-                styleConfig.activePreset !== 'custom-3') {
+                styleConfig.activePreset !== 'custom-2') {
                 styleConfig.activePreset = 'custom-1';
             }
         }
@@ -401,7 +433,16 @@ async function initializeJobby() {
         styleConfig.marginX = marginXSlider.value;
         styleConfig.marginY = marginYSlider.value;
         styleConfig.sectionSpacing = sectionSpacingSlider.value;
+        
+        const prevLayout = styleConfig.layoutMode;
         styleConfig.layoutMode = layoutModeSelect.value;
+        if (styleConfig.layoutMode === '2-column' && prevLayout !== '2-column') {
+            styleConfig.cosmeticGradient = true;
+            const cosmeticGradientCheckbox = document.getElementById('cosmetic-gradient');
+            if (cosmeticGradientCheckbox) {
+                cosmeticGradientCheckbox.checked = true;
+            }
+        }
 
         // Customizer Advanced Column Values
         if (columnShadowDistanceSlider) styleConfig.columnShadowDistance = parseInt(columnShadowDistanceSlider.value);
@@ -420,8 +461,7 @@ async function initializeJobby() {
             styleConfig.sidebarBg !== colorSidebarBg.value ||
             styleConfig.sidebarText !== colorSidebarText.value) {
             if (styleConfig.activePreset !== 'custom-1' && 
-                styleConfig.activePreset !== 'custom-2' && 
-                styleConfig.activePreset !== 'custom-3') {
+                styleConfig.activePreset !== 'custom-2') {
                 styleConfig.activePreset = 'custom-1';
             }
         }
@@ -674,57 +714,171 @@ async function initializeJobby() {
         });
     });
 
+    // Helper to apply preset styles and cool gradient by default if 2-columns active
+    const applyPresetValues = (presetName, values, coolGradientColor, extraConfig = {}) => {
+        styleConfig.activePreset = presetName;
+        styleConfig.colorBg = values.colorBg;
+        styleConfig.colorHeadings = values.colorHeadings;
+        styleConfig.colorBody = values.colorBody;
+        styleConfig.colorLinks = values.colorLinks;
+        styleConfig.colorAccent = values.colorAccent;
+        styleConfig.sidebarBg = values.sidebarBg;
+        styleConfig.sidebarText = values.sidebarText;
+        
+        styleConfig.columnGradientColor = coolGradientColor;
+        styleConfig.columnGradientLength = 150;
+        if (styleConfig.layoutMode === '2-column') {
+            styleConfig.cosmeticGradient = true;
+        }
+        
+        // Default cosmeticShadow to true unless explicitly disabled
+        styleConfig.cosmeticShadow = extraConfig.cosmeticShadow !== undefined ? extraConfig.cosmeticShadow : true;
+        for (const [key, val] of Object.entries(extraConfig)) {
+            if (key !== 'cosmeticShadow') {
+                styleConfig[key] = val;
+            }
+        }
+        
+        updateControlsFromConfig(styleConfig);
+        applyStyles(styleConfig);
+        runCompileMarkdown(markdownInput.value);
+        saveToLocalStorage();
+    };
+
     // Color presets
     if (presetClassicNb) {
         presetClassicNb.addEventListener('click', () => {
-            styleConfig.activePreset = 'classic';
-            styleConfig.colorBg = '#ffffff';
-            styleConfig.colorHeadings = '#111111';
-            styleConfig.colorBody = '#222222';
-            styleConfig.colorLinks = '#000000';
-            styleConfig.colorAccent = '#444444';
-            styleConfig.sidebarBg = '#f1f5f9';
-            styleConfig.sidebarText = '#111111';
-            updateControlsFromConfig(styleConfig);
-            runCompileMarkdown(markdownInput.value);
-            saveToLocalStorage();
+            applyPresetValues('classic', {
+                colorBg: '#ffffff',
+                colorHeadings: '#000000',
+                colorBody: '#000000',
+                colorLinks: '#000000',
+                colorAccent: '#000000',
+                sidebarBg: '#111111',
+                sidebarText: '#ffffff'
+            }, '#111111', { cosmeticShadow: false });
         });
     }
 
     if (presetDarkMode) {
         presetDarkMode.addEventListener('click', () => {
-            styleConfig.activePreset = 'dark';
-            styleConfig.colorBg = '#0f172a';
-            styleConfig.colorHeadings = '#f8fafc';
-            styleConfig.colorBody = '#cbd5e1';
-            styleConfig.colorLinks = '#38bdf8';
-            styleConfig.colorAccent = '#34d399';
-            styleConfig.sidebarBg = '#1e293b';
-            styleConfig.sidebarText = '#cbd5e1';
-            updateControlsFromConfig(styleConfig);
-            runCompileMarkdown(markdownInput.value);
-            saveToLocalStorage();
+            applyPresetValues('dark', {
+                colorBg: '#0f172a',
+                colorHeadings: '#f8fafc',
+                colorBody: '#cbd5e1',
+                colorLinks: '#38bdf8',
+                colorAccent: '#34d399',
+                sidebarBg: '#1e293b',
+                sidebarText: '#cbd5e1'
+            }, '#0f172a', { cosmeticShadow: true });
         });
     }
 
     if (presetCleanBlue) {
         presetCleanBlue.addEventListener('click', () => {
-            styleConfig.activePreset = 'clean-blue';
-            styleConfig.colorBg = '#ffffff';
-            styleConfig.colorHeadings = '#0f172a';
-            styleConfig.colorBody = '#334155';
-            styleConfig.colorLinks = '#2563eb';
-            styleConfig.colorAccent = '#0ea5e9';
-            styleConfig.sidebarBg = '#0f172a';
-            styleConfig.sidebarText = '#ffffff';
-            updateControlsFromConfig(styleConfig);
-            runCompileMarkdown(markdownInput.value);
-            saveToLocalStorage();
+            applyPresetValues('clean-blue', {
+                colorBg: '#ffffff',
+                colorHeadings: '#0f172a',
+                colorBody: '#334155',
+                colorLinks: '#2563eb',
+                colorAccent: '#0ea5e9',
+                sidebarBg: '#0f172a',
+                sidebarText: '#ffffff'
+            }, '#70aef0', { cosmeticShadow: true });
         });
     }
 
-    const handlePresetClick = (key) => {
+    if (presetSoftBlue) {
+        presetSoftBlue.addEventListener('click', () => {
+            applyPresetValues('soft-blue', {
+                colorBg: '#f8fafc',
+                colorHeadings: '#1e40af',
+                colorBody: '#475569',
+                colorLinks: '#2563eb',
+                colorAccent: '#3b82f6',
+                sidebarBg: '#e0f2fe',
+                sidebarText: '#0369a1'
+            }, '#bae6fd', { cosmeticShadow: true });
+        });
+    }
+
+    if (presetGreen) {
+        presetGreen.addEventListener('click', () => {
+            applyPresetValues('green', {
+                colorBg: '#fcfdfc',
+                colorHeadings: '#166534',
+                colorBody: '#374151',
+                colorLinks: '#15803d',
+                colorAccent: '#4ade80',
+                sidebarBg: '#dcfce7',
+                sidebarText: '#166534'
+            }, '#bbf7d0', { cosmeticShadow: true });
+        });
+    }
+
+    if (presetSoftRed) {
+        presetSoftRed.addEventListener('click', () => {
+            applyPresetValues('soft-red', {
+                colorBg: '#ffffff',
+                colorHeadings: '#7f1d1d',
+                colorBody: '#374151',
+                colorLinks: '#dc2626',
+                colorAccent: '#f87171',
+                sidebarBg: '#fee2e2',
+                sidebarText: '#991b1b'
+            }, '#fecaca', { cosmeticShadow: true });
+        });
+    }
+
+    if (presetReset) {
+        presetReset.addEventListener('click', () => {
+            if (confirm("Reset all design configurations to default?")) {
+                // Mutate styleConfig in-place to preserve references across modules
+                for (const key in styleConfig) {
+                    delete styleConfig[key];
+                }
+                Object.assign(styleConfig, DEFAULT_STYLE_CONFIG);
+                
+                updateControlsFromConfig(styleConfig);
+                applyStyles(styleConfig);
+                runCompileMarkdown(markdownInput.value);
+                saveToLocalStorage();
+                showToast("Design preferences reset to default!");
+            }
+        });
+    }
+
+    if (presetUpdate) {
+        presetUpdate.addEventListener('click', () => {
+            const activePreset = styleConfig.activePreset;
+            if (activePreset === 'custom-1' || activePreset === 'custom-2') {
+                const indexStr = activePreset === 'custom-1' ? '1' : '2';
+                const presetStyles = {
+                    colorBg: styleConfig.colorBg,
+                    colorHeadings: styleConfig.colorHeadings,
+                    colorBody: styleConfig.colorBody,
+                    colorLinks: styleConfig.colorLinks,
+                    colorAccent: styleConfig.colorAccent,
+                    sidebarBg: styleConfig.sidebarBg,
+                    sidebarText: styleConfig.sidebarText,
+                    cosmeticGradient: styleConfig.cosmeticGradient,
+                    columnGradientColor: styleConfig.columnGradientColor,
+                    columnGradientLength: styleConfig.columnGradientLength
+                };
+                customPresets[activePreset].styles = presetStyles;
+                localStorage.setItem(`ats_custom_preset_${indexStr}`, JSON.stringify(presetStyles));
+                showToast(`${customPresets[activePreset].name} updated with current design configuration!`);
+            } else {
+                showToast("Cannot update built-in read-only presets.");
+            }
+        });
+    }
+
+    let presetClickTimeouts = {};
+
+    const executeSinglePresetClick = (key) => {
         const preset = customPresets[key];
+        const defaultCoolGradient = key === 'custom-1' ? '#262626' : '#00ffff';
         if (!preset.styles) {
             preset.styles = {
                 colorBg: styleConfig.colorBg,
@@ -733,11 +887,14 @@ async function initializeJobby() {
                 colorLinks: styleConfig.colorLinks,
                 colorAccent: styleConfig.colorAccent,
                 sidebarBg: styleConfig.sidebarBg,
-                sidebarText: styleConfig.sidebarText
+                sidebarText: styleConfig.sidebarText,
+                cosmeticGradient: styleConfig.cosmeticGradient,
+                columnGradientColor: styleConfig.columnGradientColor || defaultCoolGradient,
+                columnGradientLength: styleConfig.columnGradientLength || 150
             };
-            const indexStr = key === 'custom-1' ? '1' : key === 'custom-2' ? '2' : '3';
+            const indexStr = key === 'custom-1' ? '1' : '2';
             localStorage.setItem(`ats_custom_preset_${indexStr}`, JSON.stringify(preset.styles));
-            showToast(`${preset.name} sauvegardé avec les couleurs actuelles !`);
+            showToast(`${preset.name} saved with current colors!`);
         }
         styleConfig.activePreset = key;
         styleConfig.colorBg = preset.styles.colorBg;
@@ -747,22 +904,41 @@ async function initializeJobby() {
         styleConfig.colorAccent = preset.styles.colorAccent;
         styleConfig.sidebarBg = preset.styles.sidebarBg;
         styleConfig.sidebarText = preset.styles.sidebarText;
+        
+        styleConfig.columnGradientColor = preset.styles.columnGradientColor || defaultCoolGradient;
+        styleConfig.columnGradientLength = preset.styles.columnGradientLength || 150;
+        if (styleConfig.layoutMode === '2-column') {
+            styleConfig.cosmeticGradient = true;
+        } else {
+            styleConfig.cosmeticGradient = preset.styles.cosmeticGradient !== undefined ? preset.styles.cosmeticGradient : styleConfig.cosmeticGradient;
+        }
+        
         updateControlsFromConfig(styleConfig);
+        applyStyles(styleConfig);
         runCompileMarkdown(markdownInput.value);
         saveToLocalStorage();
     };
 
+    const handlePresetClick = (key) => {
+        if (presetClickTimeouts[key]) {
+            clearTimeout(presetClickTimeouts[key]);
+            presetClickTimeouts[key] = null;
+            // Execute double click rename
+            handleCustomPresetRename(key);
+            return;
+        }
+        
+        presetClickTimeouts[key] = setTimeout(() => {
+            presetClickTimeouts[key] = null;
+            executeSinglePresetClick(key);
+        }, 250);
+    };
+
     if (presetCustom1) {
         presetCustom1.addEventListener('click', () => handlePresetClick('custom-1'));
-        presetCustom1.addEventListener('dblclick', () => handleCustomPresetRename('custom-1'));
     }
     if (presetCustom2) {
         presetCustom2.addEventListener('click', () => handlePresetClick('custom-2'));
-        presetCustom2.addEventListener('dblclick', () => handleCustomPresetRename('custom-2'));
-    }
-    if (presetCustom3) {
-        presetCustom3.addEventListener('click', () => handlePresetClick('custom-3'));
-        presetCustom3.addEventListener('dblclick', () => handleCustomPresetRename('custom-3'));
     }
 
     // Zoom Handlers
@@ -1128,15 +1304,32 @@ async function initializeJobby() {
         // Initialize custom presets styles if empty and it matches activePreset
         if (styleConfig.activePreset === 'custom-1' && !customPresets['custom-1'].styles) {
             customPresets['custom-1'].styles = {
-                colorBg: styleConfig.colorBg || DEFAULT_STYLE_CONFIG.colorBg,
-                colorHeadings: styleConfig.colorHeadings,
-                colorBody: styleConfig.colorBody,
-                colorLinks: styleConfig.colorLinks,
-                colorAccent: styleConfig.colorAccent,
-                sidebarBg: styleConfig.sidebarBg || DEFAULT_STYLE_CONFIG.sidebarBg,
-                sidebarText: styleConfig.sidebarText || DEFAULT_STYLE_CONFIG.sidebarText
+                colorBg: '#121212',
+                colorHeadings: '#f5f5f5',
+                colorBody: '#d4d4d4',
+                colorLinks: '#ffffff',
+                colorAccent: '#a3a3a3',
+                sidebarBg: '#171717',
+                sidebarText: '#f5f5f5',
+                cosmeticGradient: true,
+                columnGradientColor: '#262626',
+                columnGradientLength: 150
             };
             localStorage.setItem('ats_custom_preset_1', JSON.stringify(customPresets['custom-1'].styles));
+        } else if (styleConfig.activePreset === 'custom-2' && !customPresets['custom-2'].styles) {
+            customPresets['custom-2'].styles = {
+                colorBg: '#000000',
+                colorHeadings: '#39ff14',
+                colorBody: '#ff007f',
+                colorLinks: '#ffff00',
+                colorAccent: '#ff00ff',
+                sidebarBg: '#ffff00',
+                sidebarText: '#ff00ff',
+                cosmeticGradient: true,
+                columnGradientColor: '#00ffff',
+                columnGradientLength: 150
+            };
+            localStorage.setItem('ats_custom_preset_2', JSON.stringify(customPresets['custom-2'].styles));
         }
 
         updateCustomPresetLabels();
