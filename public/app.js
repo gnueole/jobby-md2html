@@ -143,6 +143,7 @@ async function initializeJobby() {
     const zoomResetBtn = document.getElementById('zoom-reset');
 
     const btnLoadSample = document.getElementById('btn-load-sample');
+    const btnLoadChangelog = document.getElementById('btn-load-changelog');
     const btnCopyMd = document.getElementById('btn-copy-md');
     const btnClear = document.getElementById('btn-clear');
     const btnPrint = document.getElementById('btn-print');
@@ -703,6 +704,23 @@ async function initializeJobby() {
                 .catch(err => console.error(err));
         }
     });
+
+    // Load changelog / updates
+    if (btnLoadChangelog) {
+        btnLoadChangelog.addEventListener('click', () => {
+            if (confirm("Do you want to load the Jobby updates changelog? Your local changes will be replaced.")) {
+                fetch('changelog.md')
+                    .then(res => res.text())
+                    .then(changelogText => {
+                        markdownInput.value = changelogText;
+                        runCompileMarkdown(changelogText);
+                        saveToLocalStorage();
+                        showToast("Jobby updates changelog loaded!");
+                    })
+                    .catch(err => console.error(err));
+            }
+        });
+    }
 
     // Clear
     btnClear.addEventListener('click', () => {
