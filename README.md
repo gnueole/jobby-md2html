@@ -6,13 +6,13 @@
 > A premium, modern Markdown resume editor that respects ATS (Applicant Tracking System) standards, designed to run locally without heavy external dependencies.
 
 It serves as a **quick and clean manual overdrive** for immediate layout tweaks and content changes, while also acting as the **HTML/CSS rendering configuration plane** for the PDF engine.
-
-👉 **Production URL:** **[https://cv.eole.me](https://cv.eole.me)**
+<br /><br />
 
 <p align="center">
   <a href="public/screenshots/screenshot01-simple.png">
     <img src="public/screenshots/screenshot01-simple_small.png" alt="Jobby Markdown Editor - Simple Mode" width="850" />
-  </a>
+  </a><br />
+  👉 <strong>Production URL:</strong> <strong><a href="https://cv.eole.me">https://cv.eole.me</a></strong>
 </p>
 
 All your content and style changes (colors, fonts, margins) are safely stored in your browser's local storage (`localStorage`). You can copy your layout configurations or download your resume as Markdown from the UI.
