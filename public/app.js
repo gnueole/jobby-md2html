@@ -987,7 +987,10 @@ async function initializeJobby() {
             
             const onMouseMove = (moveEvent) => {
                 const dx = moveEvent.clientX - startX;
-                const newWidth = Math.max(250, startWidth + dx);
+                const containerWidth = document.querySelector('.app-main').clientWidth;
+                const controlsWidth = controlsPanel.getBoundingClientRect().width;
+                const maxAllowedWidth = Math.max(250, containerWidth - controlsWidth - 400 - 12);
+                const newWidth = Math.min(maxAllowedWidth, Math.max(250, startWidth + dx));
                 editorPanel.style.width = `${newWidth}px`;
                 editorPanel.style.flex = 'initial';
                 autoFitZoom(canvasWrapper, previewCanvas, zoomLevelText, () => updatePageBreaks(resumeOutput));
@@ -1009,7 +1012,10 @@ async function initializeJobby() {
             
             const onMouseMove = (moveEvent) => {
                 const dx = moveEvent.clientX - startX;
-                const newWidth = Math.max(250, startWidth - dx);
+                const containerWidth = document.querySelector('.app-main').clientWidth;
+                const editorWidth = editorPanel.getBoundingClientRect().width;
+                const maxAllowedWidth = Math.max(280, containerWidth - editorWidth - 400 - 12);
+                const newWidth = Math.min(maxAllowedWidth, Math.max(280, startWidth - dx));
                 controlsPanel.style.width = `${newWidth}px`;
                 controlsPanel.style.flex = 'initial';
                 autoFitZoom(canvasWrapper, previewCanvas, zoomLevelText, () => updatePageBreaks(resumeOutput));

@@ -240,6 +240,25 @@ body {
     max-width: 600px;
 }
 
+/* High Resolution screen enhancements */
+@media (min-width: 1600px) {
+    .editor-panel {
+        max-width: 1000px;
+    }
+    .controls-panel {
+        max-width: 1000px;
+    }
+}
+
+@media (min-width: 2000px) {
+    .editor-panel {
+        max-width: 1200px;
+    }
+    .controls-panel {
+        max-width: 1200px;
+    }
+}
+
 /* Resize handles between panels */
 .resize-handle {
     width: 6px;
