@@ -1,24 +1,31 @@
-# 1.6.4 - Mise à jour Jobby du 16/06/2026.
+# 1.6.4 - Mise à jour Jobby.
 Nouveautés simples & intelligentes.
 [CONTACT : hi@eole.me | +33 6 50 83 68 09 | cv.eole.me]
 
-## Nouveautés
-* **Interface** : Ajout d'un bouton « What's New » à côté du bouton Sample pour charger ce guide interactif directement dans l'éditeur.
+## ✍️ ÉDITION SIMPLIFIÉE
+* **Coloration Syntaxique** : L'éditeur colore désormais votre texte en temps réel (:accent[gros highlight !]) pour vous aider à visualiser la structure sans effort.
+* **Raccourcis Clavier** : Modifiez votre texte comme dans un traitement de texte classique sans avoir besoin de connaître le Markdown :
+  * :accent[Ctrl + B] : Mettre en gras
+  * :accent[Ctrl + I] : Mettre en italique
+  * :accent[Ctrl + K] : Insérer un lien Internet
+  * :accent[Ctrl + E] : Appliquer la couleur d'accentuation (`:accent[]`)
+  * :accent[Ctrl + M] : Rendre le texte discret/gris (`:muted[]`)
+  * :accent[Ctrl + 1 / 2 / 3] : Créer un titre (Titre principal / Titre de colonne)
+  * :accent[Ctrl + ▲ / ▼] : Déplacer une ligne ou une section entière vers le haut ou le bas
 
-### 📑 VERSION AUTOMATIQUE
-Votre document est numéroté de manière intelligente.
-* **Date & Version** : Votre CV affiche par exemple :accent[2026-06-16_01].
-* **Mise à Jour au Clic** : Dès que vous cliquez sur "Imprimer" ou "Télécharger", le numéro de version s'incrémente :accent[immédiatement] sans aucune action de votre part.
-* **Remise à Zéro** : Le compteur recommence à `01` automatiquement chaque matin.
+## 🎨 APPARENCE DE LA BARRE LATÉRALE
+* **Position Ajustable** : Votre barre latérale peut désormais passer :accent[à gauche ou à droite] selon vos préférences esthétiques.
+* **Largeur sur Mesure** : Ajustez facilement la taille de votre barre latérale à l'aide d'un curseur dédié pour équilibrer parfaitement votre mise en page.
+* **Finitions Premium** : Personnalisez les bordures, ajoutez des ombres élégantes ou appliquez des dégradés de couleurs modernes sur la barre latérale pour la rendre unique.
 
-## 🖨️ MISE EN PAGE & IMPRESSION
-* **Alignement Parfait de la Colonne Bleue** : La colonne de droite ne :accent[colle plus au bord de la feuille]. Elle s'aligne automatiquement avec les marges de votre CV pour un rendu propre et professionnel, prêt pour les recruteurs.
-* **Mise à jour Instantanée** : Plus besoin de vider le cache de votre navigateur ou de rafraîchir la page plusieurs fois. Les nouveaux styles se chargent désormais :accent[automatiquement et instantanément].
+## 🚀 MODE EXPERT
+* **Puissant mais Simple** : Activez le mode expert pour débloquer des contrôles avancés de conception tout en conservant une interface propre et accessible pour vos modifications rapides.
 
-## ⚙️ STABILITÉ GÉNÉRALE
-* **Fluidité Renforcée** : Correction de bugs en arrière-plan pour garantir que l'application reste rapide et disponible à tout moment.
-* **Interface Technique Épurée** : Les scripts de démarrage ont été nettoyés pour ne laisser apparaître que les informations essentielles.
+### 📑 VERSIONING GARANTI
+* **Dernière Version Assurée** : Un système de numérotation intelligent s'affiche sur votre CV.
+* **Zéro Oubli** : Le numéro s'incrémente automatiquement à chaque téléchargement ou impression, garantissant que vos recruteurs consultent toujours la :accent[version la plus récente].
+* **Compteur Quotidien** : Le compteur se réinitialise automatiquement chaque matin.
 
-## Pour plus d'informations : 
-* **Changelog** --> Consultez le [CHANGELOG](https://github.com/gnueole/jobby-md2html/blob/main/CHANGELOG.md) complet.
-* **README.md** --> Consultez le [README](https://github.com/gnueole/jobby-md2html/blob/main/README.md) complet du projet.
+### ⚡ SUPER-PERFORMANCES
+* **Mise à Jour Instantanée** : Les modifications s'affichent instantanément à l'écran sans aucun temps d'attente.
+* **Plus de Cache** : Plus besoin de vider l'historique ou de rafraîchir la page, les nouveautés se chargent :accent[immédiatement].

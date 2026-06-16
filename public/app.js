@@ -708,14 +708,14 @@ async function initializeJobby() {
     // Load changelog / updates
     if (btnLoadChangelog) {
         btnLoadChangelog.addEventListener('click', () => {
-            if (confirm("Do you want to load the Jobby updates changelog? Your local changes will be replaced.")) {
+            if (confirm("Voulez-vous charger les nouveautés de Jobby ? Votre document actuel sera remplacé.")) {
                 fetch('changelog.md')
                     .then(res => res.text())
                     .then(changelogText => {
                         markdownInput.value = changelogText;
                         runCompileMarkdown(changelogText);
                         saveToLocalStorage();
-                        showToast("Jobby updates changelog loaded!");
+                        showToast("Nouveautés de Jobby chargées !");
                     })
                     .catch(err => console.error(err));
             }

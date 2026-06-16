@@ -22,12 +22,13 @@ All your content and style changes (colors, fonts, margins) are safely stored in
 ## 🔍 Table of Contents
 
 - [📋 Requirements](#-requirements)
+- [🛠️ Tech Stack Choices](#️-tech-stack-choices)
 - [📦 Installation & Setup](#-installation--setup)
 - [⚙️ System Architecture & Automated Workflows](#️-system-architecture--automated-workflows)
 - [📁 Project File Structure](#-project-file-structure)
 - [📝 Specific Resume Directives (Guide)](#-specific-resume-directives-guide)
 - [⚡ Interactive Editing & Layout Customizations](#-interactive-editing--layout-customizations)
-- [🖨️ Generate PDF for Recruiters](#️-generate-pdf-for-recruiters)
+- [🖨️ Generate PDF for Recruiters](#-generate-pdf-for-recruiters)
 - [📸 Screenshot Gallery](#-screenshot-gallery)
 - [📑 Annex: Axiom Log Segregation & Configuration](#-annex-axiom-log-segregation--configuration)
 - [✨ Wishlist & Future Improvements](#-wishlist--future-improvements)
@@ -46,6 +47,30 @@ Before setting up Jobby, review the following platform and service requirements:
 * **Gotenberg (PDF Engine):** **Free** (handles PDF printing and compilation from HTML).
 * **Gemini / Claude APIs:** **Free tier** available (but note that free tiers can be very rate-limited).
 * **Notion:** **Free tier** available (but note that using an AI agent to generate Markdown inside Notion is currently very limited on the free tier).
+
+## 🛠️ Tech Stack Choices
+
+Jobby is built on a lightweight, modular, and self-hosted stack designed for maximum speed, easy deployment, and zero unnecessary dependencies:
+
+### 1. Frontend: Pure & Fast
+* **HTML5 & Vanilla ES6+**: The application relies on vanilla ES modules (`public/js/`) for core interactivity, keeping page loads instant and removing the need for a build step (webpack, vite, or babel).
+* **Vanilla CSS**: Used for all interface styling and A4 canvas sheet emulation. It leverages CSS Custom Properties (CSS variables) to allow real-time layout customizer sliding values without heavy JavaScript state frameworks.
+* **Marked.js**: A fast, client-side Markdown parser used to translate raw editor text into compliant HTML in real time.
+
+### 2. Backend: Minimal Footprint
+* **Node.js (Native HTTP)**: A pure Node.js HTTP server (`server.js`) with **zero external npm dependencies**. It starts in under 50ms, handles local routing securely, and exposes simple config endpoints.
+
+### 3. PDF Printing Engine: Headless Chrome
+* **Gotenberg**: A developer-friendly API that runs headless Chromium inside a Docker container. It renders the CSS print-stylesheet with pixel-perfect accuracy to generate recruitment-ready PDFs.
+
+### 4. Integration & Automation
+* **n8n**: A self-hosted workflow automation tool. It handles background webhook events, orchestrates the AI matching agent, reads/writes Notion database items, and triggers Gotenberg print outputs.
+* **Notion API**: Used as a structured CMS to save baseline resumes, manage application history, and trigger layout compilations.
+
+### 5. Infrastructure & Operations
+* **Docker & Docker Compose**: Groups the editor, n8n, Gotenberg, Vector, and Postgres database into a clean, isolated multi-container architecture.
+* **Traefik**: Acts as the reverse proxy, handling routing and automated SSL certificate generation via Let's Encrypt (ACME).
+* **Vector & Axiom**: Vector monitors stdout/stderr of containers and forwards filtered logs to Axiom, separating local development logs from production logs.
 
 ## 📦 Installation & Setup
 
