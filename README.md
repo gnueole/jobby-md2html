@@ -3,7 +3,7 @@
 *Author: Julien (Éole) Avarre (<hi@eole.me>)*
 
 
-A premium, modern Markdown resume editor that respects ATS (Applicant Tracking System) standards, designed to run locally without heavy external dependencies.
+> A premium, modern Markdown resume editor that respects ATS (Applicant Tracking System) standards, designed to run locally without heavy external dependencies.
 
 It serves as a **quick and clean manual overdrive** for immediate layout tweaks and content changes, while also acting as the **HTML/CSS rendering configuration plane** for the PDF engine.
 
@@ -267,14 +267,23 @@ This ensures that only logs produced by containers belonging to the local enviro
 
 ## ✨ Wishlist & Future Improvements
 
-Here is a list of features and enhancements planned for future versions of Jobby:
+Here is a list of features and enhancements planned for future versions of Jobby, ordered by implementation complexity (e.g., quick wins first, complex integrations last):
 
-- [ ] **Multi-Profile Support:** Switch between multiple resume profiles (e.g., Software Engineer, Product Manager) stored in Notion/localStorage.
-- [ ] **Automated PDF Sync to Drive:** Add an n8n node to automatically save generated PDF versions to Google Drive or Dropbox upon build.
-- [ ] **PDF Compression:** Integrate a ghostscript/docker compression utility to keep ATS-optimized PDF files under 500KB.
-- [ ] **Custom CSS Editor:** Add a live CSS code editor directly in the Expert Panel for custom font styling or layout overriding.
-- [ ] **Cover Letter Generator:** Implement a sibling editor for writing matching cover letters that inherit the resume's exact color palette and typography.
-- [ ] **Interactive ATS Scanning:** Inline scanner showing keyword matching score with live suggestions for target job descriptions.
+- [ ] **Add "Help" button in the UI:** Add a "Help" button in the interface that opens the Installation Guide and links back to the GitHub repository.
+- [ ] **Locale (fr-FR translation):** Implement a simple language switcher (easy to do as French translations are already drafted).
+- [ ] **Improve SEO:** Optimize meta tags, OpenGraph headers, and robot directives for public-facing resume pages.
+- [ ] **Add GitHub Actions:** Automate syntax checking and dependency building for local developers.
+- [ ] **Automated PDF Sync to Drive:** Append an n8n node to save generated PDF resumes to Google Drive or Dropbox on build automatically.
+- [ ] **Feedback Button:** Introduce a feedback button opening an inline questionnaire feeding into a Notion database.
+- [ ] **Gemini Credits:** Allow users to use their own Gemini/Claude API keys for AI resume personalization.
+- [ ] **Multi-Profile Support:** Switch between multiple resume profiles (e.g., Developer, Product Manager) stored in `localStorage`/Notion.
+- [ ] **PDF Compression:** Integrate a ghostscript/pdfsizeopt wrapper within the PDF docker compiler to keep ATS files under 500KB.
+- [ ] **Telemetry:** Collect anonymous stats on chosen resume layout presets and font pairings.
+- [ ] **Cover Letter Generator:** Build a companion editor interface generating matching cover letters using identical color systems and spacing.
+- [ ] **Interactive ATS Scanning:** Paste job descriptions inside the UI to calculate real-time keyword matching scores and improvements.
+- [ ] **Google Account Sync:** Secure user authentication allowing resume backup/restore directly from Google Drive API storage.
+
+
 
 ## 📄 License
 This project is open-source and available under the [MIT License](LICENSE).
