@@ -28,7 +28,7 @@ DOCKER_DIR   := docker
 COMPOSE_DEV  := $(DOCKER_DIR)/docker-compose.yml
 COMPOSE_PROD := $(DOCKER_DIR)/docker-compose.prod.yml
 
-.PHONY: help configure dev dev-up dev-down up down restart deploy deploy-delay checklogs n8n-backup n8n-push n8n-backup-dev n8n-push-dev n8n-deploy-error
+.PHONY: help configure dev dev-up dev-down up down restart deploy deploy-infra deploy-all _deploy deploy-delay checklogs check-build n8n-backup n8n-push n8n-backup-dev n8n-push-dev n8n-deploy-error
 
 # Default target
 help:
@@ -45,9 +45,12 @@ help:
 	@echo "  make restart          - Restart local dev Docker containers"
 	@echo ""
 	@echo "Production Deployment (VPS - cv.eole.me):"
-	@echo "  make deploy           - Push production compose & stream secrets from Doppler to VPS"
+	@echo "  make deploy           - Push production compose & pull only custom editor/vector images"
+	@echo "  make deploy-infra     - Push production compose & pull only infra images (n8n, gotenberg, etc.)"
+	@echo "  make deploy-all       - Push production compose & pull/recreate all images"
 	@echo "  make deploy-delay     - Wait 150s for GitHub Actions and then deploy"
 	@echo "  make checklogs        - Fetch real-time production logs from VPS"
+	@echo "  make check-build      - Query GitHub Actions workflow run status for latest main commit"
 	@echo ""
 	@echo "n8n Workflow Syncing (Doppler aware):"
 	@echo "  make n8n-backup       - Backup all workflows from Production n8n to local n8n/"
@@ -104,6 +107,15 @@ restart: down up
 
 # 🚀 AUTOMATED DEPLOYMENT PIPELINE (VPS)
 deploy:
+	@$(MAKE) _deploy SERVICES="jobby-editor vector"
+
+deploy-infra:
+	@$(MAKE) _deploy SERVICES="traefik mcp-notion gotenberg n8n"
+
+deploy-all:
+	@$(MAKE) _deploy SERVICES=""
+
+_deploy:
 	@echo "🚀 Deploying Jobby stack to VPS Target [$(VPS_SSH)]..."
 # 1. Ensure the remote deployment directory exists
 	ssh $(VPS_SSH) "mkdir -p $(VPS_PATH)"
@@ -117,16 +129,22 @@ deploy:
 		echo "⚠️ Doppler non trouvé. Copie du fallback .env.prod vers le VPS..."; \
 		scp docker/.env.prod $(VPS_SSH):$(VPS_PATH)/.env; \
 	fi
-# 4. Pull the immutable image from GHCR and recreate containers (NO local build)
-	@echo "📥 Pulling latest custom images (jobby-editor, vector) from GHCR..."
-	ssh $(VPS_SSH) "cd $(VPS_PATH) && \
-		docker compose -f docker-compose.prod.yml pull jobby-editor vector && \
-		docker compose -f docker-compose.prod.yml up -d --remove-orphans"
+# 4. Pull and recreate
+	@if [ "$(SERVICES)" = "" ]; then \
+		echo "📥 Pulling all images from GHCR & Docker Hub..."; \
+		ssh $(VPS_SSH) "cd $(VPS_PATH) && docker compose -f docker-compose.prod.yml pull && docker compose -f docker-compose.prod.yml up -d --remove-orphans"; \
+	else \
+		echo "📥 Pulling specified images ($(SERVICES))..."; \
+		ssh $(VPS_SSH) "cd $(VPS_PATH) && docker compose -f docker-compose.prod.yml pull $(SERVICES) && docker compose -f docker-compose.prod.yml up -d --remove-orphans"; \
+	fi
 	@echo "✅ Deployment successfully completed on production server !"
 
 checklogs:
 	@echo "📟 Fetching real-time production logs from VPS [$(VPS_SSH)]..."
 	ssh $(VPS_SSH) "cd $(VPS_PATH) && docker compose -f docker-compose.prod.yml logs -f"
+
+check-build:
+	@uv run toolkit/check_build.py
 
 deploy-delay:
 	@echo "⏳ Waiting 150 seconds for GitHub Actions build to complete..."
