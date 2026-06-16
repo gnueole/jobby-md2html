@@ -35,6 +35,9 @@ node_modules/
 
 # Secrets / Environment files
 .env
+docker/.env.prod.temp
+docker/prd.env
+docker/*.env*
 
 
 # Local cloned Wiki
