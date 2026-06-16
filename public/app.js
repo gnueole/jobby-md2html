@@ -200,7 +200,7 @@ async function initializeJobby() {
 
     // --- Preload stylesheet ---
     try {
-        const response = await fetch('templates.css?v=1.2.6');
+        const response = await fetch(`templates.css?v=${appVersion}`);
         if (response.ok) {
             templatesCssText = await response.text();
         }

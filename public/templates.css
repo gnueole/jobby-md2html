@@ -63,7 +63,7 @@
 /* 2-Column Layout CSS Rules */
 .resume-columns {
     display: grid;
-    grid-template-columns: var(--column-split-main, 1.7fr) var(--column-split-sidebar, 1.3fr);
+    grid-template-columns: calc(var(--column-split-main, 58%) - 10px) calc(var(--column-split-sidebar, 42%) - 10px);
     gap: 20px;
     align-items: stretch;
     margin-top: 16px;
