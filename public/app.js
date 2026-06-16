@@ -709,7 +709,7 @@ async function initializeJobby() {
     if (btnLoadChangelog) {
         btnLoadChangelog.addEventListener('click', () => {
             if (confirm("Voulez-vous charger les nouveautés de Jobby ? Votre document actuel sera remplacé.")) {
-                fetch('changelog.md')
+                fetch('whatsnew.md')
                     .then(res => res.text())
                     .then(changelogText => {
                         markdownInput.value = changelogText;
