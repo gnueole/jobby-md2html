@@ -118,9 +118,9 @@ deploy:
 		scp docker/.env.prod $(VPS_SSH):$(VPS_PATH)/.env; \
 	fi
 # 4. Pull the immutable image from GHCR and recreate containers (NO local build)
-	@echo "📥 Pulling latest immutable image from GHCR..."
+	@echo "📥 Pulling latest custom images (jobby-editor, vector) from GHCR..."
 	ssh $(VPS_SSH) "cd $(VPS_PATH) && \
-		docker compose -f docker-compose.prod.yml pull && \
+		docker compose -f docker-compose.prod.yml pull jobby-editor vector && \
 		docker compose -f docker-compose.prod.yml up -d --remove-orphans"
 	@echo "✅ Deployment successfully completed on production server !"
 
