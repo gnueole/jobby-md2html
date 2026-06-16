@@ -14,9 +14,9 @@ VPS_SSH  := eole.me
 VPS_PATH := /home/eole/projects/jobby-md2html
 
 # 🔑 SECRETS MANAGEMENT (DOPPLER)
-DOPPLER_PROJECT     := jobby
+DOPPLER_PROJECT     := eole-me
 DOPPLER_CONFIG_DEV  := dev
-DOPPLER_CONFIG_PROD := prd
+DOPPLER_CONFIG_PROD := prd_eole-me-jobby
 
 
 
