@@ -1190,32 +1190,115 @@ input[type="color"]::-webkit-color-swatch {
     transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Small Select Dropdown for page format in preview toolbar */
-.select-sm {
-    display: none;
-    width: auto;
-    padding: 2px 6px;
-    font-size: 10px;
-    font-weight: 600;
-    border-radius: 4px;
-    background: var(--bg-input);
-    color: var(--text-secondary);
+/* Page Format Selector Wrapper and Custom Dropdown */
+.page-format-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+#btn-page-format {
+    position: relative;
+}
+
+.format-lock-badge {
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    background-color: var(--warning);
+    color: var(--bg-main);
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: 1px solid var(--border-color);
-    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+body.expert-mode-active .format-lock-badge {
+    display: none;
+}
+
+/* Page Format Dropdown Menu */
+.page-format-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%) translateY(5px);
+    width: 140px;
+    background-color: var(--bg-modal);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 6px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--transition-speed), transform var(--transition-speed), visibility var(--transition-speed);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.page-format-dropdown-menu.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+.format-option {
+    background: transparent;
+    border: none;
     outline: none;
-    margin-left: 2px;
-    margin-right: 4px;
+    color: var(--text-secondary);
+    font-family: var(--font-ui);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 6px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: left;
     transition: all var(--transition-speed);
 }
-.select-sm:hover, .select-sm:focus {
-    border-color: var(--accent);
+
+.format-option:hover {
+    background-color: rgba(255, 255, 255, 0.05);
     color: var(--text-primary);
 }
 
-/* US Letter Format Style Override */
+[data-theme="light"] .format-option:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+.format-option.active {
+    background-color: var(--accent);
+    color: #ffffff;
+}
+
+/* locked state for preview page format switcher */
+#btn-page-format.locked {
+    opacity: 0.6;
+    cursor: not-allowed !important;
+}
+
+/* Page Format Standards Canvas Sizes */
+.a4-sheet.format-a4 {
+    width: 210mm !important;
+    min-height: 297mm !important;
+}
+.a4-sheet.format-letter,
 .a4-sheet.letter-format {
     width: 8.5in !important;
     min-height: 11in !important;
+}
+.a4-sheet.format-legal {
+    width: 8.5in !important;
+    min-height: 14in !important;
+}
+.a4-sheet.format-a5 {
+    width: 148mm !important;
+    min-height: 210mm !important;
 }
 
 /* Page Break Indicators */

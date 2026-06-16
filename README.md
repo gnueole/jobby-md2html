@@ -227,8 +227,18 @@ You can configure the appearance of your sidebar column in 2-column mode inside 
 * The Markdown editor syntax highlighter updates synchronously on typing for instant visual highlighting.
 * The heavier HTML rendering engine, page-break layout engine, and saving operations are debounced by 200ms to keep the editing experience buttery-smooth even for long resumes.
 
-### 7. Centralized Versioning
-* Versioning is centralized dynamically in `package.json`. It is automatically parsed and injected as the single source of truth across the server, CLI, static resources (via query cache-busting), and the interface's "About" modal.
+### 8. Save & Load Local Markdown Drafts
+* Introduced **Save** and **Load** buttons in the editor actions toolbar to allow users to bank a local copy of their Markdown to `localStorage` and load it at any time with a confirmation prompt.
+
+### 9. All Preset Buttons Renameable
+* Every color preset button (B&W, Dark, Corporate Blue, Soft Blue, Soft Green, Soft Red, Custom, and Funky) can be renamed in place by double-clicking it. Custom names are persisted in local storage.
+
+### 10. Import/Export Style Config JSON
+* In the Developer Tools modal, developers can now export their custom style configuration as a JSON file and import it back to instantly apply layout settings.
+
+### 11. Enhanced Print Margins & Page Size Sync
+* Rebuilt print layout margin management to set browser `@page { margin: 0; }` and dynamically translate margins into `.a4-sheet` paddings. This avoids white margin borders on color themes/sidebars.
+* Synchronized `@page` size to Letter or A4 based on the preview's format choice.
 
 ## 🖨️ Generate PDF for Recruiters
 

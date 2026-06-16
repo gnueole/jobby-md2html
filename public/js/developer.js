@@ -8,6 +8,7 @@ import { showToast } from './utils.js';
 import { updateBookmarkletLinks } from './bookmarklet.js';
 
 let devToolsInitialized = false;
+let devToolsOptions = {};
 
 export async function loadDeveloperToolsBrick(token, appVersion) {
     if (devToolsInitialized) return true;
@@ -110,6 +111,60 @@ function bindDeveloperToolsEvents() {
             developerModal.classList.remove('show');
         });
     }
+
+    // JSON Import/Export Event Handlers
+    const btnExportJson = document.getElementById('btn-export-json');
+    const btnImportJsonTrigger = document.getElementById('btn-import-json-trigger');
+    const importJsonFile = document.getElementById('import-json-file');
+
+    if (btnExportJson) {
+        btnExportJson.addEventListener('click', () => {
+            if (devToolsOptions.getStyleConfig) {
+                const styleConfig = devToolsOptions.getStyleConfig();
+                const configStr = JSON.stringify(styleConfig, null, 2);
+                const blob = new Blob([configStr], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `jobby-config-${new Date().toISOString().slice(0, 10)}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                showToast("Style configuration exported!");
+            }
+        });
+    }
+
+    if (btnImportJsonTrigger && importJsonFile) {
+        btnImportJsonTrigger.addEventListener('click', () => {
+            importJsonFile.click();
+        });
+
+        importJsonFile.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                try {
+                    const importedConfig = JSON.parse(event.target.result);
+                    if (importedConfig && typeof importedConfig === 'object') {
+                        if (devToolsOptions.importConfig) {
+                            devToolsOptions.importConfig(importedConfig);
+                            showToast("Configuration imported successfully!");
+                            developerModal.classList.remove('show');
+                        }
+                    } else {
+                        alert("Invalid JSON format. Must be a style configuration object.");
+                    }
+                } catch (err) {
+                    alert("Error parsing JSON: " + err.message);
+                }
+            };
+            reader.readAsText(file);
+            importJsonFile.value = '';
+        });
+    }
 }
 
 function renderAuthForm(developerModal, appVersion, updateSyncButtonState) {
@@ -178,7 +233,8 @@ function renderAuthForm(developerModal, appVersion, updateSyncButtonState) {
     }
 }
 
-export function initDeveloperTools(btnDeveloperToggle, developerModal, appVersion, updateSyncButtonState) {
+export function initDeveloperTools(btnDeveloperToggle, developerModal, appVersion, updateSyncButtonState, options = {}) {
+    devToolsOptions = options;
     if (btnDeveloperToggle) {
         btnDeveloperToggle.addEventListener('click', () => {
             const savedToken = localStorage.getItem('developer_token');

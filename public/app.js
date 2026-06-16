@@ -24,7 +24,7 @@ import { initPrint, updatePageBreaks } from './js/print.js';
 
 async function initializeJobby() {
     // --- Fetch config (including dynamic version) ---
-    let appVersion = '1.5.0';
+    let appVersion = '1.7.0';
     try {
         const configRes = await fetch('/api/config');
         if (configRes.ok) {
@@ -150,7 +150,7 @@ async function initializeJobby() {
 
     let customPresets = {
         'custom-1': {
-            name: localStorage.getItem('ats_custom_preset_name_1') || 'Custom 1',
+            name: localStorage.getItem('ats_custom_preset_name_1') || 'Custom',
             styles: JSON.parse(localStorage.getItem('ats_custom_preset_1')) || {
                 colorBg: '#121212',
                 colorHeadings: '#f5f5f5',
@@ -165,7 +165,7 @@ async function initializeJobby() {
             }
         },
         'custom-2': {
-            name: localStorage.getItem('ats_custom_preset_name_2') || 'Custom 2',
+            name: localStorage.getItem('ats_custom_preset_name_2') || 'Funky (please edit yours)',
             styles: JSON.parse(localStorage.getItem('ats_custom_preset_2')) || {
                 colorBg: '#000000',
                 colorHeadings: '#39ff14',
@@ -195,6 +195,8 @@ async function initializeJobby() {
     const canvasWrapper = document.querySelector('.preview-canvas-wrapper');
     const zoomResetBtn = document.getElementById('zoom-reset');
 
+    const btnSaveBank = document.getElementById('btn-save-bank');
+    const btnLoadBank = document.getElementById('btn-load-bank');
     const btnLoadSample = document.getElementById('btn-load-sample');
     const btnLoadChangelog = document.getElementById('btn-load-changelog');
     const btnCopyMd = document.getElementById('btn-copy-md');
@@ -246,7 +248,6 @@ async function initializeJobby() {
     const presetGreen = document.getElementById('preset-green');
     const presetSoftRed = document.getElementById('preset-soft-red');
     const presetReset = document.getElementById('preset-reset');
-    const presetUpdate = document.getElementById('preset-update');
     const presetCustom1 = document.getElementById('preset-custom-1');
     const presetCustom2 = document.getElementById('preset-custom-2');
 
@@ -278,18 +279,8 @@ async function initializeJobby() {
             const activePreset = styleConfig.activePreset;
             if (activePreset === 'custom-1' || activePreset === 'custom-2') {
                 const indexStr = activePreset === 'custom-1' ? '1' : '2';
-                const presetStyles = {
-                    colorBg: styleConfig.colorBg,
-                    colorHeadings: styleConfig.colorHeadings,
-                    colorBody: styleConfig.colorBody,
-                    colorLinks: styleConfig.colorLinks,
-                    colorAccent: styleConfig.colorAccent,
-                    sidebarBg: styleConfig.sidebarBg,
-                    sidebarText: styleConfig.sidebarText,
-                    cosmeticGradient: styleConfig.cosmeticGradient,
-                    columnGradientColor: styleConfig.columnGradientColor,
-                    columnGradientLength: styleConfig.columnGradientLength
-                };
+                const presetStyles = { ...styleConfig };
+                delete presetStyles.activePreset;
                 customPresets[activePreset].styles = presetStyles;
                 localStorage.setItem(`ats_custom_preset_${indexStr}`, JSON.stringify(presetStyles));
             }
@@ -334,8 +325,8 @@ async function initializeJobby() {
         name = name.trim();
         name = name.replace(/<[^>]*>/g, ''); // strip HTML tags
         
-        if (name.length > 15) {
-            return { error: "The name must not exceed 15 characters." };
+        if (name.length > 30) {
+            return { error: "The name must not exceed 30 characters." };
         }
         if (name.length === 0) {
             return { error: "The name cannot be empty." };
@@ -348,9 +339,23 @@ async function initializeJobby() {
         return { name };
     }
  
-    function handleCustomPresetRename(key) {
-        const preset = customPresets[key];
-        const oldName = preset.name;
+    function handlePresetRename(key) {
+        let defaultName = '';
+        if (key === 'classic') defaultName = 'B&W';
+        else if (key === 'dark') defaultName = 'Dark';
+        else if (key === 'clean-blue') defaultName = 'Corporate Blue';
+        else if (key === 'soft-blue') defaultName = 'Soft Blue';
+        else if (key === 'green') defaultName = 'Soft Green';
+        else if (key === 'soft-red') defaultName = 'Soft Red';
+        else if (key === 'custom-1') defaultName = 'Custom';
+        else if (key === 'custom-2') defaultName = 'Funky (please edit yours)';
+
+        let storageKey = '';
+        if (key === 'custom-1') storageKey = 'ats_custom_preset_name_1';
+        else if (key === 'custom-2') storageKey = 'ats_custom_preset_name_2';
+        else storageKey = `ats_preset_name_${key}`;
+
+        const oldName = localStorage.getItem(storageKey) || defaultName;
         const newNameInput = prompt(`Rename preset "${oldName}":`, oldName);
         if (newNameInput === null) return;
         
@@ -360,16 +365,30 @@ async function initializeJobby() {
             return;
         }
         
-        preset.name = result.name;
-        const indexStr = key === 'custom-1' ? '1' : '2';
-        localStorage.setItem(`ats_custom_preset_name_${indexStr}`, preset.name);
-        updateCustomPresetLabels();
-        showToast(`Preset renamed to "${preset.name}"`);
+        localStorage.setItem(storageKey, result.name);
+        if (key === 'custom-1') {
+            customPresets['custom-1'].name = result.name;
+        } else if (key === 'custom-2') {
+            customPresets['custom-2'].name = result.name;
+        }
+        updatePresetLabels();
+        showToast(`Preset renamed to "${result.name}"`);
     }
 
-    function updateCustomPresetLabels() {
-        if (presetCustom1) presetCustom1.textContent = customPresets['custom-1'].name;
-        if (presetCustom2) presetCustom2.textContent = customPresets['custom-2'].name;
+    function updatePresetLabels() {
+        if (presetClassicNb) presetClassicNb.textContent = localStorage.getItem('ats_preset_name_classic') || 'B&W';
+        if (presetDarkMode) presetDarkMode.textContent = localStorage.getItem('ats_preset_name_dark') || 'Dark';
+        if (presetCleanBlue) presetCleanBlue.textContent = localStorage.getItem('ats_preset_name_clean-blue') || 'Corporate Blue';
+        if (presetSoftBlue) presetSoftBlue.textContent = localStorage.getItem('ats_preset_name_soft-blue') || 'Soft Blue';
+        if (presetGreen) presetGreen.textContent = localStorage.getItem('ats_preset_name_green') || 'Soft Green';
+        if (presetSoftRed) presetSoftRed.textContent = localStorage.getItem('ats_preset_name_soft-red') || 'Soft Red';
+
+        if (presetCustom1) {
+            presetCustom1.textContent = localStorage.getItem('ats_custom_preset_name_1') || 'Custom';
+        }
+        if (presetCustom2) {
+            presetCustom2.textContent = localStorage.getItem('ats_custom_preset_name_2') || 'Funky (please edit yours)';
+        }
     }
 
     function updateConfigFromControlsFull() {
@@ -545,8 +564,23 @@ async function initializeJobby() {
             styleConfig.expertMode = advancedModeToggle.checked;
             if (styleConfig.expertMode) {
                 document.body.classList.add('expert-mode-active');
+                applyStyles(styleConfig);
             } else {
                 document.body.classList.remove('expert-mode-active');
+                
+                // Force page format back to A4 when expert mode is disabled
+                styleConfig.pageFormat = 'A4';
+                if (selectPageFormat) {
+                    selectPageFormat.value = 'A4';
+                }
+                localStorage.setItem('page_format', 'A4');
+                applyStyles(styleConfig);
+                updatePageBreaks(resumeOutput, styleConfig);
+                
+                // Auto fit zoom
+                if (canvasWrapper && previewCanvas && zoomLevelText) {
+                    autoFitZoom(canvasWrapper, previewCanvas, zoomLevelText, () => updatePageBreaks(resumeOutput, styleConfig));
+                }
             }
             saveToLocalStorage();
         });
@@ -574,6 +608,14 @@ async function initializeJobby() {
         if (expertPopupBox && expertPopupBox.classList.contains('show')) {
             if (!expertPopupBox.contains(e.target) && e.target !== btnExpertHelp) {
                 expertPopupBox.classList.remove('show');
+            }
+        }
+        
+        const pageFormatDropdown = document.getElementById('page-format-dropdown');
+        const btnPageFormat = document.getElementById('btn-page-format');
+        if (pageFormatDropdown && pageFormatDropdown.classList.contains('show')) {
+            if (!pageFormatDropdown.contains(e.target) && (!btnPageFormat || !btnPageFormat.contains(e.target))) {
+                pageFormatDropdown.classList.remove('show');
             }
         }
     });
@@ -745,10 +787,35 @@ async function initializeJobby() {
         saveToLocalStorage();
     };
 
-    // Color presets
-    if (presetClassicNb) {
-        presetClassicNb.addEventListener('click', () => {
-            applyPresetValues('classic', {
+    // Save and Load Banked Markdown
+    if (btnSaveBank) {
+        btnSaveBank.addEventListener('click', () => {
+            const currentMd = markdownInput.value;
+            localStorage.setItem('ats_banked_markdown', currentMd);
+            showToast("Markdown saved to local bank!");
+        });
+    }
+
+    if (btnLoadBank) {
+        btnLoadBank.addEventListener('click', () => {
+            const bankedMd = localStorage.getItem('ats_banked_markdown');
+            if (!bankedMd) {
+                showToast("No banked Markdown found. Save a draft first!");
+                return;
+            }
+            if (confirm("Load banked Markdown? Your current changes in the editor will be replaced.")) {
+                markdownInput.value = bankedMd;
+                runCompileMarkdown(bankedMd);
+                saveToLocalStorage();
+                showToast("Banked Markdown loaded!");
+            }
+        });
+    }
+
+    // Color presets definitions
+    const presetDefinitions = {
+        'classic': {
+            styles: {
                 colorBg: '#ffffff',
                 colorHeadings: '#000000',
                 colorBody: '#000000',
@@ -756,13 +823,12 @@ async function initializeJobby() {
                 colorAccent: '#000000',
                 sidebarBg: '#111111',
                 sidebarText: '#ffffff'
-            }, '#111111', { cosmeticShadow: false });
-        });
-    }
-
-    if (presetDarkMode) {
-        presetDarkMode.addEventListener('click', () => {
-            applyPresetValues('dark', {
+            },
+            gradientColor: '#111111',
+            extra: { cosmeticShadow: false }
+        },
+        'dark': {
+            styles: {
                 colorBg: '#0f172a',
                 colorHeadings: '#f8fafc',
                 colorBody: '#cbd5e1',
@@ -770,13 +836,12 @@ async function initializeJobby() {
                 colorAccent: '#34d399',
                 sidebarBg: '#1e293b',
                 sidebarText: '#cbd5e1'
-            }, '#0f172a', { cosmeticShadow: true });
-        });
-    }
-
-    if (presetCleanBlue) {
-        presetCleanBlue.addEventListener('click', () => {
-            applyPresetValues('clean-blue', {
+            },
+            gradientColor: '#0f172a',
+            extra: { cosmeticShadow: true }
+        },
+        'clean-blue': {
+            styles: {
                 colorBg: '#ffffff',
                 colorHeadings: '#0f172a',
                 colorBody: '#334155',
@@ -784,13 +849,12 @@ async function initializeJobby() {
                 colorAccent: '#0ea5e9',
                 sidebarBg: '#0f172a',
                 sidebarText: '#ffffff'
-            }, '#70aef0', { cosmeticShadow: true });
-        });
-    }
-
-    if (presetSoftBlue) {
-        presetSoftBlue.addEventListener('click', () => {
-            applyPresetValues('soft-blue', {
+            },
+            gradientColor: '#70aef0',
+            extra: { cosmeticShadow: true }
+        },
+        'soft-blue': {
+            styles: {
                 colorBg: '#f8fafc',
                 colorHeadings: '#1e40af',
                 colorBody: '#475569',
@@ -798,13 +862,12 @@ async function initializeJobby() {
                 colorAccent: '#3b82f6',
                 sidebarBg: '#e0f2fe',
                 sidebarText: '#0369a1'
-            }, '#bae6fd', { cosmeticShadow: true });
-        });
-    }
-
-    if (presetGreen) {
-        presetGreen.addEventListener('click', () => {
-            applyPresetValues('green', {
+            },
+            gradientColor: '#bae6fd',
+            extra: { cosmeticShadow: true }
+        },
+        'green': {
+            styles: {
                 colorBg: '#fcfdfc',
                 colorHeadings: '#166534',
                 colorBody: '#374151',
@@ -812,13 +875,12 @@ async function initializeJobby() {
                 colorAccent: '#4ade80',
                 sidebarBg: '#dcfce7',
                 sidebarText: '#166534'
-            }, '#bbf7d0', { cosmeticShadow: true });
-        });
-    }
-
-    if (presetSoftRed) {
-        presetSoftRed.addEventListener('click', () => {
-            applyPresetValues('soft-red', {
+            },
+            gradientColor: '#bbf7d0',
+            extra: { cosmeticShadow: true }
+        },
+        'soft-red': {
+            styles: {
                 colorBg: '#ffffff',
                 colorHeadings: '#7f1d1d',
                 colorBody: '#374151',
@@ -826,8 +888,72 @@ async function initializeJobby() {
                 colorAccent: '#f87171',
                 sidebarBg: '#fee2e2',
                 sidebarText: '#991b1b'
-            }, '#fecaca', { cosmeticShadow: true });
-        });
+            },
+            gradientColor: '#fecaca',
+            extra: { cosmeticShadow: true }
+        }
+    };
+
+    const executePresetClick = (key) => {
+        const def = presetDefinitions[key];
+        if (def) {
+            applyPresetValues(key, def.styles, def.gradientColor, def.extra);
+        } else {
+            // It's custom-1 or custom-2
+            const preset = customPresets[key];
+            const defaultCoolGradient = key === 'custom-1' ? '#262626' : '#00ffff';
+            if (!preset.styles) {
+                const presetStyles = { ...styleConfig };
+                delete presetStyles.activePreset;
+                preset.styles = presetStyles;
+                const indexStr = key === 'custom-1' ? '1' : '2';
+                localStorage.setItem(`ats_custom_preset_${indexStr}`, JSON.stringify(preset.styles));
+                showToast(`${preset.name} saved with current design configuration!`);
+            }
+            styleConfig.activePreset = key;
+            
+            // Assign saved styles to styleConfig
+            Object.assign(styleConfig, preset.styles);
+            styleConfig.activePreset = key; // Ensure activePreset is preserved
+            
+            updateControlsFromConfig(styleConfig);
+            applyStyles(styleConfig);
+            runCompileMarkdown(markdownInput.value);
+            saveToLocalStorage();
+        }
+    };
+
+    let presetClickTimeouts = {};
+
+    const handlePresetClick = (key) => {
+        if (presetClickTimeouts[key]) {
+            clearTimeout(presetClickTimeouts[key]);
+            presetClickTimeouts[key] = null;
+            handlePresetRename(key);
+            return;
+        }
+        
+        presetClickTimeouts[key] = setTimeout(() => {
+            presetClickTimeouts[key] = null;
+            executePresetClick(key);
+        }, 250);
+    };
+
+    const presetButtons = {
+        'classic': presetClassicNb,
+        'dark': presetDarkMode,
+        'clean-blue': presetCleanBlue,
+        'soft-blue': presetSoftBlue,
+        'green': presetGreen,
+        'soft-red': presetSoftRed,
+        'custom-1': presetCustom1,
+        'custom-2': presetCustom2
+    };
+
+    for (const [key, btn] of Object.entries(presetButtons)) {
+        if (btn) {
+            btn.addEventListener('click', () => handlePresetClick(key));
+        }
     }
 
     if (presetReset) {
@@ -848,99 +974,6 @@ async function initializeJobby() {
         });
     }
 
-    if (presetUpdate) {
-        presetUpdate.addEventListener('click', () => {
-            const activePreset = styleConfig.activePreset;
-            if (activePreset === 'custom-1' || activePreset === 'custom-2') {
-                const indexStr = activePreset === 'custom-1' ? '1' : '2';
-                const presetStyles = {
-                    colorBg: styleConfig.colorBg,
-                    colorHeadings: styleConfig.colorHeadings,
-                    colorBody: styleConfig.colorBody,
-                    colorLinks: styleConfig.colorLinks,
-                    colorAccent: styleConfig.colorAccent,
-                    sidebarBg: styleConfig.sidebarBg,
-                    sidebarText: styleConfig.sidebarText,
-                    cosmeticGradient: styleConfig.cosmeticGradient,
-                    columnGradientColor: styleConfig.columnGradientColor,
-                    columnGradientLength: styleConfig.columnGradientLength
-                };
-                customPresets[activePreset].styles = presetStyles;
-                localStorage.setItem(`ats_custom_preset_${indexStr}`, JSON.stringify(presetStyles));
-                showToast(`${customPresets[activePreset].name} updated with current design configuration!`);
-            } else {
-                showToast("Cannot update built-in read-only presets.");
-            }
-        });
-    }
-
-    let presetClickTimeouts = {};
-
-    const executeSinglePresetClick = (key) => {
-        const preset = customPresets[key];
-        const defaultCoolGradient = key === 'custom-1' ? '#262626' : '#00ffff';
-        if (!preset.styles) {
-            preset.styles = {
-                colorBg: styleConfig.colorBg,
-                colorHeadings: styleConfig.colorHeadings,
-                colorBody: styleConfig.colorBody,
-                colorLinks: styleConfig.colorLinks,
-                colorAccent: styleConfig.colorAccent,
-                sidebarBg: styleConfig.sidebarBg,
-                sidebarText: styleConfig.sidebarText,
-                cosmeticGradient: styleConfig.cosmeticGradient,
-                columnGradientColor: styleConfig.columnGradientColor || defaultCoolGradient,
-                columnGradientLength: styleConfig.columnGradientLength || 150
-            };
-            const indexStr = key === 'custom-1' ? '1' : '2';
-            localStorage.setItem(`ats_custom_preset_${indexStr}`, JSON.stringify(preset.styles));
-            showToast(`${preset.name} saved with current colors!`);
-        }
-        styleConfig.activePreset = key;
-        styleConfig.colorBg = preset.styles.colorBg;
-        styleConfig.colorHeadings = preset.styles.colorHeadings;
-        styleConfig.colorBody = preset.styles.colorBody;
-        styleConfig.colorLinks = preset.styles.colorLinks;
-        styleConfig.colorAccent = preset.styles.colorAccent;
-        styleConfig.sidebarBg = preset.styles.sidebarBg;
-        styleConfig.sidebarText = preset.styles.sidebarText;
-        
-        styleConfig.columnGradientColor = preset.styles.columnGradientColor || defaultCoolGradient;
-        styleConfig.columnGradientLength = preset.styles.columnGradientLength || 150;
-        if (styleConfig.layoutMode === '2-column') {
-            styleConfig.cosmeticGradient = true;
-        } else {
-            styleConfig.cosmeticGradient = preset.styles.cosmeticGradient !== undefined ? preset.styles.cosmeticGradient : styleConfig.cosmeticGradient;
-        }
-        
-        updateControlsFromConfig(styleConfig);
-        applyStyles(styleConfig);
-        runCompileMarkdown(markdownInput.value);
-        saveToLocalStorage();
-    };
-
-    const handlePresetClick = (key) => {
-        if (presetClickTimeouts[key]) {
-            clearTimeout(presetClickTimeouts[key]);
-            presetClickTimeouts[key] = null;
-            // Execute double click rename
-            handleCustomPresetRename(key);
-            return;
-        }
-        
-        presetClickTimeouts[key] = setTimeout(() => {
-            presetClickTimeouts[key] = null;
-            executeSinglePresetClick(key);
-        }, 250);
-    };
-
-    if (presetCustom1) {
-        presetCustom1.addEventListener('click', () => handlePresetClick('custom-1'));
-    }
-    if (presetCustom2) {
-        presetCustom2.addEventListener('click', () => handlePresetClick('custom-2'));
-    }
-
     // Zoom Handlers
     initZoom({
         zoomInBtn,
@@ -949,7 +982,7 @@ async function initializeJobby() {
         zoomLevelText,
         previewCanvas,
         canvasWrapper,
-        updatePageBreaks: () => updatePageBreaks(resumeOutput)
+        updatePageBreaks: () => updatePageBreaks(resumeOutput, styleConfig)
     });
 
     // Formatting outlines & printing format config
@@ -959,8 +992,9 @@ async function initializeJobby() {
         selectPageFormat,
         resumeOutput,
         getCurrentResumeTitle: () => currentResumeTitle,
-        autoFitZoom: () => autoFitZoom(canvasWrapper, previewCanvas, zoomLevelText, () => updatePageBreaks(resumeOutput)),
-        triggerCompile: () => runCompileMarkdown(markdownInput.value)
+        autoFitZoom: () => autoFitZoom(canvasWrapper, previewCanvas, zoomLevelText, () => updatePageBreaks(resumeOutput, styleConfig)),
+        triggerCompile: () => runCompileMarkdown(markdownInput.value),
+        styleConfig
     });
 
     // Load sample
@@ -1085,7 +1119,19 @@ async function initializeJobby() {
     });
 
     // --- Lazy load Developer Tools brick on authentication ---
-    initDeveloperTools(btnDeveloperToggle, developerModal, appVersion, updateSyncButtonState);
+    initDeveloperTools(btnDeveloperToggle, developerModal, appVersion, updateSyncButtonState, {
+        getStyleConfig: () => styleConfig,
+        importConfig: (importedConfig) => {
+            for (const key in styleConfig) {
+                delete styleConfig[key];
+            }
+            Object.assign(styleConfig, DEFAULT_STYLE_CONFIG, importedConfig);
+            updateControlsFromConfig(styleConfig);
+            applyStyles(styleConfig);
+            runCompileMarkdown(markdownInput.value);
+            saveToLocalStorage();
+        }
+    });
 
     // --- Sync design layout config to n8n ---
     if (btnSyncN8n) {
@@ -1303,7 +1349,8 @@ async function initializeJobby() {
 
         // Initialize custom presets styles if empty and it matches activePreset
         if (styleConfig.activePreset === 'custom-1' && !customPresets['custom-1'].styles) {
-            customPresets['custom-1'].styles = {
+            const presetStyles = {
+                ...DEFAULT_STYLE_CONFIG,
                 colorBg: '#121212',
                 colorHeadings: '#f5f5f5',
                 colorBody: '#d4d4d4',
@@ -1315,9 +1362,12 @@ async function initializeJobby() {
                 columnGradientColor: '#262626',
                 columnGradientLength: 150
             };
-            localStorage.setItem('ats_custom_preset_1', JSON.stringify(customPresets['custom-1'].styles));
+            delete presetStyles.activePreset;
+            customPresets['custom-1'].styles = presetStyles;
+            localStorage.setItem('ats_custom_preset_1', JSON.stringify(presetStyles));
         } else if (styleConfig.activePreset === 'custom-2' && !customPresets['custom-2'].styles) {
-            customPresets['custom-2'].styles = {
+            const presetStyles = {
+                ...DEFAULT_STYLE_CONFIG,
                 colorBg: '#000000',
                 colorHeadings: '#39ff14',
                 colorBody: '#ff007f',
@@ -1329,10 +1379,12 @@ async function initializeJobby() {
                 columnGradientColor: '#00ffff',
                 columnGradientLength: 150
             };
-            localStorage.setItem('ats_custom_preset_2', JSON.stringify(customPresets['custom-2'].styles));
+            delete presetStyles.activePreset;
+            customPresets['custom-2'].styles = presetStyles;
+            localStorage.setItem('ats_custom_preset_2', JSON.stringify(presetStyles));
         }
 
-        updateCustomPresetLabels();
+        updatePresetLabels();
         updateControlsFromConfig(styleConfig);
         runCompileMarkdown(loadedMarkdown);
 

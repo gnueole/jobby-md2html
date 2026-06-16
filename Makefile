@@ -116,7 +116,7 @@ deploy-all:
 	@$(MAKE) --no-print-directory _deploy SERVICES=""
 
 _deploy:
-	@echo "🚀 Deploying Jobby stack to VPS Target [$(VPS_SSH)]..."
+	@echo "🚀 Deploying Jobby stack version $(VERSION) to VPS Target [$(VPS_SSH)]..."
 # 1. Ensure the remote deployment directory exists
 	ssh $(VPS_SSH) "mkdir -p $(VPS_PATH)"
 # 2. SCP the production compose file
@@ -124,7 +124,14 @@ _deploy:
 # 3. Stream production secrets from Doppler to remote VPS .env or fallback
 	@if $(DOPPLER) --version >/dev/null 2>&1; then \
 		echo "🔑 Envoi des secrets de production Doppler vers le VPS..."; \
-		$(DOPPLER) secrets download --project $(DOPPLER_PROJECT) --config $(DOPPLER_CONFIG_PROD) --no-file --format env | ssh $(VPS_SSH) "cat > $(VPS_PATH)/.env"; \
+		if $(DOPPLER) secrets download --project $(DOPPLER_PROJECT) --config $(DOPPLER_CONFIG_PROD) --no-file --format env > docker/.env.prod.temp 2>/dev/null; then \
+			scp docker/.env.prod.temp $(VPS_SSH):$(VPS_PATH)/.env; \
+			rm -f docker/.env.prod.temp; \
+		else \
+			echo "⚠️ Doppler secrets download failed. Copying fallback .env.prod to VPS..."; \
+			scp docker/.env.prod $(VPS_SSH):$(VPS_PATH)/.env; \
+			rm -f docker/.env.prod.temp; \
+		fi; \
 	else \
 		echo "⚠️ Doppler non trouvé. Copie du fallback .env.prod vers le VPS..."; \
 		scp docker/.env.prod $(VPS_SSH):$(VPS_PATH)/.env; \
@@ -137,14 +144,14 @@ _deploy:
 		echo "📥 Pulling specified images ($(SERVICES))..."; \
 		ssh $(VPS_SSH) "cd $(VPS_PATH) && docker compose -f docker-compose.prod.yml pull $(SERVICES) && docker compose -f docker-compose.prod.yml up -d --remove-orphans"; \
 	fi
-	@echo "✅ Deployment successfully completed on production server !"
+	@echo "✅ Deployment of version $(VERSION) successfully completed on production server !"
 
 checklogs:
 	@echo "📟 Fetching real-time production logs from VPS [$(VPS_SSH)]..."
 	ssh $(VPS_SSH) "cd $(VPS_PATH) && docker compose -f docker-compose.prod.yml logs -f"
 
 check-build:
-	@uv run toolkit/check_build.py
+	@python3 toolkit/check_build.py
 
 deploy-delay:
 	@echo "⏳ Waiting 150 seconds for GitHub Actions build to complete..."

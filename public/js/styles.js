@@ -87,6 +87,18 @@ export function applyStyles(styleConfig) {
         }
     }
 
+    // Update page standard locked/unlocked state
+    const btnPageFormat = document.getElementById('btn-page-format');
+    if (btnPageFormat) {
+        if (!styleConfig.expertMode) {
+            btnPageFormat.classList.add('locked');
+            btnPageFormat.setAttribute('title', 'Choose Page Format (Locked to A4 - Requires Expert Mode)');
+        } else {
+            btnPageFormat.classList.remove('locked');
+            btnPageFormat.setAttribute('title', 'Choose Page Format');
+        }
+    }
+
     // Update dynamic print margins style
     let printPageStyle = document.getElementById('print-page-style');
     if (!printPageStyle) {
@@ -94,17 +106,52 @@ export function applyStyles(styleConfig) {
         printPageStyle.id = 'print-page-style';
         document.head.appendChild(printPageStyle);
     }
+    const selectPageFormat = document.getElementById('select-page-format');
+    const format = styleConfig.pageFormat || (selectPageFormat ? selectPageFormat.value : 'A4');
+    
+    // Apply sheet classes
+    resumeOutput.classList.remove('format-a4', 'format-letter', 'format-legal', 'format-a5', 'letter-format');
+    if (format === 'letter') {
+        resumeOutput.classList.add('letter-format', 'format-letter');
+    } else if (format === 'legal') {
+        resumeOutput.classList.add('format-legal');
+    } else if (format === 'a5') {
+        resumeOutput.classList.add('format-a5');
+    } else {
+        resumeOutput.classList.add('format-a4');
+    }
+
+    // Update active class in dropdown options
+    const formatOptions = document.querySelectorAll('.format-option');
+    formatOptions.forEach(opt => {
+        if (opt.getAttribute('data-value') === format) {
+            opt.classList.add('active');
+        } else {
+            opt.classList.remove('active');
+        }
+    });
+
+    let pageSize = 'A4';
+    if (format === 'letter') pageSize = 'letter';
+    else if (format === 'legal') pageSize = 'legal';
+    else if (format === 'a5') pageSize = 'A5';
+    
     printPageStyle.textContent = `
         @media print {
             @page {
-                size: A4 portrait;
-                margin-top: ${styleConfig.marginY}px;
-                margin-bottom: ${styleConfig.marginY}px;
-                margin-left: ${styleConfig.marginX}px;
-                margin-right: ${styleConfig.marginX}px;
+                size: ${pageSize} portrait;
+                margin: 0 !important;
             }
             .a4-sheet {
-                padding: 0 !important;
+                padding-top: ${styleConfig.marginY}px !important;
+                padding-bottom: ${styleConfig.marginY}px !important;
+                padding-left: ${styleConfig.marginX}px !important;
+                padding-right: ${styleConfig.marginX}px !important;
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                width: 100% !important;
+                min-height: 0 !important;
+                height: auto !important;
             }
         }
     `;

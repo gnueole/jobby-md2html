@@ -10,6 +10,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.7.0] - 2026-06-16
+
+### Added
+- **Save/Load Local Markdown Drafts:** Introduced "Save" and "Load" buttons in the editor actions toolbar to allow users to bank a local copy of their Markdown to `localStorage` and load it at any time with a confirmation prompt.
+- **Why Markdown (Why MD) Info:** Added an educational section to the "About" modal detailing the benefits of Markdown (e.g. content-formatting separation, ATS compliance, portable, and easily readable by machines).
+- **All Preset Buttons Renameable:** Expanded the double-click rename functionality to *all* built-in color presets (B&W, Dark, Corporate Blue, Soft Blue, Soft Green, Soft Red, Custom, and Funky). Custom names are persisted locally.
+- **Import/Export Design Configurations:** Added JSON export and import options in the Developer Tools modal, permitting developers to download their styling settings or upload existing JSON styles to apply them instantly.
+- **Enhanced Print Margins & Page Size Sync:** Rewrote print layout margin management to set browser `@page { margin: 0; }` and dynamically translate margins into `.a4-sheet` paddings. This avoids white margin borders on color themes/sidebars. Synchronized `@page` size to Letter or A4 based on the preview's format choice.
+- **Visual Polishing:** Reordered custom slots (`Custom`, `Funky (please edit yours)`), removed the redundant manual "Update" button, repositioned the page format selector directly next to the zoom indicator in the preview header, and replaced the "Clear Editor" icon with a standard trash-can SVG.
+
 ## [1.6.5] - 2026-06-16
 
 ### Added
