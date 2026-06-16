@@ -3,7 +3,7 @@ Nouveautés simples & intelligentes.
 [CONTACT : hi@eole.me | +33 6 50 83 68 09 | cv.eole.me]
 
 ## ✍️ ÉDITION SIMPLIFIÉE
-* **Coloration Syntaxique** : L'éditeur colore désormais votre texte en temps réel (:accent[gros highlight !]) pour vous aider à visualiser la structure sans effort.
+* **Coloration Syntaxique** : Votre texte se colore en :accent[temps réel] pour vous aider à visualiser la structure de votre document sans effort.
 * **Raccourcis Clavier** : Modifiez votre texte comme dans un traitement de texte classique sans avoir besoin de connaître le Markdown :
   * :accent[Ctrl + B] : Mettre en gras
   * :accent[Ctrl + I] : Mettre en italique
