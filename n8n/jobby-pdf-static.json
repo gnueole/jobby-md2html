@@ -30,7 +30,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// 1. Récupération du CV et des deux nouvelles propriétés Notion\nconst properties = $('Webhook').item.json.body?.data?.properties || {};\nconst richTextArray = properties.CV?.rich_text || [];\n\n// Extraction propre (sans double ?. )\nconst company = properties.Company?.rich_text?.[0]?.plain_text || 'company';\nconst jobTitle = properties.Job_Title?.rich_text?.[0]?.plain_text || 'job';\n\nlet mdText = richTextArray.map(block => block.plain_text || '').join('');\n\n// 2. Parser Markdown avec nettoyage du \"plain text\" parasite\nfunction robustMarkdownToHtml(md) {\n  // Suppression des mentions \"plain text\" ou \"plain_text\" textuelles injectées par l'agent\n  let cleanedMd = md.replace(/plain[\\s_]text/gi, '');\n\n  const lines = cleanedMd.split('\\n');\n  let htmlOutput = [];\n  let inList = false;\n\n  for (let line of lines) {\n    let trimmed = line.trim();\n    if (!trimmed.startsWith('-') && !trimmed.startsWith('*') && inList) {\n      htmlOutput.push('</ul>');\n      inList = false;\n    }\n    if (trimmed === '---' || trimmed === '***') {\n      htmlOutput.push('<hr />');\n      continue;\n    }\n    if (trimmed.startsWith('>')) {\n      let content = line.replace(/^>\\s*/, '').trim().replace(/^\"(.*)\"$/, '$1');\n      htmlOutput.push(`<div class=\"summary-box\">${content}</div>`);\n      continue;\n    }\n    if (trimmed.startsWith('# ')) { htmlOutput.push(`<h1>${trimmed.substring(2)}</h1>`); continue; }\n    if (trimmed.startsWith('## ')) { htmlOutput.push(`<h2>${trimmed.substring(3)}</h2>`); continue; }\n    if (trimmed.startsWith('### ')) { htmlOutput.push(`<h3>${trimmed.substring(4)}</h3>`); continue; }\n\n    if (trimmed.startsWith('-') || trimmed.startsWith('*')) {\n      if (!inList) { htmlOutput.push('<ul>'); inList = true; }\n      htmlOutput.push(`<li>${trimmed.replace(/^[\\-\\*]\\s*/, '')}</li>`);\n      continue;\n    }\n    if (trimmed !== '') htmlOutput.push(`<p>${line}</p>`);\n  }\n  if (inList) htmlOutput.push('</ul>');\n\n  let finalBody = htmlOutput.join('\\n');\n  return finalBody.replace(/\\*\\*(.*?)\\*\\*/g, '<strong>$1</strong>');\n}\n\n// Fonction utilitaire pour nettoyer les caractères spéciaux du futur nom de fichier\nfunction slugify(text) {\n  return text\n    .toString()\n    .toLowerCase()\n    .normalize('NFD') // Supprime les accents\n    .replace(/[\\u0300-\\u036f]/g, '')\n    .trim()\n    .replace(/\\s+/g, '-') // Remplace les espaces par des tirets\n    .replace(/[^a-z0-9\\-]/g, ''); // Supprime le reste\n}\n\nconst finalFileName = `javarre-${slugify(company)}-${slugify(jobTitle)}`;\n\nreturn [\n  {\n    json: {\n      compiledBody: robustMarkdownToHtml(mdText),\n      pdfFileName: finalFileName\n    }\n  }\n];"
+        "jsCode": "// 1. Récupération du CV et des deux nouvelles propriétés Notion\nconst properties = $('Webhook').item.json.body?.data?.properties || {};\nconst richTextArray = properties.CV?.rich_text || [];\n\n// Extraction propre depuis Get PageID\nconst company = $('Get PageID').first().json.company || 'company';\nconst jobTitle = $('Get PageID').first().json.jobTitle || 'job';\nconst increment = $('Get PageID').first().json.increment || '01';\n\nlet mdText = richTextArray.map(block => block.plain_text || '').join('');\n\n// 2. Parser Markdown avec nettoyage du \"plain text\" parasite\nfunction robustMarkdownToHtml(md) {\n  // Suppression des mentions \"plain text\" ou \"plain_text\" textuelles injectées par l'agent\n  let cleanedMd = md.replace(/plain[\\s_]text/gi, '');\n\n  const lines = cleanedMd.split('\\n');\n  let htmlOutput = [];\n  let inList = false;\n\n  for (let line of lines) {\n    let trimmed = line.trim();\n    if (!trimmed.startsWith('-') && !trimmed.startsWith('*') && inList) {\n      htmlOutput.push('</ul>');\n      inList = false;\n    }\n    if (trimmed === '---' || trimmed === '***') {\n      htmlOutput.push('<hr />');\n      continue;\n    }\n    if (trimmed.startsWith('>')) {\n      let content = line.replace(/^>\\s*/, '').trim().replace(/^\"(.*)\"$/, '$1');\n      htmlOutput.push(`<div class=\"summary-box\">\text;</div>`.replace('text;', content));\n      continue;\n    }\n    if (trimmed.startsWith('# ')) { htmlOutput.push(`<h1>\text;</h1>`.replace('text;', trimmed.substring(2))); continue; }\n    if (trimmed.startsWith('## ')) { htmlOutput.push(`<h2>\text;</h2>`.replace('text;', trimmed.substring(3))); continue; }\n    if (trimmed.startsWith('### ')) { htmlOutput.push(`<h3>\text;</h3>`.replace('text;', trimmed.substring(4))); continue; }\n\n    if (trimmed.startsWith('-') || trimmed.startsWith('*')) {\n      if (!inList) { htmlOutput.push('<ul>'); inList = true; }\n      htmlOutput.push(`<li>${trimmed.replace(/^[\\-\\*]\\s*/, '')}</li>`);\n      continue;\n    }\n    if (trimmed !== '') htmlOutput.push(`<p>&line;</p>`.replace('&line;', line));\n  }\n  if (inList) htmlOutput.push('</ul>');\n\n  let finalBody = htmlOutput.join('\\n');\n  return finalBody.replace(/\\*\\*(.*?)\\*\\*/g, '<strong>$1</strong>');\n}\n\n// Fonction utilitaire pour nettoyer les caractères spéciaux du futur nom de fichier\nfunction slugify(text) {\n  return text\n    .toString()\n    .toLowerCase()\n    .normalize('NFD') // Supprime les accents\n    .replace(/[\\u0300-\\u036f]/g, '')\n    .trim()\n    .replace(/\\s+/g, '-') // Remplace les espaces par des tirets\n    .replace(/[^a-z0-9\\-]/g, ''); // Supprime le reste\n}\n\nconst finalFileName = \"javarre-\" + slugify(company) + \"-\" + slugify(jobTitle);\n\n// 3. RECUPERATION CONFIG\nlet config = { showVersion: false };\ntry {\n  config = JSON.parse($('Read Config from Table').first().json.value);\n} catch (e) {}\n\nlet compiledBody = robustMarkdownToHtml(mdText);\nif (config.showVersion) {\n  compiledBody = compiledBody + `<div class=\"resume-version-footer\">v${increment}</div>`;\n}\n\nreturn [\n  {\n    json: {\n      compiledBody: compiledBody,\n      pdfFileName: finalFileName\n    }\n  }\n];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -129,7 +129,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// 1. Récupération des données brutes du Webhook\nconst body = $('Webhook').item.json.body?.data || {};\nconst properties = body.properties || {};\n\nconst pageId = body.id;\n\n// 2. Extraction de Company (Type: select)\nlet company = 'company';\nif (properties.Company && properties.Company.select) {\n  company = properties.Company.select.name || 'company';\n}\n\n// 3. Extraction de Job Title / Title (Type: title) - Tolère l'ancien et le nouveau nom\nlet jobTitle = 'job';\nconst targetProperty = properties.Title || properties[\"Job Title\"];\n\nif (targetProperty && targetProperty.title && targetProperty.title.length > 0) {\n  jobTitle = targetProperty.title.plain_text || $input.first().json.body.data.properties[\"Job Title\"].title[0].plain_text  || 'job';\n}\n\n// 4. Fonction locale slugify pour nettoyer les chaînes\nfunction slugify(text) {\n  return text\n    .toString()\n    .toLowerCase()\n    .normalize('NFD') // Supprime les accents\n    .replace(/[\\u0300-\\u036f]/g, '')\n    .trim()\n    .replace(/\\s+/g, '-') // Remplace les espaces par des tirets\n    .replace(/[^a-z0-9\\-]/g, ''); // Élimine le reste\n}\n\n// 5. Forge du nom de fichier final personnalisé\nconst outputPdf = `javarre-${slugify(company)}_${slugify(jobTitle)}.pdf`;\n\n// 6. Retour des variables propres\nreturn [{ \n  json: { \n    pageId: pageId,\n    company: company,\n    jobTitle: jobTitle,\n    outputPdf: outputPdf\n  } \n}];"
+        "jsCode": "// 1. Récupération des données brutes du Webhook\nconst body = $('Webhook').item.json.body?.data || {};\nconst properties = body.properties || {};\n\nconst pageId = body.id;\n\n// 2. Extraction du texte MD de CV\nconst richTextArray = properties.CV?.rich_text || [];\nconst mdText = richTextArray.map(block => block.plain_text || '').join('');\n\n// 3. Extraction du nom ($name est la ligne après le '#' ou sur la ligne du '#')\nlet name = 'resume';\nconst lines = mdText.split(/\\r?\\n/);\nfor (let i = 0; i < lines.length; i++) {\n  const trimmed = lines[i].trim();\n  if (trimmed.startsWith('# ')) {\n    const headingText = trimmed.substring(2).trim();\n    if (headingText) {\n      name = headingText;\n    } else if (i + 1 < lines.length) {\n      name = lines[i + 1].trim();\n    }\n    break;\n  }\n}\n\n// 4. Fonction locale slugify pour nettoyer les chaînes\nfunction slugify(text) {\n  return text\n    .toString()\n    .toLowerCase()\n    .normalize('NFD')\n    .replace(/[\\u0300-\\u036f]/g, '')\n    .trim()\n    .replace(/\\s+/g, '-')\n    .replace(/[^a-z0-9\\-]/g, '');\n}\n\nconst nameSlug = slugify(name);\nconst today = new Date().toISOString().split('T')[0];\n\n// 5. Calcul de l'incrément quotidien en inspectant les PDF existants\nlet maxIncrement = 0;\nconst pdfFiles = properties.PDF?.files || [];\nconst prefixPattern = new RegExp(\"^\" + nameSlug + \"-resume-\" + today + \"-(\\\\d+)\\\\.pdf$\", \"i\");\n\nfor (const fileObj of pdfFiles) {\n  const fileName = fileObj.name || '';\n  const match = fileName.match(prefixPattern);\n  if (match) {\n    const inc = parseInt(match[1], 10);\n    if (inc > maxIncrement) {\n      maxIncrement = inc;\n    }\n  }\n}\n\nconst nextIncrement = String(maxIncrement + 1).padStart(2, '0');\nconst finalFileName = nameSlug + \"-resume-\" + today + \"-\" + nextIncrement;\nconst outputPdf = finalFileName + \".pdf\";\n\n// 6. Extraction de Company et JobTitle pour rétrocompatibilité n8n\nlet company = 'company';\nif (properties.Company && properties.Company.select) {\n  company = properties.Company.select.name || 'company';\n}\nlet jobTitle = 'job';\nconst targetProperty = properties.Title || properties[\"Job Title\"];\nif (targetProperty && targetProperty.title && targetProperty.title.length > 0) {\n  jobTitle = targetProperty.title.plain_text || 'job';\n}\n\n// 7. Retour des variables\nreturn [{ \n  json: {\n    pageId: pageId,\n    company: company,\n    jobTitle: jobTitle,\n    outputPdf: outputPdf,\n    increment: nextIncrement\n  }\n}];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -243,6 +243,33 @@
       ],
       "id": "c536ea5f-8e34-4a92-8d0b-e9cca421b474",
       "name": "Template Design CV"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "OtWoNuYUmoj7knoz",
+          "mode": "id"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "key",
+              "keyValue": "config"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -336,
+        -80
+      ],
+      "id": "a4c9b321-0a26-4a49-b389-3540fa4eed10",
+      "name": "Read Config from Table"
     }
   ],
   "connections": {
@@ -294,7 +321,7 @@
       "main": [
         [
           {
-            "node": "Génération du HTML & Style CSS",
+            "node": "Read Config from Table",
             "type": "main",
             "index": 0
           }
@@ -328,6 +355,17 @@
         [
           {
             "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Config from Table": {
+      "main": [
+        [
+          {
+            "node": "Génération du HTML & Style CSS",
             "type": "main",
             "index": 0
           }

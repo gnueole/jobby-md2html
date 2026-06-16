@@ -9,7 +9,24 @@ It serves as a **quick and clean manual overdrive** for immediate layout tweaks 
 
 👉 **Production URL:** **[https://cv.eole.me](https://cv.eole.me)**
 
+[![Jobby Markdown Editor - Simple Mode](public/screenshots/screenshot01-simple_small.png)](public/screenshots/screenshot01-simple.png)
+
 All your content and style changes (colors, fonts, margins) are safely stored in your browser's local storage (`localStorage`). You can copy your layout configurations or download your resume as Markdown from the UI.
+
+## 🔍 Table of Contents
+
+- [📋 Requirements](#-requirements)
+- [📦 Installation & Setup](#-installation--setup)
+- [⚙️ System Architecture & Automated Workflows](#️-system-architecture--automated-workflows)
+- [📁 Project File Structure](#-project-file-structure)
+- [📝 Specific Resume Directives (Guide)](#-specific-resume-directives-guide)
+- [⚡ Interactive Editing & Layout Customizations](#-interactive-editing--layout-customizations)
+- [🖨️ Generate PDF for Recruiters](#️-generate-pdf-for-recruiters)
+- [📸 Screenshot Gallery](#-screenshot-gallery)
+- [📑 Annex: Axiom Log Segregation & Configuration](#-annex-axiom-log-segregation--configuration)
+- [✨ Wishlist & Future Improvements](#-wishlist--future-improvements)
+- [🔗 Jobby Project Links](#-jobby-project-links)
+- [📄 License](#-license)
 
 ## 📋 Requirements
 
@@ -110,7 +127,19 @@ To manage your application history and personalize your CV, the system is backed
 ## 📁 Project File Structure
 
 - `server.js`: Ultra‑lightweight local server written in Node.js. It serves the application.
-- `public/index.html`, `public/style.css`, `public/app.js`: Source code for the editing UI, auto‑zoom system, and ATS analyzer.
+- `public/index.html`, `public/style.css`: HTML structure and layout styles for the editor.
+- `public/app.js`: Application entry point initializing ES modules.
+- `public/js/`: Modular client-side JS subsystems:
+  - `ats.js`: ATS scoring and resume analysis engine.
+  - `bookmarklet.js`: Helper scripts to generate and compile LinkedIn scraper bookmarklets.
+  - `config.js`: Configuration storage management, default styles, and sync states.
+  - `developer.js`: Auth UX, inline credentials modal, and developer settings panel.
+  - `exports.js`: Markdown, JSON import/export, and raw configuration copy handlers.
+  - `highlight.js`, `syntax.js`: Synchronous syntax highlighting engine for the editor.
+  - `parser.js`: Custom markdown-to-HTML parsing rules aligned with Gotenberg compiler.
+  - `shortcuts.js`: Keyboard hotkeys and structural section swapping.
+  - `styles.js`: Dynamic styling injector, cosmetics, and slider values handlers.
+  - `theme.js`, `zoom.js`, `print.js`, `panning.js`, `utils.js`: Theme, zoom, scaling, panning, print previews, and core DOM utility helpers.
 - `public/templates.css`: Rendering styles for A4 page (screen + PDF print rules).
 - `public/sample.md`: Default resume template (example author) provided as a starting point.
 - `public/resume.md`: **[Optional Backup]** A Markdown resume file placed on disk to bootstrap the editor if browser `localStorage` is empty.
@@ -181,6 +210,17 @@ When you are satisfied with your layout:
 
 ---
 
+## 📸 Screenshot Gallery
+
+Here are some screenshots demonstrating Jobby's premium user interface in various configuration modes:
+
+| Advanced Customizer Panel | Column Accent Alignments & Light Mode | Dark Canvas Mode & PDF Setup |
+| :---: | :---: | :---: |
+| [![Jobby Advanced Mode](public/screenshots/screenshot02-advancedmode%20_small.png)](public/screenshots/screenshot02-advancedmode.png) | [![Jobby Light Mode Column Right](public/screenshots/screenshot03-lightmode-colright%20_small.png)](public/screenshots/screenshot03-lightmode-colright.png) | [![Jobby Dark Page Mode](public/screenshots/screenshot-04-lightmode-darkpage%20_small.png)](public/screenshots/screenshot-04-lightmode-darkpage.png) |
+| *Expert customizations, visual grid splitting, and cosmetic card dropdowns.* | *Alternate column backgrounds, margins/padding rules, and cream colors.* | *Dual-tone high-contrast layouts tailored for recruiters and dark-theme lovers.* |
+
+---
+
 ## 📑 Annex: Axiom Log Segregation & Configuration
 
 To monitor errors and logs, the system integrates **Vector** as a container log shipper and **Axiom** as the log storage and analysis platform.
@@ -224,6 +264,17 @@ This ensures that only logs produced by containers belonging to the local enviro
 * **[Installation Guide](INSTALL.md)** - Learn how to set up Jobby locally or via Docker.
 * **[Changelog](CHANGELOG.md)** - Review releases and change history.
 * **[Security Policy](SECURITY.md)** - View our security policy and vulnerability reporting instructions.
+
+## ✨ Wishlist & Future Improvements
+
+Here is a list of features and enhancements planned for future versions of Jobby:
+
+- [ ] **Multi-Profile Support:** Switch between multiple resume profiles (e.g., Software Engineer, Product Manager) stored in Notion/localStorage.
+- [ ] **Automated PDF Sync to Drive:** Add an n8n node to automatically save generated PDF versions to Google Drive or Dropbox upon build.
+- [ ] **PDF Compression:** Integrate a ghostscript/docker compression utility to keep ATS-optimized PDF files under 500KB.
+- [ ] **Custom CSS Editor:** Add a live CSS code editor directly in the Expert Panel for custom font styling or layout overriding.
+- [ ] **Cover Letter Generator:** Implement a sibling editor for writing matching cover letters that inherit the resume's exact color palette and typography.
+- [ ] **Interactive ATS Scanning:** Inline scanner showing keyword matching score with live suggestions for target job descriptions.
 
 ## 📄 License
 This project is open-source and available under the [MIT License](LICENSE).

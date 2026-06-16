@@ -32,6 +32,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Blockquote Editor Highlighting:** Added support for blockquote `> text` syntax highlighting in the editor with a bold colored `>` symbol and italicized quote body.
 - **Colors before Layout:** Reordered sections in the Customizer panel to present color palettes before structural settings.
 - **Centralized Versioning:** Read and inject `version` from `package.json` dynamically into static resource imports cache-busting, header about badge, API endpoints, and Makefile.
+- **Client JS Modularization:** Refactored monolithic `app.js` into modular ES modules (`syntax.js`, `developer.js`, `exports.js`, `theme.js`, `zoom.js`, `print.js`) under `public/js/`.
+- **Developer Auth Modal:** Replaced old browser `window.prompt()` authorization with a beautifully integrated inline modal form styled with existing modal components.
+- **Workflow Versioning Support:** Updated n8n PDF rendering nodes to support dynamic daily document increments and optional resume version footer or sidebar displays based on `config.showVersion`.
+- **Automated Publish Info Injection:** Enhanced n8n sync script to automatically inject current timestamps and git commit hashes as root level comments and visual sticky notes (`Last Publish Info`) onto the workflow canvases.
 
 ---
 

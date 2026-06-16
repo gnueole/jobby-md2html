@@ -6,6 +6,8 @@ import sys
 import os
 import argparse
 import re
+import uuid
+import datetime
 
 # Global configuration variables to be populated by ensure_env()
 API_KEY = None
@@ -101,6 +103,71 @@ def slugify(text):
     text = text.lower()
     text = re.sub(r"[^\w\s-]", "", text)
     return re.sub(r"[-\s]+", "-", text).strip("-")
+
+def get_relevant_comment():
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    git_msg = None
+    for cwd in [None, os.path.dirname(os.path.abspath(__file__)), os.path.dirname(os.path.dirname(os.path.abspath(__file__)))]:
+        try:
+            import subprocess
+            res = subprocess.run(
+                ["git", "log", "-n", "1", "--oneline"],
+                cwd=cwd,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                check=True
+            )
+            if res.stdout.strip():
+                git_msg = res.stdout.strip()
+                break
+        except Exception:
+            continue
+            
+    if not git_msg:
+        git_msg = "No git commit info available"
+        
+    return f"Published on {timestamp} | Git: {git_msg}"
+
+def update_publish_info_nodes(wf, comment):
+    # Update root level comment
+    wf["//"] = comment
+    
+    # Find or create sticky note
+    nodes = wf.setdefault("nodes", [])
+    sticky_node = None
+    for node in nodes:
+        if node.get("name") == "Last Publish Info" and node.get("type") == "n8n-nodes-base.stickyNote":
+            sticky_node = node
+            break
+            
+    if not sticky_node:
+        min_x = 0
+        min_y = 0
+        if nodes:
+            xs = [n.get("position", [0, 0])[0] for n in nodes if n.get("position")]
+            ys = [n.get("position", [0, 0])[1] for n in nodes if n.get("position")]
+            if xs:
+                min_x = min(xs)
+            if ys:
+                min_y = min(ys)
+        
+        sticky_node = {
+            "parameters": {
+                "content": "",
+                "height": 150,
+                "width": 300,
+                "color": 6
+            },
+            "id": str(uuid.uuid4()),
+            "name": "Last Publish Info",
+            "type": "n8n-nodes-base.stickyNote",
+            "typeVersion": 1,
+            "position": [min_x - 350, min_y]
+        }
+        nodes.append(sticky_node)
+        
+    sticky_node["parameters"]["content"] = f"### Last Publish Info\n\n{comment}"
 
 def fetch_workflow():
     req = urllib.request.Request(
@@ -448,6 +515,7 @@ def push_all(n8n_dir, use_dev):
     
     print(f"Found {len(existing_workflows)} existing workflows on target n8n.")
     print(f"Preparing to import {len(json_files)} workflows from '{n8n_dir}'...")
+    comment = get_relevant_comment()
     
     for filename in json_files:
         file_path = os.path.join(n8n_dir, filename)
@@ -457,6 +525,10 @@ def push_all(n8n_dir, use_dev):
         except Exception as e:
             print(f"Error reading workflow file '{filename}': {e}. Skipping.")
             continue
+            
+        update_publish_info_nodes(wf, comment)
+        with open(file_path, "w", encoding="utf-8") as f:
+            json.dump(wf, f, indent=2, ensure_ascii=False)
             
         name = wf.get("name")
         if not name:
@@ -821,6 +893,12 @@ return [
         print(f"Reading local workflow file from {backup_file}...")
         with open(backup_file, "r", encoding="utf-8") as f:
             wf = json.load(f)
+            
+        comment = get_relevant_comment()
+        update_publish_info_nodes(wf, comment)
+        with open(backup_file, "w", encoding="utf-8") as f:
+            json.dump(wf, f, indent=2, ensure_ascii=False)
+            
         print("Pushing workflow to n8n...")
         if push_workflow(wf):
             activate_workflow()

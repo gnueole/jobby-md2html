@@ -16,7 +16,7 @@ We take the security of Jobby seriously. If you believe you have found a securit
 
 Please do not open a public issue for security vulnerabilities. Instead, report them privately using one of the following methods:
 
-1. **Email**: Send a detailed report to **admin@eole.me** (Julien Avarre).
+1. **Email**: Send a detailed report to **hi+jobby@eole.me** (Julien Avarre).
 2. **GitHub Security Advisory**: Submit a private advisory request directly on the GitHub repository at `https://github.com/gnueole/jobby-md2html/security/advisories/new`.
 
 ### What to Include in a Report

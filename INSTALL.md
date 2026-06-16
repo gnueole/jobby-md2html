@@ -101,6 +101,7 @@ python3 toolkit/sync_n8n.py --backup-all
 ```
 
 ### 3. Restore/Import All Workflows to Local Dev n8n
+
 To push all workflows from the `n8n/` directory into your local n8n instance:
 * **Using n8n API (if local API key is configured in `toolkit/.env`):**
   ```bash
@@ -112,6 +113,8 @@ To push all workflows from the `n8n/` directory into your local n8n instance:
   python3 toolkit/sync_n8n.py --push-all --dev
   ```
   *(Note: If the script encounters docker daemon connection issues on WSL, it will print copy-pasteable commands to run manually).*
+
+*Note: Whenever you run a push command (`--push` or `--push-all`), the script automatically appends a root-level `"//"` comment and a canvas sticky note node (`Last Publish Info`) containing the current timestamp and latest git commit hash. These changes are saved back to your local files before being pushed to n8n, ensuring they are version-controlled.*
 
 ---
 
