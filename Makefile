@@ -11,7 +11,7 @@ VERSION       := $(shell node -e "console.log(require('./package.json').version)
 
 # ⚙️ INFRASTRUCTURE VARIABLES (SECURED)
 VPS_SSH              := eole.me
-VPS_PROJECT_NAME     := jobby-md2html
+VPS_PROJECT_NAME     := $(shell git config --get remote.origin.url | sed 's/.*\///; s/\.git$$//')
 VPS_PROJECT_TAG      := $(shell git rev-parse --short HEAD)
 VPS_PATH             := /home/eole/projects/$(VPS_PROJECT_NAME)
 
