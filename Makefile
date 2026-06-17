@@ -20,7 +20,7 @@ PROJECT_NAME         := $(shell echo $(VPS_PROJECT_NAME) | cut -d'-' -f1 | sed '
 # 🔑 SECRETS MANAGEMENT (DOPPLER)
 DOPPLER_PROJECT     := eole-me
 DOPPLER_CONFIG_DEV  := dev
-DOPPLER_CONFIG_PROD := prd_eole-me-jobby
+DOPPLER_CONFIG_PROD := prd_$(DOPPLER_PROJECT)_$(shell echo $(PROJECT_NAME) | tr '[:upper:]' '[:lower:]')
 
 
 
