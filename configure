@@ -25,6 +25,14 @@ log_warn() { echo -e "${YELLOW}⚠ $1${NC}"; }
 log_error() { echo -e "${RED}✘ $1${NC}"; }
 log_info() { echo -e "${BLUE}ℹ $1${NC}"; }
 
+# Resolve project name dynamically from git remote or directory name
+REPO_NAME=$(git config --get remote.origin.url 2>/dev/null | sed 's/.*\///; s/\.git$//')
+if [ -z "$REPO_NAME" ]; then
+    REPO_NAME=$(basename "$(pwd)")
+fi
+PROJECT_NAME=$(echo "$REPO_NAME" | cut -d'-' -f1 | sed 's/./\u&/')
+PROJECT_NAME_UPPER=$(echo "$PROJECT_NAME" | tr '[:lower:]' '[:upper:]')
+
 # Parse command line options
 AUTO_INSTALL=false
 for arg in "$@"; do
@@ -37,7 +45,7 @@ for arg in "$@"; do
 done
 
 echo -e "${BOLD}======================================================================"
-echo -e "          🛠️  JOBBY — SYSTEM CONFIGURATION & INITIALIZATION  🛠️"
+echo -e "          🛠️  ${PROJECT_NAME_UPPER} — SYSTEM CONFIGURATION & INITIALIZATION  🛠️"
 echo -e "======================================================================${NC}"
 echo ""
 
@@ -90,6 +98,14 @@ else
     log_warn "Python 3 not detected. Required for running n8n backup/sync toolkit scripts."
 fi
 
+# Doppler CLI
+if command -v doppler >/dev/null 2>&1; then
+    DOPPLER_VERSION=$(doppler --version | cut -d'v' -f2)
+    log_success "Doppler CLI is installed: v$DOPPLER_VERSION"
+else
+    log_warn "Doppler CLI not detected. Optional but recommended for secret management."
+fi
+
 echo ""
 
 # 2. Initialize .env file
@@ -136,7 +152,7 @@ echo ""
 
 # 4. Summary
 echo -e "${BOLD}======================================================================${NC}"
-log_success "Jobby configuration setup completed successfully!"
+log_success "${PROJECT_NAME} configuration setup completed successfully!"
 echo ""
 echo "Useful commands to get started:"
 echo -e "  * Run resume editor locally:       ${BOLD}make dev${NC} (or ${BOLD}npm run dev${NC})"
