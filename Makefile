@@ -10,8 +10,12 @@ VERSION       := $(shell node -e "console.log(require('./package.json').version)
 # ==============================================================================
 
 # ⚙️ INFRASTRUCTURE VARIABLES (SECURED)
-VPS_SSH  := eole.me
-VPS_PATH := /home/eole/projects/jobby-md2html
+VPS_SSH              := eole.me
+VPS_PROJECT_NAME     := jobby-md2html
+VPS_PROJECT_TAG      := $(shell git rev-parse --short HEAD)
+VPS_PATH             := /home/eole/projects/$(VPS_PROJECT_NAME)
+
+PROJECT_NAME         := $(shell echo $(VPS_PROJECT_NAME) | cut -d'-' -f1 | sed 's/./\u&/')
 
 # 🔑 SECRETS MANAGEMENT (DOPPLER)
 DOPPLER_PROJECT     := eole-me
@@ -33,7 +37,7 @@ COMPOSE_PROD := $(DOCKER_DIR)/docker-compose.prod.yml
 # Default target
 help:
 	@echo "======================================================================"
-	@echo "                   🛠️  Jobby Project Makefile 🛠️"
+	@echo "                   🛠️  $(PROJECT_NAME) Project Makefile 🛠️"
 	@echo "======================================================================"
 	@echo "Configuration & Setup:"
 	@echo "  make configure        - Run system configuration and env setup"
@@ -91,7 +95,7 @@ dev-up:
 	fi
 	docker compose -f $(COMPOSE_DEV) --env-file .env up -d
 	@PORT_RESOLVED=$$(node -e "const fs = require('fs'); let p = '3010'; try { p = fs.readFileSync('.env', 'utf8').split('\n').find(l => l.startsWith('PORT=')).split('=')[1].replace(/['\r\u0022]/g, ''); } catch(e){} console.log(p.trim());"); \
-	echo "🚀 Jobby ($(VERSION)) is ready locally! (http://localhost:$$PORT_RESOLVED)"
+	echo "🚀 $(PROJECT_NAME) ($(VERSION) / $(VPS_PROJECT_TAG)) is ready locally! (http://localhost:$$PORT_RESOLVED)"
 
 dev-down:
 	@echo "🛑 Stopping local development containers..."
@@ -116,7 +120,7 @@ deploy-all:
 	@$(MAKE) --no-print-directory _deploy SERVICES=""
 
 _deploy:
-	@echo "🚀 Deploying Jobby stack version $(VERSION) to VPS Target [$(VPS_SSH)]..."
+	@echo "🚀 Deploying $(PROJECT_NAME) stack [$(VPS_PROJECT_TAG)] [$(VERSION)] to VPS '[$(VPS_SSH)]' on '[$(VPS_PATH)]''..."
 # 1. Ensure the remote deployment directory exists
 	ssh $(VPS_SSH) "mkdir -p $(VPS_PATH)"
 # 2. SCP the production compose file
@@ -144,7 +148,7 @@ _deploy:
 		echo "📥 Pulling specified images ($(SERVICES))..."; \
 		ssh $(VPS_SSH) "cd $(VPS_PATH) && docker compose -f docker-compose.prod.yml pull $(SERVICES) && docker compose -f docker-compose.prod.yml up -d --remove-orphans"; \
 	fi
-	@echo "✅ Deployment of version $(VERSION) successfully completed on production server !"
+	@echo "✅ Deployment of $(PROJECT_NAME) [$(VERSION) / $(VPS_PROJECT_TAG)] successfully completed on production server !"
 
 check-logs:
 	@echo "📟 Fetching real-time production logs from VPS [$(VPS_SSH)]..."
