@@ -125,20 +125,20 @@ _deploy:
 	ssh $(VPS_SSH) "mkdir -p $(VPS_PATH)"
 # 2. SCP the production compose file
 	scp $(COMPOSE_PROD) $(VPS_SSH):$(VPS_PATH)/docker-compose.prod.yml
-# 3. Stream production secrets from Doppler to remote VPS .env or fallback
+# 3. Stream production secrets from Doppler to remote VPS .env
 	@if $(DOPPLER) --version >/dev/null 2>&1; then \
 		echo "🔑 Envoi des secrets de production Doppler vers le VPS..."; \
-		if $(DOPPLER) secrets download --project $(DOPPLER_PROJECT) --config $(DOPPLER_CONFIG_PROD) --no-file --format env > docker/.env.prod.temp 2>/dev/null; then \
+		if $(DOPPLER) secrets download --project $(DOPPLER_PROJECT) --config $(DOPPLER_CONFIG_PROD) --no-file --format env > docker/.env.prod.temp; then \
 			scp docker/.env.prod.temp $(VPS_SSH):$(VPS_PATH)/.env; \
 			rm -f docker/.env.prod.temp; \
 		else \
-			echo "⚠️ Doppler secrets download failed. Copying fallback .env.prod to VPS..."; \
-			scp docker/.env.prod $(VPS_SSH):$(VPS_PATH)/.env; \
+			echo "❌ Error: Doppler secrets download failed for project $(DOPPLER_PROJECT) (config: $(DOPPLER_CONFIG_PROD))!"; \
 			rm -f docker/.env.prod.temp; \
+			exit 1; \
 		fi; \
 	else \
-		echo "⚠️ Doppler non trouvé. Copie du fallback .env.prod vers le VPS..."; \
-		scp docker/.env.prod $(VPS_SSH):$(VPS_PATH)/.env; \
+		echo "❌ Error: Doppler CLI is not installed or not found in PATH!"; \
+		exit 1; \
 	fi
 # 4. Pull and recreate
 	@if [ "$(SERVICES)" = "" ]; then \
