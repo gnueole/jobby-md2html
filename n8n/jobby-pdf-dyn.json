@@ -328,6 +328,24 @@
       ],
       "id": "ba499321-0a26-4a49-b389-3540fa4eed20",
       "name": "Read CSS from Table"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://vector:8080",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"application\": \"jobby_ats\",\n  \"environment\": \"production\",\n  \"action\": \"resume_generation\",\n  \"user_id\": \"{{ $('Webhook').item.json.body?.source?.user_id || $json.user_id || 'anonymous' }}\",\n  \"status\": \"success\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1800,
+        -80
+      ],
+      "id": "e0e29b1b-12cd-43ef-ba38-16cb4b2e8a1a",
+      "name": "HTTP Request Telemetry"
     }
   ],
   "connections": {
@@ -358,6 +376,17 @@
         [
           {
             "node": "Attach Bin to page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Attach Bin to page": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request Telemetry",
             "type": "main",
             "index": 0
           }

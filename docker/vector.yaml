@@ -4,6 +4,12 @@ sources:
     exclude_containers:
       - "vector"
 
+  http_telemetry:
+    type: "http"
+    address: "0.0.0.0:8080"
+    decoding:
+      codec: "json"
+
 transforms:
   filter_project_logs:
     type: "filter"
@@ -16,6 +22,7 @@ sinks:
     type: "http"
     inputs:
       - "filter_project_logs"
+      - "http_telemetry"
     uri: "https://eu-central-1.aws.edge.axiom.co/v1/ingest/${AXIOM_DATASET}"
     encoding:
       codec: "json"
