@@ -1,50 +1,24 @@
 <div class="panel-header">
     <div class="header-left">
         <span class="status-indicator markdown-dot">MARKDOWN</span>
-        <label class="syntax-toggle" title="Toggle syntax highlighting in editor">
-            <input type="checkbox" id="cb-syntax-highlight" checked>
-            <span class="toggle-switch"></span>
-            <span class="toggle-label">Syntax</span>
-        </label>
-        <div class="shortcut-tooltip-container">
-            <button class="btn-circle-sm shortcut-help-btn" title="Keyboard Shortcuts Help" type="button">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                    <circle cx="12" cy="12" r="10"/>
-                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
-                    <line x1="12" y1="17" x2="12.01" y2="17"/>
-                </svg>
-            </button>
-            <div class="shortcut-tooltip-dropdown">
-                <h4>Editor Shortcuts</h4>
-                <ul>
-                    <li><kbd>Ctrl + B</kbd> <span>Bold</span></li>
-                    <li><kbd>Ctrl + I</kbd> <span>Italic</span></li>
-                    <li><kbd>Ctrl + K</kbd> <span>Insert Link</span></li>
-                    <li><kbd>Ctrl + E</kbd> <span>Accent Color</span></li>
-                    <li><kbd>Ctrl + M</kbd> <span>Muted Text</span></li>
-                    <li><kbd>Ctrl + 1/2/3</kbd> <span>H1/H2/H3 Headings</span></li>
-                    <li><kbd>Ctrl + ▲/▼</kbd> <span>Move Line / Section</span></li>
-                </ul>
-                <h4 style="margin-top: 12px; border-top: 1px solid var(--border-color); padding-top: 8px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; gap: 8px;">
-                    <span>Markdown Cheatsheet</span>
-                    <a href="#" id="tooltip-help-link" style="font-size: 11px; font-weight: 500; color: var(--accent); text-decoration: underline; white-space: nowrap; text-transform: none; letter-spacing: normal;">(help me more!)</a>
-                </h4>
-                <ul>
-                    <li><code># Titre</code> <span>H1 Title</span></li>
-                    <li><code>## Titre</code> <span>H2 (Main Column)</span></li>
-                    <li><code>### Titre</code> <span>H3 (Sidebar Column)</span></li>
-                    <li><code>**texte**</code> <span>Bold Text</span></li>
-                    <li><code>*texte*</code> <span>Italic Text</span></li>
-                    <li><code>- élément</code> <span>List Item</span></li>
-                    <li><code>[label](url)</code> <span>Link</span></li>
-                    <li><code>:accent[texte]</code> <span>Accent Color</span></li>
-                    <li><code>:muted[texte]</code> <span>Muted Text</span></li>
-                </ul>
-            </div>
-        </div>
+        <button type="button" class="btn-markdown-help-header" id="btn-markdown-help-header" title="What is Markdown?">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 4px; vertical-align: middle;">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+            What is markdown?
+        </button>
     </div>
     <div class="header-actions">
-        <button id="btn-save-bank" class="btn-icon" title="Save current Markdown to local bank">
+        <button id="btn-toggle-toolbar" type="button" class="btn-icon" title="Toggle Formatting Toolbar">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 7V4h16v3M9 20h6M12 4v16"/>
+            </svg>
+            <span class="btn-text">Format</span>
+        </button>
+        <button id="btn-save-bank" type="button" class="btn-icon" title="Save current Markdown to local bank">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
@@ -53,7 +27,7 @@
             </svg>
             <span class="btn-text">Save</span>
         </button>
-        <button id="btn-load-bank" class="btn-icon" title="Load banked Markdown">
+        <button id="btn-load-bank" type="button" class="btn-icon" title="Load banked Markdown">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
@@ -62,14 +36,14 @@
             </svg>
             <span class="btn-text">Load</span>
         </button>
-        <button id="btn-load-sample" class="btn-icon" title="Load sample: Julien Avarre">
+        <button id="btn-load-sample" type="button" class="btn-icon" title="Load sample: Julien Avarre">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2">
                 <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
             </svg>
             <span class="btn-text">Sample</span>
         </button>
-        <button id="btn-load-changelog" class="btn-icon" title="Load Jobby Updates / What's New">
+        <button id="btn-load-changelog" type="button" class="btn-icon" title="Load Jobby Updates / What's New">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
@@ -78,14 +52,14 @@
             </svg>
             <span class="btn-text">What's New</span>
         </button>
-        <button id="btn-copy-md" class="btn-icon" title="Copy Markdown">
+        <button id="btn-copy-md" type="button" class="btn-icon" title="Copy Markdown">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
                 <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
             </svg>
         </button>
-        <button id="btn-clear" class="btn-icon text-danger" title="Clear Editor">
+        <button id="btn-clear" type="button" class="btn-icon text-danger" title="Clear Editor">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="3 6 5 6 21 6"></polyline>
@@ -97,6 +71,113 @@
     </div>
 </div>
 <div class="editor-container">
+    <div id="editor-toolbar" class="editor-toolbar hidden">
+        <div class="toolbar-group">
+            <button type="button" class="toolbar-btn" data-action="undo" title="Undo (Ctrl+Z)">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 7v6h6"/>
+                    <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/>
+                </svg>
+            </button>
+            <button type="button" class="toolbar-btn" data-action="redo" title="Redo (Ctrl+Y)">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 7v6h-6"/>
+                    <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3l3 2.7"/>
+                </svg>
+            </button>
+        </div>
+        <div class="toolbar-separator"></div>
+        <div class="toolbar-group">
+            <button type="button" class="toolbar-btn" data-action="h1" title="Heading 1 (Ctrl+1)">H1</button>
+            <button type="button" class="toolbar-btn" data-action="h2" title="Heading 2 (Ctrl+2)">H2</button>
+            <button type="button" class="toolbar-btn" data-action="h3" title="Heading 3 (Ctrl+3)">H3</button>
+        </div>
+        <div class="toolbar-separator"></div>
+        <div class="toolbar-group">
+            <button type="button" class="toolbar-btn" data-action="bold" title="Bold (Ctrl+B)">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/><path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/></svg>
+            </button>
+            <button type="button" class="toolbar-btn" data-action="italic" title="Italic (Ctrl+I)">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="4" x2="10" y2="4"/><line x1="14" y1="20" x2="5" y2="20"/><line x1="15" y1="4" x2="9" y2="20"/></svg>
+            </button>
+            <button type="button" class="toolbar-btn" data-action="link" title="Link (Ctrl+K)">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            </button>
+            <button type="button" class="toolbar-btn" data-action="list" title="Bullet List (-)">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            </button>
+        </div>
+        <div class="toolbar-separator"></div>
+        <div class="toolbar-group">
+            <button type="button" class="toolbar-btn text-accent" data-action="accent" title="Accent Color (Ctrl+E)">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 4.5px;">
+                    <path d="M12 20h9"/>
+                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                </svg>Accent</button>
+            <button type="button" class="toolbar-btn text-muted" data-action="muted" title="Muted Text (Ctrl+M)">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 4.5px;">
+                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
+                    <line x1="1" y1="1" x2="23" y2="23"/>
+                </svg>Muted</button>
+        </div>
+        <div class="toolbar-separator"></div>
+        <div class="toolbar-group">
+            <button type="button" class="toolbar-btn" data-action="move-up" title="Move Up (Ctrl+▲)">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+            </button>
+            <button type="button" class="toolbar-btn" data-action="move-down" title="Move Down (Ctrl+▼)">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+            </button>
+        </div>
+        <div class="toolbar-separator"></div>
+        <div class="toolbar-group">
+            <label class="syntax-toggle" title="Toggle syntax highlighting in editor">
+                <input type="checkbox" id="cb-syntax-highlight" checked>
+                <span class="toggle-switch"></span>
+                <span class="toggle-label">Syntax</span>
+            </label>
+        </div>
+        <div class="toolbar-spacer"></div>
+        <div class="toolbar-group">
+            <div class="shortcut-tooltip-container">
+                <button class="toolbar-btn shortcut-help-btn" title="Keyboard Shortcuts Help" type="button">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 4.5px;">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                        <line x1="12" y1="17" x2="12.01" y2="17"/>
+                    </svg>
+                    Shortcuts
+                </button>
+                <div class="shortcut-tooltip-dropdown">
+                    <h4>Editor Shortcuts</h4>
+                    <ul>
+                        <li><kbd>Ctrl + B</kbd> <span>Bold</span></li>
+                        <li><kbd>Ctrl + I</kbd> <span>Italic</span></li>
+                        <li><kbd>Ctrl + K</kbd> <span>Insert Link</span></li>
+                        <li><kbd>Ctrl + E</kbd> <span>Accent Color</span></li>
+                        <li><kbd>Ctrl + M</kbd> <span>Muted Text</span></li>
+                        <li><kbd>Ctrl + 1/2/3</kbd> <span>H1/H2/H3 Headings</span></li>
+                        <li><kbd>Ctrl + ▲/▼</kbd> <span>Move Line / Section</span></li>
+                    </ul>
+                    <h4 style="margin-top: 12px; border-top: 1px solid var(--border-color); padding-top: 8px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+                        <span>Markdown Cheatsheet</span>
+                        <a href="#" id="tooltip-help-link" style="font-size: 11px; font-weight: 500; color: var(--accent); text-decoration: underline; white-space: nowrap; text-transform: none; letter-spacing: normal;">(help me more!)</a>
+                    </h4>
+                    <ul>
+                        <li><code># Titre</code> <span>H1 Title</span></li>
+                        <li><code>## Titre</code> <span>H2 (Main Column)</span></li>
+                        <li><code>### Titre</code> <span>H3 (Sidebar Column)</span></li>
+                        <li><code>**texte**</code> <span>Bold Text</span></li>
+                        <li><code>*texte*</code> <span>Italic Text</span></li>
+                        <li><code>- élément</code> <span>List Item</span></li>
+                        <li><code>[label](url)</code> <span>Link</span></li>
+                        <li><code>:accent[texte]</code> <span>Accent Color</span></li>
+                        <li><code>:muted[texte]</code> <span>Muted Text</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="textarea-syntax-wrapper syntax-active">
         <pre id="markdown-highlight" aria-hidden="true"><code id="highlight-code"></code></pre>
         <textarea id="markdown-input" spellcheck="false" placeholder="# YOUR NAME..."></textarea>

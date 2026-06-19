@@ -1,0 +1,10 @@
+{
+  "name": "jobby MD Editor",
+  "short_name": "jobby",
+  "description": "Jobby ATS Markdown resume editor",
+  "version": "1.8.1",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#090d16",
+  "theme_color": "#7c3aed"
+}

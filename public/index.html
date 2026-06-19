@@ -36,8 +36,9 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Raleway:wght@300;400;500;600;700;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap"
         rel="stylesheet">
 
-    <link rel="stylesheet" href="style.css?v=1.7.0">
-    <link rel="stylesheet" href="templates.css?v=1.7.0">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css?v=1.8.1">
+    <link rel="stylesheet" href="templates.css?v=1.8.1">
     <!-- Marked.js Markdown Parser -->
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
@@ -66,6 +67,17 @@
 
     <!-- Notification Toast -->
     <div id="toast" class="toast">Code copied to clipboard!</div>
+    
+    <!-- Folded Controls Dock -->
+    <div id="folded-controls-dock" class="folded-controls-dock hidden">
+        <button id="btn-unfold-design-panel" class="floating-unfold-btn" title="Show Design Panel">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.1a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+                <circle cx="12" cy="12" r="3"/>
+            </svg>
+            <span>Design</span>
+        </button>
+    </div>
 
     <!-- About Modal Overlay -->
     <div id="about-modal" class="modal-overlay"></div>
@@ -76,7 +88,7 @@
     <!-- Developer Tools Modal Overlay -->
     <div id="developer-modal" class="modal-overlay"></div>
 
-    <script type="module" src="app.js?v=1.7.0"></script>
+    <script type="module" src="app.js?v=1.8.1"></script>
 </body>
 
 </html>

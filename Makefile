@@ -20,7 +20,7 @@ PROJECT_NAME         := $(shell echo $(VPS_PROJECT_NAME) | cut -d'-' -f1 | sed '
 # 🔑 SECRETS MANAGEMENT (DOPPLER)
 DOPPLER_PROJECT     := eole-me
 DOPPLER_CONFIG_DEV  := dev
-DOPPLER_CONFIG_PROD := prd_$(DOPPLER_PROJECT)_$(shell echo $(PROJECT_NAME) | tr '[:upper:]' '[:lower:]')
+DOPPLER_CONFIG_PROD := prd_$(DOPPLER_PROJECT)-$(shell echo $(PROJECT_NAME) | tr '[:upper:]' '[:lower:]')
 
 
 
@@ -120,7 +120,7 @@ deploy-all:
 	@$(MAKE) --no-print-directory _deploy SERVICES=""
 
 _deploy:
-	@echo "🚀 Deploying $(PROJECT_NAME) stack [$(VPS_PROJECT_TAG)] [$(VERSION)] to VPS '[$(VPS_SSH)]' on '[$(VPS_PATH)]''..."
+	@echo "🚀 Deploying $(PROJECT_NAME) stack [$(VERSION)/$(VPS_PROJECT_TAG)] to VPS '$(VPS_SSH)' on '$(VPS_PATH)'..."
 # 1. Ensure the remote deployment directory exists
 	ssh $(VPS_SSH) "mkdir -p $(VPS_PATH)"
 # 2. SCP the production compose file

@@ -8,7 +8,26 @@ All notable changes to the Jobby project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
----
+## [1.8.1] - 2026-06-19
+
+### Added
+- **PWA Web App Manifest:** Created standard `manifest.json` under the public directory.
+- **Dynamic Manifest Versioning:** Updated the server (`server.js`) to dynamically serve `/manifest.json` and inject the application version from `package.json` at runtime, ensuring `package.json` remains the single source of truth.
+
+### Changed
+- **Translucent Controls Dock:** Restyled the vertical preview controls dock to have a modern glassmorphic frosted-glass background in both light and dark themes using `backdrop-filter`. The circular buttons inside the dock are also translucent in the light theme for better aesthetic integration.
+- **Improved Dark Mode Readability:** Restyled the Markdown help link `"What is markdown?"` to use a high-contrast bright violet color (`#a78bfa`) in dark mode, solving its previous unreadability against dark slate backgrounds.
+- **Polished Folded Layout:** Configured the `.preview-controls` wrapper to hide when folded, removing the empty pill outline caret that appeared on the top right next to the settings cog.
+- **Modernized Action Flow (Alert-free):** Removed blocking native `confirm()` popups when loading the Sample, Jobby Updates ("What's New"), clearing the editor, or loading drafts. These actions are now executed instantly.
+- **Pre-emptive Undo History States:** Modified overwrite actions to save the current editor state to the history stack *before* applying the new text, ensuring users can instantly reverse accidental overwrites by pressing `Ctrl+Z` or the Undo toolbar button.
+
+## [1.8.0] - 2026-06-19
+
+### Added
+- **Design Panel Hiding & Floating Restore Button:** Integrated a close button (with SVG icon) in the customizer panel's header to collapse the panel and maximize the preview workspace. Added a glassmorphic floating "Design" button at the bottom-right of the window to unfold it. Collapsed/expanded state is persisted in local storage, and the preview canvas dynamically auto-fits its zoom level on state changes. *Special thanks to Maround Boutanos for the tooltip and design folding suggestions.*
+- **Markdown Editor Formatting Toolbar:** Integrated an icon-based rich-text formatting toolbar unfolding above the writing canvas, including shortcuts helper tooltips, Undo/Redo, H1, H2, H3, Bold, Italic, Link, Lists, Accent/Muted styling, and Section Move Up/Down.
+- **Custom History Stack (Undo/Redo):** Implemented client-side history state tracking to support local undo and redo actions in the editor, bound both to visual toolbar buttons and hotkeys (`Ctrl+Z`, `Ctrl+Y`, `Ctrl+Shift+Z`).
+- **AI Wording & Prompting Reminders:** Added dedicated subsections in the About Modal and Help Documentation educating users on using Markdown with AI tools, highlighting that they should tailor their resumes with AI and explicitly prompt it with `"generate in MD format"` for clean, copy-paste compatibility.
 
 ## [1.7.0] - 2026-06-16
 

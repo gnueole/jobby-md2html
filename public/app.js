@@ -11,7 +11,16 @@ import { initPanning } from './js/panning.js';
 import { initHighlighting, initCursorRadar, initBidirectionalSync } from './js/highlight.js';
 import { applyStyles, updateControlsFromConfig } from './js/styles.js';
 import { compileMarkdown } from './js/parser.js';
-import { initShortcuts } from './js/shortcuts.js';
+import { 
+    initShortcuts,
+    applyHeading,
+    toggleFormatting,
+    toggleAccent,
+    toggleMuted,
+    toggleFormattingPrefix,
+    insertLink,
+    moveSectionOrLine
+} from './js/shortcuts.js';
 import { startOpeningFireworks } from './js/fireworks.js';
 
 // New Modular Imports
@@ -24,7 +33,7 @@ import { initPrint, updatePageBreaks } from './js/print.js';
 
 async function initializeJobby() {
     // --- Fetch config (including dynamic version) ---
-    let appVersion = '1.7.0';
+    let appVersion = '1.8.1';
     try {
         const configRes = await fetch('/api/config');
         if (configRes.ok) {
@@ -39,12 +48,12 @@ async function initializeJobby() {
 
     // --- Load public component bricks dynamically ---
     const publicBricks = [
-        { id: 'header-container', url: 'bricks/header.html' },
-        { id: 'editor-container', url: 'bricks/editor.html' },
-        { id: 'preview-container', url: 'bricks/preview.html' },
-        { id: 'controls-container', url: 'bricks/controls.html' },
-        { id: 'about-modal', url: 'bricks/about-modal.html' },
-        { id: 'help-modal', url: 'bricks/help-modal.html' }
+        { id: 'header-container', url: '/bricks/header.html' },
+        { id: 'editor-container', url: '/bricks/editor.html' },
+        { id: 'preview-container', url: '/bricks/preview.html' },
+        { id: 'controls-container', url: '/bricks/controls.html' },
+        { id: 'about-modal', url: '/bricks/about-modal.html' },
+        { id: 'help-modal', url: '/bricks/help-modal.html' }
     ];
 
     try {
@@ -125,7 +134,7 @@ async function initializeJobby() {
         }
         const brandH1 = document.querySelector('.brand h1');
         if (brandH1) {
-            brandH1.innerHTML = 'Jobby <span>Markdown</span> Editor <span style="font-size: 10px; background: #14b8a6; color: #0f172a; padding: 2px 6px; border-radius: 4px; margin-left: 8px; vertical-align: middle; font-weight: 700; letter-spacing: 0.05em;">DEV</span>';
+            brandH1.innerHTML = 'Jobby <span class="fancy-span">Markdown</span> Editor <span class="dev-badge" style="background: #14b8a6 !important; color: #0f172a !important; -webkit-text-fill-color: #0f172a !important; -webkit-background-clip: initial !important; background-clip: initial !important; font-weight: 700;">DEV</span>';
         }
     }
 
@@ -138,6 +147,80 @@ async function initializeJobby() {
     let currentTokens = [];
     let lastCleanHTML = "";
     let isHighlightActive = false;
+
+    // --- Undo/Redo Custom History Stack ---
+    const historyStack = [];
+    let historyIndex = -1;
+    const maxHistorySize = 100;
+
+    function saveHistoryState(text, cursorStart, cursorEnd) {
+        // If we are in the middle of the stack, discard the future states
+        if (historyIndex < historyStack.length - 1) {
+            historyStack.splice(historyIndex + 1);
+        }
+        
+        // Avoid saving consecutive identical texts
+        if (historyStack.length > 0 && historyStack[historyStack.length - 1].text === text) {
+            return;
+        }
+        
+        historyStack.push({ text, cursorStart, cursorEnd });
+        if (historyStack.length > maxHistorySize) {
+            historyStack.shift();
+        }
+        historyIndex = historyStack.length - 1;
+        updateUndoRedoButtonsState();
+    }
+
+    function saveCurrentStateToHistory() {
+        const input = document.getElementById('markdown-input');
+        if (input) {
+            saveHistoryState(input.value, input.selectionStart, input.selectionEnd);
+        }
+    }
+
+    function undoState() {
+        if (historyIndex > 0) {
+            historyIndex--;
+            const state = historyStack[historyIndex];
+            applyHistoryState(state);
+        }
+    }
+
+    function redoState() {
+        if (historyIndex < historyStack.length - 1) {
+            historyIndex++;
+            const state = historyStack[historyIndex];
+            applyHistoryState(state);
+        }
+    }
+
+    function applyHistoryState(state) {
+        if (!state) return;
+        markdownInput.value = state.text;
+        markdownInput.setSelectionRange(state.cursorStart, state.cursorEnd);
+        
+        // Run compilation and save to local storage
+        runCompileMarkdown(state.text);
+        saveToLocalStorage();
+        updateUndoRedoButtonsState();
+        markdownInput.focus();
+    }
+
+    function updateUndoRedoButtonsState() {
+        const btnUndo = document.querySelector('[data-action="undo"]');
+        const btnRedo = document.querySelector('[data-action="redo"]');
+        if (btnUndo) {
+            btnUndo.disabled = (historyIndex <= 0);
+            btnUndo.style.opacity = (historyIndex <= 0) ? '0.4' : '1';
+            btnUndo.style.cursor = (historyIndex <= 0) ? 'not-allowed' : 'pointer';
+        }
+        if (btnRedo) {
+            btnRedo.disabled = (historyIndex >= historyStack.length - 1);
+            btnRedo.style.opacity = (historyIndex >= historyStack.length - 1) ? '0.4' : '1';
+            btnRedo.style.cursor = (historyIndex >= historyStack.length - 1) ? 'not-allowed' : 'pointer';
+        }
+    }
 
     const highlightState = {
         get currentTokens() { return currentTokens; },
@@ -262,7 +345,7 @@ async function initializeJobby() {
 
     // --- Preload stylesheet ---
     try {
-        const response = await fetch(`templates.css?v=${appVersion}`);
+        const response = await fetch(`/templates.css?v=${appVersion}`);
         if (response.ok) {
             templatesCssText = await response.text();
         }
@@ -515,6 +598,24 @@ async function initializeJobby() {
 
     // --- Keyboard Edition Shortcuts ---
     initShortcuts(markdownInput);
+    
+    // Custom undo/redo keyboard listener
+    markdownInput.addEventListener('keydown', (e) => {
+        const isCtrl = e.ctrlKey || e.metaKey;
+        if (!isCtrl) return;
+        const key = e.key.toLowerCase();
+        if (key === 'z') {
+            e.preventDefault();
+            if (e.shiftKey) {
+                redoState();
+            } else {
+                undoState();
+            }
+        } else if (key === 'y') {
+            e.preventDefault();
+            redoState();
+        }
+    });
 
     // --- Layout & Customizer Repositioning Button Toggles ---
     function setupButtonGroup(groupId, hiddenSelectId, onChangeCallback) {
@@ -712,6 +813,7 @@ async function initializeJobby() {
     const debouncedCompile = debounce((text) => {
         runCompileMarkdown(text);
         saveToLocalStorage();
+        saveHistoryState(text, markdownInput.selectionStart, markdownInput.selectionEnd);
     }, 200);
 
     // --- UI Controls Event Binding ---
@@ -789,26 +891,31 @@ async function initializeJobby() {
 
     // Save and Load Banked Markdown
     if (btnSaveBank) {
-        btnSaveBank.addEventListener('click', () => {
+        btnSaveBank.addEventListener('click', (e) => {
+            e.preventDefault();
             const currentMd = markdownInput.value;
             localStorage.setItem('ats_banked_markdown', currentMd);
             showToast("Markdown saved to local bank!");
+            markdownInput.focus();
         });
     }
 
     if (btnLoadBank) {
-        btnLoadBank.addEventListener('click', () => {
+        btnLoadBank.addEventListener('click', (e) => {
+            e.preventDefault();
             const bankedMd = localStorage.getItem('ats_banked_markdown');
             if (!bankedMd) {
                 showToast("No banked Markdown found. Save a draft first!");
+                markdownInput.focus();
                 return;
             }
-            if (confirm("Load banked Markdown? Your current changes in the editor will be replaced.")) {
-                markdownInput.value = bankedMd;
-                runCompileMarkdown(bankedMd);
-                saveToLocalStorage();
-                showToast("Banked Markdown loaded!");
-            }
+            saveCurrentStateToHistory();
+            markdownInput.value = bankedMd;
+            runCompileMarkdown(bankedMd);
+            saveToLocalStorage();
+            saveHistoryState(bankedMd, 0, 0);
+            showToast("Banked Markdown loaded! (Ctrl+Z to undo)");
+            markdownInput.focus();
         });
     }
 
@@ -998,51 +1105,76 @@ async function initializeJobby() {
     });
 
     // Load sample
-    btnLoadSample.addEventListener('click', () => {
-        if (confirm("Do you want to reload the default Julien Avarre sample? Your local changes will be replaced.")) {
-            fetch('sample.md')
-                .then(res => res.text())
+    if (btnLoadSample) {
+        btnLoadSample.addEventListener('click', (e) => {
+            e.preventDefault();
+            saveCurrentStateToHistory();
+            fetch('/sample.md')
+                .then(res => {
+                    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+                    return res.text();
+                })
                 .then(sampleText => {
                     markdownInput.value = sampleText;
                     runCompileMarkdown(sampleText);
                     saveToLocalStorage();
-                    showToast("Julien Avarre sample reloaded!");
+                    saveHistoryState(sampleText, 0, 0);
+                    showToast("Julien Avarre sample loaded! (Ctrl+Z to undo)");
+                    markdownInput.focus();
                 })
-                .catch(err => console.error(err));
-        }
-    });
+                .catch(err => {
+                    console.error(err);
+                    showToast(`Failed to load sample: ${err.message}`);
+                    markdownInput.focus();
+                });
+        });
+    }
 
     // Load changelog / updates
     if (btnLoadChangelog) {
-        btnLoadChangelog.addEventListener('click', () => {
-            if (confirm("Voulez-vous charger les nouveautés de Jobby ? Votre document actuel sera remplacé.")) {
-                fetch('whatsnew.md')
-                    .then(res => res.text())
-                    .then(changelogText => {
-                        markdownInput.value = changelogText;
-                        runCompileMarkdown(changelogText);
-                        saveToLocalStorage();
-                        showToast("Nouveautés de Jobby chargées !");
-                    })
-                    .catch(err => console.error(err));
-            }
+        btnLoadChangelog.addEventListener('click', (e) => {
+            e.preventDefault();
+            saveCurrentStateToHistory();
+            fetch('/whatsnew.md')
+                .then(res => {
+                    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+                    return res.text();
+                })
+                .then(changelogText => {
+                    markdownInput.value = changelogText;
+                    runCompileMarkdown(changelogText);
+                    saveToLocalStorage();
+                    saveHistoryState(changelogText, 0, 0);
+                    showToast("Jobby updates loaded! (Ctrl+Z to undo)");
+                    markdownInput.focus();
+                })
+                .catch(err => {
+                    console.error(err);
+                    showToast(`Failed to load updates: ${err.message}`);
+                    markdownInput.focus();
+                });
         });
     }
 
     // Clear
-    btnClear.addEventListener('click', () => {
-        if (confirm("Are you sure you want to clear the editor?")) {
-            markdownInput.value = "";
-            runCompileMarkdown("");
-            saveToLocalStorage();
-        }
+    btnClear.addEventListener('click', (e) => {
+        e.preventDefault();
+        saveCurrentStateToHistory();
+        markdownInput.value = "";
+        runCompileMarkdown("");
+        saveToLocalStorage();
+        saveHistoryState("", 0, 0);
+        showToast("Editor cleared! (Ctrl+Z to undo)");
+        markdownInput.focus();
     });
 
     // Copy MD
-    btnCopyMd.addEventListener('click', () => {
+    btnCopyMd.addEventListener('click', (e) => {
+        e.preventDefault();
         navigator.clipboard.writeText(markdownInput.value)
             .then(() => showToast("Markdown copied to clipboard!"))
             .catch(err => console.error(err));
+        markdownInput.focus();
     });
 
     // --- Modal Overlay Listeners ---
@@ -1265,7 +1397,7 @@ async function initializeJobby() {
         if (isSampleRoute || isWhatsNewRoute) {
             const fileName = isSampleRoute ? 'sample.md' : 'whatsnew.md';
             try {
-                const response = await fetch(fileName);
+                const response = await fetch('/' + fileName);
                 if (response.ok) {
                     loadedMarkdown = await response.text();
                     console.log(`Loaded direct SPA route file: ${fileName}`);
@@ -1302,10 +1434,10 @@ async function initializeJobby() {
 
         if (!loadedMarkdown) {
             try {
-                const mdResponse = await fetch('resume.md');
+                const mdResponse = await fetch('/resume.md');
                 if (mdResponse.ok) {
                     loadedMarkdown = await mdResponse.text();
-                    const configResponse = await fetch('config.json');
+                    const configResponse = await fetch('/config.json');
                     if (configResponse.ok) {
                         try {
                             loadedConfig = await configResponse.json();
@@ -1322,7 +1454,7 @@ async function initializeJobby() {
 
         if (!loadedMarkdown) {
             try {
-                const sampleResponse = await fetch('sample.md');
+                const sampleResponse = await fetch('/sample.md');
                 if (sampleResponse.ok) {
                     loadedMarkdown = await sampleResponse.text();
                     console.log("Loaded default sample.md.");
@@ -1393,12 +1525,223 @@ async function initializeJobby() {
             localStorage.setItem('ats_resume_styles', JSON.stringify(styleConfig));
         }
 
+        // Initialize history stack with the initial state!
+        saveHistoryState(loadedMarkdown, 0, 0);
+
         setTimeout(() => autoFitZoom(canvasWrapper, previewCanvas, zoomLevelText, () => updatePageBreaks(resumeOutput)), 300);
     }
 
     // Launch loading
     await loadWorkspaceData();
     updateSyncButtonState();
+
+    // --- DESIGN PANEL HIDING & FLOATING UNFOLD BUTTON ---
+    const btnCloseDesignPanel = document.getElementById('btn-close-design-panel');
+    const btnUnfoldDesignPanel = document.getElementById('btn-unfold-design-panel');
+
+    const updateDesignPanelState = (hidden) => {
+        const dock = document.getElementById('folded-controls-dock');
+        const previewControls = document.querySelector('.preview-controls');
+
+        if (hidden) {
+            if (controlsPanel) controlsPanel.style.display = 'none';
+            if (handleRight) handleRight.style.display = 'none';
+            if (previewControls) previewControls.style.display = 'none';
+            if (btnUnfoldDesignPanel) btnUnfoldDesignPanel.classList.remove('hidden');
+            localStorage.setItem('ats_design_panel_hidden', 'true');
+
+            // Move controls to the dock in the user's preferred order:
+            // Gear Settings (btnUnfoldDesignPanel is already inside dock), Zoom In, Zoom Out, Outline, Pan, Reset, Page Format
+            if (dock) {
+                dock.classList.remove('hidden');
+                
+                const idsToMove = [
+                    'zoom-in',
+                    'zoom-out',
+                    'btn-page-breaks',
+                    'btn-pan-toggle',
+                    'zoom-reset'
+                ];
+                idsToMove.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) dock.appendChild(el);
+                });
+
+                const formatWrapper = document.querySelector('.page-format-wrapper');
+                if (formatWrapper) dock.appendChild(formatWrapper);
+
+                const zoomLevel = document.getElementById('zoom-level');
+                if (zoomLevel) zoomLevel.style.display = 'none';
+
+                // Convert title to data-tooltip to enable custom floating labels and suppress browser tooltips
+                const dockButtons = dock.querySelectorAll('button, .page-format-wrapper button');
+                dockButtons.forEach(btn => {
+                    const title = btn.getAttribute('title');
+                    if (title) {
+                        btn.setAttribute('data-tooltip', title);
+                        btn.removeAttribute('title');
+                    }
+                });
+            }
+        } else {
+            if (controlsPanel) controlsPanel.style.display = '';
+            if (handleRight) handleRight.style.display = '';
+            if (btnUnfoldDesignPanel) btnUnfoldDesignPanel.classList.add('hidden');
+            localStorage.setItem('ats_design_panel_hidden', 'false');
+
+            // Move controls back to preview-controls in their original order
+            if (dock) {
+                // Restore all title attributes from data-tooltip before hiding dock
+                const dockButtons = dock.querySelectorAll('button, .page-format-wrapper button');
+                dockButtons.forEach(btn => {
+                    const tooltip = btn.getAttribute('data-tooltip');
+                    if (tooltip) {
+                        btn.setAttribute('title', tooltip);
+                        btn.removeAttribute('data-tooltip');
+                    }
+                });
+                dock.classList.add('hidden');
+            }
+            if (previewControls) {
+                previewControls.style.display = '';
+                const restoreList = [
+                    { id: 'btn-pan-toggle', isClass: false },
+                    { id: 'btn-page-breaks', isClass: false },
+                    { id: 'zoom-out', isClass: false },
+                    { id: 'zoom-level', isClass: false },
+                    { id: 'page-format-wrapper', isClass: true },
+                    { id: 'zoom-in', isClass: false },
+                    { id: 'zoom-reset', isClass: false }
+                ];
+                restoreList.forEach(item => {
+                    const el = item.isClass ? document.querySelector('.' + item.id) : document.getElementById(item.id);
+                    if (el) {
+                        previewControls.appendChild(el);
+                        if (item.id === 'zoom-level') {
+                            el.style.display = ''; // restore visibility
+                        }
+                    }
+                });
+
+                // Restore any remaining data-tooltips back to standard titles in preview controls
+                const restoredButtons = previewControls.querySelectorAll('button');
+                restoredButtons.forEach(btn => {
+                    const tooltip = btn.getAttribute('data-tooltip');
+                    if (tooltip) {
+                        btn.setAttribute('title', tooltip);
+                        btn.removeAttribute('data-tooltip');
+                    }
+                });
+            }
+        }
+        // Recalculate zoom and breaks since width changed
+        setTimeout(() => {
+            autoFitZoom(canvasWrapper, previewCanvas, zoomLevelText, () => updatePageBreaks(resumeOutput, styleConfig));
+        }, 150);
+    };
+
+    if (btnCloseDesignPanel) {
+        btnCloseDesignPanel.addEventListener('click', () => {
+            updateDesignPanelState(true);
+        });
+    }
+
+    if (btnUnfoldDesignPanel) {
+        btnUnfoldDesignPanel.addEventListener('click', () => {
+            updateDesignPanelState(false);
+        });
+    }
+
+    // Initialize panel state on startup
+    const isPanelHiddenInit = localStorage.getItem('ats_design_panel_hidden') === 'true';
+    if (isPanelHiddenInit) {
+        updateDesignPanelState(true);
+    }
+
+    // --- EDITOR FORMATTING TOOLBAR ---
+    const btnToggleToolbar = document.getElementById('btn-toggle-toolbar');
+    const editorToolbar = document.getElementById('editor-toolbar');
+
+    const updateToolbarState = (visible) => {
+        if (visible) {
+            if (editorToolbar) editorToolbar.classList.remove('hidden');
+            if (btnToggleToolbar) btnToggleToolbar.classList.remove('active');
+            localStorage.setItem('ats_editor_toolbar_visible', 'true');
+        } else {
+            if (editorToolbar) editorToolbar.classList.add('hidden');
+            if (btnToggleToolbar) btnToggleToolbar.classList.add('active');
+            localStorage.setItem('ats_editor_toolbar_visible', 'false');
+        }
+    };
+
+    if (btnToggleToolbar) {
+        btnToggleToolbar.addEventListener('click', (e) => {
+            e.preventDefault();
+            const isCurrentlyHidden = editorToolbar && editorToolbar.classList.contains('hidden');
+            updateToolbarState(isCurrentlyHidden);
+            markdownInput.focus();
+        });
+    }
+
+    // Initialize toolbar state on startup
+    const isToolbarVisibleInit = localStorage.getItem('ats_editor_toolbar_visible') === 'true';
+    updateToolbarState(isToolbarVisibleInit);
+
+    // Smart Action Mapping
+    const toolbarActions = {
+        'undo': () => undoState(),
+        'redo': () => redoState(),
+        'h1': () => { applyHeading(markdownInput, 1); saveHistoryState(markdownInput.value, markdownInput.selectionStart, markdownInput.selectionEnd); },
+        'h2': () => { applyHeading(markdownInput, 2); saveHistoryState(markdownInput.value, markdownInput.selectionStart, markdownInput.selectionEnd); },
+        'h3': () => { applyHeading(markdownInput, 3); saveHistoryState(markdownInput.value, markdownInput.selectionStart, markdownInput.selectionEnd); },
+        'bold': () => { toggleFormatting(markdownInput, '**'); saveHistoryState(markdownInput.value, markdownInput.selectionStart, markdownInput.selectionEnd); },
+        'italic': () => { toggleFormatting(markdownInput, '*'); saveHistoryState(markdownInput.value, markdownInput.selectionStart, markdownInput.selectionEnd); },
+        'link': () => { insertLink(markdownInput); saveHistoryState(markdownInput.value, markdownInput.selectionStart, markdownInput.selectionEnd); },
+        'list': () => { toggleFormattingPrefix(markdownInput, '- '); saveHistoryState(markdownInput.value, markdownInput.selectionStart, markdownInput.selectionEnd); },
+        'accent': () => { toggleAccent(markdownInput); saveHistoryState(markdownInput.value, markdownInput.selectionStart, markdownInput.selectionEnd); },
+        'muted': () => { toggleMuted(markdownInput); saveHistoryState(markdownInput.value, markdownInput.selectionStart, markdownInput.selectionEnd); },
+        'move-up': () => { moveSectionOrLine(markdownInput, -1); saveHistoryState(markdownInput.value, markdownInput.selectionStart, markdownInput.selectionEnd); },
+        'move-down': () => { moveSectionOrLine(markdownInput, 1); saveHistoryState(markdownInput.value, markdownInput.selectionStart, markdownInput.selectionEnd); },
+        'help': () => {
+            const helpModal = document.getElementById('help-modal');
+            if (helpModal) {
+                helpModal.classList.add('show');
+                const helpModalLogoAnimate = document.querySelector('#help-modal .modal-logo svg');
+                if (helpModalLogoAnimate) {
+                    helpModalLogoAnimate.classList.remove('logo-roll');
+                    void helpModalLogoAnimate.offsetWidth;
+                    helpModalLogoAnimate.classList.add('logo-roll');
+                }
+            }
+        }
+    };
+
+    if (editorToolbar) {
+        const toolbarButtons = editorToolbar.querySelectorAll('.toolbar-btn');
+        toolbarButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const actionKey = btn.getAttribute('data-action');
+                const actionFn = toolbarActions[actionKey];
+                if (actionFn) {
+                    actionFn();
+                }
+                // Refocus on editor for continuous typing experience
+                if (actionKey !== 'help') {
+                    markdownInput.focus();
+                }
+            });
+        });
+    }
+
+    // Listen for "What is markdown?" header button click
+    const btnMarkdownHelpHeader = document.getElementById('btn-markdown-help-header');
+    if (btnMarkdownHelpHeader) {
+        btnMarkdownHelpHeader.addEventListener('click', (e) => {
+            e.preventDefault();
+            toolbarActions['help']();
+        });
+    }
 }
 
 if (document.readyState === 'loading') {

@@ -1,6 +1,7 @@
 # jobby Project: An AI automated resume with a Markdown editor
 
-*Author: Julien (Éole) Avarre (<hi@eole.me>)*
+*Author: Julien (Éole) Avarre (<hi@eole.me>) & Antigravity (Google DeepMind team)*
+*Special thanks to **Maround Boutanos** for the shortcuts tooltip and design folding suggestions.*
 
 
 > A premium, modern Markdown resume editor that respects ATS (Applicant Tracking System) standards, designed to run locally without heavy external dependencies.
@@ -240,6 +241,28 @@ You can configure the appearance of your sidebar column in 2-column mode inside 
 * Rebuilt print layout margin management to set browser `@page { margin: 0; }` and dynamically translate margins into `.a4-sheet` paddings. This avoids white margin borders on color themes/sidebars.
 * Synchronized `@page` size to Letter or A4 based on the preview's format choice.
 
+### 12. Design Panel Hiding
+* Collapse the right customizer panel with a close button (cross SVG) next to the Expert Mode switcher to give the preview canvas maximum horizontal space.
+* Reveal the design customizer at any time via a glassmorphic floating **Design** button in the lower-right corner of the canvas. Collapsed state is automatically persisted in the browser's local storage.
+
+### 13. Markdown Editor Formatting Toolbar
+* Toggle a rich-text formatting helper toolbar row directly above the writing canvas with a new **Format** button in the panel header.
+* Instant formatting shortcuts for headings (H1, H2, H3), typography (Bold, Italic, Link), lists, custom markers (Accent, Muted), and section sorting controls (Move Up, Move Down) are all mapped seamlessly to keep typing fluid.
+* Tooltips and a Markdown Cheatsheet dropdown list available on hover to guide new users.
+
+### 14. Custom History Stack (Undo/Redo)
+* A robust in-memory custom undo/redo history state stack (up to 100 entries) with dedicated UI toolbar control buttons and hotkeys (`Ctrl+Z`, `Ctrl+Y`) that track selection ranges and cursor coordinates perfectly.
+
+### 15. Translucent Frosted Glass Dock (Glassmorphism)
+* Styled the vertical folded controls dock with a modern glassmorphic frosted-glass background in both light and dark themes using CSS `backdrop-filter`. The circular buttons inside the dock adapt dynamically, becoming translucent in the light theme for better visual integration.
+
+### 16. Modern Alert-Free Overwrites with Pre-emptive Undo Support
+* Removed all native browser blocking `confirm()` popup alerts when loading the Julien Avarre sample, Jobby Updates ("What's New"), clearing the editor, or restoring drafts.
+* To guarantee data safety, the editor automatically pushes your current text to the history stack *before* applying any changes, allowing you to instantly undo any overwrite via `Ctrl+Z` or the Undo toolbar button.
+
+### 17. Dynamic Web App Manifest Integration
+* Created a standard `manifest.json` under the public directory. The server (`server.js`) intercepts `/manifest.json` requests at runtime and dynamically injects the application version from `package.json`, ensuring `package.json` remains the single source of truth for the entire app.
+
 ## 🖨️ Generate PDF for Recruiters
 
 When you are satisfied with your layout:
@@ -310,7 +333,7 @@ This ensures that only logs produced by containers belonging to the local enviro
 
 Here is a list of features and enhancements planned for future versions of Jobby, ordered by implementation complexity (e.g., quick wins first, complex integrations last):
 
-- [ ] **Add "Help" button in the UI:** Add a "Help" button in the interface that opens the Installation Guide and links back to the GitHub repository.
+- [x] **Add "Help" button in the UI:** Add a "Help" button in the interface that opens the Installation Guide and links back to the GitHub repository.
 - [ ] **Locale (fr-FR translation):** Implement a simple language switcher (easy to do as French translations are already drafted).
 - [ ] **Improve SEO:** Optimize meta tags, OpenGraph headers, and robot directives for public-facing resume pages.
 - [ ] **Add GitHub Actions:** Automate syntax checking and dependency building for local developers.

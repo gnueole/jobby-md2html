@@ -161,18 +161,82 @@ body {
     display: flex;
     align-items: center;
     gap: 12px;
+    cursor: pointer;
+    user-select: none;
 }
 
 .brand-icon {
     color: var(--accent);
     filter: drop-shadow(0 0 8px var(--accent-glow));
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.4s ease;
 }
 
 .brand h1 {
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: -0.02em;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    font-family: 'Outfit', 'Inter', sans-serif;
     color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    transition: text-shadow 0.3s ease;
+}
+
+.brand h1 span:not(.dev-badge) {
+    background: linear-gradient(135deg, var(--accent) 0%, #a78bfa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 900;
+    margin: 0 4px;
+}
+
+.brand h1 .fancy-span {
+    background: linear-gradient(135deg, #14b8a6 0%, #0ea5e9 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 900;
+    margin: 0 4px;
+}
+
+.brand h1 .dev-badge {
+    font-size: 9px;
+    background: #14b8a6 !important;
+    color: #0f172a !important;
+    -webkit-text-fill-color: #0f172a !important;
+    -webkit-background-clip: initial !important;
+    background-clip: initial !important;
+    padding: 2px 7px;
+    border-radius: 20px;
+    margin-left: 10px;
+    vertical-align: middle;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    box-shadow: 0 0 10px rgba(20, 184, 166, 0.4);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 16px;
+    animation: dev-pulse-glow 2s infinite ease-in-out;
+}
+
+.brand:hover .brand-icon {
+    transform: scale(1.15) rotate(8deg);
+    filter: drop-shadow(0 0 12px var(--accent));
+}
+
+.brand:hover h1 {
+    text-shadow: 0 0 15px var(--accent-glow);
+}
+
+@keyframes dev-pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 8px rgba(20, 184, 166, 0.4);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 18px rgba(20, 184, 166, 0.8);
+        transform: scale(1.05);
+    }
 }
 
 /* DASHBOARD FLEX SYSTEM */
@@ -745,6 +809,16 @@ input[type="color"]::-webkit-color-swatch {
 .btn-icon:hover {
     background: rgba(255, 255, 255, 0.04);
     color: var(--text-primary);
+}
+
+.btn-icon.active {
+    background-color: var(--accent-glow);
+    color: var(--accent);
+}
+
+.btn-icon.active:hover {
+    background-color: var(--accent-glow);
+    color: var(--accent-hover);
 }
 
 .btn-icon.text-danger:hover {
@@ -2118,6 +2192,376 @@ body.expert-mode-active .font-preferences-row {
 @keyframes roll {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+/* ==========================================
+   DESIGN PANEL TOGGLE & FLOATING BUTTON
+   ========================================== */
+.panel-close-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background-color: var(--bg-button-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-speed);
+    user-select: none;
+    margin-left: 8px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.panel-close-btn:hover {
+    background-color: rgba(239, 68, 68, 0.12);
+    border-color: var(--danger);
+    color: var(--danger);
+    transform: scale(1.05);
+}
+
+.floating-unfold-btn {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    background: linear-gradient(135deg, var(--accent) 0%, #6d28d9 100%);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 12px 20px;
+    font-family: var(--font-ui);
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    box-shadow: 0 10px 25px rgba(124, 58, 237, 0.3), 0 0 12px var(--accent-glow);
+    z-index: 999;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease, box-shadow 0.3s ease;
+}
+
+.floating-unfold-btn:hover {
+    transform: scale(1.05) translateY(-2px);
+    box-shadow: 0 12px 30px rgba(124, 58, 237, 0.4), 0 0 16px var(--accent-glow);
+}
+
+.floating-unfold-btn:active {
+    transform: scale(0.95);
+}
+
+.floating-unfold-btn.hidden {
+    display: none !important;
+}
+
+/* ==========================================
+   FORMATTING TOOLBAR
+   ========================================== */
+.editor-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.textarea-syntax-wrapper {
+    flex: 1 !important;
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.editor-toolbar {
+    display: flex;
+    align-items: center;
+    padding: 6px 12px;
+    background-color: var(--bg-panel-header);
+    border-bottom: 1px solid var(--border-color);
+    gap: 6px;
+    user-select: none;
+    z-index: 5;
+    flex-wrap: wrap;
+    min-height: 38px;
+}
+
+.editor-toolbar.hidden {
+    display: none !important;
+}
+
+.toolbar-group {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.toolbar-separator {
+    width: 1px;
+    height: 18px;
+    background-color: var(--border-color);
+    margin: 0 4px;
+}
+
+.toolbar-spacer {
+    flex: 1;
+}
+
+.toolbar-btn {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text-secondary);
+    font-family: var(--font-ui);
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-speed);
+    min-height: 24px;
+    white-space: nowrap;
+}
+
+.toolbar-btn:hover {
+    background-color: var(--bg-button-secondary-hover);
+    color: var(--text-primary);
+}
+
+.toolbar-btn svg {
+    stroke-width: 2.5;
+}
+
+.toolbar-btn.text-accent {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.toolbar-btn.text-accent:hover {
+    background-color: var(--accent-glow);
+    color: var(--accent-hover);
+}
+
+.toolbar-btn.text-muted {
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.toolbar-btn.text-muted:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+    color: var(--text-secondary);
+}
+
+.toolbar-btn.btn-markdown-help {
+    color: var(--accent);
+    text-decoration: underline;
+    font-size: 11px;
+    font-weight: 600;
+    gap: 4px;
+}
+
+.toolbar-btn.btn-markdown-help:hover {
+    background-color: var(--accent-glow);
+    color: var(--accent-hover);
+}
+
+.btn-markdown-help-header {
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #a78bfa; /* Bright light purple for dark mode readability */
+    font-family: var(--font-ui);
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: all var(--transition-speed);
+    text-decoration: underline;
+}
+
+[data-theme="light"] .btn-markdown-help-header {
+    color: var(--accent);
+}
+
+.btn-markdown-help-header:hover {
+    background-color: rgba(167, 139, 250, 0.15);
+    color: #c084fc;
+    text-decoration: none;
+}
+
+[data-theme="light"] .btn-markdown-help-header:hover {
+    background-color: var(--accent-glow);
+    color: var(--accent-hover);
+    text-decoration: none;
+}
+
+.editor-toolbar .shortcut-tooltip-dropdown {
+    left: auto;
+    right: 0;
+}
+
+/* ==============================================================================
+   7. FOLDED CONTROLS DOCK (PREVIEW CONTROLS VERTICAL DOCK)
+   ============================================================================= */
+.folded-controls-dock {
+    position: fixed;
+    top: 80px;
+    right: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    background-color: rgba(15, 23, 42, 0.45); /* Glassmorphic dark slate */
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 30px;
+    padding: 12px 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3), 0 0 12px var(--accent-glow);
+    z-index: 999;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+[data-theme="light"] .folded-controls-dock {
+    background-color: rgba(255, 255, 255, 0.45); /* Glassmorphic frosted white */
+    border-color: rgba(15, 23, 42, 0.08);
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.1), 0 0 12px rgba(124, 58, 237, 0.08);
+}
+
+.folded-controls-dock.hidden {
+    display: none !important;
+}
+
+/* Vertical layout buttons inside the dock */
+.folded-controls-dock .btn-circle-sm {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 50% !important;
+    color: var(--text-secondary) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    background: var(--bg-button-secondary) !important;
+    border: 1px solid var(--border-color) !important;
+    transition: all 0.2s ease !important;
+}
+
+.folded-controls-dock .btn-circle-sm:hover {
+    background: var(--bg-button-secondary-hover) !important;
+    color: var(--text-primary) !important;
+    transform: scale(1.1) !important;
+}
+
+[data-theme="light"] .folded-controls-dock .btn-circle-sm {
+    background: rgba(15, 23, 42, 0.05) !important;
+    border-color: rgba(15, 23, 42, 0.08) !important;
+    color: var(--text-secondary) !important;
+}
+
+[data-theme="light"] .folded-controls-dock .btn-circle-sm:hover {
+    background: rgba(15, 23, 42, 0.12) !important;
+    color: var(--text-primary) !important;
+}
+
+.folded-controls-dock .btn-circle-sm.active {
+    background: var(--accent) !important;
+    color: white !important;
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 8px var(--accent-glow) !important;
+}
+
+.folded-controls-dock .btn-circle-sm.active:hover {
+    background: var(--accent-hover) !important;
+}
+
+/* Specialized styling for Design button in the dock */
+.folded-controls-dock #btn-unfold-design-panel {
+    position: static !important;
+    background: linear-gradient(135deg, var(--accent) 0%, #6d28d9 100%) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 50% !important;
+    width: 36px !important;
+    height: 36px !important;
+    padding: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 10px rgba(124, 58, 237, 0.3), 0 0 8px var(--accent-glow) !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+    margin-bottom: 4px; /* extra separation from settings to other tools */
+}
+
+.folded-controls-dock #btn-unfold-design-panel:hover {
+    transform: scale(1.1) !important;
+    box-shadow: 0 6px 14px rgba(124, 58, 237, 0.4), 0 0 12px var(--accent-glow) !important;
+}
+
+.folded-controls-dock #btn-unfold-design-panel span {
+    display: none !important;
+}
+
+/* Page format wrapper adjustments inside dock */
+.folded-controls-dock .page-format-wrapper {
+    position: relative !important;
+    display: inline-block !important;
+}
+
+.folded-controls-dock .page-format-dropdown-menu {
+    top: 50% !important;
+    left: auto !important;
+    right: calc(100% + 12px) !important;
+    transform: translateY(-50%) translateX(-5px) !important;
+}
+
+.folded-controls-dock .page-format-dropdown-menu.show {
+    transform: translateY(-50%) translateX(0) !important;
+}
+
+/* Slick Floating Tooltip on the Left */
+.folded-controls-dock [data-tooltip] {
+    position: relative !important;
+}
+
+.folded-controls-dock [data-tooltip]::before {
+    content: attr(data-tooltip) !important;
+    position: absolute !important;
+    right: calc(100% + 14px) !important;
+    top: 50% !important;
+    transform: translateY(-50%) translateX(12px) !important;
+    background: rgba(15, 23, 42, 0.92) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    color: #f8fafc !important;
+    padding: 6px 12px !important;
+    border-radius: 6px !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    font-family: 'Outfit', 'Inter', sans-serif !important;
+    white-space: nowrap !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35), 0 0 10px rgba(124, 58, 237, 0.1) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    z-index: 1000 !important;
+}
+
+.folded-controls-dock [data-tooltip]:hover::before {
+    opacity: 1 !important;
+    transform: translateY(-50%) translateX(0) !important;
+}
+
+/* Hide tooltip when the page format dropdown menu is shown to avoid overlap */
+.folded-controls-dock .page-format-wrapper:has(.page-format-dropdown-menu.show) [data-tooltip]::before {
+    opacity: 0 !important;
+    transform: translateY(-50%) translateX(12px) !important;
 }
 
 
