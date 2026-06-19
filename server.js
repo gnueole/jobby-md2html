@@ -156,27 +156,6 @@ const server = http.createServer((req, res) => {
         return;
     }
 
-    if (cleanUrl === '/manifest.json') {
-        const manifestPath = path.join(__dirname, 'public', 'manifest.json');
-        fs.readFile(manifestPath, 'utf8', (err, data) => {
-            if (err) {
-                res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
-                res.end('Not Found');
-                return;
-            }
-            try {
-                const manifest = JSON.parse(data);
-                manifest.version = appVersion; // Inject package.json version dynamically
-                res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
-                res.end(JSON.stringify(manifest, null, 2));
-            } catch (e) {
-                res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
-                res.end('Error parsing manifest');
-            }
-        });
-        return;
-    }
-
     if (cleanUrl === '/bookmarklet.js') {
         const fs = require('fs');
         const bookmarkletPath = path.join(__dirname, 'toolkit', 'bookmarklet.js');
