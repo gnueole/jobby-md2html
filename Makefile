@@ -32,7 +32,7 @@ DOCKER_DIR   := docker
 COMPOSE_DEV  := $(DOCKER_DIR)/docker-compose.yml
 COMPOSE_PROD := $(DOCKER_DIR)/docker-compose.prod.yml
 
-.PHONY: help configure dev dev-up dev-down up down restart deploy deploy-infra deploy-all _deploy deploy-delay checklogs check-build n8n-backup n8n-push n8n-backup-dev n8n-push-dev n8n-deploy-error
+.PHONY: help configure dev dev-up dev-down up down restart deploy deploy-infra deploy-n8n deploy-all _deploy deploy-delay checklogs check-build n8n-backup n8n-push n8n-backup-dev n8n-push-dev n8n-deploy-error
 
 # Default target
 help:
@@ -51,6 +51,7 @@ help:
 	@echo "Production Deployment (VPS - cv.eole.me):"
 	@echo "  make deploy           - Push production compose & pull only custom editor/vector images"
 	@echo "  make deploy-infra     - Push production compose & pull only infra images (n8n, gotenberg, etc.)"
+	@echo "  make deploy-n8n       - Push production compose & pull/recreate only the n8n container"
 	@echo "  make deploy-all       - Push production compose & pull/recreate all images"
 	@echo "  make deploy-delay     - Wait 150s for GitHub Actions and then deploy"
 	@echo "  make checklogs        - Fetch real-time production logs from VPS"
@@ -115,6 +116,9 @@ deploy:
 
 deploy-infra:
 	@$(MAKE) --no-print-directory _deploy SERVICES="traefik mcp-notion gotenberg n8n vector"
+
+deploy-n8n:
+	@$(MAKE) --no-print-directory _deploy SERVICES="n8n"
 
 deploy-all:
 	@$(MAKE) --no-print-directory _deploy SERVICES=""
