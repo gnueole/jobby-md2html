@@ -1404,7 +1404,10 @@ body.expert-mode-active .format-lock-badge {
 }
 
 @media print {
-    .page-break-indicator {
+    .page-break-indicator,
+    .folded-controls-dock,
+    .floating-unfold-btn,
+    .modal-overlay {
         display: none !important;
     }
 }

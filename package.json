@@ -1,6 +1,6 @@
 {
   "name": "jobby",
-  "version": "1.8.1",
+  "version": "1.8.2",
   "description": "Jobby ATS Markdown resume editor",
   "main": "server.js",
   "scripts": {

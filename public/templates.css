@@ -347,7 +347,10 @@
     .panel:not(.preview-panel),
     .panel-header,
     .preview-controls,
-    .toast {
+    .toast,
+    .folded-controls-dock,
+    .floating-unfold-btn,
+    .modal-overlay {
         display: none !important;
     }
 

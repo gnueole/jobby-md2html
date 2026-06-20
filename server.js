@@ -4,7 +4,7 @@ const path = require('path');
 const crypto = require('crypto');
 
 // Read version from package.json dynamically as the single source of truth
-let appVersion = '1.8.1';
+let appVersion = '1.8.2';
 try {
     const pkg = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8'));
     appVersion = pkg.version;

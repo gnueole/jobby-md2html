@@ -1,3 +1,12 @@
+# 1.8.2 - Mise à jour Jobby.
+Mise à jour Jobby du 20/06/2026 · Masquage du menu flottant à l'impression.
+[CONTACT : hi@eole.me | +33 6 50 83 68 09 | [cv.eole.me](https://cv.eole.me)]
+
+## 🖨️ IMPRESSION PROPRE ET SANS ARTEFACTS
+* **Masquage du menu flottant** : Le menu flottant latéral (folded controls dock), le bouton d'ouverture ("Design"), et les fenêtres modales superposées sont désormais masqués automatiquement lors de l'impression ou de l'export PDF. Votre CV s'imprime de façon parfaitement propre.
+
+---
+
 # 1.8.1 - Mise à jour Jobby.
 Mise à jour Jobby du 19/06/2026 · Mode glassmorphic, accessibilité améliorée et actions fluides.
 [CONTACT : hi@eole.me | +33 6 50 83 68 09 | [cv.eole.me](https://cv.eole.me)]

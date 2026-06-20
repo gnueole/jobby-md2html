@@ -33,7 +33,7 @@ import { initPrint, updatePageBreaks } from './js/print.js';
 
 async function initializeJobby() {
     // --- Fetch config (including dynamic version) ---
-    let appVersion = '1.8.1';
+    let appVersion = '1.8.2';
     try {
         const configRes = await fetch('/api/config');
         if (configRes.ok) {
