@@ -1,3 +1,45 @@
+# 1.9.3 - Mise à jour Jobby.
+Mise à jour Jobby du 21/06/2026 · Télémétrie persistante et conformité RGPD.
+[CONTACT : hi@eole.me | +33 6 50 83 68 09 | [cv.eole.me](https://cv.eole.me)]
+
+## 🔒 TÉLÉMÉTRIE PERSISTANTE ET RESPECT DE LA VIE PRIVÉE
+* **ID de Session Persistant** : L'identifiant de session de télémétrie est désormais sauvegardé de manière anonyme dans le stockage local (`localStorage`) du navigateur. Cela permet d'agréger les statistiques d'utilisation sans cookies et de manière transparente.
+* **Transparence RGPD** : La politique de confidentialité dans la fenêtre "About" a été mise à jour pour expliquer clairement le stockage local et garantir qu'aucune donnée personnelle (nom, email, adresse IP, texte du CV) n'est collectée ou transmise.
+
+---
+
+# 1.9.2 - Mise à jour Jobby.
+Mise à jour Jobby du 21/06/2026 · Notifications empilables et icône de balai affinée.
+[CONTACT : hi@eole.me | +33 6 50 83 68 09 | [cv.eole.me](https://cv.eole.me)]
+
+## 🥞 SYSTÈME DE NOTIFICATIONS EMPILABLES (TOASTER)
+* **Notifications fluides** : Les alertes s'affichent désormais dans le coin inférieur droit sous forme de cartes empilables. Elles se ferment automatiquement ou manuellement et s'adaptent dynamiquement (Succès, Erreur, Avertissement, Info) avec des couleurs et emojis dédiés.
+* **Compatibilité des tests** : L'intégration respecte parfaitement les tests automatisés de non-régression.
+
+## 🧹 ICÔNE DE BALAI AFFINÉE
+* **Design moderne** : L'icône de nettoyage de l'éditeur a été redessinée sous forme de balai vertical épuré avec des scintillements, remplaçant l'ancien visuel moins lisible.
+
+---
+
+# 1.9.1 - Mise à jour Jobby.
+Mise à jour Jobby du 20/06/2026 · Métriques de télémétrie avancées.
+[CONTACT : hi@eole.me | +33 6 50 83 68 09 | [cv.eole.me](https://cv.eole.me)]
+
+## 📊 STATISTIQUES DE PERFORMANCE ET D'USAGE
+* **Métriques avancées** : Nous suivons désormais de manière anonyme l'évolution de votre score ATS (score initial, amélioration du score, nombre de règles corrigées), les presets de design testés, les actions d'annulation (Undo/Redo), le thème actif (sombre/clair) et le temps de rendu Markdown en millisecondes pour optimiser les performances.
+
+---
+
+# 1.9.0 - Mise à jour Jobby.
+Mise à jour Jobby du 20/06/2026 · Formulaire de feedback utilisateur et intégration n8n.
+[CONTACT : hi@eole.me | +33 6 50 83 68 09 | [cv.eole.me](https://cv.eole.me)]
+
+## 💬 FORMULAIRE DE RETOURS UTILISATEUR (FEEDBACK)
+* **Formulaire interactif** : Un nouveau bouton "Feedback" fait son apparition dans l'en-tête de l'éditeur. Il ouvre un formulaire élégant vous permettant de noter l'application (étoiles interactives), de catégoriser votre retour (Commentaire, Suggestion, Bug) et de décrire votre avis.
+* **Traitement sécurisé** : Les retours sont transmis de manière asynchrone à notre base de données Notion via un proxy sécurisé et un workflow n8n dédié, garantissant la sécurité des clés d'API.
+
+---
+
 # 1.8.2 - Mise à jour Jobby.
 Mise à jour Jobby du 20/06/2026 · Masquage du menu flottant à l'impression.
 [CONTACT : hi@eole.me | +33 6 50 83 68 09 | [cv.eole.me](https://cv.eole.me)]
