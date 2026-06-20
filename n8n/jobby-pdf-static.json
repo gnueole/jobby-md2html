@@ -1,10 +1,10 @@
 {
-  "//": "Jobby Markdown Editor - jobby-pdf-static.json - Static PDF generator workflow",
+  "//": "Published on 2026-06-20 22:57:38 | Git: c6a9c86 chore: add deploy-n8n target to Makefile",
   "updatedAt": "2026-06-03T11:51:05.635Z",
   "createdAt": "2026-05-25T16:32:59.047Z",
   "id": "K2acY4kGijPJGop0",
   "name": "Jobby - PDF - static",
-  "description": "retrieves a MD file and returns a printed version in PDF",
+  "description": "Published on 2026-06-20 23:29:38 | Git: c6a9c86 chore: add deploy-n8n target to Makefile",
   "active": false,
   "isArchived": false,
   "nodes": [
@@ -288,6 +288,22 @@
       ],
       "id": "e0e29b1b-12cd-43ef-ba38-16cb4b2e8a1a",
       "name": "HTTP Request Telemetry"
+    },
+    {
+      "parameters": {
+        "content": "### Last Publish Info\n\nPublished on 2026-06-20 22:57:38 | Git: c6a9c86 chore: add deploy-n8n target to Makefile",
+        "height": 150,
+        "width": 300,
+        "color": 6
+      },
+      "id": "b7346ebe-267f-40cf-8f38-161145d0a090",
+      "name": "Last Publish Info",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1006,
+        -80
+      ]
     }
   ],
   "connections": {

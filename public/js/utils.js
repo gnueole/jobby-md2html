@@ -3,16 +3,69 @@
  * Common utility helper functions.
  */
 
-// Show toast alerts
+// Show toast alerts in a non-intrusive stack
 export function showToast(message) {
-    const toast = document.getElementById('toast');
-    if (toast) {
-        toast.textContent = message;
-        toast.classList.add('show');
-        setTimeout(() => {
-            toast.classList.remove('show');
-        }, 2500);
+    let container = document.getElementById('toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'toast-container';
+        container.className = 'toast-container';
+        document.body.appendChild(container);
     }
+
+    // Auto-detect type of toast based on message content
+    const msgLower = message.toLowerCase();
+    let type = 'info';
+    let icon = 'ℹ️';
+    
+    if (msgLower.includes('success') || msgLower.includes('saved') || msgLower.includes('loaded') || msgLower.includes('synced') || msgLower.includes('copied')) {
+        type = 'success';
+        icon = '✅';
+    } else if (msgLower.includes('fail') || msgLower.includes('error') || msgLower.includes('unauthorized') || msgLower.includes('denied')) {
+        type = 'error';
+        icon = '❌';
+    } else if (msgLower.includes('warning') || msgLower.includes('requires') || msgLower.includes('attention')) {
+        type = 'warning';
+        icon = '⚠️';
+    }
+
+    const toastItem = document.createElement('div');
+    toastItem.className = `toast-item ${type}`;
+    
+    // Manage active ID for test compatibility
+    const oldToast = document.getElementById('toast');
+    if (oldToast) {
+        oldToast.removeAttribute('id');
+    }
+    toastItem.id = 'toast'; // Assign the id to the latest active toast
+
+    toastItem.innerHTML = `
+        <span class="toast-icon">${icon}</span>
+        <span class="toast-message">${message}</span>
+        <button class="toast-close-btn" aria-label="Close notification">&times;</button>
+    `;
+
+    container.appendChild(toastItem);
+
+    // Force reflow to trigger transition
+    void toastItem.offsetWidth;
+    toastItem.classList.add('show');
+
+    // Setup close button
+    const closeBtn = toastItem.querySelector('.toast-close-btn');
+    const dismiss = () => {
+        toastItem.classList.remove('show');
+        setTimeout(() => {
+            if (toastItem.parentNode === container) {
+                container.removeChild(toastItem);
+            }
+        }, 350);
+    };
+
+    closeBtn.addEventListener('click', dismiss);
+
+    // Auto-dismiss after 3.5 seconds
+    setTimeout(dismiss, 3500);
 }
 
 // Debounce helper

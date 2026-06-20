@@ -155,6 +155,17 @@ async function initializeJobby() {
     const sessionId = 'session_' + Math.random().toString(36).substring(2, 15) + '_' + Date.now();
     let printCount = 0;
     const buttonsClicked = new Set();
+    let initialAtsScore = null;
+    let initialFailedRules = null;
+    let undoRedoClicks = 0;
+    const presetSwitches = [];
+    let lastMarkdownRenderTimeMs = 0;
+
+    function recordPresetSwitch(presetName) {
+        if (presetSwitches.length === 0 || presetSwitches[presetSwitches.length - 1] !== presetName) {
+            presetSwitches.push(presetName);
+        }
+    }
 
     // Global listener to track used buttons
     document.addEventListener('click', (event) => {
@@ -241,6 +252,13 @@ async function initializeJobby() {
                 failedRules.push(el.textContent.trim());
             });
         }
+        
+        // Save initial ATS state on first check
+        if (initialAtsScore === null && scoreValText) {
+            initialAtsScore = score;
+            initialFailedRules = [...failedRules];
+        }
+
         return { score, failedRules };
     }
 
@@ -249,9 +267,16 @@ async function initializeJobby() {
             const counts = getWordAndCharCount();
             const ats = getAtsMetrics();
             
+            const initialFailedCount = initialFailedRules ? initialFailedRules.length : 0;
+            const currentFailedCount = ats.failedRules.length;
+            const atsFixesCount = Math.max(0, initialFailedCount - currentFailedCount);
+            const atsScoreDelta = ats.score - (initialAtsScore !== null ? initialAtsScore : ats.score);
+            const activeTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+
             const payload = {
                 sessionId,
                 eventType,
+                platform: isDev ? 'dev' : 'prod',
                 wordCount: counts.wordCount,
                 charCount: counts.charCount,
                 activePreset: styleConfig.activePreset || 'classic',
@@ -267,6 +292,14 @@ async function initializeJobby() {
                 printCount,
                 buttonsClicked: Array.from(buttonsClicked),
                 timestamp: new Date().toISOString(),
+                // Advanced Telemetry Metrics
+                initialAtsScore: initialAtsScore,
+                atsScoreDelta: atsScoreDelta,
+                atsFixesCount: atsFixesCount,
+                presetSwitches: presetSwitches.join(', '),
+                themePreference: activeTheme,
+                undoRedoClicks: undoRedoClicks,
+                markdownRenderTimeMs: lastMarkdownRenderTimeMs,
                 ...extraData
             };
 
@@ -320,6 +353,7 @@ async function initializeJobby() {
             historyIndex--;
             const state = historyStack[historyIndex];
             applyHistoryState(state);
+            undoRedoClicks++;
         }
     }
 
@@ -328,6 +362,7 @@ async function initializeJobby() {
             historyIndex++;
             const state = historyStack[historyIndex];
             applyHistoryState(state);
+            undoRedoClicks++;
         }
     }
 
@@ -719,6 +754,7 @@ async function initializeJobby() {
 
     // --- Local parser invoker ---
     function runCompileMarkdown(text) {
+        const start = performance.now();
         const result = compileMarkdown(text, styleConfig, markdownInput, (newMd) => {
             saveToLocalStorage();
             runCompileMarkdown(newMd);
@@ -731,6 +767,8 @@ async function initializeJobby() {
         runAtsChecker(text, result.html);
         updatePageBreaks(resumeOutput);
         updateSyntaxHighlight(markdownInput, highlightCode, cbSyntaxHighlight);
+        const end = performance.now();
+        lastMarkdownRenderTimeMs = Math.round(end - start);
         debouncedAtsTelemetry();
     }
 
@@ -1217,6 +1255,7 @@ async function initializeJobby() {
     // Helper to apply preset styles and cool gradient by default if 2-columns active
     const applyPresetValues = (presetName, values, coolGradientColor, extraConfig = {}) => {
         styleConfig.activePreset = presetName;
+        recordPresetSwitch(presetName);
         styleConfig.colorBg = values.colorBg;
         styleConfig.colorHeadings = values.colorHeadings;
         styleConfig.colorBody = values.colorBody;
@@ -1379,6 +1418,7 @@ async function initializeJobby() {
                 showToast(`${preset.name} saved with current design configuration!`);
             }
             styleConfig.activePreset = key;
+            recordPresetSwitch(key);
             
             // Assign saved styles to styleConfig
             Object.assign(styleConfig, preset.styles);
@@ -1739,6 +1779,7 @@ async function initializeJobby() {
                 stars: ratingVal,
                 category: categorySelect.value,
                 message: messageInput.value.trim(),
+                platform: isDev ? 'dev' : 'prod',
                 timestamp: new Date().toISOString()
             };
 

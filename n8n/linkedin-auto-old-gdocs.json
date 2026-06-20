@@ -3,7 +3,7 @@
   "createdAt": "2026-05-11T09:46:21.361Z",
   "id": "OUptMPU4JX4tVvZ2",
   "name": "LinkedIn auto - old (GDocs)",
-  "description": null,
+  "description": "Published on 2026-06-20 23:29:38 | Git: c6a9c86 chore: add deploy-n8n target to Makefile",
   "active": false,
   "isArchived": false,
   "nodes": [
@@ -230,6 +230,22 @@
       ],
       "id": "91041ef8-4679-4f20-a2ef-4645ff19889f",
       "name": "CV julien"
+    },
+    {
+      "parameters": {
+        "content": "### Last Publish Info\n\nPublished on 2026-06-20 22:57:38 | Git: c6a9c86 chore: add deploy-n8n target to Makefile",
+        "height": 150,
+        "width": 300,
+        "color": 6
+      },
+      "id": "0197ceb3-6f9a-4763-b4cd-d2c21d53f918",
+      "name": "Last Publish Info",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -558,
+        -16
+      ]
     }
   ],
   "connections": {
@@ -358,5 +374,6 @@
       "name": "notion"
     }
   ],
-  "activeVersion": null
+  "activeVersion": null,
+  "//": "Published on 2026-06-20 22:57:38 | Git: c6a9c86 chore: add deploy-n8n target to Makefile"
 }

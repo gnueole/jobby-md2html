@@ -4,7 +4,7 @@
  * Refactored from app.js to modularize page layout and print configuration.
  */
 
-import { incrementDailyVersionCounter } from './utils.js';
+import { incrementDailyVersionCounter, showToast } from './utils.js';
 
 let showPageBreaks = localStorage.getItem('show_page_breaks') === 'true';
 let pageFormat = 'A4';
@@ -116,15 +116,7 @@ export function initPrint({
             // Check if expert mode is active
             const isExpert = document.body.classList.contains('expert-mode-active');
             if (!isExpert) {
-                // Show a toast message warning
-                const toast = document.getElementById('toast');
-                if (toast) {
-                    toast.textContent = "Page format switching requires Expert Mode. Enable it in the Design panel!";
-                    toast.classList.add('show');
-                    setTimeout(() => {
-                        toast.classList.remove('show');
-                    }, 3000);
-                }
+                showToast("Page format switching requires Expert Mode. Enable it in the Design panel!");
                 return;
             }
             

@@ -8,6 +8,22 @@ All notable changes to the Jobby project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.9.2] - 2026-06-21
+
+### Added
+- **Non-Intrusive Dynamic Toaster:** Replaced the single static bottom-center toast notification element with a dynamic, bottom-right stacking `#toast-container` wrapper. Notifications are appended as separate cards, supporting multiple simultaneous messages, automatic classification (Success, Error, Warning, Info) with custom icons and left-border indicators based on text content, and manual close buttons (`×`).
+- **Refined Vertical Sweep Icon:** Integrated a new vertical broom icon design for the clear button (`#btn-clear`) featuring a centered handle, collar, geometric sweep brush outline, bristle texture slits, and dual sparkles, optimized for clean vector rendering.
+
+### Changed
+- **Page Format Alert:** Migrated the manual DOM manipulation for page format warning alerts in `public/js/print.js` to use the unified `showToast` utility.
+
+## [1.9.1] - 2026-06-20
+
+### Added
+- **Advanced Telemetry Metrics:** Extended the telemetry pipeline to collect richer user insights. The client now tracks `initialAtsScore`, `atsScoreDelta` (improvement delta), `atsFixesCount` (number of failed rules resolved), `presetSwitches` (history of loaded presets), `themePreference` (active light/dark theme), `undoRedoClicks` (history stack operations), and `markdownRenderTimeMs` (markdown compile performance).
+- **Notion Schema Expansion:** Added 7 new properties to the *Jobby Telemetry* Notion database via the Notion REST API.
+- **n8n Workflow Upgrades:** Updated `n8n/jobby-telemetry.json` with mapping configurations for the new telemetry properties and pushed the active workflow to production.
+
 ## [1.9.0] - 2026-06-20
 
 ### Added

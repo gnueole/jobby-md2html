@@ -3,7 +3,7 @@
   "createdAt": "2026-05-29T10:00:44.806Z",
   "id": "wfIyU3rWwTpk9cXk",
   "name": "Jobby - sync conf",
-  "description": null,
+  "description": "Published on 2026-06-20 23:29:38 | Git: c6a9c86 chore: add deploy-n8n target to Makefile",
   "active": true,
   "isArchived": false,
   "nodes": [
@@ -104,6 +104,22 @@
       ],
       "id": "t498b1b6-59cb-490b-a890-ea2eea9c06cd",
       "name": "Save to Table"
+    },
+    {
+      "parameters": {
+        "content": "### Last Publish Info\n\nPublished on 2026-06-20 22:57:38 | Git: c6a9c86 chore: add deploy-n8n target to Makefile",
+        "height": 150,
+        "width": 300,
+        "color": 6
+      },
+      "id": "6c703ea0-1530-45f0-b854-705dce306511",
+      "name": "Last Publish Info",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -350,
+        0
+      ]
     }
   ],
   "connections": {
@@ -313,5 +329,6 @@
         "userId": "2792484d-cba3-4156-adba-fbc49134eb55"
       }
     ]
-  }
+  },
+  "//": "Published on 2026-06-20 22:57:38 | Git: c6a9c86 chore: add deploy-n8n target to Makefile"
 }

@@ -3,7 +3,7 @@
   "createdAt": "2026-05-11T12:19:20.435Z",
   "id": "BZdZ90J7AYNZDM89",
   "name": "Notion logger",
-  "description": "Notion n8n lab",
+  "description": "Published on 2026-06-20 23:29:38 | Git: c6a9c86 chore: add deploy-n8n target to Makefile",
   "active": false,
   "isArchived": false,
   "nodes": [
@@ -51,6 +51,22 @@
       ],
       "id": "55aad9bd-ee53-4e17-bd60-8060b2904389",
       "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "content": "### Last Publish Info\n\nPublished on 2026-06-20 22:57:38 | Git: c6a9c86 chore: add deploy-n8n target to Makefile",
+        "height": 150,
+        "width": 300,
+        "color": 6
+      },
+      "id": "279f79ec-7de9-4435-8ec8-14603f2735f2",
+      "name": "Last Publish Info",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -350,
+        0
+      ]
     }
   ],
   "connections": {
@@ -115,5 +131,6 @@
       "name": "notion"
     }
   ],
-  "activeVersion": null
+  "activeVersion": null,
+  "//": "Published on 2026-06-20 22:57:38 | Git: c6a9c86 chore: add deploy-n8n target to Makefile"
 }

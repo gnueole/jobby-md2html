@@ -25,7 +25,7 @@
         "resource": "databasePage",
         "databaseId": {
           "__rl": true,
-          "value": "={{ $env.NOTION_TELEMETRY_DATABASE_ID || \"385ee932-db12-80ee-8794-d789554478b8\" }}",
+          "value": "385ee932-db12-80ee-8794-d789554478b8",
           "mode": "list"
         },
         "title": "Session ID",
@@ -35,6 +35,10 @@
             {
               "key": "Session ID|title",
               "title": "={{ $json.body.sessionId }}"
+            },
+            {
+              "key": "Platform|select",
+              "selectValue": "={{ $json.body.platform }}"
             },
             {
               "key": "Event Type|select",
@@ -53,8 +57,8 @@
               "selectValue": "={{ $json.body.activePreset || \"default\" }}"
             },
             {
-              "key": "Font Family|select",
-              "selectValue": "={{ $json.body.fontFamily || \"Inter\" }}"
+              "key": "Font Family|rich_text",
+              "textContent": "={{ $json.body.fontFamily || \"Inter\" }}"
             },
             {
               "key": "Layout Mode|select",
@@ -91,6 +95,34 @@
             {
               "key": "Device Type|select",
               "selectValue": "={{ $json.body.deviceType || \"Unknown\" }}"
+            },
+            {
+              "key": "Initial ATS Score|number",
+              "numberValue": "={{ $json.body.initialAtsScore }}"
+            },
+            {
+              "key": "ATS Score Delta|number",
+              "numberValue": "={{ $json.body.atsScoreDelta }}"
+            },
+            {
+              "key": "ATS Fixes Count|number",
+              "numberValue": "={{ $json.body.atsFixesCount }}"
+            },
+            {
+              "key": "Preset Switches|rich_text",
+              "textContent": "={{ $json.body.presetSwitches }}"
+            },
+            {
+              "key": "Theme Preference|select",
+              "selectValue": "={{ $json.body.themePreference }}"
+            },
+            {
+              "key": "Undo Redo Clicks|number",
+              "numberValue": "={{ $json.body.undoRedoClicks }}"
+            },
+            {
+              "key": "Markdown Render Time|number",
+              "numberValue": "={{ $json.body.markdownRenderTimeMs }}"
             }
           ]
         }
@@ -109,6 +141,22 @@
           "name": "Notion LinkedIn Auto"
         }
       }
+    },
+    {
+      "parameters": {
+        "content": "### Last Publish Info\n\nPublished on 2026-06-20 22:57:38 | Git: c6a9c86 chore: add deploy-n8n target to Makefile",
+        "height": 150,
+        "width": 300,
+        "color": 6
+      },
+      "id": "b5b7f08f-6870-47b1-8a32-2814d29baba5",
+      "name": "Last Publish Info",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -100,
+        240
+      ]
     }
   ],
   "connections": {
@@ -130,5 +178,7 @@
   "active": true,
   "meta": {
     "templateCredsSetupCompleted": true
-  }
+  },
+  "//": "Published on 2026-06-20 22:57:38 | Git: c6a9c86 chore: add deploy-n8n target to Makefile",
+  "description": "Published on 2026-06-20 23:29:38 | Git: c6a9c86 chore: add deploy-n8n target to Makefile"
 }

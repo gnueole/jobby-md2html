@@ -3,7 +3,7 @@
   "createdAt": "2026-05-25T13:51:11.721Z",
   "id": "olgL8wb7nrJumkct",
   "name": "Jobby - LinkedIn 2 Notion",
-  "description": null,
+  "description": "Published on 2026-06-20 23:30:00 | Git: c6a9c86 chore: add deploy-n8n target to Makefile",
   "active": true,
   "isArchived": false,
   "nodes": [
@@ -298,6 +298,22 @@
       ],
       "id": "0334fb31-bc67-410f-89bc-7e0de9ccaa43",
       "name": "Stop and Error"
+    },
+    {
+      "parameters": {
+        "content": "### Last Publish Info\n\nPublished on 2026-06-20 22:57:38 | Git: c6a9c86 chore: add deploy-n8n target to Makefile",
+        "height": 150,
+        "width": 300,
+        "color": 6
+      },
+      "id": "0a2bc84a-de29-4f02-b582-a13a1e0626a0",
+      "name": "Last Publish Info",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -894,
+        -48
+      ]
     }
   ],
   "connections": {
@@ -916,5 +932,6 @@
         "userId": "2792484d-cba3-4156-adba-fbc49134eb55"
       }
     ]
-  }
+  },
+  "//": "Published on 2026-06-20 22:57:38 | Git: c6a9c86 chore: add deploy-n8n target to Makefile"
 }

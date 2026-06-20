@@ -5,17 +5,14 @@
       "parameters": {
         "httpMethod": "POST",
         "path": "jobby-feedback",
-        "options": {
-          "responseCode": {
-            "values": {}
-          }
-        }
+        "responseMode": "responseNode",
+        "options": {}
       },
       "type": "n8n-nodes-base.webhook",
-      "typeVersion": 2.1,
+      "typeVersion": 1,
       "position": [
         250,
-        240
+        300
       ],
       "id": "webhook-trigger",
       "name": "Webhook"
@@ -23,13 +20,12 @@
     {
       "parameters": {
         "resource": "databasePage",
+        "operation": "create",
         "databaseId": {
           "__rl": true,
-          "value": "={{ $env.NOTION_FEEDBACK_DATABASE_ID || \"366ee932-db12-80ee-8794-d789554478b8\" }}",
+          "value": "385ee932-db12-81f6-8256-e350b3d1b0f2",
           "mode": "list"
         },
-        "title": "Name",
-        "simple": false,
         "propertiesUi": {
           "propertyValues": [
             {
@@ -38,19 +34,20 @@
             },
             {
               "key": "Email|email",
-              "emailValue": "={{ $json.body.email }}"
+              "emailValue": "={{ $json.body.email || null }}",
+              "ignoreIfEmpty": true
             },
             {
               "key": "Stars|number",
-              "numberValue": "={{ $json.body.stars }}"
+              "numberValue": "={{ Number($json.body.stars) }}"
             },
             {
               "key": "Category|select",
               "selectValue": "={{ $json.body.category }}"
             },
             {
-              "key": "Comment|rich_text",
-              "textContent": "={{ $json.body.message }}"
+              "key": "Platform|select",
+              "selectValue": "={{ $json.body.platform }}"
             }
           ]
         }
@@ -58,17 +55,86 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 2.2,
       "position": [
-        500,
-        240
+        480,
+        300
       ],
       "id": "notion-node",
       "name": "Notion",
+      "onError": "continue",
       "credentials": {
         "notionApi": {
           "id": "KYrsxF0plfLkPpqW",
           "name": "Notion LinkedIn Auto"
         }
       }
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://api.notion.com/v1/blocks/{{ $json.id }}/children",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "notionApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Notion-Version",
+              "value": "2022-06-28"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"children\": [\n    {\n      \"object\": \"block\",\n      \"type\": \"heading_1\",\n      \"heading_1\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": {{ JSON.stringify('Feedback from ' + $('Webhook').item.json.body.name) }}\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"heading_2\",\n      \"heading_2\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": \"Details\"\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"bulleted_list_item\",\n      \"bulleted_list_item\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": {{ JSON.stringify('Date: ' + $now.setZone('Europe/Paris').toFormat('yyyy-MM-dd HH:mm')) }}\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"bulleted_list_item\",\n      \"bulleted_list_item\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": {{ JSON.stringify('Name: ' + $('Webhook').item.json.body.name) }}\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"bulleted_list_item\",\n      \"bulleted_list_item\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": {{ JSON.stringify('Email: ' + ($('Webhook').item.json.body.email || 'none')) }}\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"bulleted_list_item\",\n      \"bulleted_list_item\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": {{ JSON.stringify('Category: ' + $('Webhook').item.json.body.category) }}\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"bulleted_list_item\",\n      \"bulleted_list_item\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": {{ JSON.stringify('Rating: ' + $('Webhook').item.json.body.stars + ' Stars') }}\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"bulleted_list_item\",\n      \"bulleted_list_item\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": {{ JSON.stringify('Platform: ' + $('Webhook').item.json.body.platform) }}\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"heading_2\",\n      \"heading_2\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": \"Message\"\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"paragraph\",\n      \"paragraph\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": {{ JSON.stringify($('Webhook').item.json.body.message) }}\n            }\n          }\n        ]\n      }\n    }\n  ]\n}"
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        680,
+        300
+      ],
+      "id": "notion-append-node",
+      "name": "Notion Append Blocks",
+      "onError": "continue",
+      "credentials": {
+        "notionApi": {
+          "id": "KYrsxF0plfLkPpqW",
+          "name": "Notion LinkedIn Auto"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $('Notion').item.json.id && !$json.message ? { \"success\": true } : { \"success\": false, \"error\": $json.message || $('Notion').item.json.message || \"Notion API Error\" } }}",
+        "options": {
+          "responseCode": "={{ $('Notion').item.json.id && !$json.message ? 200 : 500 }}"
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        880,
+        300
+      ],
+      "id": "respond-node",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "content": "### Last Publish Info\n\nPublished on 2026-06-20 22:57:38 | Git: c6a9c86 chore: add deploy-n8n target to Makefile",
+        "height": 150,
+        "width": 300,
+        "color": 6
+      },
+      "id": "a2bc5eb1-d449-4485-b901-b090e7163d2a",
+      "name": "Last Publish Info",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -100,
+        300
+      ]
     }
   ],
   "connections": {
@@ -82,6 +148,28 @@
           }
         ]
       ]
+    },
+    "Notion": {
+      "main": [
+        [
+          {
+            "node": "Notion Append Blocks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion Append Blocks": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -90,5 +178,7 @@
   "active": true,
   "meta": {
     "templateCredsSetupCompleted": true
-  }
+  },
+  "//": "Published on 2026-06-20 22:57:38 | Git: c6a9c86 chore: add deploy-n8n target to Makefile",
+  "description": "Published on 2026-06-20 23:45:00 | Git: Restructured to match Improv-Feedback design"
 }
