@@ -47,11 +47,21 @@
             <p style="font-size: 12.5px; line-height: 1.5; margin-bottom: 12px; color: var(--text-secondary);">
                 Jobby is a personal, non-commercial project. We care deeply about your privacy and adhere to GDPR / RGPD guidelines:
             </p>
-            <ul style="margin-left: 16px; font-size: 12.5px; line-height: 1.5; color: var(--text-secondary); margin-bottom: 16px;">
-                <li><strong>Your CV remains Private</strong>: We do not collect, store, or transmit any of your personal resume contents, details, or text. Compilation is handled locally in your browser.</li>
-                <li><strong>Local Storage</strong>: All your markdown draft drafts and editor design settings are saved locally in your browser's <code>localStorage</code>.</li>
-                <li><strong>Anonymous Telemetry</strong>: To optimize user experience and compiler performance, we collect anonymous usage event metrics (e.g. preset switches, button clicks, ATS compliance checks, and render times). This telemetry data is completely anonymized, contains no personal information, and is proxied securely server-to-server.</li>
-                <li><strong>Feedback</strong>: If you choose to submit feedback via the form, the rating, category, description, and any optional contact info you provide are processed securely to improve the editor.</li>
+            <ul style="margin-left: 16px; font-size: 12.5px; line-height: 1.5; color: var(--text-secondary); margin-bottom: 16px; display: flex; flex-direction: column; gap: 8px;">
+                <li><strong>Private CV Content</strong>: We do not collect, store, or transmit any of your resume text, candidate details, or compiled files. Your data is processed entirely locally within your browser.</li>
+                <li><strong>Local Drafts</strong>: Your markdown drafts and design choices are saved locally in your browser's <code>localStorage</code> (or directly in your own files if using the File System Access API).</li>
+                <li><strong>Anonymous Telemetry</strong>:
+                    <span style="font-size: 11.5px; display: block; margin-top: 2px; opacity: 0.85; line-height: 1.4;">
+                        • <em>Purpose</em>: To analyze design preset adoption, monitor ATS scorecard failure rates (to refine compliance rules), track feature clicks, and monitor compiler rendering performance.
+                        <br>• <em>Privacy Level</em>: Highly restricted and anonymous. A temporary, random session ID is generated on load and resets when you close the tab. No personal data, names, IP addresses, or location trackers are collected or linked to telemetry.
+                    </span>
+                </li>
+                <li><strong>User Feedback (Voluntary)</strong>:
+                    <span style="font-size: 11.5px; display: block; margin-top: 2px; opacity: 0.85; line-height: 1.4;">
+                        • <em>Purpose</em>: To process user suggestions, bug reports, and quality ratings.
+                        <br>• <em>Privacy Level</em>: We only receive details you explicitly submit through the form (rating, category, text, and optional name/email).
+                    </span>
+                </li>
             </ul>
 
             <h4 style="margin-top: 16px; color: var(--danger);">⚠️ Content Disclaimer</h4>
