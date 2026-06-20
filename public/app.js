@@ -152,7 +152,16 @@ async function initializeJobby() {
     let isHighlightActive = false;
 
     // --- Telemetry Subsystem ---
-    const sessionId = 'session_' + Math.random().toString(36).substring(2, 15) + '_' + Date.now();
+    let sessionId = '';
+    try {
+        sessionId = localStorage.getItem('jobby_telemetry_session_id');
+        if (!sessionId) {
+            sessionId = 'session_' + Math.random().toString(36).substring(2, 15) + '_' + Date.now();
+            localStorage.setItem('jobby_telemetry_session_id', sessionId);
+        }
+    } catch (e) {
+        sessionId = 'session_' + Math.random().toString(36).substring(2, 15) + '_' + Date.now();
+    }
     let printCount = 0;
     const buttonsClicked = new Set();
     let initialAtsScore = null;
