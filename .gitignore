@@ -43,5 +43,8 @@ docker/*.env*
 # Local cloned Wiki
 .github-wiki/
 
+# Temporary scratch scripts
+scratch/
+
 
 

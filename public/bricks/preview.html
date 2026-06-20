@@ -1,4 +1,5 @@
 <div class="panel-header">
+    <h2 class="sr-only">Resume Preview Panel</h2>
     <span class="status-indicator preview-dot">● PREVIEW</span>
     <div class="preview-controls">
         <button id="btn-pan-toggle" class="btn-circle-sm active" title="Toggle Pan Mode (Hand)">
@@ -40,10 +41,10 @@
                 </div>
             </button>
             <div id="page-format-dropdown" class="page-format-dropdown-menu">
-                <button type="button" class="format-option active" data-value="A4">A4 (Standard)</button>
-                <button type="button" class="format-option" data-value="letter">Letter (US)</button>
-                <button type="button" class="format-option" data-value="legal">Legal (US)</button>
-                <button type="button" class="format-option" data-value="a5">A5 (Compact)</button>
+                <button id="btn-format-a4" type="button" class="format-option active" data-value="A4">A4 (Standard)</button>
+                <button id="btn-format-letter" type="button" class="format-option" data-value="letter">Letter (US)</button>
+                <button id="btn-format-legal" type="button" class="format-option" data-value="legal">Legal (US)</button>
+                <button id="btn-format-a5" type="button" class="format-option" data-value="a5">A5 (Compact)</button>
             </div>
             <select id="select-page-format" style="display: none;">
                 <option value="A4">A4</option>

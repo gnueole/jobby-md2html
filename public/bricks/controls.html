@@ -3,7 +3,7 @@
   Sidebar controls and preferences.
 -->
 <div class="panel-header">
-    <span>● DESIGN & EXPORTS</span>
+    <h2 class="panel-title">● DESIGN & EXPORTS</h2>
     <div class="advanced-toggle-wrapper">
         <label class="syntax-toggle" title="Unlock advanced design controls (Line Height, Heading Scale, Section Spacing, Custom Colors, and Webhook Sync)">
             <input type="checkbox" id="advanced-mode-toggle">
@@ -230,7 +230,7 @@
 
             <!-- Visual Split Slider -->
             <div class="control-item expert-only">
-                <label>Column Split</label>
+                <label for="column-split">Column Split</label>
                 <div class="slick-split-container">
                     <div class="slick-split-visual">
                         <div class="slick-split-col main-col" id="split-main-visual" style="width: 58%;">
@@ -271,19 +271,21 @@
                     <!-- Shadow Group -->
                     <div class="cosmetic-group" id="group-cosmetic-shadow">
                         <div class="compact-option-row">
-                            <label class="checkbox-label" title="Enable column shadow">
+                            <label class="checkbox-label" title="Enable column shadow" for="cosmetic-shadow">
                                 <input type="checkbox" id="cosmetic-shadow" checked>
                                 <span>Shadow</span>
                             </label>
                         </div>
                         <div class="cosmetic-details" id="details-cosmetic-shadow">
                             <div class="details-row">
-                                <span class="details-label">Blur</span>
+                                <label for="column-shadow-distance" class="sr-only">Shadow Blur Distance</label>
+                                <span class="details-label" aria-hidden="true">Blur</span>
                                 <input type="range" id="column-shadow-distance" min="2" max="25" value="10" title="Shadow blur distance">
                                 <span class="details-val" id="val-column-shadow">10px</span>
                             </div>
                             <div class="details-row">
-                                <span class="details-label">Color</span>
+                                <label for="column-shadow-color" class="sr-only">Shadow Color</label>
+                                <span class="details-label" aria-hidden="true">Color</span>
                                 <div class="compact-color-wrapper" title="Shadow color">
                                     <input type="color" id="column-shadow-color" value="#000000">
                                 </div>
@@ -295,19 +297,21 @@
                     <!-- Border Group -->
                     <div class="cosmetic-group" id="group-cosmetic-border">
                         <div class="compact-option-row">
-                            <label class="checkbox-label" title="Enable column border">
+                            <label class="checkbox-label" title="Enable column border" for="cosmetic-border">
                                 <input type="checkbox" id="cosmetic-border">
                                 <span>Border</span>
                             </label>
                         </div>
                         <div class="cosmetic-details" id="details-cosmetic-border">
                             <div class="details-row">
-                                <span class="details-label">Width</span>
+                                <label for="column-border-width" class="sr-only">Border Width</label>
+                                <span class="details-label" aria-hidden="true">Width</span>
                                 <input type="range" id="column-border-width" min="1" max="10" value="2" title="Border width (px)">
                                 <span class="details-val" id="val-column-border-width">2px</span>
                             </div>
                             <div class="details-row">
-                                <span class="details-label">Opacity</span>
+                                <label for="column-border-opacity" class="sr-only">Border Opacity</label>
+                                <span class="details-label" aria-hidden="true">Opacity</span>
                                 <input type="range" id="column-border-opacity" min="10" max="100" step="5" value="100" title="Border opacity (%)">
                                 <span class="details-val" id="val-column-border-opacity">100%</span>
                             </div>
@@ -317,19 +321,21 @@
                     <!-- Gradient Group -->
                     <div class="cosmetic-group" id="group-cosmetic-gradient">
                         <div class="compact-option-row">
-                            <label class="checkbox-label" title="Enable column gradient">
+                            <label class="checkbox-label" title="Enable column gradient" for="cosmetic-gradient">
                                 <input type="checkbox" id="cosmetic-gradient">
                                 <span>Gradient</span>
                             </label>
                         </div>
                         <div class="cosmetic-details" id="details-cosmetic-gradient">
                             <div class="details-row">
-                                <span class="details-label">Length</span>
+                                <label for="column-gradient-length" class="sr-only">Gradient Length</label>
+                                <span class="details-label" aria-hidden="true">Length</span>
                                 <input type="range" id="column-gradient-length" min="50" max="300" value="150" step="5" title="Gradient end color distance percentage">
                                 <span class="details-val" id="val-column-gradient">150%</span>
                             </div>
                             <div class="details-row">
-                                <span class="details-label">Color</span>
+                                <label for="column-gradient-color" class="sr-only">Gradient Color</label>
+                                <span class="details-label" aria-hidden="true">Color</span>
                                 <div class="compact-color-wrapper" title="Gradient end color">
                                     <input type="color" id="column-gradient-color" value="#000000">
                                 </div>

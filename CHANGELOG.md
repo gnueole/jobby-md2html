@@ -8,7 +8,28 @@ All notable changes to the Jobby project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.9.0] - 2026-06-20
+
+### Added
+- **User Feedback Pipeline:** Implemented an interactive, premium feedback form modal (triggered from the header action bar) allowing users to rate Jobby (1 to 5 stars), categorize comments (general feedback, feature suggestions, or bug report), and submit details. The modal contains form validation error styling, gold star hover effects, submission spinner loaders, and glassmorphic success checkmarks.
+- **Feedback n8n Workflow & Proxy:** Added a `/api/feedback` backend proxy route on the Node server and a new n8n workflow file (`n8n/jobby-feedback.json`) that maps and saves feedback records to the Notion *Jobby Feedback* database.
+- **Telemetry Upgrades:** Upgraded the telemetry subsystem to collect session-wide print counts and keep a list of used buttons, along with browser/OS version and device type details.
+- **Broom Icon:** Swapped the "Clear Editor" trash can SVG with a Lucide "broom" icon.
+
+## [1.8.3] - 2026-06-20
+
+### Changed
+- **SEO & Semantic HTML Upgrades:** Refactored Jobby to comply with modern SEO and accessibility standards. Wrapped application action buttons in a semantic `<nav>` element, introduced logical heading levels (`h2` landmark headings), associated labels with range sliders and color pickers, and added standard screen-reader-only `.sr-only` styles to unlabeled inputs.
+- **Noscript and Crawlable Placeholders:** Added an elegant `<noscript>` fallback screen for clients with JavaScript disabled, and populated `#header-container`, `#editor-container`, `#preview-container`, and `#controls-container` with detailed crawlable fallback descriptions to optimize Jobby for basic web crawlers.
+- **Improved Rich Snippets:** Enriched JSON-LD structured data with author, softwareVersion, licensing, and key capabilities metadata.
+- **Enhanced Testability:** Assigned unique `id` attributes to modal close actions, external guides, and formatting toolbar buttons to support robust non-regression automated browser testing.
+
 ## [1.8.2] - 2026-06-20
+
+### Added
+- **Native File System Access Editor Integration:** Replaced the local draft browser storage system with the browser's native File System Access API. Users can now open, save, and "Save As" actual `.md` or `.txt` files directly on their system explorer (with automatic fallbacks for non-supported browsers). This provides a standard desktop editor feel that is much more intuitive for non-power users.
+- **Save Dropdown Menu:** Grouped Save, Save As..., and Open options inside a neat, tactile save options dropdown menu next to the "Format" toolbar button, freeing up space in the header actions.
+- **Telemetry Pipeline (n8n & Notion):** Added a secure usage and event telemetry pipeline. Editor actions (e.g., session start, file open/save, print, copy, and ATS score changes) are captured by the client and sent to a secure backend proxy route `/api/telemetry`, which asynchronously forwards them to a self-hosted n8n webhook workflow (`n8n/jobby-telemetry.json`) to log insights directly into a Notion database.
 
 ### Fixed
 - **Printed Floating Menu:** Hid the folded controls dock, floating action buttons, and modal overlays in `@media print` queries to prevent them from showing on the exported PDF.

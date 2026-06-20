@@ -4,7 +4,7 @@ const path = require('path');
 const crypto = require('crypto');
 
 // Read version from package.json dynamically as the single source of truth
-let appVersion = '1.8.2';
+let appVersion = '1.9.0';
 try {
     const pkg = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8'));
     appVersion = pkg.version;
@@ -104,6 +104,124 @@ const server = http.createServer((req, res) => {
             } else {
                 res.writeHead(401, { 'Content-Type': 'application/json; charset=utf-8' });
                 res.end(JSON.stringify({ success: false, error: 'Unauthorized' }));
+            }
+        });
+        return;
+    }
+
+    if (cleanUrl === '/api/telemetry') {
+        if (req.method !== 'POST') {
+            res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8' });
+            res.end('Method Not Allowed');
+            return;
+        }
+
+        let body = '';
+        req.on('data', chunk => { body += chunk.toString(); });
+        req.on('end', () => {
+            let payload;
+            try { payload = JSON.parse(body); } catch(e) { payload = {}; }
+
+            // Respond to client immediately to prevent blocking
+            res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+            res.end(JSON.stringify({ success: true }));
+
+            // Asynchronously forward to n8n webhook
+            const webhookUrl = process.env.N8N_TELEMETRY_WEBHOOK_URL;
+            if (webhookUrl && webhookUrl.trim() !== "") {
+                try {
+                    const parsedUrl = new URL(webhookUrl);
+                    const protocol = parsedUrl.protocol === 'https:' ? require('https') : require('http');
+                    const payloadString = JSON.stringify(payload);
+                    const reqOpts = {
+                        hostname: parsedUrl.hostname,
+                        port: parsedUrl.port || (parsedUrl.protocol === 'https:' ? 443 : 80),
+                        path: parsedUrl.pathname + parsedUrl.search,
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Content-Length': Buffer.byteLength(payloadString)
+                        },
+                        timeout: 5000
+                    };
+
+                    const forwardReq = protocol.request(reqOpts, (forwardRes) => {
+                        forwardRes.resume(); // consume response
+                    });
+
+                    forwardReq.on('error', (err) => {
+                        console.error('[Telemetry] Failed to forward to n8n:', err.message);
+                    });
+
+                    forwardReq.on('timeout', () => {
+                        console.warn('[Telemetry] Forwarding request timed out');
+                        forwardReq.destroy();
+                    });
+
+                    forwardReq.write(payloadString);
+                    forwardReq.end();
+                } catch (e) {
+                    console.error('[Telemetry] Invalid webhook URL or request setup error:', e.message);
+                }
+            }
+        });
+        return;
+    }
+
+    if (cleanUrl === '/api/feedback') {
+        if (req.method !== 'POST') {
+            res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8' });
+            res.end('Method Not Allowed');
+            return;
+        }
+
+        let body = '';
+        req.on('data', chunk => { body += chunk.toString(); });
+        req.on('end', () => {
+            let payload;
+            try { payload = JSON.parse(body); } catch(e) { payload = {}; }
+
+            // Respond to client immediately to prevent blocking
+            res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
+            res.end(JSON.stringify({ success: true }));
+
+            // Asynchronously forward to n8n feedback webhook
+            const webhookUrl = process.env.N8N_FEEDBACK_WEBHOOK_URL;
+            if (webhookUrl && webhookUrl.trim() !== "") {
+                try {
+                    const parsedUrl = new URL(webhookUrl);
+                    const protocol = parsedUrl.protocol === 'https:' ? require('https') : require('http');
+                    const payloadString = JSON.stringify(payload);
+                    const reqOpts = {
+                        hostname: parsedUrl.hostname,
+                        port: parsedUrl.port || (parsedUrl.protocol === 'https:' ? 443 : 80),
+                        path: parsedUrl.pathname + parsedUrl.search,
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Content-Length': Buffer.byteLength(payloadString)
+                        },
+                        timeout: 5000
+                    };
+
+                    const forwardReq = protocol.request(reqOpts, (forwardRes) => {
+                        forwardRes.resume(); // consume response
+                    });
+
+                    forwardReq.on('error', (err) => {
+                        console.error('[Feedback] Failed to forward to n8n:', err.message);
+                    });
+
+                    forwardReq.on('timeout', () => {
+                        console.warn('[Feedback] Forwarding request timed out');
+                        forwardReq.destroy();
+                    });
+
+                    forwardReq.write(payloadString);
+                    forwardReq.end();
+                } catch (e) {
+                    console.error('[Feedback] Invalid webhook URL or request setup error:', e.message);
+                }
             }
         });
         return;

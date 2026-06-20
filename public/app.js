@@ -33,7 +33,7 @@ import { initPrint, updatePageBreaks } from './js/print.js';
 
 async function initializeJobby() {
     // --- Fetch config (including dynamic version) ---
-    let appVersion = '1.8.2';
+    let appVersion = '1.9.0';
     try {
         const configRes = await fetch('/api/config');
         if (configRes.ok) {
@@ -53,7 +53,8 @@ async function initializeJobby() {
         { id: 'preview-container', url: '/bricks/preview.html' },
         { id: 'controls-container', url: '/bricks/controls.html' },
         { id: 'about-modal', url: '/bricks/about-modal.html' },
-        { id: 'help-modal', url: '/bricks/help-modal.html' }
+        { id: 'help-modal', url: '/bricks/help-modal.html' },
+        { id: 'feedback-modal', url: '/bricks/feedback-modal.html' }
     ];
 
     try {
@@ -142,11 +143,146 @@ async function initializeJobby() {
     let currentResumeTitle = "resume";
     let styleConfig = { ...DEFAULT_STYLE_CONFIG };
     let templatesCssText = "";
+    let currentFileHandle = null;
+    let currentFileName = null;
 
     // Highlight & Cursor Synchronizer State
     let currentTokens = [];
     let lastCleanHTML = "";
     let isHighlightActive = false;
+
+    // --- Telemetry Subsystem ---
+    const sessionId = 'session_' + Math.random().toString(36).substring(2, 15) + '_' + Date.now();
+    let printCount = 0;
+    const buttonsClicked = new Set();
+
+    // Global listener to track used buttons
+    document.addEventListener('click', (event) => {
+        const btn = event.target.closest('button, .btn, .font-tile, .preset-btn, .toolbar-btn');
+        if (btn) {
+            const btnId = btn.id || btn.getAttribute('data-action') || btn.getAttribute('data-font') || btn.textContent.trim();
+            if (btnId) {
+                buttonsClicked.add(btnId);
+            }
+        }
+    });
+
+    function getOS() {
+        const userAgent = window.navigator.userAgent.toLowerCase();
+        const platform = window.navigator.platform?.toLowerCase() || '';
+        if (userAgent.indexOf("win") !== -1 || platform.indexOf("win") !== -1) return "Windows";
+        if (userAgent.indexOf("mac") !== -1 || platform.indexOf("mac") !== -1) return "macOS";
+        if (userAgent.indexOf("linux") !== -1 || platform.indexOf("linux") !== -1) return "Linux";
+        if (userAgent.indexOf("android") !== -1) return "Android";
+        if (userAgent.indexOf("iphone") !== -1 || userAgent.indexOf("ipad") !== -1) return "iOS";
+        return "Unknown";
+    }
+
+    function getOSVersion() {
+        const ua = window.navigator.userAgent;
+        if (ua.indexOf("Windows NT 10.0") !== -1) return "10/11";
+        if (ua.indexOf("Windows NT 6.3") !== -1) return "8.1";
+        if (ua.indexOf("Windows NT 6.2") !== -1) return "8";
+        if (ua.indexOf("Windows NT 6.1") !== -1) return "7";
+        const macMatch = ua.match(/Mac OS X (\d+[._]\d+[._]\d+)/);
+        if (macMatch) return macMatch[1].replace(/_/g, '.');
+        const androidMatch = ua.match(/Android (\d+(\.\d+)?)/);
+        if (androidMatch) return androidMatch[1];
+        const iosMatch = ua.match(/OS (\d+[._]\d+([._]\d+)?)/);
+        if (iosMatch) return iosMatch[1].replace(/_/g, '.');
+        return "Unknown";
+    }
+
+    function getBrowser() {
+        const userAgent = window.navigator.userAgent.toLowerCase();
+        if (userAgent.indexOf("edg/") !== -1) return "Edge";
+        if (userAgent.indexOf("chrome") !== -1 && userAgent.indexOf("safari") !== -1) return "Chrome";
+        if (userAgent.indexOf("firefox") !== -1) return "Firefox";
+        if (userAgent.indexOf("safari") !== -1) return "Safari";
+        return "Unknown";
+    }
+
+    function getBrowserVersion() {
+        const ua = window.navigator.userAgent;
+        const match = ua.match(/(edg|chrome|safari|firefox)\/?\s*(\d+(\.\d+)*)/i);
+        if (match && match[2]) {
+            return match[2];
+        }
+        return "Unknown";
+    }
+
+    function getDeviceType() {
+        const ua = window.navigator.userAgent.toLowerCase();
+        if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+            return "Tablet";
+        }
+        if (/Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
+            return "Mobile";
+        }
+        return "Desktop";
+    }
+
+    function getWordAndCharCount() {
+        const text = markdownInput ? markdownInput.value : "";
+        const charCount = text.length;
+        const cleanText = text.replace(/[*_#`\-|[\]()]/g, ' ');
+        const wordCount = cleanText.trim().split(/\s+/).filter(w => w.length > 0).length;
+        return { wordCount, charCount };
+    }
+
+    function getAtsMetrics() {
+        const scoreValText = document.getElementById('score-value');
+        const score = scoreValText ? parseInt(scoreValText.textContent) || 0 : 0;
+        
+        const failedRules = [];
+        const checklist = document.getElementById('ats-checklist');
+        if (checklist) {
+            checklist.querySelectorAll('li.fail span').forEach(el => {
+                failedRules.push(el.textContent.trim());
+            });
+        }
+        return { score, failedRules };
+    }
+
+    async function sendTelemetry(eventType, extraData = {}) {
+        try {
+            const counts = getWordAndCharCount();
+            const ats = getAtsMetrics();
+            
+            const payload = {
+                sessionId,
+                eventType,
+                wordCount: counts.wordCount,
+                charCount: counts.charCount,
+                activePreset: styleConfig.activePreset || 'classic',
+                fontFamily: styleConfig.fontFamily || 'Inter',
+                layoutMode: styleConfig.layoutMode || '1-column',
+                atsScore: ats.score,
+                failedRules: ats.failedRules,
+                os: getOS(),
+                osVersion: getOSVersion(),
+                browser: getBrowser(),
+                browserVersion: getBrowserVersion(),
+                deviceType: getDeviceType(),
+                printCount,
+                buttonsClicked: Array.from(buttonsClicked),
+                timestamp: new Date().toISOString(),
+                ...extraData
+            };
+
+            await fetch('/api/telemetry', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+        } catch (e) {
+            console.warn('[Telemetry] Error sending event:', e);
+        }
+    }
+
+    // Debounced telemetry for ATS Scorecard changes to avoid spamming
+    const debouncedAtsTelemetry = debounce(() => sendTelemetry('ATS Check'), 5000);
+
 
     // --- Undo/Redo Custom History Stack ---
     const historyStack = [];
@@ -205,6 +341,196 @@ async function initializeJobby() {
         saveToLocalStorage();
         updateUndoRedoButtonsState();
         markdownInput.focus();
+    }
+
+    function updateActiveFileNameDisplay() {
+        const activeFileNameEl = document.getElementById('active-file-name');
+        if (activeFileNameEl) {
+            if (currentFileName) {
+                activeFileNameEl.textContent = currentFileName;
+                activeFileNameEl.style.display = 'inline-block';
+                activeFileNameEl.title = currentFileName;
+            } else {
+                activeFileNameEl.textContent = '';
+                activeFileNameEl.style.display = 'none';
+            }
+        }
+    }
+
+    async function openFile() {
+        try {
+            if (typeof window.showOpenFilePicker !== 'function') {
+                openFileFallback();
+                return;
+            }
+            const [handle] = await window.showOpenFilePicker({
+                types: [
+                    {
+                        description: 'Markdown Files',
+                        accept: {
+                            'text/markdown': ['.md'],
+                            'text/plain': ['.txt']
+                        }
+                    }
+                ],
+                excludeAcceptAllOption: true,
+                multiple: false
+            });
+            const file = await handle.getFile();
+            
+            const reader = new FileReader();
+            const text = await new Promise((resolve, reject) => {
+                try {
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = () => reject(reader.error);
+                    reader.readAsText(file);
+                } catch (e) {
+                    reject(e);
+                }
+            });
+            
+            currentFileHandle = handle;
+            currentFileName = file.name;
+            
+            saveCurrentStateToHistory();
+            markdownInput.value = text;
+            runCompileMarkdown(text);
+            saveToLocalStorage();
+            saveHistoryState(text, 0, 0);
+            
+            updateActiveFileNameDisplay();
+            showToast(`Loaded ${currentFileName}`);
+            sendTelemetry('Open File', { filename: currentFileName, fallback: false });
+            markdownInput.focus();
+        } catch (err) {
+            if (err.name !== 'AbortError') {
+                console.error("Error opening file:", err);
+                showToast("Failed to open file. Trying fallback...");
+                openFileFallback();
+            }
+        }
+    }
+
+    function openFileFallback() {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.md,.txt,text/markdown,text/plain';
+        input.onchange = (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = () => {
+                const text = reader.result;
+                currentFileHandle = null;
+                currentFileName = file.name;
+                
+                saveCurrentStateToHistory();
+                markdownInput.value = text;
+                runCompileMarkdown(text);
+                saveToLocalStorage();
+                saveHistoryState(text, 0, 0);
+                
+                updateActiveFileNameDisplay();
+                showToast(`Loaded ${currentFileName}`);
+                sendTelemetry('Open File', { filename: currentFileName, fallback: true });
+                markdownInput.focus();
+            };
+            reader.onerror = (err) => {
+                console.error("Fallback open failed:", err);
+                showToast("Error reading file");
+            };
+            reader.readAsText(file);
+        };
+        input.click();
+    }
+
+    async function saveFile() {
+        if (currentFileHandle) {
+            try {
+                const options = { mode: 'readwrite' };
+                if ((await currentFileHandle.queryPermission(options)) !== 'granted') {
+                    if ((await currentFileHandle.requestPermission(options)) !== 'granted') {
+                        showToast("Permission denied to save file.");
+                        return;
+                    }
+                }
+                const writable = await currentFileHandle.createWritable();
+                await writable.write(markdownInput.value);
+                await writable.close();
+                showToast(`Saved to ${currentFileName}`);
+                sendTelemetry('Save File', { filename: currentFileName, fallback: false });
+            } catch (err) {
+                console.error("Error saving file:", err);
+                showToast("Failed to save. Trying Save As...");
+                await saveFileAs();
+            }
+        } else {
+            await saveFileAs();
+        }
+    }
+
+    async function saveFileAs() {
+        try {
+            if (typeof window.showSaveFilePicker !== 'function') {
+                saveFileFallback();
+                return;
+            }
+            const handle = await window.showSaveFilePicker({
+                suggestedName: currentFileName || (currentResumeTitle ? `${currentResumeTitle.toLowerCase().replace(/\s+/g, '_')}.md` : 'resume.md'),
+                types: [
+                    {
+                        description: 'Markdown Files',
+                        accept: {
+                            'text/markdown': ['.md']
+                        }
+                    }
+                ]
+            });
+            const file = await handle.getFile();
+            const writable = await handle.createWritable();
+            await writable.write(markdownInput.value);
+            await writable.close();
+            
+            currentFileHandle = handle;
+            currentFileName = file.name;
+            
+            updateActiveFileNameDisplay();
+            showToast(`Saved as ${currentFileName}`);
+            sendTelemetry('Save File As', { filename: currentFileName, fallback: false });
+        } catch (err) {
+            if (err.name !== 'AbortError') {
+                console.error("Save As failed:", err);
+                showToast("Failed to save file. Trying fallback...");
+                saveFileFallback();
+            }
+        }
+    }
+
+    function saveFileFallback() {
+        try {
+            const text = markdownInput.value;
+            const blob = new Blob([text], { type: 'text/markdown;charset=utf-8' });
+            const name = currentFileName || (currentResumeTitle ? `${currentResumeTitle.toLowerCase().replace(/\s+/g, '_')}.md` : 'resume.md');
+            
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = name;
+            document.body.appendChild(a);
+            a.click();
+            
+            setTimeout(() => {
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 100);
+            
+            showToast("Downloaded file via browser fallback!");
+            sendTelemetry('Save File As', { filename: name, fallback: true });
+        } catch (err) {
+            console.error("Fallback save failed:", err);
+            showToast("Failed to download file");
+        }
     }
 
     function updateUndoRedoButtonsState() {
@@ -278,7 +604,10 @@ async function initializeJobby() {
     const canvasWrapper = document.querySelector('.preview-canvas-wrapper');
     const zoomResetBtn = document.getElementById('zoom-reset');
 
-    const btnSaveBank = document.getElementById('btn-save-bank');
+    const btnSaveDropdownToggle = document.getElementById('btn-save-dropdown-toggle');
+    const saveDropdownMenu = document.getElementById('save-dropdown-menu');
+    const btnSaveFile = document.getElementById('btn-save-file');
+    const btnSaveAsFile = document.getElementById('btn-save-as-file');
     const btnLoadBank = document.getElementById('btn-load-bank');
     const btnLoadSample = document.getElementById('btn-load-sample');
     const btnLoadChangelog = document.getElementById('btn-load-changelog');
@@ -402,6 +731,7 @@ async function initializeJobby() {
         runAtsChecker(text, result.html);
         updatePageBreaks(resumeOutput);
         updateSyntaxHighlight(markdownInput, highlightCode, cbSyntaxHighlight);
+        debouncedAtsTelemetry();
     }
 
     function sanitizePresetName(name) {
@@ -616,6 +946,26 @@ async function initializeJobby() {
             redoState();
         }
     });
+    
+    // Global keyboard shortcuts for File management
+    window.addEventListener('keydown', (e) => {
+        const isCtrl = e.ctrlKey || e.metaKey;
+        if (!isCtrl) return;
+        
+        const key = e.key.toLowerCase();
+        
+        if (key === 's') {
+            e.preventDefault();
+            if (e.shiftKey) {
+                saveFileAs();
+            } else {
+                saveFile();
+            }
+        } else if (key === 'o') {
+            e.preventDefault();
+            openFile();
+        }
+    });
 
     // --- Layout & Customizer Repositioning Button Toggles ---
     function setupButtonGroup(groupId, hiddenSelectId, onChangeCallback) {
@@ -717,6 +1067,12 @@ async function initializeJobby() {
         if (pageFormatDropdown && pageFormatDropdown.classList.contains('show')) {
             if (!pageFormatDropdown.contains(e.target) && (!btnPageFormat || !btnPageFormat.contains(e.target))) {
                 pageFormatDropdown.classList.remove('show');
+            }
+        }
+
+        if (saveDropdownMenu && saveDropdownMenu.classList.contains('show')) {
+            if (!saveDropdownMenu.contains(e.target) && (!btnSaveDropdownToggle || !btnSaveDropdownToggle.contains(e.target))) {
+                saveDropdownMenu.classList.remove('show');
             }
         }
     });
@@ -889,32 +1245,37 @@ async function initializeJobby() {
         saveToLocalStorage();
     };
 
-    // Save and Load Banked Markdown
-    if (btnSaveBank) {
-        btnSaveBank.addEventListener('click', (e) => {
+    // Save and Load System Files
+    if (btnSaveDropdownToggle && saveDropdownMenu) {
+        btnSaveDropdownToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            saveDropdownMenu.classList.toggle('show');
+        });
+    }
+
+    if (btnSaveFile) {
+        btnSaveFile.addEventListener('click', async (e) => {
             e.preventDefault();
-            const currentMd = markdownInput.value;
-            localStorage.setItem('ats_banked_markdown', currentMd);
-            showToast("Markdown saved to local bank!");
+            if (saveDropdownMenu) saveDropdownMenu.classList.remove('show');
+            await saveFile();
+            markdownInput.focus();
+        });
+    }
+
+    if (btnSaveAsFile) {
+        btnSaveAsFile.addEventListener('click', async (e) => {
+            e.preventDefault();
+            if (saveDropdownMenu) saveDropdownMenu.classList.remove('show');
+            await saveFileAs();
             markdownInput.focus();
         });
     }
 
     if (btnLoadBank) {
-        btnLoadBank.addEventListener('click', (e) => {
+        btnLoadBank.addEventListener('click', async (e) => {
             e.preventDefault();
-            const bankedMd = localStorage.getItem('ats_banked_markdown');
-            if (!bankedMd) {
-                showToast("No banked Markdown found. Save a draft first!");
-                markdownInput.focus();
-                return;
-            }
-            saveCurrentStateToHistory();
-            markdownInput.value = bankedMd;
-            runCompileMarkdown(bankedMd);
-            saveToLocalStorage();
-            saveHistoryState(bankedMd, 0, 0);
-            showToast("Banked Markdown loaded! (Ctrl+Z to undo)");
+            if (saveDropdownMenu) saveDropdownMenu.classList.remove('show');
+            await openFile();
             markdownInput.focus();
         });
     }
@@ -1119,6 +1480,9 @@ async function initializeJobby() {
                     runCompileMarkdown(sampleText);
                     saveToLocalStorage();
                     saveHistoryState(sampleText, 0, 0);
+                    currentFileHandle = null;
+                    currentFileName = null;
+                    updateActiveFileNameDisplay();
                     showToast("Julien Avarre sample loaded! (Ctrl+Z to undo)");
                     markdownInput.focus();
                 })
@@ -1145,6 +1509,9 @@ async function initializeJobby() {
                     runCompileMarkdown(changelogText);
                     saveToLocalStorage();
                     saveHistoryState(changelogText, 0, 0);
+                    currentFileHandle = null;
+                    currentFileName = null;
+                    updateActiveFileNameDisplay();
                     showToast("Jobby updates loaded! (Ctrl+Z to undo)");
                     markdownInput.focus();
                 })
@@ -1164,7 +1531,11 @@ async function initializeJobby() {
         runCompileMarkdown("");
         saveToLocalStorage();
         saveHistoryState("", 0, 0);
+        currentFileHandle = null;
+        currentFileName = null;
+        updateActiveFileNameDisplay();
         showToast("Editor cleared! (Ctrl+Z to undo)");
+        sendTelemetry('Clear');
         markdownInput.focus();
     });
 
@@ -1172,7 +1543,10 @@ async function initializeJobby() {
     btnCopyMd.addEventListener('click', (e) => {
         e.preventDefault();
         navigator.clipboard.writeText(markdownInput.value)
-            .then(() => showToast("Markdown copied to clipboard!"))
+            .then(() => {
+                showToast("Markdown copied to clipboard!");
+                sendTelemetry('Copy Markdown');
+            })
             .catch(err => console.error(err));
         markdownInput.focus();
     });
@@ -1239,6 +1613,170 @@ async function initializeJobby() {
         });
     }
 
+    // --- Feedback Modal Listeners & Star Rating ---
+    const btnFeedback = document.getElementById('btn-feedback');
+    const feedbackModal = document.getElementById('feedback-modal');
+
+    if (btnFeedback && feedbackModal) {
+        btnFeedback.addEventListener('click', () => {
+            feedbackModal.classList.add('show');
+            resetFeedbackForm();
+        });
+
+        const closeBtn = feedbackModal.querySelector('#btn-close-feedback-modal');
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                feedbackModal.classList.remove('show');
+            });
+        }
+
+        const cancelBtn = feedbackModal.querySelector('#btn-cancel-feedback');
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', () => {
+                feedbackModal.classList.remove('show');
+            });
+        }
+
+        const closeSuccessBtn = feedbackModal.querySelector('#btn-close-success');
+        if (closeSuccessBtn) {
+            closeSuccessBtn.addEventListener('click', () => {
+                feedbackModal.classList.remove('show');
+            });
+        }
+
+        feedbackModal.addEventListener('click', (e) => {
+            if (e.target === feedbackModal) feedbackModal.classList.remove('show');
+        });
+
+        // Interactive Star Rating Logic
+        const stars = feedbackModal.querySelectorAll('.star-btn');
+        const starsInput = feedbackModal.querySelector('#feedback-stars');
+        const starError = feedbackModal.querySelector('#star-error');
+
+        stars.forEach(star => {
+            star.addEventListener('click', () => {
+                const val = parseInt(star.getAttribute('data-value'));
+                starsInput.value = val;
+                starError.style.display = 'none';
+                
+                // Highlight stars
+                stars.forEach(s => {
+                    const sVal = parseInt(s.getAttribute('data-value'));
+                    if (sVal <= val) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+            });
+
+            star.addEventListener('mouseenter', () => {
+                const val = parseInt(star.getAttribute('data-value'));
+                stars.forEach(s => {
+                    const sVal = parseInt(s.getAttribute('data-value'));
+                    if (sVal <= val) {
+                        s.classList.add('hover-active');
+                    } else {
+                        s.classList.remove('hover-active');
+                    }
+                });
+            });
+
+            star.addEventListener('mouseleave', () => {
+                stars.forEach(s => s.classList.remove('hover-active'));
+            });
+        });
+
+        // Form submission
+        const feedbackForm = feedbackModal.querySelector('#feedback-form');
+        const loadingOverlay = feedbackModal.querySelector('#feedback-loading');
+        const successOverlay = feedbackModal.querySelector('#feedback-success');
+
+        feedbackForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Perform manual validations
+            const nameInput = feedbackModal.querySelector('#feedback-name');
+            const emailInput = feedbackModal.querySelector('#feedback-email');
+            const categorySelect = feedbackModal.querySelector('#feedback-category');
+            const messageInput = feedbackModal.querySelector('#feedback-message');
+
+            let isValid = true;
+
+            // Name validation
+            if (!nameInput.value.trim()) {
+                nameInput.classList.add('error');
+                isValid = false;
+            } else {
+                nameInput.classList.remove('error');
+            }
+
+            // Stars validation
+            const ratingVal = parseInt(starsInput.value);
+            if (!ratingVal || ratingVal < 1 || ratingVal > 5) {
+                starError.style.display = 'block';
+                isValid = false;
+            } else {
+                starError.style.display = 'none';
+            }
+
+            // Message validation
+            if (!messageInput.value.trim()) {
+                messageInput.classList.add('error');
+                isValid = false;
+            } else {
+                messageInput.classList.remove('error');
+            }
+
+            if (!isValid) return;
+
+            // Form is valid - submit feedback
+            loadingOverlay.style.display = 'flex';
+
+            const payload = {
+                name: nameInput.value.trim(),
+                email: emailInput.value.trim(),
+                stars: ratingVal,
+                category: categorySelect.value,
+                message: messageInput.value.trim(),
+                timestamp: new Date().toISOString()
+            };
+
+            try {
+                const res = await fetch('/api/feedback', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (res.ok) {
+                    loadingOverlay.style.display = 'none';
+                    successOverlay.style.display = 'flex';
+                } else {
+                    throw new Error('Server returned status ' + res.status);
+                }
+            } catch (err) {
+                console.error('[Feedback] Submit failed:', err);
+                loadingOverlay.style.display = 'none';
+                showToast("Failed to submit feedback. Please try again.");
+            }
+        });
+
+        function resetFeedbackForm() {
+            feedbackForm.reset();
+            starsInput.value = "0";
+            starError.style.display = 'none';
+            stars.forEach(s => s.classList.remove('active', 'hover-active'));
+            loadingOverlay.style.display = 'none';
+            successOverlay.style.display = 'none';
+            
+            const nameInput = feedbackModal.querySelector('#feedback-name');
+            const messageInput = feedbackModal.querySelector('#feedback-message');
+            nameInput.classList.remove('error');
+            messageInput.classList.remove('error');
+        }
+    }
+
     window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             if (aboutModal && aboutModal.classList.contains('show')) {
@@ -1246,6 +1784,9 @@ async function initializeJobby() {
             }
             if (helpModal && helpModal.classList.contains('show')) {
                 helpModal.classList.remove('show');
+            }
+            if (feedbackModal && feedbackModal.classList.contains('show')) {
+                feedbackModal.classList.remove('show');
             }
         }
     });
@@ -1534,6 +2075,15 @@ async function initializeJobby() {
     // Launch loading
     await loadWorkspaceData();
     updateSyncButtonState();
+
+    // Trigger Session Start telemetry
+    sendTelemetry('Session Start');
+
+    // Register beforeprint telemetry listener
+    window.addEventListener('beforeprint', () => {
+        printCount++;
+        sendTelemetry('Print PDF');
+    });
 
     // --- DESIGN PANEL HIDING & FLOATING UNFOLD BUTTON ---
     const btnCloseDesignPanel = document.getElementById('btn-close-design-panel');

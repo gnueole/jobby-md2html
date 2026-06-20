@@ -1,6 +1,6 @@
 {
   "name": "jobby",
-  "version": "1.8.2",
+  "version": "1.9.0",
   "description": "Jobby ATS Markdown resume editor",
   "main": "server.js",
   "scripts": {
@@ -13,5 +13,7 @@
   ],
   "author": "Julien (Éole) Avarre",
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {
+    "playwright": "^1.61.0"
+  }
 }

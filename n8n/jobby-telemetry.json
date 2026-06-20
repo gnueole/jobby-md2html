@@ -1,0 +1,134 @@
+{
+  "name": "Jobby - Telemetry to Notion",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "jobby-telemetry",
+        "options": {
+          "responseCode": {
+            "values": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        250,
+        240
+      ],
+      "id": "webhook-trigger",
+      "name": "Webhook"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "={{ $env.NOTION_TELEMETRY_DATABASE_ID || \"385ee932-db12-80ee-8794-d789554478b8\" }}",
+          "mode": "list"
+        },
+        "title": "Session ID",
+        "simple": false,
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Session ID|title",
+              "title": "={{ $json.body.sessionId }}"
+            },
+            {
+              "key": "Event Type|select",
+              "selectValue": "={{ $json.body.eventType }}"
+            },
+            {
+              "key": "Word Count|number",
+              "numberValue": "={{ $json.body.wordCount || 0 }}"
+            },
+            {
+              "key": "Char Count|number",
+              "numberValue": "={{ $json.body.charCount || 0 }}"
+            },
+            {
+              "key": "Active Preset|select",
+              "selectValue": "={{ $json.body.activePreset || \"default\" }}"
+            },
+            {
+              "key": "Font Family|select",
+              "selectValue": "={{ $json.body.fontFamily || \"Inter\" }}"
+            },
+            {
+              "key": "Layout Mode|select",
+              "selectValue": "={{ $json.body.layoutMode || \"letter\" }}"
+            },
+            {
+              "key": "ATS Score|number",
+              "numberValue": "={{ $json.body.atsScore || 0 }}"
+            },
+            {
+              "key": "Print Count|number",
+              "numberValue": "={{ $json.body.printCount || 0 }}"
+            },
+            {
+              "key": "Buttons Clicked|multi_select",
+              "multiSelectValue": "={{ $json.body.buttonsClicked }}"
+            },
+            {
+              "key": "Platform OS|select",
+              "selectValue": "={{ $json.body.os || \"Unknown\" }}"
+            },
+            {
+              "key": "Platform Version|rich_text",
+              "textContent": "={{ $json.body.osVersion || \"Unknown\" }}"
+            },
+            {
+              "key": "Browser Name|select",
+              "selectValue": "={{ $json.body.browser || \"Unknown\" }}"
+            },
+            {
+              "key": "Browser Version|rich_text",
+              "textContent": "={{ $json.body.browserVersion || \"Unknown\" }}"
+            },
+            {
+              "key": "Device Type|select",
+              "selectValue": "={{ $json.body.deviceType || \"Unknown\" }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        500,
+        240
+      ],
+      "id": "notion-node",
+      "name": "Notion",
+      "credentials": {
+        "notionApi": {
+          "id": "KYrsxF0plfLkPpqW",
+          "name": "Notion LinkedIn Auto"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Notion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "active": true,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  }
+}

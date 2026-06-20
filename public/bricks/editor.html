@@ -1,6 +1,8 @@
 <div class="panel-header">
+    <h2 class="sr-only">Markdown Editor Panel</h2>
     <div class="header-left">
-        <span class="status-indicator markdown-dot">MARKDOWN</span>
+        <span class="status-indicator markdown-dot" id="markdown-status-indicator">MARKDOWN</span>
+        <span id="active-file-name" class="active-file-name" style="font-size: 11px; color: var(--text-secondary); font-weight: 500; margin-left: 8px; background-color: var(--bg-button-secondary); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border-color); max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: none;"></span>
         <button type="button" class="btn-markdown-help-header" id="btn-markdown-help-header" title="What is Markdown?">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 4px; vertical-align: middle;">
                 <circle cx="12" cy="12" r="10"/>
@@ -18,24 +20,46 @@
             </svg>
             <span class="btn-text">Format</span>
         </button>
-        <button id="btn-save-bank" type="button" class="btn-icon" title="Save current Markdown to local bank">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
-                <polyline points="17 21 17 13 7 13 7 21"/>
-                <polyline points="7 3 7 8 15 8"/>
-            </svg>
-            <span class="btn-text">Save</span>
-        </button>
-        <button id="btn-load-bank" type="button" class="btn-icon" title="Load banked Markdown">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                <polyline points="17 8 12 3 7 8"/>
-                <line x1="12" y1="3" x2="12" y2="15"/>
-            </svg>
-            <span class="btn-text">Load</span>
-        </button>
+        <div class="save-dropdown-wrapper">
+            <button id="btn-save-dropdown-toggle" type="button" class="btn-icon" title="Save Options">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                    <polyline points="17 21 17 13 7 13 7 21"/>
+                    <polyline points="7 3 7 8 15 8"/>
+                </svg>
+                <span class="btn-text">Save</span>
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-left: 2px;">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </button>
+            <div id="save-dropdown-menu" class="save-dropdown-menu">
+                <button id="btn-save-file" type="button" class="save-option" title="Save file to system (Ctrl+S)">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                        <polyline points="17 21 17 13 7 13 7 21"/>
+                        <polyline points="7 3 7 8 15 8"/>
+                    </svg>
+                    Save
+                </button>
+                <button id="btn-save-as-file" type="button" class="save-option" title="Save as a new file (Ctrl+Shift+S)">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                        <polyline points="17 21 17 13 7 13 7 21"/>
+                        <polyline points="7 3 7 8 15 8"/>
+                    </svg>
+                    Save As...
+                </button>
+                <button id="btn-load-bank" type="button" class="save-option" title="Open a Markdown file from your system (Ctrl+O)">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="17 8 12 3 7 8"/>
+                        <line x1="12" y1="3" x2="12" y2="15"/>
+                    </svg>
+                    Open
+                </button>
+            </div>
+        </div>
         <button id="btn-load-sample" type="button" class="btn-icon" title="Load sample: Julien Avarre">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2">
@@ -62,10 +86,13 @@
         <button id="btn-clear" type="button" class="btn-icon text-danger" title="Clear Editor">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="3 6 5 6 21 6"></polyline>
-                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                <line x1="10" y1="11" x2="10" y2="17"></line>
-                <line x1="14" y1="11" x2="14" y2="17"></line>
+                <path d="M5 5l6.5 7.5"></path>
+                <path d="M10 11.5l3 3.5"></path>
+                <path d="M11.5 13.5c-2.5 3-2.5 6.5.5 8s7-1 8.5-3c1.5-2 .5-5.5-2.5-7l-6.5 2z"></path>
+                <path d="M14 17.5c1 1.5 2.5 2 4 2"></path>
+                <path d="M16 16c1 1 2.5 1 3.5 1.5"></path>
+                <path d="M3 16.5c1.5 0 2.5.5 3 1"></path>
+                <path d="M4 19.5c1.5 0 2.5.5 3 1"></path>
             </svg>
         </button>
     </div>
@@ -73,13 +100,13 @@
 <div class="editor-container">
     <div id="editor-toolbar" class="editor-toolbar hidden">
         <div class="toolbar-group">
-            <button type="button" class="toolbar-btn" data-action="undo" title="Undo (Ctrl+Z)">
+            <button id="btn-tb-undo" type="button" class="toolbar-btn" data-action="undo" title="Undo (Ctrl+Z)">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M3 7v6h6"/>
                     <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/>
                 </svg>
             </button>
-            <button type="button" class="toolbar-btn" data-action="redo" title="Redo (Ctrl+Y)">
+            <button id="btn-tb-redo" type="button" class="toolbar-btn" data-action="redo" title="Redo (Ctrl+Y)">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 7v6h-6"/>
                     <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3l3 2.7"/>
@@ -88,33 +115,33 @@
         </div>
         <div class="toolbar-separator"></div>
         <div class="toolbar-group">
-            <button type="button" class="toolbar-btn" data-action="h1" title="Heading 1 (Ctrl+1)">H1</button>
-            <button type="button" class="toolbar-btn" data-action="h2" title="Heading 2 (Ctrl+2)">H2</button>
-            <button type="button" class="toolbar-btn" data-action="h3" title="Heading 3 (Ctrl+3)">H3</button>
+            <button id="btn-tb-h1" type="button" class="toolbar-btn" data-action="h1" title="Heading 1 (Ctrl+1)">H1</button>
+            <button id="btn-tb-h2" type="button" class="toolbar-btn" data-action="h2" title="Heading 2 (Ctrl+2)">H2</button>
+            <button id="btn-tb-h3" type="button" class="toolbar-btn" data-action="h3" title="Heading 3 (Ctrl+3)">H3</button>
         </div>
         <div class="toolbar-separator"></div>
         <div class="toolbar-group">
-            <button type="button" class="toolbar-btn" data-action="bold" title="Bold (Ctrl+B)">
+            <button id="btn-tb-bold" type="button" class="toolbar-btn" data-action="bold" title="Bold (Ctrl+B)">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/><path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/></svg>
             </button>
-            <button type="button" class="toolbar-btn" data-action="italic" title="Italic (Ctrl+I)">
+            <button id="btn-tb-italic" type="button" class="toolbar-btn" data-action="italic" title="Italic (Ctrl+I)">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="4" x2="10" y2="4"/><line x1="14" y1="20" x2="5" y2="20"/><line x1="15" y1="4" x2="9" y2="20"/></svg>
             </button>
-            <button type="button" class="toolbar-btn" data-action="link" title="Link (Ctrl+K)">
+            <button id="btn-tb-link" type="button" class="toolbar-btn" data-action="link" title="Link (Ctrl+K)">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
             </button>
-            <button type="button" class="toolbar-btn" data-action="list" title="Bullet List (-)">
+            <button id="btn-tb-list" type="button" class="toolbar-btn" data-action="list" title="Bullet List (-)">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
             </button>
         </div>
         <div class="toolbar-separator"></div>
         <div class="toolbar-group">
-            <button type="button" class="toolbar-btn text-accent" data-action="accent" title="Accent Color (Ctrl+E)">
+            <button id="btn-tb-accent" type="button" class="toolbar-btn text-accent" data-action="accent" title="Accent Color (Ctrl+E)">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 4.5px;">
                     <path d="M12 20h9"/>
                     <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
                 </svg>Accent</button>
-            <button type="button" class="toolbar-btn text-muted" data-action="muted" title="Muted Text (Ctrl+M)">
+            <button id="btn-tb-muted" type="button" class="toolbar-btn text-muted" data-action="muted" title="Muted Text (Ctrl+M)">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 4.5px;">
                     <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
                     <line x1="1" y1="1" x2="23" y2="23"/>
@@ -122,10 +149,10 @@
         </div>
         <div class="toolbar-separator"></div>
         <div class="toolbar-group">
-            <button type="button" class="toolbar-btn" data-action="move-up" title="Move Up (Ctrl+▲)">
+            <button id="btn-tb-move-up" type="button" class="toolbar-btn" data-action="move-up" title="Move Up (Ctrl+▲)">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
             </button>
-            <button type="button" class="toolbar-btn" data-action="move-down" title="Move Down (Ctrl+▼)">
+            <button id="btn-tb-move-down" type="button" class="toolbar-btn" data-action="move-down" title="Move Down (Ctrl+▼)">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
             </button>
         </div>
@@ -140,7 +167,7 @@
         <div class="toolbar-spacer"></div>
         <div class="toolbar-group">
             <div class="shortcut-tooltip-container">
-                <button class="toolbar-btn shortcut-help-btn" title="Keyboard Shortcuts Help" type="button">
+                <button id="btn-tb-shortcuts" class="toolbar-btn shortcut-help-btn" title="Keyboard Shortcuts Help" type="button">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 4.5px;">
                         <circle cx="12" cy="12" r="10"/>
                         <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
@@ -180,6 +207,7 @@
     </div>
     <div class="textarea-syntax-wrapper syntax-active">
         <pre id="markdown-highlight" aria-hidden="true"><code id="highlight-code"></code></pre>
+        <label for="markdown-input" class="sr-only">Markdown Source Code</label>
         <textarea id="markdown-input" spellcheck="false" placeholder="# YOUR NAME..."></textarea>
     </div>
 </div>

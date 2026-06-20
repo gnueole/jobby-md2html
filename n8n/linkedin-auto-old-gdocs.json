@@ -50,10 +50,10 @@
         "resource": "databasePage",
         "databaseId": {
           "__rl": true,
-          "value": "127bad1f-b25a-4b6b-8eec-7b342e3aa504",
+          "value": "385ee932-db12-80ee-8794-d789554478b8",
           "mode": "list",
           "cachedResultName": "Linked Detector",
-          "cachedResultUrl": "https://www.notion.so/127bad1fb25a4b6b8eec7b342e3aa504"
+          "cachedResultUrl": "https://www.notion.so/385ee932db1280ee8794d789554478b8"
         },
         "title": "LinkedIn Detector",
         "simple": false,

@@ -9,7 +9,7 @@
     </svg>
     <h1>Jobby <span>Markdown</span> Editor</h1>
 </div>
-<div class="actions">
+<nav class="actions" aria-label="Application Actions">
     <button id="btn-theme-toggle" class="btn btn-secondary" title="Toggle application theme">
         <span id="theme-btn-icon" style="display: flex; align-items: center;"></span>
         <span id="theme-btn-text">Theme: Auto</span>
@@ -22,6 +22,13 @@
             <line x1="12" y1="8" x2="12.01" y2="8" />
         </svg>
         <span>About</span>
+    </button>
+    <button id="btn-feedback" class="btn btn-secondary" title="Send feedback or report bugs">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        </svg>
+        <span>Feedback</span>
     </button>
     <button id="btn-developer-toggle" class="btn btn-secondary" title="Developer Tools">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -39,4 +46,4 @@
         </svg>
         <span>Print / PDF</span>
     </button>
-</div>
+</nav>

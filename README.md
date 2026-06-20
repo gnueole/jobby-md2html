@@ -19,22 +19,46 @@ All your content and style changes (colors, fonts, margins) are safely stored in
 </p>
 
 
+---
+
+## 🖨️ Generate PDF for Recruiters
+
+When you are satisfied with your layout:
+
+1. Click the **Print / PDF** button at the top right.
+2. In your browser’s print dialog, select **Save as PDF** as the destination.
+3. Check **Background graphics** to preserve colors, and uncheck **Headers and footers** for a clean page.
+4. Save the file!
+
 
 ## 🔍 Table of Contents
 
 - [📋 Requirements](#-requirements)
 - [🛠️ Tech Stack Choices](#️-tech-stack-choices)
 - [📦 Installation & Setup](#-installation--setup)
+- [🖨️ Generate PDF for Recruiters](#-generate-pdf-for-recruiters)
 - [⚙️ System Architecture & Automated Workflows](#️-system-architecture--automated-workflows)
-- [📁 Project File Structure](#-project-file-structure)
+- [📊 Telemetry & Usage Analytics](#-telemetry--usage-analytics)
+- [📁 Project File Structure](architecture.md)
 - [📝 Specific Resume Directives (Guide)](#-specific-resume-directives-guide)
 - [⚡ Interactive Editing & Layout Customizations](#-interactive-editing--layout-customizations)
-- [🖨️ Generate PDF for Recruiters](#-generate-pdf-for-recruiters)
 - [📸 Screenshot Gallery](#-screenshot-gallery)
 - [📑 Annex: Axiom Log Segregation & Configuration](#-annex-axiom-log-segregation--configuration)
 - [✨ Wishlist & Future Improvements](#-wishlist--future-improvements)
 - [🔗 Jobby Project Links](#-jobby-project-links)
 - [📄 License](#-license)
+
+---
+
+## 🖨️ Generate PDF for Recruiters
+
+When you are satisfied with your layout:
+
+1. Click the **Print / PDF** button at the top right.
+2. In your browser’s print dialog, select **Save as PDF** as the destination.
+3. Check **Background graphics** to preserve colors, and uncheck **Headers and footers** for a clean page.
+4. Save the file!
+
 
 ## 📋 Requirements
 
@@ -77,6 +101,7 @@ Jobby is built on a lightweight, modular, and self-hosted stack designed for max
 
 For step-by-step local running instructions (using either local Node.js or Docker WSL), please refer to the:
 👉 **[Installation Guide](INSTALL.md)**
+
 
 ---
 
@@ -155,29 +180,59 @@ To manage your application history and personalize your CV, the system is backed
   3. It passes this data to the **Gotenberg PDF rendering engine** running in the container.
   4. Gotenberg compiles the documents into a clean, A4-formatted, ATS-compliant PDF which is then saved back to Notion or prepared for your download.
 
+---
+
+## 📊 Telemetry & Usage Analytics
+
+Jobby includes a lightweight, secure telemetry pipeline to monitor editor usage and track candidate progress. 
+
+### How It Works
+1. **Event Capture:** The frontend editor captures key user events (e.g., Session Start, Open/Save File, Copy Markdown, Print PDF, and ATS Scorecard calculations).
+2. **Secure Proxy:** Events are POSTed to the local `/api/telemetry` endpoint. This acts as a proxy, forwarding events to n8n without exposing credentials to the client.
+3. **n8n Workflow:** A dedicated self-hosted n8n workflow (`n8n/jobby-telemetry.json`) is triggered via a webhook.
+4. **Notion Database:** The n8n workflow logs the events into a central Notion Database (capturing metrics like session ID, event type, word/character count, ATS score, design preset, layout format, font family, browser, and OS).
+
+### Configuration
+To activate telemetry, ensure `N8N_TELEMETRY_WEBHOOK_URL` is set in your environment (managed securely via Doppler or in your `.env` file):
+```env
+N8N_TELEMETRY_WEBHOOK_URL="http://localhost:5678/webhook/jobby-telemetry"
+```
+
+## 💬 User Feedback Pipeline
+
+Jobby includes a secure, interactive feedback collection system that allows users to submit suggestions, bug reports, and ratings directly from the editor header.
+
+### How It Works
+1. **Interactive Form:** Users click the **Feedback** button in Jobby's header actions to open a premium dialog form collecting name, email (optional), rating stars, feedback category (Comment, Improvement, Bug), and description text.
+2. **Secure Proxy:** Submissions are POSTed to the local `/api/feedback` endpoint. This acts as a proxy, forwarding events to n8n without exposing credentials to the client.
+3. **n8n Workflow:** A dedicated self-hosted n8n workflow (`n8n/jobby-feedback.json`) is triggered via a webhook.
+4. **Notion Database:** The n8n workflow records the feedback details in a dedicated Notion Database called **Jobby Feedback**.
+
+### Configuration
+To activate the feedback pipeline, ensure `N8N_FEEDBACK_WEBHOOK_URL` is set in your environment:
+```env
+N8N_FEEDBACK_WEBHOOK_URL="http://localhost:5678/webhook/jobby-feedback"
+```
+
+
+## 🔍 SEO, Semantic HTML & Accessibility
+
+Jobby is designed to be highly indexable, accessible, and structured according to modern SEO best practices:
+
+- **Enhanced Meta Tags & Canonical URL:** The document head includes complete Open Graph (OG) and Twitter card metadata (including `og:locale` and `og:site_name`) to support social preview snippets. Canonical link tags prevent index dilution.
+- **Rich Schema Structured Data:** A complete JSON-LD `SoftwareApplication` schema describes Jobby, its author, MIT licensing, and key capabilities to support Google Rich Snippets.
+- **Noscript Fallback Content:** An elegant, styled fallback page is served inside a `<noscript>` tag, alerting users without JavaScript while explaining how to configure the editor.
+- **Search-Engine-Crawlable Panel Placeholders:** To guarantee search engine crawlability even if JavaScript is not executed by bots, the container tags (`#header-container`, `#editor-container`, etc.) are pre-populated with detailed description templates in the raw HTML. These are seamlessly replaced by JavaScript on initialization.
+- **Logical Heading Outline:** The application maintains a strict heading hierarchy starting with a single page `<h1>` and nesting panel sections under logical `<h2>` landmark headers.
+- **WAI-ARIA & Screen Reader Support:** Interactive regions are labeled with appropriate roles and descriptions (e.g. `aria-label`, `.sr-only` screen-reader helper labels on inputs/sliders).
+- **Testability IDs:** Interactive buttons, sliders, text inputs, and modals are assigned unique, descriptive `id` attributes to facilitate automated non-regression testing.
+
+---
 
 ## 📁 Project File Structure
 
-- `server.js`: Ultra‑lightweight local server written in Node.js. It serves the application.
-- `public/index.html`, `public/style.css`: HTML structure and layout styles for the editor.
-- `public/app.js`: Application entry point initializing ES modules.
-- `public/js/`: Modular client-side JS subsystems:
-  - `ats.js`: ATS scoring and resume analysis engine.
-  - `bookmarklet.js`: Helper scripts to generate and compile LinkedIn scraper bookmarklets.
-  - `config.js`: Configuration storage management, default styles, and sync states.
-  - `developer.js`: Auth UX, inline credentials modal, and developer settings panel.
-  - `exports.js`: Markdown, JSON import/export, and raw configuration copy handlers.
-  - `highlight.js`, `syntax.js`: Synchronous syntax highlighting engine for the editor.
-  - `parser.js`: Custom markdown-to-HTML parsing rules aligned with Gotenberg compiler.
-  - `shortcuts.js`: Keyboard hotkeys and structural section swapping.
-  - `styles.js`: Dynamic styling injector, cosmetics, and slider values handlers.
-  - `theme.js`, `zoom.js`, `print.js`, `panning.js`, `utils.js`: Theme, zoom, scaling, panning, print previews, and core DOM utility helpers.
-- `public/templates.css`: Rendering styles for A4 page (screen + PDF print rules).
-- `public/sample.md`: Default resume template (example author) provided as a starting point.
-- `public/resume.md`: **[Optional Backup]** A Markdown resume file placed on disk to bootstrap the editor if browser `localStorage` is empty.
-- `public/config.json`: **[Optional Backup]** Custom layout configuration settings placed on disk to bootstrap the styles if browser `localStorage` is empty.
-
-*Note: Placing `resume.md` and `config.json` in the `public` directory allows you to version-control and distribute default templates via Git.*
+For details on the project structure and frontend/backend files, please refer to:
+👉 **[Project Architecture & File Structure](architecture.md)**
 
 ## 📝 Specific Resume Directives (Guide)
 
@@ -228,8 +283,12 @@ You can configure the appearance of your sidebar column in 2-column mode inside 
 * The Markdown editor syntax highlighter updates synchronously on typing for instant visual highlighting.
 * The heavier HTML rendering engine, page-break layout engine, and saving operations are debounced by 200ms to keep the editing experience buttery-smooth even for long resumes.
 
-### 8. Save & Load Local Markdown Drafts
-* Introduced **Save** and **Load** buttons in the editor actions toolbar to allow users to bank a local copy of their Markdown to `localStorage` and load it at any time with a confirmation prompt.
+### 8. System File Editor Integration (Open, Save, Save As)
+* Integrated the browser's native **File System Access API** directly into the editor actions toolbar, treating Jobby like a standard desktop text editor (highly intuitive for non-power users).
+* Clicking **Save** (or pressing `Ctrl+S`) saves the resume changes directly back to the open file on your system disk. If no file is open, it automatically triggers **Save As...**.
+* Clicking **Save As...** (or pressing `Ctrl+Shift+S`) opens a system file picker dialog to choose a file name and path on your computer.
+* Clicking **Open** (or pressing `Ctrl+O`) from the save dropdown menu opens a standard system file picker to choose and load any markdown (`.md` / `.txt`) file from your hard drive directly into the editor.
+* Features automatic graceful degradation to standard HTML file upload `<input type="file">` and virtual download link `<a>` operations in browsers that do not support the File System Access API.
 
 ### 9. All Preset Buttons Renameable
 * Every color preset button (B&W, Dark, Corporate Blue, Soft Blue, Soft Green, Soft Red, Custom, and Funky) can be renamed in place by double-clicking it. Custom names are persisted in local storage.
@@ -263,16 +322,6 @@ You can configure the appearance of your sidebar column in 2-column mode inside 
 ### 17. Dynamic Web App Manifest Integration
 * Created a standard `manifest.json` under the public directory. The server (`server.js`) intercepts `/manifest.json` requests at runtime and dynamically injects the application version from `package.json`, ensuring `package.json` remains the single source of truth for the entire app.
 
-## 🖨️ Generate PDF for Recruiters
-
-When you are satisfied with your layout:
-
-1. Click the **Print / PDF** button at the top right.
-2. In your browser’s print dialog, select **Save as PDF** as the destination.
-3. Check **Background graphics** to preserve colors, and uncheck **Headers and footers** for a clean page.
-4. Save the file!
-
----
 
 ## 📸 Screenshot Gallery
 

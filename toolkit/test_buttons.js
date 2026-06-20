@@ -26,8 +26,51 @@ async function runTests() {
     console.log(`======================================================\n`);
 
     const browser = await chromium.launch({ headless: true });
-    const context = await browser.newContext();
+    const context = await browser.newContext({
+        viewport: { width: 1600, height: 900 },
+        permissions: ['clipboard-read', 'clipboard-write']
+    });
     const page = await context.newPage();
+
+    // Mock File System Access API
+    await page.addInitScript(() => {
+        window.mockSavedContent = "";
+        window.showSaveFilePicker = async () => {
+            return {
+                name: "test.md",
+                getFile: async () => new File([""], "test.md"),
+                createWritable: async () => {
+                    let content = "";
+                    return {
+                        write: async (data) => { content = data; },
+                        close: async () => {
+                            window.mockSavedContent = content;
+                        }
+                    };
+                },
+                queryPermission: async () => 'granted',
+                requestPermission: async () => 'granted'
+            };
+        };
+        
+        window.showOpenFilePicker = async () => {
+            console.log("MOCK: showOpenFilePicker called. Saved content size:", window.mockSavedContent ? window.mockSavedContent.length : 0);
+            return [{
+                name: "test.md",
+                getFile: async () => {
+                    console.log("MOCK: getFile called. Content is:", window.mockSavedContent);
+                    return new File([window.mockSavedContent || ""], "test.md", { type: "text/markdown" });
+                },
+                queryPermission: async () => 'granted',
+                requestPermission: async () => 'granted'
+            }];
+        };
+    });
+
+    // Forward browser console logs to Node console
+    page.on('console', msg => {
+        console.log(`   [Browser Console] ${msg.type()}: ${msg.text()}`);
+    });
 
     let dialogCount = 0;
     
@@ -69,6 +112,29 @@ async function runTests() {
             throw new Error('Help modal failed to close.');
         }
 
+        // 2b. Test "Feedback" Form Modal
+        console.log('📌 Test: "Feedback" modal trigger and cancel...');
+        const feedbackBtn = page.locator('#btn-feedback');
+        const feedbackModal = page.locator('#feedback-modal');
+        
+        await feedbackBtn.click();
+        await page.waitForTimeout(300);
+        const isFeedbackOpen = await feedbackModal.evaluate(el => el.classList.contains('show'));
+        if (isFeedbackOpen) {
+            console.log('   ✅ Feedback modal opened successfully.');
+        } else {
+            throw new Error('Feedback modal failed to open.');
+        }
+        
+        await page.click('#btn-cancel-feedback');
+        await page.waitForTimeout(300);
+        const isFeedbackClosed = await feedbackModal.evaluate(el => !el.classList.contains('show'));
+        if (isFeedbackClosed) {
+            console.log('   ✅ Feedback modal closed successfully via Cancel button.\n');
+        } else {
+            throw new Error('Feedback modal failed to close.');
+        }
+
         // 3. Test "Format" toolbar toggle
         console.log('📌 Test: "Format" toolbar toggle button...');
         const toggleToolbarBtn = page.locator('#btn-toggle-toolbar');
@@ -97,24 +163,28 @@ async function runTests() {
         }
 
         // 4. Test "Save" button
-        console.log('📌 Test: "Save" bank button...');
+        console.log('📌 Test: "Save" button...');
         const testContent = '# Test Non-Regression Jobby';
         await page.fill('#markdown-input', testContent);
-        await page.click('#btn-save-bank');
         
-        // Check local storage
-        const savedMd = await page.evaluate(() => localStorage.getItem('ats_banked_markdown'));
-        if (savedMd === testContent) {
-            console.log('   ✅ Markdown successfully saved to localStorage (ats_banked_markdown).');
-        } else {
-            throw new Error(`LocalStorage content mismatch: expected "${testContent}" but got "${savedMd}"`);
-        }
+        // Open the dropdown menu first
+        await page.click('#btn-save-dropdown-toggle');
+        await page.waitForTimeout(100);
+        await page.click('#btn-save-file');
+        
+        // Wait for mockSavedContent to be populated by showSaveFilePicker flow
+        await page.waitForFunction(
+            (expected) => window.mockSavedContent === expected,
+            testContent,
+            { timeout: 5000 }
+        );
+        console.log('   ✅ Markdown successfully saved via native file picker mockup.');
         
         // Check toast notification
         const toast = page.locator('#toast');
         await toast.waitFor({ state: 'visible', timeout: 2000 });
         const toastText = await toast.textContent();
-        if (toastText.includes('saved to local bank')) {
+        if (toastText.includes('Saved as')) {
             console.log('   ✅ Toast notification displayed correctly.\n');
         } else {
             throw new Error(`Unexpected toast message: "${toastText}"`);
@@ -136,20 +206,26 @@ async function runTests() {
             throw new Error('Editor was not cleared.');
         }
 
-        // 6. Test "Load" button
-        console.log('📌 Test: "Load" bank button...');
+        // 6. Test "Open" button
+        console.log('📌 Test: "Open" button...');
         const loadDialogsBefore = dialogCount;
+        
+        // Open the dropdown menu first
+        await page.click('#btn-save-dropdown-toggle');
+        await page.waitForTimeout(100);
         await page.click('#btn-load-bank');
+        
         if (dialogCount > loadDialogsBefore) {
             console.log('   ✅ Confirm dialog intercept occurred and accepted.');
         }
         
-        const afterLoadVal = await page.inputValue('#markdown-input');
-        if (afterLoadVal === testContent) {
-            console.log('   ✅ Banked markdown successfully restored to editor.\n');
-        } else {
-            throw new Error(`Editor content loaded mismatch: expected "${testContent}" but got "${afterLoadVal}"`);
-        }
+        // Wait for the textarea to be populated with the testContent
+        await page.waitForFunction(
+            (expected) => document.getElementById('markdown-input').value === expected,
+            testContent,
+            { timeout: 5000 }
+        );
+        console.log('   ✅ Opened file successfully restored to editor.\n');
 
         // 7. Test "Sample" button
         console.log('📌 Test: "Sample" button...');
@@ -186,13 +262,12 @@ async function runTests() {
         // 9. Test "Copy" button
         console.log('📌 Test: "Copy" button...');
         await page.click('#btn-copy-md');
-        await toast.waitFor({ state: 'visible', timeout: 2000 });
-        const copyToastText = await toast.textContent();
-        if (copyToastText.includes('copied to clipboard')) {
-            console.log('   ✅ Toast copy notification displayed correctly.\n');
-        } else {
-            throw new Error(`Unexpected copy toast message: "${copyToastText}"`);
-        }
+        await page.waitForFunction(
+            () => document.getElementById('toast').textContent.toLowerCase().includes('copied to clipboard'),
+            null,
+            { timeout: 5000 }
+        );
+        console.log('   ✅ Toast copy notification displayed correctly.\n');
 
         console.log(`======================================================`);
         console.log(`🎉 SUCCESS: All editor header button tests passed!`);
