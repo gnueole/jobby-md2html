@@ -27,3 +27,13 @@ This document details the file structure and component architecture of the Jobby
 - `public/config.json`: **[Optional Backup]** Custom layout configuration settings placed on disk to bootstrap the styles if browser `localStorage` is empty.
 
 *Note: Placing `resume.md` and `config.json` in the `public` directory allows you to version-control and distribute default templates via Git.*
+
+---
+
+## 📊 Telemetry & Data Pipeline
+
+Jobby includes a lightweight telemetry pipeline to monitor editor performance, calculate layout rendering speeds, and track feature adoption.
+
+- **Strict Anonymity**: Telemetry collection is strictly anonymous. No personal information, name, email, IP address, or resume text is ever collected or transmitted. A random session identifier is used solely to correlate editor actions.
+- **Experimental Abstractions**: The backend currently proxies telemetry events to an n8n webhook and stores logs. Please note that **Notion** (acting as the metrics database) and **Axiom** (used for centralized logging) are current experimental integrations that are subject to change in future iterations.
+
