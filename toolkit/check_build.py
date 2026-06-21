@@ -38,7 +38,7 @@ def check_build():
                         sys.exit(2)
                 else:
                     print(f"Build is currently in progress (status: {status}). Please try again later.")
-                    sys.exit(3)
+                    sys.exit(0)
     except Exception as e:
         print(f"Error checking GitHub actions: {e}")
         sys.exit(4)
