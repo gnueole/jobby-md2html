@@ -1352,9 +1352,10 @@ input[type="color"]::-webkit-color-swatch {
     background-color: var(--bg-modal-directives);
     border: 1px solid var(--border-color);
     border-radius: 12px;
-    padding: 18px;
+    padding: 20px;
     display: flex;
-    gap: 14px;
+    flex-direction: column;
+    gap: 8px;
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -1362,20 +1363,6 @@ input[type="color"]::-webkit-color-swatch {
     border-color: rgba(124, 58, 237, 0.3);
     transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
-}
-
-.about-card-icon {
-    font-size: 22px;
-    background: var(--accent-glow);
-    border-radius: 10px;
-    width: 42px;
-    height: 42px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    color: var(--accent);
-    border: 1px solid rgba(124, 58, 237, 0.15);
 }
 
 .about-card-body {
