@@ -118,9 +118,9 @@ async function initializeJobby() {
     const helpModalLogoTrigger = document.querySelector('#help-modal .modal-logo');
     const helpModalLogoAnimate = document.querySelector('#help-modal .modal-logo svg');
 
-    setupLogoRolling(mainHeaderLogo, mainHeaderLogo);
-    if (mainHeaderLogo) {
-        mainHeaderLogo.addEventListener('click', () => {
+    setupLogoRolling(brandContainer, mainHeaderLogo);
+    if (brandContainer) {
+        brandContainer.addEventListener('click', () => {
             showToast(t('toasts.easter_egg'));
         });
     }
