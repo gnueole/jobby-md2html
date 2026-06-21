@@ -337,6 +337,7 @@
     "webhook_missing": "Vă rugăm să configurați mai întâi URL-ul webhook în setările de dezvoltator!",
     "sync_success": "Configurația de design s-a sincronizat cu succes!",
     "sync_fail": "Sincronizarea a eșuat: {message}",
-    "easter_egg": "Secret Găsit! Ai rotit logoul 🌀"
+    "easter_egg": "Secret Găsit! Ai rotit logoul 🌀",
+    "tutorial_complete": "Mulțumim pentru vizionare! Ești gata pentru editarea modernă a CV-ului în Markdown! 🚀"
   }
 }

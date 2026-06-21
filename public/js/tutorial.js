@@ -3,6 +3,9 @@
  * Interactive animated popup tutorial demonstrating Markdown in 20 seconds.
  */
 
+import { showToast } from './utils.js';
+import { t } from './i18n.js';
+
 let styleEl = null;
 let overlayEl = null;
 
@@ -93,7 +96,7 @@ export const MarkdownPopupTutorial = {
                 .tutorial-body {
                     display: grid;
                     grid-template-columns: 1fr 1fr;
-                    height: 280px;
+                    height: 340px;
                     background: var(--bg-editor, #030712);
                 }
                 .tutorial-editor-column {
@@ -177,6 +180,18 @@ export const MarkdownPopupTutorial = {
                     color: var(--text-secondary, #cbd5e1);
                     line-height: 1.5;
                 }
+                .tutorial-preview-column ul {
+                    margin: 0;
+                    padding-left: 20px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 6px;
+                }
+                .tutorial-preview-column li {
+                    font-size: 13px;
+                    color: var(--text-secondary, #cbd5e1);
+                    line-height: 1.5;
+                }
                 .entrance-animation {
                     animation: entrance-fade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
                 }
@@ -254,6 +269,9 @@ export const MarkdownPopupTutorial = {
                             <div>3</div>
                             <div>4</div>
                             <div>5</div>
+                            <div>6</div>
+                            <div>7</div>
+                            <div>8</div>
                         </div>
                         <div class="editor-textarea-wrapper">
                             <div class="editor-lines" id="editor-lines">
@@ -262,6 +280,9 @@ export const MarkdownPopupTutorial = {
                                 <div class="editor-line" id="tut-line-3"><span class="line-content"></span></div>
                                 <div class="editor-line" id="tut-line-4"><span class="line-content"></span></div>
                                 <div class="editor-line" id="tut-line-5"><span class="line-content"></span></div>
+                                <div class="editor-line" id="tut-line-6"><span class="line-content"></span></div>
+                                <div class="editor-line" id="tut-line-7"><span class="line-content"></span></div>
+                                <div class="editor-line" id="tut-line-8"><span class="line-content"></span></div>
                             </div>
                         </div>
                     </div>
@@ -326,7 +347,7 @@ export const MarkdownPopupTutorial = {
         btnReplay.disabled = true;
 
         // Reset editor & preview
-        for (let i = 1; i <= 5; i++) {
+        for (let i = 1; i <= 8; i++) {
             const line = overlayEl.querySelector(`#tut-line-${i}`);
             line.className = 'editor-line';
             line.innerHTML = '<span class="line-content"></span>';
@@ -337,79 +358,100 @@ export const MarkdownPopupTutorial = {
         const previewCol = overlayEl.querySelector('#tutorial-preview');
         previewCol.innerHTML = '';
 
-        const typeSpeed = 50; // Typing timing within 35-60ms range
+        const typeSpeed = 30; // Polished typing speed
 
-        // 1) Type "# "
-        await this.typeText(1, '# ', typeSpeed);
-        this.colorizeToken(1, '# ');
-        await this.sleep(400); // 300-600ms range
-
-        // 2) Type heading text "Welcome to markdown"
-        await this.typeText(1, 'Welcome to markdown', typeSpeed);
+        // 1. Heading 1 - Markdown is Structure
+        await this.typeText(1, '# Markdown is Structure', typeSpeed);
         await this.sleep(500);
-
-        // 3) Hit <RET> (Enter)
-        await this.triggerEnter(1, { tag: 'h1', text: 'Welcome to markdown' });
+        await this.triggerEnter(1, { tag: 'h1', text: 'Markdown is Structure' });
         await this.sleep(600);
 
-        // 4) Next line: Type "## "
-        await this.typeText(2, '## ', typeSpeed);
-        this.colorizeToken(2, '## ');
+        // 2. Heading 2 - Focus on content first
+        await this.typeText(2, '## Focus on content first', typeSpeed);
+        await this.sleep(500);
+        await this.triggerEnter(2, { tag: 'h2', text: 'Focus on content first' });
+        await this.sleep(600);
+
+        // 3. Move down past blank line 3
+        await this.moveCaret(3);
         await this.sleep(400);
 
-        // Type "subtile"
-        await this.typeText(2, 'subtile', typeSpeed);
-        await this.sleep(500);
-
-        // 5) Hit <RET> (Enter)
-        await this.triggerEnter(2, { tag: 'h2', text: 'subtile' });
+        // 4. Paragraph with bold formatting
+        await this.moveCaret(4);
+        await this.typeText(4, 'No complex formatting, just **plain text** with simple marks.', typeSpeed);
+        await this.sleep(600);
+        await this.triggerEnter(4, { tag: 'p', html: 'No complex formatting, just <strong>plain text</strong> with simple marks.' });
         await this.sleep(600);
 
-        // 6) Insert one blank line
-        await this.moveCaret(3);
-        await this.sleep(500);
-
-        // 7) Type: Jobby uses this for your resume.
-        await this.moveCaret(4);
-        await this.typeText(4, 'Jobby uses this for your resume.', typeSpeed);
-        await this.sleep(500);
-
-        // 8) Insert another blank line (paragraph separation)
+        // 5. Move down past blank line 5
         await this.moveCaret(5);
-        this.renderPreview({ tag: 'p', text: 'Jobby uses this for your resume.' });
+        await this.sleep(400);
+
+        // 6. Bullet 1
+        await this.moveCaret(6);
+        await this.typeText(6, '- Easy to read, write, and maintain', typeSpeed);
+        await this.sleep(500);
+        await this.triggerEnter(6, { tag: 'li', html: 'Easy to read, write, and maintain' });
+        await this.sleep(500);
+
+        // 7. Bullet 2
+        await this.moveCaret(7);
+        await this.typeText(7, '- Parses beautifully for resume compilers', typeSpeed);
+        await this.sleep(500);
+        await this.triggerEnter(7, { tag: 'li', html: 'Parses beautifully for resume compilers' });
+        await this.sleep(500);
+
+        // 8. Bullet 3
+        await this.moveCaret(8);
+        await this.typeText(8, '- Highly preferred by modern AI engines', typeSpeed);
+        await this.sleep(500);
+        this.renderPreview({ tag: 'li', html: 'Highly preferred by modern AI engines' });
 
         this.isAnimating = false;
         btnReplay.disabled = false;
     },
 
+    highlightMarkdown(text) {
+        let html = text;
+        
+        // Escape HTML characters first to avoid issues
+        html = html
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;');
+        
+        // 1. Headers: #, ##, ###
+        if (html.startsWith('# ')) {
+            html = `<span class="token"># </span>${html.substring(2)}`;
+        } else if (html.startsWith('## ')) {
+            html = `<span class="token">## </span>${html.substring(3)}`;
+        } else if (html.startsWith('### ')) {
+            html = `<span class="token">### </span>${html.substring(4)}`;
+        }
+        
+        // 2. List items: - or *
+        else if (html.startsWith('- ')) {
+            html = `<span class="token">- </span>${html.substring(2)}`;
+        } else if (html.startsWith('* ')) {
+            html = `<span class="token">* </span>${html.substring(2)}`;
+        }
+        
+        // 3. Bold: **text**
+        html = html.replace(/\*\*([^*]+)\*\*/g, '<span class="token">**</span><strong>$1</strong><span class="token">**</span>');
+        
+        return html;
+    },
+
     async typeText(lineIndex, text, speed) {
         const line = overlayEl.querySelector(`#tut-line-${lineIndex}`);
         const contentSpan = line.querySelector('.line-content');
-        let currentText = contentSpan.textContent || '';
+        let currentText = '';
         
         for (let i = 0; i < text.length; i++) {
             currentText += text[i];
-            contentSpan.textContent = currentText;
-            
-            // Check for immediate token coloration when space is typed
-            if (currentText === '# ' || currentText === '## ') {
-                this.colorizeToken(lineIndex, currentText);
-            }
-            
+            contentSpan.innerHTML = this.highlightMarkdown(currentText);
             await this.sleep(speed);
         }
-    },
-
-    colorizeToken(lineIndex, tokenText) {
-        const line = overlayEl.querySelector(`#tut-line-${lineIndex}`);
-        const contentSpan = line.querySelector('.line-content');
-        
-        // Wrap token in styled span and append standard text if any
-        const plainText = contentSpan.textContent.substring(tokenText.length);
-        contentSpan.innerHTML = `<span class="token">${tokenText}</span>${plainText}`;
-        
-        // Add subtle rule clicked glow
-        line.classList.add('token-glow');
     },
 
     async triggerEnter(lineIndex, previewSpec) {
@@ -429,7 +471,7 @@ export const MarkdownPopupTutorial = {
 
     async moveCaret(lineIndex) {
         // Remove caret and active class from any current lines
-        for (let i = 1; i <= 5; i++) {
+        for (let i = 1; i <= 8; i++) {
             const line = overlayEl.querySelector(`#tut-line-${i}`);
             line.classList.remove('active');
             const caret = line.querySelector('.caret');
@@ -446,10 +488,27 @@ export const MarkdownPopupTutorial = {
 
     renderPreview(spec) {
         const previewCol = overlayEl.querySelector('#tutorial-preview');
-        const el = document.createElement(spec.tag);
-        el.className = 'entrance-animation';
-        el.textContent = spec.text;
-        previewCol.appendChild(el);
+        if (spec.tag === 'li') {
+            // Find if there's an existing ul at the end
+            let ul = previewCol.lastElementChild;
+            if (!ul || ul.tagName !== 'UL') {
+                ul = document.createElement('ul');
+                previewCol.appendChild(ul);
+            }
+            const li = document.createElement('li');
+            li.className = 'entrance-animation';
+            li.innerHTML = spec.html || spec.text;
+            ul.appendChild(li);
+        } else {
+            const el = document.createElement(spec.tag);
+            el.className = 'entrance-animation';
+            if (spec.html) {
+                el.innerHTML = spec.html;
+            } else {
+                el.textContent = spec.text;
+            }
+            previewCol.appendChild(el);
+        }
     },
 
     exit() {
@@ -466,38 +525,8 @@ export const MarkdownPopupTutorial = {
             overlayEl.remove();
             overlayEl = null;
 
-            // Show centered text: "Done."
-            const doneOverlay = document.createElement('div');
-            doneOverlay.style.position = 'fixed';
-            doneOverlay.style.top = '0';
-            doneOverlay.style.left = '0';
-            doneOverlay.style.width = '100vw';
-            doneOverlay.style.height = '100vh';
-            doneOverlay.style.background = 'var(--bg-main, #090d16)';
-            doneOverlay.style.display = 'flex';
-            doneOverlay.style.alignItems = 'center';
-            doneOverlay.style.justifyContent = 'center';
-            doneOverlay.style.zIndex = '99999';
-            
-            const doneText = document.createElement('div');
-            doneText.className = 'done-screen';
-            doneText.textContent = 'Done.';
-            
-            doneOverlay.appendChild(doneText);
-            document.body.appendChild(doneOverlay);
-
-            setTimeout(() => {
-                doneText.classList.add('show');
-            }, 50);
-
-            // Unmount done overlay after 1.5 seconds
-            setTimeout(() => {
-                doneText.classList.remove('show');
-                setTimeout(() => {
-                    doneOverlay.remove();
-                }, 400);
-            }, 1500);
-
+            // Show thankful toast notification encouraging the user
+            showToast(t('toasts.tutorial_complete'));
         }, 400);
     }
 };

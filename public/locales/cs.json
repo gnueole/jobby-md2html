@@ -337,6 +337,7 @@
     "webhook_missing": "Nakonfigurujte prosím nejprve URL adresu webhooku ve vývojářských nástrojích!",
     "sync_success": "Konfigurace designu byla úspěšně synchronizována!",
     "sync_fail": "Synchronizace selhala: {message}",
-    "easter_egg": "Tajemství nalezeno! Roztočili jste logo 🌀"
+    "easter_egg": "Tajemství nalezeno! Roztočili jste logo 🌀",
+    "tutorial_complete": "Děkujeme za zhlédnutí! Jste připraveni na moderní úpravu životopisů v Markdownu! 🚀"
   }
 }

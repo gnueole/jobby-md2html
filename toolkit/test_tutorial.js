@@ -71,7 +71,7 @@ async function runTutorialTests() {
         const btnReplayActive = page.locator('#btn-replay:not([disabled])');
         
         // Wait until replay button is enabled (not disabled)
-        await btnReplayActive.waitFor({ state: 'visible', timeout: 15000 });
+        await btnReplayActive.waitFor({ state: 'visible', timeout: 25000 });
         console.log(`   ✅ Typewriter animation complete, replay button is enabled.`);
 
         // 3. Verify preview contents
@@ -88,9 +88,9 @@ async function runTutorialTests() {
         console.log(`   ✅ Rendered H2: "${h2Text}"`);
         console.log(`   ✅ Rendered Paragraph: "${pText}"`);
 
-        if (h1Text !== 'Welcome to markdown') throw new Error(`H1 text mismatch!`);
-        if (h2Text !== 'subtile') throw new Error(`H2 text mismatch!`);
-        if (pText !== 'Jobby uses this for your resume.') throw new Error(`Paragraph text mismatch!`);
+        if (h1Text !== 'Markdown is Structure') throw new Error(`H1 text mismatch!`);
+        if (h2Text !== 'Focus on content first') throw new Error(`H2 text mismatch!`);
+        if (pText !== 'No complex formatting, just plain text with simple marks.') throw new Error(`Paragraph text mismatch!`);
 
         // 4. Test "Explain me again" (Replay)
         console.log(`📌 Testing "Explain me again" (Replay) button...`);
@@ -103,7 +103,7 @@ async function runTutorialTests() {
         if (!isBtnDisabled) throw new Error(`Replay button should be disabled during animation!`);
 
         // Wait for it to complete again
-        await btnReplayActive.waitFor({ state: 'visible', timeout: 15000 });
+        await btnReplayActive.waitFor({ state: 'visible', timeout: 25000 });
         console.log(`   ✅ Replay animation successfully completed.`);
 
         // 5. Test "Markdown is simple" (Exit)
@@ -111,17 +111,19 @@ async function runTutorialTests() {
         const btnExit = page.locator('#btn-exit');
         await btnExit.click();
 
-        // Overlay should unmount and show "Done." overlay
-        console.log(`⏳ Waiting for done overlay...`);
-        const doneScreen = page.locator('.done-screen');
-        await doneScreen.waitFor({ state: 'visible', timeout: 5000 });
-        const doneText = await doneScreen.textContent();
-        console.log(`   ✅ Done Screen reads: "${doneText}"`);
-        if (doneText !== 'Done.') throw new Error(`Expected done text "Done.", got "${doneText}"`);
+        // Overlay should unmount and show thankful toast
+        console.log(`⏳ Waiting for Jobby toast notification...`);
+        const toast = page.locator('#toast');
+        await toast.waitFor({ state: 'visible', timeout: 5000 });
+        const toastText = await toast.textContent();
+        console.log(`   ✅ Toast notification reads: "${toastText}"`);
+        if (!toastText.includes('ready for modern Markdown CV editing')) {
+            throw new Error(`Expected thankful toast notification, got "${toastText}"`);
+        }
 
-        // Done screen should disappear
-        await doneScreen.waitFor({ state: 'hidden', timeout: 5000 });
-        console.log(`   ✅ Done Screen dismissed successfully.`);
+        // Overlay should be gone
+        await overlay.waitFor({ state: 'detached', timeout: 5000 });
+        console.log(`   ✅ Tutorial overlay unmounted successfully.`);
 
         console.log(`\n======================================================`);
         console.log(`🎉 SUCCESS: All tutorial popup tests passed!`);

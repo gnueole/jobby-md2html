@@ -337,6 +337,7 @@
     "webhook_missing": "Bitte konfigurieren Sie zuerst Ihre Webhook-URL in den Entwickler-Einstellungen!",
     "sync_success": "Design erfolgreich synchronisiert!",
     "sync_fail": "Synchronisation fehlgeschlagen: {message}",
-    "easter_egg": "Geheimnis gefunden! Du hast das Logo gedreht 🌀"
+    "easter_egg": "Geheimnis gefunden! Du hast das Logo gedreht 🌀",
+    "tutorial_complete": "Danke fürs Anschauen! Du bist bereit für die moderne Markdown-Lebenslaufbearbeitung! 🚀"
   }
 }

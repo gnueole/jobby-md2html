@@ -337,6 +337,7 @@
     "webhook_missing": "Veuillez d'abord configurer l'URL de votre Webhook dans les paramètres développeur !",
     "sync_success": "Configuration de style synchronisée avec succès !",
     "sync_fail": "Échec de la synchronisation : {message}",
-    "easter_egg": "Secret Trouvé ! Le logo a tourné 🌀"
+    "easter_egg": "Secret Trouvé ! Le logo a tourné 🌀",
+    "tutorial_complete": "Merci d'avoir regardé ! Vous êtes prêt pour la rédaction moderne de CV en Markdown ! 🚀"
   }
 }

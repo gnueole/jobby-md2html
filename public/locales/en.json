@@ -337,6 +337,7 @@
     "webhook_missing": "Please configure your Webhook URL in Developer Tools first!",
     "sync_success": "Design configuration synced successfully!",
     "sync_fail": "Sync failed: {message}",
-    "easter_egg": "Secret Found! You rolled the logo 🌀"
+    "easter_egg": "Secret Found! You rolled the logo 🌀",
+    "tutorial_complete": "Thanks for watching! You are ready for modern Markdown CV editing! 🚀"
   }
 }
