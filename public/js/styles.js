@@ -111,15 +111,13 @@ export function applyStyles(styleConfig) {
     
     // Apply sheet classes
     resumeOutput.classList.remove('format-a4', 'format-letter', 'format-legal', 'format-a5', 'letter-format');
-    if (format === 'letter') {
-        resumeOutput.classList.add('letter-format', 'format-letter');
-    } else if (format === 'legal') {
-        resumeOutput.classList.add('format-legal');
-    } else if (format === 'a5') {
-        resumeOutput.classList.add('format-a5');
-    } else {
-        resumeOutput.classList.add('format-a4');
-    }
+    const formatClasses = {
+        'letter': ['letter-format', 'format-letter'],
+        'legal': ['format-legal'],
+        'a5': ['format-a5']
+    };
+    const classesToAdd = formatClasses[format] || ['format-a4'];
+    resumeOutput.classList.add(...classesToAdd);
 
     // Update active class in dropdown options
     const formatOptions = document.querySelectorAll('.format-option');
@@ -131,10 +129,12 @@ export function applyStyles(styleConfig) {
         }
     });
 
-    let pageSize = 'A4';
-    if (format === 'letter') pageSize = 'letter';
-    else if (format === 'legal') pageSize = 'legal';
-    else if (format === 'a5') pageSize = 'A5';
+    const pageSizes = {
+        'letter': 'letter',
+        'legal': 'legal',
+        'a5': 'A5'
+    };
+    const pageSize = pageSizes[format] || 'A4';
     
     printPageStyle.textContent = `
         @media print {
@@ -311,39 +311,25 @@ export function updateActivePresetBtn(styleConfig) {
 
     if (!presetClassicNb || !presetDarkMode || !presetCleanBlue) return;
 
-    presetClassicNb.classList.remove('active');
-    presetDarkMode.classList.remove('active');
-    presetCleanBlue.classList.remove('active');
-    if (presetSoftBlue) presetSoftBlue.classList.remove('active');
-    if (presetGreen) presetGreen.classList.remove('active');
-    if (presetSoftRed) presetSoftRed.classList.remove('active');
-    if (presetCustom1) presetCustom1.classList.remove('active');
-    if (presetCustom2) presetCustom2.classList.remove('active');
+    const presetButtons = {
+        'classic': presetClassicNb,
+        'dark': presetDarkMode,
+        'clean-blue': presetCleanBlue,
+        'soft-blue': presetSoftBlue,
+        'green': presetGreen,
+        'soft-red': presetSoftRed,
+        'custom-1': presetCustom1,
+        'custom-2': presetCustom2
+    };
+
+    Object.values(presetButtons).forEach(btn => {
+        if (btn) btn.classList.remove('active');
+    });
 
     if (styleConfig.activePreset) {
-        if (styleConfig.activePreset === 'classic') {
-            presetClassicNb.classList.add('active');
-            return;
-        } else if (styleConfig.activePreset === 'dark') {
-            presetDarkMode.classList.add('active');
-            return;
-        } else if (styleConfig.activePreset === 'clean-blue') {
-            presetCleanBlue.classList.add('active');
-            return;
-        } else if (styleConfig.activePreset === 'soft-blue') {
-            if (presetSoftBlue) presetSoftBlue.classList.add('active');
-            return;
-        } else if (styleConfig.activePreset === 'green') {
-            if (presetGreen) presetGreen.classList.add('active');
-            return;
-        } else if (styleConfig.activePreset === 'soft-red') {
-            if (presetSoftRed) presetSoftRed.classList.add('active');
-            return;
-        } else if (styleConfig.activePreset === 'custom-1') {
-            if (presetCustom1) presetCustom1.classList.add('active');
-            return;
-        } else if (styleConfig.activePreset === 'custom-2') {
-            if (presetCustom2) presetCustom2.classList.add('active');
+        const btn = presetButtons[styleConfig.activePreset];
+        if (btn) {
+            btn.classList.add('active');
             return;
         }
     }

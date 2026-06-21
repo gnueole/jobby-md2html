@@ -1,10 +1,50 @@
-/**
- * Jobby Markdown Editor - utils.js
- * Common utility helper functions.
- */
+import { t, currentLocale } from './i18n.js';
 
-// Show toast alerts in a non-intrusive stack
-export function showToast(message) {
+const defaultTitles = {
+    en: { success: "Success", error: "Error", warning: "Warning", info: "Info", welcome: "Welcome", easter_egg: "Secret Found!" },
+    fr: { success: "Succès", error: "Erreur", warning: "Avertissement", info: "Info", welcome: "Bienvenue", easter_egg: "Secret Trouvé !" },
+    cs: { success: "Úspěch", error: "Chyba", warning: "Varování", info: "Info", welcome: "Vítejte", easter_egg: "Tajemství nalezeno!" },
+    es: { success: "Éxito", error: "Error", warning: "Advertencia", info: "Info", welcome: "Bienvenido", easter_egg: "¡Secreto Encontrado!" },
+    it: { success: "Successo", error: "Errore", warning: "Attenzione", info: "Info", welcome: "Benvenuto", easter_egg: "Segreto Trovato!" },
+    de: { success: "Erfolgreich", error: "Fehler", warning: "Warnung", info: "Info", welcome: "Willkommen", easter_egg: "Geheimnis gefunden!" },
+    ro: { success: "Succes", error: "Eroare", warning: "Avertisment", info: "Info", welcome: "Bun venit", easter_egg: "Secret Găsit!" }
+};
+
+const toastConfig = [
+    {
+        type: 'success',
+        icon: '✅',
+        keywords: ['success', 'saved', 'loaded', 'synced', 'copied']
+    },
+    {
+        type: 'error',
+        icon: '❌',
+        keywords: ['fail', 'error', 'unauthorized', 'denied']
+    },
+    {
+        type: 'warning',
+        icon: '⚠️',
+        keywords: ['warning', 'requires', 'attention']
+    },
+    {
+        type: 'welcome',
+        icon: '👋',
+        keywords: ['welcome', 'bienvenue', 'bun venit', 'benvenuto', 'vítejte', 'willkommen', 'bienvenido']
+    },
+    {
+        type: 'info',
+        icon: 'ℹ️',
+        keywords: ['info', 'information', 'notice', 'note']
+    },
+    {
+        type: 'easter_egg',
+        icon: '🌀',
+        keywords: ['secret logo roll', 'secret', 'easter egg']
+    }
+];
+
+// Show toast alerts in a non-intrusive stack (supports string or API-style object)
+export function showToast(content) {
     let container = document.getElementById('toast-container');
     if (!container) {
         container = document.createElement('div');
@@ -13,20 +53,45 @@ export function showToast(message) {
         document.body.appendChild(container);
     }
 
-    // Auto-detect type of toast based on message content
-    const msgLower = message.toLowerCase();
     let type = 'info';
     let icon = 'ℹ️';
-    
-    if (msgLower.includes('success') || msgLower.includes('saved') || msgLower.includes('loaded') || msgLower.includes('synced') || msgLower.includes('copied')) {
-        type = 'success';
-        icon = '✅';
-    } else if (msgLower.includes('fail') || msgLower.includes('error') || msgLower.includes('unauthorized') || msgLower.includes('denied')) {
-        type = 'error';
-        icon = '❌';
-    } else if (msgLower.includes('warning') || msgLower.includes('requires') || msgLower.includes('attention')) {
-        type = 'warning';
-        icon = '⚠️';
+    let title = '';
+    let summary = '';
+
+    if (typeof content === 'object' && content !== null) {
+        // Handle like an API: showToast({ title, summary, type, icon })
+        type = content.type || 'info';
+        const matched = toastConfig.find(cfg => cfg.type === type);
+        icon = content.icon || (matched ? matched.icon : 'ℹ️');
+        title = content.title || '';
+        summary = content.summary || content.message || '';
+    } else {
+        const message = String(content);
+        const msgLower = message.toLowerCase();
+
+        const matched = toastConfig.find(cfg => 
+            cfg.keywords.some(keyword => msgLower.includes(keyword))
+        );
+        if (matched) {
+            type = matched.type;
+            icon = matched.icon;
+        }
+
+        // Parse title and summary from the message
+        const match = message.match(/^([^!.?:;]+[!.?:;])\s+(.+)$/);
+        if (match) {
+            title = match[1].trim();
+            summary = match[2].trim();
+            if (title.endsWith(':') || title.endsWith(';')) {
+                title = title.slice(0, -1).trim();
+            }
+        } else {
+            // Fallback: title is generic category name, summary is the full message
+            const lang = document.documentElement.getAttribute('lang') || currentLocale || 'en';
+            const titles = defaultTitles[lang] || defaultTitles['en'];
+            title = titles[type] || 'Notification';
+            summary = message;
+        }
     }
 
     const toastItem = document.createElement('div');
@@ -41,7 +106,10 @@ export function showToast(message) {
 
     toastItem.innerHTML = `
         <span class="toast-icon">${icon}</span>
-        <span class="toast-message">${message}</span>
+        <div class="toast-content">
+            <span class="toast-title">${title}</span>
+            <span class="toast-summary">${summary}</span>
+        </div>
         <button class="toast-close-btn" aria-label="Close notification">&times;</button>
     `;
 

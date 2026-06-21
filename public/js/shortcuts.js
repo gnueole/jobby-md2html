@@ -388,6 +388,19 @@ export function insertLink(markdownInput) {
     }
 }
 
+const shortcutHandlers = {
+    'b': (input) => toggleFormatting(input, '**'),
+    'i': (input) => toggleFormatting(input, '*'),
+    'e': (input) => toggleAccent(input),
+    'm': (input) => toggleMuted(input),
+    'k': (input) => insertLink(input),
+    '1': (input) => applyHeading(input, 1),
+    '2': (input) => applyHeading(input, 2),
+    '3': (input) => applyHeading(input, 3),
+    'arrowup': (input) => moveSectionOrLine(input, -1),
+    'arrowdown': (input) => moveSectionOrLine(input, 1)
+};
+
 export function initShortcuts(markdownInput) {
     if (!markdownInput) return;
 
@@ -396,36 +409,10 @@ export function initShortcuts(markdownInput) {
         if (!isCtrl) return;
 
         const key = e.key.toLowerCase();
-        if (key === 'b') {
+        const handler = shortcutHandlers[key];
+        if (handler) {
             e.preventDefault();
-            toggleFormatting(markdownInput, '**');
-        } else if (key === 'i') {
-            e.preventDefault();
-            toggleFormatting(markdownInput, '*');
-        } else if (key === 'e') {
-            e.preventDefault();
-            toggleAccent(markdownInput);
-        } else if (key === 'm') {
-            e.preventDefault();
-            toggleMuted(markdownInput);
-        } else if (key === 'k') {
-            e.preventDefault();
-            insertLink(markdownInput);
-        } else if (key === '1') {
-            e.preventDefault();
-            applyHeading(markdownInput, 1);
-        } else if (key === '2') {
-            e.preventDefault();
-            applyHeading(markdownInput, 2);
-        } else if (key === '3') {
-            e.preventDefault();
-            applyHeading(markdownInput, 3);
-        } else if (e.key === 'ArrowUp') {
-            e.preventDefault();
-            moveSectionOrLine(markdownInput, -1);
-        } else if (e.key === 'ArrowDown') {
-            e.preventDefault();
-            moveSectionOrLine(markdownInput, 1);
+            handler(markdownInput);
         }
     });
 }

@@ -22,8 +22,19 @@ sinks:
     type: "http"
     inputs:
       - "filter_project_logs"
-      - "http_telemetry"
     uri: "https://eu-central-1.aws.edge.axiom.co/v1/ingest/${AXIOM_DATASET}"
+    encoding:
+      codec: "json"
+    request:
+      headers:
+        Authorization: "Bearer ${AXIOM_TOKEN}"
+        Content-Type: "application/json"
+
+  axiom_telemetry_sink:
+    type: "http"
+    inputs:
+      - "http_telemetry"
+    uri: "https://eu-central-1.aws.edge.axiom.co/v1/ingest/${AXIOM_TELEMETRY_DATASET:-jobby-telemetry}"
     encoding:
       codec: "json"
     request:

@@ -9,6 +9,7 @@
 
 /* Variables & Base Design Tokens */
 :root {
+    color-scheme: dark;
     --bg-main: #090d16;
     --bg-panel: rgba(15, 23, 42, 0.7);
     --bg-header: #0f172a;
@@ -57,6 +58,7 @@
 
 /* Light Theme Overrides */
 [data-theme="light"] {
+    color-scheme: light;
     --bg-main: #cbd5e1; /* Soft slate gray frame background */
     --bg-panel: #f1f5f9; /* Soft cool gray panels */
     --bg-header: #e2e8f0; /* Muted slate header to avoid stark white glare */
@@ -146,8 +148,8 @@ body {
     width: 100%;
 }
 
-/* HEADER STYLE */
 .app-header {
+    position: relative;
     height: 60px;
     min-height: 60px;
     background-color: var(--bg-header);
@@ -157,6 +159,16 @@ body {
     justify-content: space-between;
     padding: 0 24px;
     z-index: 100;
+}
+
+.app-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2.5px;
+    background: linear-gradient(90deg, #3b82f6, #7c3aed, #ec4899);
 }
 
 .brand {
@@ -261,6 +273,26 @@ body {
     display: flex;
     align-items: center;
     gap: 12px;
+}
+
+/* Customizable select styling for the language selector dropdown */
+.lang-selector-wrapper select {
+    appearance: base-select !important;
+}
+
+.lang-selector-wrapper select::picker(select) {
+    appearance: base-select !important;
+    background-color: var(--bg-modal) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 6px !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5) !important;
+    padding: 4px 0 !important;
+}
+
+.lang-selector-wrapper select option {
+    background-color: var(--bg-modal) !important;
+    color: var(--text-primary) !important;
+    padding: 6px 16px !important;
 }
 
 /* COMMON PANEL STYLING & INITIAL SIZES */
@@ -547,6 +579,11 @@ select {
 
 select:focus {
     border-color: var(--accent);
+}
+
+select option {
+    background-color: var(--bg-header);
+    color: var(--text-primary);
 }
 
 /* Range Sliders */
@@ -864,21 +901,19 @@ input[type="color"]::-webkit-color-swatch {
 
 .toast-item {
     pointer-events: auto; /* allow clicks on the toast cards */
-    min-width: 280px;
-    max-width: 420px;
+    min-width: 320px;
+    max-width: 450px;
     background: rgba(15, 23, 42, 0.85); /* Glassmorphic dark theme */
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.08);
     color: #fff;
-    padding: 12px 16px;
+    padding: 14px 18px;
     border-radius: 12px;
-    font-size: 13px;
-    font-weight: 500;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
     display: flex;
-    align-items: center;
-    gap: 12px;
+    align-items: flex-start;
+    gap: 14px;
     transform: translateX(120%);
     transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s;
     opacity: 0;
@@ -916,15 +951,40 @@ input[type="color"]::-webkit-color-swatch {
 .toast-item.info {
     border-left: 4px solid #3b82f6; /* Blue */
 }
+.toast-item.welcome {
+    border-left: 4px solid var(--accent); /* Accent Color */
+}
+.toast-item.easter_egg {
+    border-left: 4px solid #d946ef; /* Fuchsia */
+}
 
 .toast-icon {
-    font-size: 16px;
+    font-size: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
+    line-height: 1;
 }
 
-.toast-message {
+.toast-content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex-grow: 1;
+}
+
+.toast-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    line-height: 1.3;
+}
+
+.toast-message, .toast-summary {
+    font-size: 11.5px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.6);
     line-height: 1.4;
     word-break: break-word;
 }
@@ -933,12 +993,15 @@ input[type="color"]::-webkit-color-swatch {
     background: none;
     border: none;
     color: rgba(255, 255, 255, 0.4);
-    font-size: 16px;
+    font-size: 24px;
     cursor: pointer;
-    padding: 0 0 0 10px;
+    padding: 0;
     margin-left: auto;
     line-height: 1;
     transition: color 0.2s;
+    flex-shrink: 0;
+    align-self: flex-start;
+    margin-top: -2px; /* align with title text */
 }
 
 .toast-close-btn:hover {
@@ -1111,6 +1174,9 @@ input[type="color"]::-webkit-color-swatch {
     overflow: hidden;
     transform: translateY(30px);
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
 }
 
 #help-modal .modal-card {
@@ -1156,6 +1222,7 @@ input[type="color"]::-webkit-color-swatch {
 
 .modal-body {
     padding: 24px;
+    overflow-y: auto;
 }
 
 .modal-brand-section {
@@ -1988,7 +2055,7 @@ body.expert-mode-active .format-lock-badge {
     gap: 8px;
 }
 
-.expert-help-trigger {
+.panel-header .expert-help-trigger {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -2003,6 +2070,9 @@ body.expert-mode-active .format-lock-badge {
     cursor: pointer;
     transition: all 0.2s;
     user-select: none;
+    letter-spacing: normal;     /* Reset letter-spacing to prevent horizontal shift */
+    line-height: 1;             /* Reset line-height for vertical alignment */
+    padding: 0;                 /* Reset padding */
 }
 
 .expert-help-trigger:hover {
@@ -2841,6 +2911,46 @@ body.expert-mode-active .font-preferences-row {
     white-space: nowrap;
     border: 0;
 }
+/* ==============================================================================
+   7. CUSTOM PREMIUM TOOLTIP STYLES
+   ============================================================================= */
+.jobby-tooltip {
+    position: absolute;
+    z-index: 99999;
+    pointer-events: none;
+    background: rgba(15, 23, 42, 0.88);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 11px;
+    font-weight: 500;
+    color: #f8fafc;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.4;
+    max-width: 250px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: normal;
+    word-wrap: break-word;
+    text-align: left;
+}
+
+.jobby-tooltip.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+[data-theme="light"] .jobby-tooltip {
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    color: #1e293b;
+    box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.1), 0 4px 6px -2px rgba(15, 23, 42, 0.05);
+}
+
 
 
 

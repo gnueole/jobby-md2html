@@ -8,6 +8,25 @@ All notable changes to the Jobby project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.10.0] - 2026-06-21
+
+### Added
+- **Subtle Header Gradient Top Line:** Added an elegant, subtle animated gradient bar (2.5px height) at the top of the header, dynamically shifting between indigo, violet, and pink for a premium aesthetic.
+- **Icon-Only Theme Toggle:** Simplified the theme toggle button in the header by removing text labels, making it completely visual.
+- **Auto Theme Icon:** Implemented the classic contrast/split circle icon (`lucide-contrast`) for the system `auto` theme.
+- **Localized Sample Resumes:** Created individual sample resume templates for all 5 new languages (`sample.cs.md`, `sample.es.md`, `sample.it.md`, `sample.de.md`, `sample.ro.md`) and wired the editor to load them dynamically based on the current active locale.
+- **Dark Mode Option List Readability:** Added custom styling to style option elements inside `#select-lang` to prevent white text rendering over white background in dark mode dropdown list.
+
+## [1.9.3] - 2026-06-21
+
+### Added
+- **Multi-Language Support (i18n):** Added support for 5 new languages: Czech (`cs`), Spanish (`es`), Italian (`it`), German (`de`), and Romanian (`ro`). Created matching translation files under `public/locales/` and updated the header dropdown selection menu.
+- **Axiom Docker Dashboard Upgrades:** Updated APL query configurations for the `n8n` dashboard (`63794d3a-2e77-47e8-af4f-fd6cd662620c`) to support unstructured log formats across all docker project containers (`jobby-editor`, `gotenberg`, `n8n-server`, `traefik-n8n`), showing log volumes, error logs, and stream distribution.
+- **Persistent Telemetry and Privacy:** Added persistent session ID in local storage and updated the GDPR privacy disclosures in the About modal.
+
+### Changed
+- **Code Refactoring:** Refactored `syncStyleConfigFromUI` and `handlePresetRename` in `public/app.js` using Javascript object maps for cleaner and more maintainable control mappings instead of cascade `if` statements.
+
 ## [1.9.2] - 2026-06-21
 
 ### Added

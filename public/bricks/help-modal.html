@@ -1,6 +1,6 @@
 <div class="modal-card">
     <div class="modal-header">
-        <h2>Help & Markdown Guide</h2>
+        <h2 data-i18n="help.title">Help & Markdown Guide</h2>
         <button id="btn-close-help-modal" class="modal-close-btn">&times;</button>
     </div>
     <div class="modal-body" style="max-height: 80vh; overflow-y: auto;">
@@ -14,91 +14,91 @@
                 </svg>
             </div>
             <div class="modal-brand-text">
-                <h3>Jobby Markdown Documentation</h3>
+                <h3 data-i18n="help.doc_title">Jobby Markdown Documentation</h3>
                 <span class="version-badge">Version {{VERSION}}</span>
             </div>
         </div>
 
-        <p class="modal-desc" style="margin-bottom: 20px;">
+        <p class="modal-desc" style="margin-bottom: 20px;" data-i18n="help.desc">
             Jobby leverages standard Markdown to compile premium, print-ready CV documents. Below is the complete reference of all standard Markdown features supported, custom styling tags, and recommendations.
         </p>
 
         <div class="modal-directives">
-            <h4 style="margin-bottom: 8px;">📖 Standard Markdown Syntax</h4>
+            <h4 style="margin-bottom: 8px;" data-i18n="help.section_standard">📖 Standard Markdown Syntax</h4>
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
                 <div>
-                    <h5 style="color: var(--text-primary); font-size: 12px; margin-bottom: 4px;">Titres (Headings)</h5>
+                    <h5 style="color: var(--text-primary); font-size: 12px; margin-bottom: 4px;" data-i18n="help.headings_title">Titres (Headings)</h5>
                     <ul style="margin-left: 16px; font-size: 12px; color: var(--text-secondary); margin-bottom: 12px;">
-                        <li><code># Titre Principal</code> (H1 - Nom)</li>
-                        <li><code>## Titre Section</code> (H2 - Colonne Principale)</li>
-                        <li><code>### Sous-Titre</code> (H3 - Colonne Latérale)</li>
+                        <li><code data-i18n="help.headings_h1"># Principal Heading (H1 - Name)</code></li>
+                        <li><code data-i18n="help.headings_h2">## Section Heading (H2 - Main Column)</code></li>
+                        <li><code data-i18n="help.headings_h3">### Sub-Section (H3 - Sidebar Column)</code></li>
                     </ul>
                     
-                    <h5 style="color: var(--text-primary); font-size: 12px; margin-bottom: 4px;">Mise en forme (Emphasis)</h5>
+                    <h5 style="color: var(--text-primary); font-size: 12px; margin-bottom: 4px;" data-i18n="help.formatting_title">Mise en forme (Emphasis)</h5>
                     <ul style="margin-left: 16px; font-size: 12px; color: var(--text-secondary); margin-bottom: 12px;">
-                        <li>Gras : <code>**texte**</code> ou <code>__texte__</code></li>
-                        <li>Italique : <code>*texte*</code> ou <code>_texte_</code></li>
-                        <li>Gras & Italique : <code>***texte***</code></li>
+                        <li data-i18n="help.formatting_bold">Gras : **texte** ou __texte__</li>
+                        <li data-i18n="help.formatting_italic">Italique : *texte* ou _texte_</li>
+                        <li data-i18n="help.formatting_bold_italic">Gras & Italique : ***texte***</li>
                     </ul>
 
-                    <h5 style="color: var(--text-primary); font-size: 12px; margin-bottom: 4px;">Listes (Lists)</h5>
+                    <h5 style="color: var(--text-primary); font-size: 12px; margin-bottom: 4px;" data-i18n="help.lists_title">Listes (Lists)</h5>
                     <ul style="margin-left: 16px; font-size: 12px; color: var(--text-secondary);">
-                        <li>Puces : <code>- élément</code> ou <code>* élément</code></li>
-                        <li>Numérotées : <code>1. élément</code></li>
+                        <li data-i18n="help.lists_bullets">Puces : - élément ou * élément</li>
+                        <li data-i18n="help.lists_numbered">Numérotées : 1. élément</li>
                     </ul>
                 </div>
                 
                 <div>
-                    <h5 style="color: var(--text-primary); font-size: 12px; margin-bottom: 4px;">Liens & Images</h5>
+                    <h5 style="color: var(--text-primary); font-size: 12px; margin-bottom: 4px;" data-i18n="help.links_title">Links & Images</h5>
                     <ul style="margin-left: 16px; font-size: 12px; color: var(--text-secondary); margin-bottom: 12px;">
-                        <li>Lien : <code>[texte](url)</code></li>
-                        <li>Image : <code>![alt](url)</code></li>
+                        <li data-i18n="help.links_link">Lien : [texte](url)</li>
+                        <li data-i18n="help.links_image">Image : ![alt](url)</li>
                     </ul>
 
-                    <h5 style="color: var(--text-primary); font-size: 12px; margin-bottom: 4px;">Citations & Séparateurs</h5>
+                    <h5 style="color: var(--text-primary); font-size: 12px; margin-bottom: 4px;" data-i18n="help.blockquotes_title">Citations & Séparateurs</h5>
                     <ul style="margin-left: 16px; font-size: 12px; color: var(--text-secondary); margin-bottom: 12px;">
-                        <li>Citation : <code>&gt; votre texte</code></li>
-                        <li>Ligne de séparation : <code>---</code></li>
+                        <li data-i18n="help.blockquotes_quote">Citation : &gt; votre texte</li>
+                        <li data-i18n="help.blockquotes_sep">Ligne de séparation : ---</li>
                     </ul>
 
-                    <h5 style="color: var(--text-primary); font-size: 12px; margin-bottom: 4px;">Blocs de Code & Tableaux</h5>
+                    <h5 style="color: var(--text-primary); font-size: 12px; margin-bottom: 4px;" data-i18n="help.code_title">Blocs de Code & Tableaux</h5>
                     <ul style="margin-left: 16px; font-size: 12px; color: var(--text-secondary);">
-                        <li>En ligne : <code>`code`</code></li>
-                        <li>Bloc : <code>```lang\ncode\n```</code></li>
-                        <li>Tableaux : Syntaxe standard GFM (pipes & tirets)</li>
+                        <li data-i18n="help.code_inline">En ligne : `code`</li>
+                        <li data-i18n="help.code_block">Bloc : ```lang\ncode\n```</li>
+                        <li data-i18n="help.code_tables">Tableaux : Syntaxe standard GFM (pipes & tirets)</li>
                     </ul>
                 </div>
             </div>
 
-            <h4 style="margin-bottom: 8px;">🎨 Custom Jobby Extensions</h4>
+            <h4 style="margin-bottom: 8px;" data-i18n="help.section_extensions">🎨 Custom Jobby Extensions</h4>
             <ul style="margin-left: 16px; font-size: 12.5px; line-height: 1.5; color: var(--text-secondary); margin-bottom: 24px;">
                 <li style="margin-bottom: 6px;">
-                    <strong>Accent Color Tag</strong>: <code>:accent[votre texte]</code>
-                    <br><span style="font-size: 11px; opacity: 0.8;">Met en valeur des mots clés importants. Ex: <code>:accent[Disponible immédiatement]</code></span>
+                    <strong data-i18n="help.ext_accent_title">Accent Color Tag</strong>: <code>:accent[votre texte]</code>
+                    <br><span style="font-size: 11px; opacity: 0.8;" data-i18n="help.ext_accent_desc">Met en valeur des mots clés importants. Ex: <code>:accent[Disponible immédiatement]</code></span>
                 </li>
                 <li style="margin-bottom: 6px;">
-                    <strong>Muted Text Tag</strong>: <code>:muted[votre texte]</code>
-                    <br><span style="font-size: 11px; opacity: 0.8;">De-accentue le texte (gris clair) tout en le laissant 100% lisible par les robots ATS. Ex: <code>:muted[Permis B · Véhiculé]</code></span>
+                    <strong data-i18n="help.ext_muted_title">Muted Text Tag</strong>: <code>:muted[votre texte]</code>
+                    <br><span style="font-size: 11px; opacity: 0.8;" data-i18n="help.ext_muted_desc">De-accentue le texte (gris clair) tout en le laissant 100% lisible par les robots ATS. Ex: <code>:muted[Permis B · Véhiculé]</code></span>
                 </li>
                 <li style="margin-bottom: 6px;">
-                    <strong>Contact Centered Block</strong>: <code>[CONTACT : email | phone | linkedin | site]</code>
-                    <br><span style="font-size: 11px; opacity: 0.8;">Format automatique d'une barre de contact avec icônes. Séparez les valeurs par des barres verticales <code>|</code>.</span>
+                    <strong data-i18n="help.ext_contact_title">Contact Centered Block</strong>: <code>[CONTACT : email | phone | linkedin | site]</code>
+                    <br><span style="font-size: 11px; opacity: 0.8;" data-i18n="help.ext_contact_desc">Format automatique d'une barre de contact avec icônes. Séparez les valeurs par des barres verticales <code>|</code>.</span>
                 </li>
             </ul>
 
-            <h4 style="margin-bottom: 8px;">🤖 AI Collaboration & Prompting</h4>
-            <p style="font-size: 12.5px; line-height: 1.5; color: var(--text-secondary); margin-bottom: 16px;">
+            <h4 style="margin-bottom: 8px;" data-i18n="help.section_ai">🤖 AI Collaboration & Prompting</h4>
+            <p style="font-size: 12.5px; line-height: 1.5; color: var(--text-secondary); margin-bottom: 16px;" data-i18n-html="help.ai_desc_html">
                 Markdown is your best asset when using AI to build your CV. When manipulating and optimizing your CV with your favorite AI model (Gemini, ChatGPT, Claude, etc.), always instruct it to:
                 <br>
                 <code style="display: block; margin: 8px 0; padding: 10px; background: var(--bg-modal-directives); border-radius: 6px; font-family: monospace; border: 1px dashed var(--border-color); color: var(--text-primary);">"Generate the final CV in clean MD format"</code>
                 This ensures you can simply copy and paste the raw output directly into Jobby with zero layout distortion.
             </p>
 
-            <h4 style="margin-bottom: 8px;">✨ Best Practices & Markdown Guide</h4>
+            <h4 style="margin-bottom: 8px;" data-i18n="help.section_practices">✨ Best Practices & Markdown Guide</h4>
             <p style="font-size: 12.5px; line-height: 1.5; color: var(--text-secondary); margin-bottom: 12px;">
-                For comprehensive documentation and tips on structuring Markdown documents, refer to the official guide:
+                <span data-i18n="help.practices_title">For comprehensive documentation and tips on structuring Markdown documents, refer to the official guide:</span>
                 <br>
-                👉 <a id="link-markdown-guide" href="https://www.markdownguide.org/basic-syntax/" target="_blank" style="color: var(--accent); text-decoration: underline; font-weight: 600;">Markdown Guide - Syntax & Best Practices</a>
+                👉 <a id="link-markdown-guide" href="https://www.markdownguide.org/basic-syntax/" target="_blank" style="color: var(--accent); text-decoration: underline; font-weight: 600;" data-i18n="help.practices_link">Markdown Guide - Syntax & Best Practices</a>
             </p>
         </div>
     </div>

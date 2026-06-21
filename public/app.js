@@ -30,10 +30,12 @@ import { initExports } from './js/exports.js';
 import { initThemeToggle } from './js/theme.js';
 import { initZoom, autoFitZoom } from './js/zoom.js';
 import { initPrint, updatePageBreaks } from './js/print.js';
+import { loadLocale, translateDOM, currentLocale, t } from './js/i18n.js';
+import { initTooltips } from './js/tooltip.js';
 
 async function initializeJobby() {
     // --- Fetch config (including dynamic version) ---
-    let appVersion = '1.9.0';
+    let appVersion = '1.10.0';
     try {
         const configRes = await fetch('/api/config');
         if (configRes.ok) {
@@ -78,6 +80,18 @@ async function initializeJobby() {
         return;
     }
 
+    // --- Initialize Localization ---
+    await loadLocale(currentLocale);
+    translateDOM();
+    initTooltips();
+
+    // Show welcome upgrade toast if version has changed
+    const lastSeenVersion = localStorage.getItem('jobby_last_seen_version');
+    if (lastSeenVersion !== appVersion) {
+        showToast(t('toasts.welcome_upgrade', { version: appVersion }));
+        localStorage.setItem('jobby_last_seen_version', appVersion);
+    }
+
     // --- Logo Rolling Easter Egg ---
     const setupLogoRolling = (triggerEl, animateEl) => {
         if (!triggerEl) return;
@@ -97,6 +111,7 @@ async function initializeJobby() {
         });
     };
 
+    const brandContainer = document.querySelector('.brand');
     const mainHeaderLogo = document.querySelector('.brand-icon');
     const aboutModalLogoTrigger = document.querySelector('#about-modal .modal-logo');
     const aboutModalLogoAnimate = document.querySelector('#about-modal .modal-logo svg');
@@ -104,8 +119,25 @@ async function initializeJobby() {
     const helpModalLogoAnimate = document.querySelector('#help-modal .modal-logo svg');
 
     setupLogoRolling(mainHeaderLogo, mainHeaderLogo);
+    if (mainHeaderLogo) {
+        mainHeaderLogo.addEventListener('click', () => {
+            showToast(t('toasts.easter_egg'));
+        });
+    }
     setupLogoRolling(aboutModalLogoTrigger, aboutModalLogoAnimate);
+    if (aboutModalLogoTrigger) {
+        aboutModalLogoTrigger.addEventListener('click', () => {
+            showToast(t('toasts.easter_egg'));
+        });
+    }
     setupLogoRolling(helpModalLogoTrigger, helpModalLogoAnimate);
+    if (helpModalLogoTrigger) {
+        helpModalLogoTrigger.addEventListener('click', () => {
+            showToast(t('toasts.easter_egg'));
+        });
+    }
+
+
 
     // --- Dev Platform Customization ---
     const isDev = window.location.hostname === 'localhost' || 
@@ -800,20 +832,23 @@ async function initializeJobby() {
     }
  
     function handlePresetRename(key) {
-        let defaultName = '';
-        if (key === 'classic') defaultName = 'B&W';
-        else if (key === 'dark') defaultName = 'Dark';
-        else if (key === 'clean-blue') defaultName = 'Corporate Blue';
-        else if (key === 'soft-blue') defaultName = 'Soft Blue';
-        else if (key === 'green') defaultName = 'Soft Green';
-        else if (key === 'soft-red') defaultName = 'Soft Red';
-        else if (key === 'custom-1') defaultName = 'Custom';
-        else if (key === 'custom-2') defaultName = 'Funky (please edit yours)';
+        const defaultNames = {
+            'classic': 'B&W',
+            'dark': 'Dark',
+            'clean-blue': 'Corporate Blue',
+            'soft-blue': 'Soft Blue',
+            'green': 'Soft Green',
+            'soft-red': 'Soft Red',
+            'custom-1': 'Custom',
+            'custom-2': 'Funky (please edit yours)'
+        };
+        const defaultName = defaultNames[key] || '';
 
-        let storageKey = '';
-        if (key === 'custom-1') storageKey = 'ats_custom_preset_name_1';
-        else if (key === 'custom-2') storageKey = 'ats_custom_preset_name_2';
-        else storageKey = `ats_preset_name_${key}`;
+        const storageKeys = {
+            'custom-1': 'ats_custom_preset_name_1',
+            'custom-2': 'ats_custom_preset_name_2'
+        };
+        const storageKey = storageKeys[key] || `ats_preset_name_${key}`;
 
         const oldName = localStorage.getItem(storageKey) || defaultName;
         const newNameInput = prompt(`Rename preset "${oldName}":`, oldName);
@@ -826,11 +861,12 @@ async function initializeJobby() {
         }
         
         localStorage.setItem(storageKey, result.name);
-        if (key === 'custom-1') {
-            customPresets['custom-1'].name = result.name;
-        } else if (key === 'custom-2') {
-            customPresets['custom-2'].name = result.name;
+        
+        const customPreset = customPresets[key];
+        if (customPreset) {
+            customPreset.name = result.name;
         }
+        
         updatePresetLabels();
         showToast(`Preset renamed to "${result.name}"`);
     }
@@ -851,112 +887,84 @@ async function initializeJobby() {
         }
     }
 
-    function updateConfigFromControlsFull() {
-        styleConfig.fontSize = fontSizeSlider.value;
-        styleConfig.lineHeight = lineHeightSlider.value;
-        styleConfig.headingScale = headingScaleSlider.value;
-        styleConfig.marginX = marginXSlider.value;
-        styleConfig.marginY = marginYSlider.value;
-        styleConfig.sectionSpacing = sectionSpacingSlider.value;
-        
+    function syncStyleConfigFromUI(fullUpdate) {
+        const controlMapping = [
+            { el: fontSizeSlider, key: 'fontSize' },
+            { el: lineHeightSlider, key: 'lineHeight' },
+            { el: headingScaleSlider, key: 'headingScale' },
+            { el: marginXSlider, key: 'marginX' },
+            { el: marginYSlider, key: 'marginY' },
+            { el: sectionSpacingSlider, key: 'sectionSpacing' },
+            { el: columnShadowDistanceSlider, key: 'columnShadowDistance', transform: val => parseInt(val) },
+            { el: columnShadowColorPicker, key: 'columnShadowColor' },
+            { el: columnGradientLengthSlider, key: 'columnGradientLength', transform: val => parseInt(val) },
+            { el: columnGradientColorPicker, key: 'columnGradientColor' },
+            { el: columnBorderWidthSlider, key: 'columnBorderWidth', transform: val => parseInt(val) },
+            { el: columnBorderOpacitySlider, key: 'columnBorderOpacity', transform: val => parseInt(val) },
+            { el: advancedModeToggle, key: 'expertMode', prop: 'checked' }
+        ];
+
+        controlMapping.forEach(({ el, key, transform, prop = 'value' }) => {
+            if (el) {
+                const val = el[prop];
+                styleConfig[key] = transform ? transform(val) : val;
+            }
+        });
+
         const prevLayout = styleConfig.layoutMode;
-        styleConfig.layoutMode = layoutModeSelect.value;
-        if (styleConfig.layoutMode === '2-column' && prevLayout !== '2-column') {
-            styleConfig.cosmeticGradient = true;
-            const cosmeticGradientCheckbox = document.getElementById('cosmetic-gradient');
-            if (cosmeticGradientCheckbox) {
-                cosmeticGradientCheckbox.checked = true;
+        if (layoutModeSelect) {
+            styleConfig.layoutMode = layoutModeSelect.value;
+            if (styleConfig.layoutMode === '2-column' && prevLayout !== '2-column') {
+                styleConfig.cosmeticGradient = true;
+                const cosmeticGradientCheckbox = document.getElementById('cosmetic-gradient');
+                if (cosmeticGradientCheckbox) {
+                    cosmeticGradientCheckbox.checked = true;
+                }
             }
         }
 
-        // Customizer Advanced Column Values
-        if (columnShadowDistanceSlider) styleConfig.columnShadowDistance = parseInt(columnShadowDistanceSlider.value);
-        if (columnShadowColorPicker) styleConfig.columnShadowColor = columnShadowColorPicker.value;
-        if (columnGradientLengthSlider) styleConfig.columnGradientLength = parseInt(columnGradientLengthSlider.value);
-        if (columnGradientColorPicker) styleConfig.columnGradientColor = columnGradientColorPicker.value;
-        if (columnBorderWidthSlider) styleConfig.columnBorderWidth = parseInt(columnBorderWidthSlider.value);
-        if (columnBorderOpacitySlider) styleConfig.columnBorderOpacity = parseInt(columnBorderOpacitySlider.value);
-        if (advancedModeToggle) styleConfig.expertMode = advancedModeToggle.checked;
+        const colorFields = [
+            { el: colorBg, key: 'colorBg' },
+            { el: colorHeadings, key: 'colorHeadings' },
+            { el: colorBody, key: 'colorBody' },
+            { el: colorLinks, key: 'colorLinks' },
+            { el: colorAccent, key: 'colorAccent' },
+            { el: colorSidebarBg, key: 'sidebarBg' },
+            { el: colorSidebarText, key: 'sidebarText' }
+        ];
 
-        if (styleConfig.colorBg !== colorBg.value ||
-            styleConfig.colorHeadings !== colorHeadings.value ||
-            styleConfig.colorBody !== colorBody.value ||
-            styleConfig.colorLinks !== colorLinks.value ||
-            styleConfig.colorAccent !== colorAccent.value ||
-            styleConfig.sidebarBg !== colorSidebarBg.value ||
-            styleConfig.sidebarText !== colorSidebarText.value) {
-            if (styleConfig.activePreset !== 'custom-1' && 
-                styleConfig.activePreset !== 'custom-2') {
-                styleConfig.activePreset = 'custom-1';
+        let hasColorChange = false;
+        colorFields.forEach(({ el, key }) => {
+            if (el) {
+                if (styleConfig[key] !== el.value) {
+                    hasColorChange = true;
+                }
+                styleConfig[key] = el.value;
             }
+        });
+
+        if (hasColorChange && styleConfig.activePreset !== 'custom-1' && styleConfig.activePreset !== 'custom-2') {
+            styleConfig.activePreset = 'custom-1';
         }
-
-        styleConfig.sidebarBg = colorSidebarBg.value;
-        styleConfig.sidebarText = colorSidebarText.value;
-
-        styleConfig.colorBg = colorBg.value;
-        styleConfig.colorHeadings = colorHeadings.value;
-        styleConfig.colorBody = colorBody.value;
-        styleConfig.colorLinks = colorLinks.value;
-        styleConfig.colorAccent = colorAccent.value;
 
         applyStyles(styleConfig);
-        runCompileMarkdown(markdownInput.value);
+        
+        if (fullUpdate) {
+            if (markdownInput) {
+                runCompileMarkdown(markdownInput.value);
+            }
+        } else {
+            updatePageBreaks(resumeOutput);
+        }
         saveToLocalStorage();
     }
 
+    function updateConfigFromControlsFull() {
+        syncStyleConfigFromUI(true);
+    }
+
     function updateConfigFromControlsLight() {
-        styleConfig.fontSize = fontSizeSlider.value;
-        styleConfig.lineHeight = lineHeightSlider.value;
-        styleConfig.headingScale = headingScaleSlider.value;
-        styleConfig.marginX = marginXSlider.value;
-        styleConfig.marginY = marginYSlider.value;
-        styleConfig.sectionSpacing = sectionSpacingSlider.value;
-        
-        const prevLayout = styleConfig.layoutMode;
-        styleConfig.layoutMode = layoutModeSelect.value;
-        if (styleConfig.layoutMode === '2-column' && prevLayout !== '2-column') {
-            styleConfig.cosmeticGradient = true;
-            const cosmeticGradientCheckbox = document.getElementById('cosmetic-gradient');
-            if (cosmeticGradientCheckbox) {
-                cosmeticGradientCheckbox.checked = true;
-            }
-        }
-
-        // Customizer Advanced Column Values
-        if (columnShadowDistanceSlider) styleConfig.columnShadowDistance = parseInt(columnShadowDistanceSlider.value);
-        if (columnShadowColorPicker) styleConfig.columnShadowColor = columnShadowColorPicker.value;
-        if (columnGradientLengthSlider) styleConfig.columnGradientLength = parseInt(columnGradientLengthSlider.value);
-        if (columnGradientColorPicker) styleConfig.columnGradientColor = columnGradientColorPicker.value;
-        if (columnBorderWidthSlider) styleConfig.columnBorderWidth = parseInt(columnBorderWidthSlider.value);
-        if (columnBorderOpacitySlider) styleConfig.columnBorderOpacity = parseInt(columnBorderOpacitySlider.value);
-        if (advancedModeToggle) styleConfig.expertMode = advancedModeToggle.checked;
-
-        if (styleConfig.colorBg !== colorBg.value ||
-            styleConfig.colorHeadings !== colorHeadings.value ||
-            styleConfig.colorBody !== colorBody.value ||
-            styleConfig.colorLinks !== colorLinks.value ||
-            styleConfig.colorAccent !== colorAccent.value ||
-            styleConfig.sidebarBg !== colorSidebarBg.value ||
-            styleConfig.sidebarText !== colorSidebarText.value) {
-            if (styleConfig.activePreset !== 'custom-1' && 
-                styleConfig.activePreset !== 'custom-2') {
-                styleConfig.activePreset = 'custom-1';
-            }
-        }
-
-        styleConfig.sidebarBg = colorSidebarBg.value;
-        styleConfig.sidebarText = colorSidebarText.value;
-
-        styleConfig.colorBg = colorBg.value;
-        styleConfig.colorHeadings = colorHeadings.value;
-        styleConfig.colorBody = colorBody.value;
-        styleConfig.colorLinks = colorLinks.value;
-        styleConfig.colorAccent = colorAccent.value;
-
-        applyStyles(styleConfig);
-        updatePageBreaks(resumeOutput);
-        saveToLocalStorage();
+        syncStyleConfigFromUI(false);
     }
 
     // --- Sub-modules Init ---
@@ -1519,7 +1527,8 @@ async function initializeJobby() {
         btnLoadSample.addEventListener('click', (e) => {
             e.preventDefault();
             saveCurrentStateToHistory();
-            fetch('/sample.md')
+            const sampleUrl = currentLocale === 'en' ? '/sample.md' : `/sample.${currentLocale}.md`;
+            fetch(sampleUrl)
                 .then(res => {
                     if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
                     return res.text();
@@ -1532,12 +1541,12 @@ async function initializeJobby() {
                     currentFileHandle = null;
                     currentFileName = null;
                     updateActiveFileNameDisplay();
-                    showToast("Julien Avarre sample loaded! (Ctrl+Z to undo)");
+                    showToast(t('toasts.sample_loaded'));
                     markdownInput.focus();
                 })
                 .catch(err => {
                     console.error(err);
-                    showToast(`Failed to load sample: ${err.message}`);
+                    showToast(t('toasts.sample_load_fail', { message: err.message }));
                     markdownInput.focus();
                 });
         });
@@ -1986,7 +1995,9 @@ async function initializeJobby() {
         const isWhatsNewRoute = path === '/whatsnew' || path === '/whatsnew/';
 
         if (isSampleRoute || isWhatsNewRoute) {
-            const fileName = isSampleRoute ? 'sample.md' : 'whatsnew.md';
+            const fileName = isSampleRoute 
+                ? (currentLocale === 'en' ? 'sample.md' : `sample.${currentLocale}.md`)
+                : (currentLocale === 'fr' ? 'whatsnew.fr.md' : 'whatsnew.md');
             try {
                 const response = await fetch('/' + fileName);
                 if (response.ok) {
@@ -2045,15 +2056,16 @@ async function initializeJobby() {
 
         if (!loadedMarkdown) {
             try {
-                const sampleResponse = await fetch('/sample.md');
+                const sampleUrl = currentLocale === 'en' ? '/sample.md' : `/sample.${currentLocale}.md`;
+                const sampleResponse = await fetch(sampleUrl);
                 if (sampleResponse.ok) {
                     loadedMarkdown = await sampleResponse.text();
-                    console.log("Loaded default sample.md.");
+                    console.log(`Loaded default ${sampleUrl}.`);
                 } else {
                     loadedMarkdown = "# Welcome to Jobby MD Editor\n\nStart typing here...";
                 }
             } catch (e) {
-                console.error("Failed to fetch sample.md:", e);
+                console.error("Failed to fetch default sample:", e);
                 loadedMarkdown = "# Welcome to Jobby MD Editor\n\nStart typing here...";
             }
         }
@@ -2340,6 +2352,20 @@ async function initializeJobby() {
         btnMarkdownHelpHeader.addEventListener('click', (e) => {
             e.preventDefault();
             toolbarActions['help']();
+        });
+    }
+
+    // --- Language Selector Binding ---
+    const selectLang = document.getElementById('select-lang');
+    if (selectLang) {
+        selectLang.value = currentLocale;
+        selectLang.addEventListener('change', async (e) => {
+            await loadLocale(e.target.value);
+            translateDOM();
+            showToast(t('toasts.welcome_upgrade', { version: appVersion }));
+            if (markdownInput) {
+                runCompileMarkdown(markdownInput.value);
+            }
         });
     }
 }

@@ -43,15 +43,13 @@ export function updatePageBreaks(resumeOutput, styleConfig) {
     pageFormat = format;
 
     resumeOutput.classList.remove('letter-format', 'format-a4', 'format-letter', 'format-legal', 'format-a5');
-    if (format === "letter") {
-        resumeOutput.classList.add('letter-format', 'format-letter');
-    } else if (format === "legal") {
-        resumeOutput.classList.add('format-legal');
-    } else if (format === "a5") {
-        resumeOutput.classList.add('format-a5');
-    } else {
-        resumeOutput.classList.add('format-a4');
-    }
+    const formatClasses = {
+        'letter': ['letter-format', 'format-letter'],
+        'legal': ['format-legal'],
+        'a5': ['format-a5']
+    };
+    const classesToAdd = formatClasses[format] || ['format-a4'];
+    resumeOutput.classList.add(...classesToAdd);
 
     if (!showPageBreaks) return;
 
@@ -59,15 +57,12 @@ export function updatePageBreaks(resumeOutput, styleConfig) {
     let pageHeightPx = 0;
 
     const tempDiv = document.createElement('div');
-    if (format === "letter") {
-        tempDiv.style.height = '11in';
-    } else if (format === "legal") {
-        tempDiv.style.height = '14in';
-    } else if (format === "a5") {
-        tempDiv.style.height = '210mm';
-    } else {
-        tempDiv.style.height = '297mm';
-    }
+    const formatHeights = {
+        'letter': '11in',
+        'legal': '14in',
+        'a5': '210mm'
+    };
+    tempDiv.style.height = formatHeights[format] || '297mm';
     tempDiv.style.position = 'absolute';
     tempDiv.style.visibility = 'hidden';
     resumeOutput.appendChild(tempDiv);

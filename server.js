@@ -164,6 +164,45 @@ const server = http.createServer((req, res) => {
                     console.error('[Telemetry] Invalid webhook URL or request setup error:', e.message);
                 }
             }
+
+            // Asynchronously forward to Vector
+            const vectorUrl = process.env.VECTOR_TELEMETRY_URL;
+            if (vectorUrl && vectorUrl.trim() !== "") {
+                try {
+                    const parsedUrl = new URL(vectorUrl);
+                    const protocol = parsedUrl.protocol === 'https:' ? require('https') : require('http');
+                    const payloadString = JSON.stringify(payload);
+                    const reqOpts = {
+                        hostname: parsedUrl.hostname,
+                        port: parsedUrl.port || (parsedUrl.protocol === 'https:' ? 443 : 80),
+                        path: parsedUrl.pathname + parsedUrl.search,
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Content-Length': Buffer.byteLength(payloadString)
+                        },
+                        timeout: 5000
+                    };
+
+                    const forwardReq = protocol.request(reqOpts, (forwardRes) => {
+                        forwardRes.resume(); // consume response
+                    });
+
+                    forwardReq.on('error', (err) => {
+                        console.error('[Telemetry] Failed to forward to Vector:', err.message);
+                    });
+
+                    forwardReq.on('timeout', () => {
+                        console.warn('[Telemetry] Forwarding request to Vector timed out');
+                        forwardReq.destroy();
+                    });
+
+                    forwardReq.write(payloadString);
+                    forwardReq.end();
+                } catch (e) {
+                    console.error('[Telemetry] Invalid Vector URL or request setup error:', e.message);
+                }
+            }
         });
         return;
     }

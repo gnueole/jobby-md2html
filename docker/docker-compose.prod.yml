@@ -148,6 +148,7 @@ services:
       - GOOGLE_TAG_ID=${GOOGLE_TAG_ID:-}
       - N8N_TELEMETRY_WEBHOOK_URL=${N8N_TELEMETRY_WEBHOOK_URL:-}
       - N8N_FEEDBACK_WEBHOOK_URL=${N8N_FEEDBACK_WEBHOOK_URL:-}
+      - VECTOR_TELEMETRY_URL=${VECTOR_TELEMETRY_URL:-}
     labels:
       - traefik.enable=true
       - traefik.http.routers.jobby.rule=Host(`cv.eole.me`)
@@ -176,6 +177,7 @@ services:
     environment:
       - AXIOM_TOKEN=${AXIOM_TOKEN}
       - AXIOM_DATASET=${AXIOM_DATASET}
+      - AXIOM_TELEMETRY_DATASET=${AXIOM_TELEMETRY_DATASET:-jobby-telemetry}
       - COMPOSE_PROJECT_NAME=n8n-eole-prod
     logging:
       driver: "json-file"

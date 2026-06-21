@@ -1,137 +1,149 @@
-# 1.9.3 - Mise à jour Jobby.
-Mise à jour Jobby du 21/06/2026 · Télémétrie persistante et conformité RGPD.
-[CONTACT : hi@eole.me | +33 6 50 83 68 09 | [cv.eole.me](https://cv.eole.me)]
+# 1.10.0 - Jobby Update
+Jobby Update of 06/21/2026 · Multi-Language Support, Static Header Accent, Visual Theme Switcher, Responsive Modals & Larger Toasts.
+[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
 
-## 🔒 TÉLÉMÉTRIE PERSISTANTE ET RESPECT DE LA VIE PRIVÉE
-* **ID de Session Persistant** : L'identifiant de session de télémétrie est désormais sauvegardé de manière anonyme dans le stockage local (`localStorage`) du navigateur. Cela permet d'agréger les statistiques d'utilisation sans cookies et de manière transparente.
-* **Transparence RGPD** : La politique de confidentialité dans la fenêtre "About" a été mise à jour pour expliquer clairement le stockage local et garantir qu'aucune donnée personnelle (nom, email, adresse IP, texte du CV) n'est collectée ou transmise.
+## 🌐 MULTI-LANGUAGE SUPPORT (i18n)
+* **New Locales Supported**: Added support for 5 new languages: Czech (`cs`), Spanish (`es`), Italian (`it`), German (`de`), and Romanian (`ro`). You can switch between all 7 supported languages using the dropdown selector in the header!
+* **Localized Samples**: Clicking the "Sample" button now loads the template in your selected language and triggers a localized `"Sample loaded!"` toast!
 
----
+## 🌈 HEADER ACCENT LINE
+* **Premium Touch**: Added a thin, elegant 2.5px static gradient top-border running along the header bar, featuring a blend of blue, violet, and pink.
 
-# 1.9.2 - Mise à jour Jobby.
-Mise à jour Jobby du 21/06/2026 · Notifications empilables et icône de balai affinée.
-[CONTACT : hi@eole.me | +33 6 50 83 68 09 | [cv.eole.me](https://cv.eole.me)]
+## 🌗 VISUAL THEME SWITCHER
+* **Cleaner Header**: Removed the redundant "Theme: ..." text label from the theme toggle button for a cleaner header. It now displays only the icon.
+* **Auto Theme Icon**: Upgraded the icon for the "Auto" (system prefers) setting to the classic contrast split circle (`lucide-contrast`), making theme states instantly recognizable.
 
-## 🥞 SYSTÈME DE NOTIFICATIONS EMPILABLES (TOASTER)
-* **Notifications fluides** : Les alertes s'affichent désormais dans le coin inférieur droit sous forme de cartes empilables. Elles se ferment automatiquement ou manuellement et s'adaptent dynamiquement (Succès, Erreur, Avertissement, Info) avec des couleurs et emojis dédiés.
-* **Compatibilité des tests** : L'intégration respecte parfaitement les tests automatisés de non-régression.
-
-## 🧹 ICÔNE DE BALAI AFFINÉE
-* **Design moderne** : L'icône de nettoyage de l'éditeur a été redessinée sous forme de balai vertical épuré avec des scintillements, remplaçant l'ancien visuel moins lisible.
-
----
-
-# 1.9.1 - Mise à jour Jobby.
-Mise à jour Jobby du 20/06/2026 · Métriques de télémétrie avancées.
-[CONTACT : hi@eole.me | +33 6 50 83 68 09 | [cv.eole.me](https://cv.eole.me)]
-
-## 📊 STATISTIQUES DE PERFORMANCE ET D'USAGE
-* **Métriques avancées** : Nous suivons désormais de manière anonyme l'évolution de votre score ATS (score initial, amélioration du score, nombre de règles corrigées), les presets de design testés, les actions d'annulation (Undo/Redo), le thème actif (sombre/clair) et le temps de rendu Markdown en millisecondes pour optimiser les performances.
+## 🥞 RESPONSIVE MODALS & BIGGER TOASTS
+* **Scrollable Modals**: Capped all modal card heights at `90vh` and set their body contents to scroll vertically, resolving readability issues on small screens.
+* **Twice Larger Toasters**: Doubled the font-size of all toast notifications to `26px` (and icons/close buttons to `32px`) to enhance legibility.
+* **Welcome Upgrade Toast**: Displays a localized welcome/upgrade toaster notification to returning users when a newer version is deployed.
 
 ---
 
-# 1.9.0 - Mise à jour Jobby.
-Mise à jour Jobby du 20/06/2026 · Formulaire de feedback utilisateur et intégration n8n.
-[CONTACT : hi@eole.me | +33 6 50 83 68 09 | [cv.eole.me](https://cv.eole.me)]
+# 1.9.2 - Jobby Update
+Jobby Update of 06/21/2026 · Stackable Notifications and Refined Broom Icon.
+[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
 
-## 💬 FORMULAIRE DE RETOURS UTILISATEUR (FEEDBACK)
-* **Formulaire interactif** : Un nouveau bouton "Feedback" fait son apparition dans l'en-tête de l'éditeur. Il ouvre un formulaire élégant vous permettant de noter l'application (étoiles interactives), de catégoriser votre retour (Commentaire, Suggestion, Bug) et de décrire votre avis.
-* **Traitement sécurisé** : Les retours sont transmis de manière asynchrone à notre base de données Notion via un proxy sécurisé et un workflow n8n dédié, garantissant la sécurité des clés d'API.
+## 🥞 STACKABLE NOTIFICATIONS SYSTEM (TOASTER)
+* **Fluid Notifications**: Alerts now slide in from the bottom right as stackable cards. They auto-dismiss or can be closed manually, and dynamically adapt (Success, Error, Warning, Info) with custom colors and emojis.
+* **Test Compatibility**: The integration fully respects automated non-regression tests.
 
----
-
-# 1.8.2 - Mise à jour Jobby.
-Mise à jour Jobby du 20/06/2026 · Masquage du menu flottant à l'impression.
-[CONTACT : hi@eole.me | +33 6 50 83 68 09 | [cv.eole.me](https://cv.eole.me)]
-
-## 🖨️ IMPRESSION PROPRE ET SANS ARTEFACTS
-* **Masquage du menu flottant** : Le menu flottant latéral (folded controls dock), le bouton d'ouverture ("Design"), et les fenêtres modales superposées sont désormais masqués automatiquement lors de l'impression ou de l'export PDF. Votre CV s'imprime de façon parfaitement propre.
+## 🧹 REFINED BROOM ICON
+* **Modern Design**: The editor clear icon has been redesigned as a sleek vertical broom with sparkles, replacing the older, less legible icon.
 
 ---
 
-# 1.8.1 - Mise à jour Jobby.
-Mise à jour Jobby du 19/06/2026 · Mode glassmorphic, accessibilité améliorée et actions fluides.
-[CONTACT : hi@eole.me | +33 6 50 83 68 09 | [cv.eole.me](https://cv.eole.me)]
+# 1.9.1 - Jobby Update
+Jobby Update of 06/20/2026 · Advanced Telemetry Metrics.
+[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
 
-## 🌌 EFFETS GLASSMORPHIC ET POLISH VISUEL
-* **Menu flottant translucide** : Le panneau de raccourcis replié s'habille d'un superbe effet de verre dépoli (glassmorphism) en modes sombre et clair. Ses boutons s'adaptent dynamiquement pour une intégration visuelle parfaite.
-* **Propreté de l'interface** : Le conteneur vide des contrôles de prévisualisation disparaît complètement une fois replié, éliminant tout artefact graphique.
-
-## 👁️ ACCESSIBILITÉ ET LISIBILITÉ SOMBRE
-* **Lien d'aide "What is markdown?"** : Le lien d'aide de l'éditeur Markdown s'illumine en violet clair en mode sombre pour garantir un contraste et une lisibilité parfaits.
-
-## 🚀 ACTIONS FLUIDES ET ANNULABLES
-* **Suppression des alertes bloquantes** : Les boutons :accent[Sample], :accent[What's New], :accent[Clear], et :accent[Load] chargent désormais instantanément leur contenu sans popups de confirmation intrusives.
-* **Droit à l'erreur garanti** : Avant chaque action d'écrasement, votre travail est automatiquement enregistré dans l'historique de l'éditeur. Un simple :accent[Ctrl + Z] (ou le bouton Undo) vous permet de revenir en arrière immédiatement !
+## 📊 PERFORMANCE AND USAGE METRICS
+* **Advanced Metrics**: We now anonymously track the progression of your ATS score (initial score, score improvements, number of corrected rules), design presets tested, undo/redo click counts, active theme (dark/light), and markdown render time in milliseconds to optimize performance.
 
 ---
 
-# 1.8.0 - Mise à jour Jobby.
-Mise à jour Jobby du 19/06/2026 · Mode focalisé, barre de style riche, historique et synergie IA.
-[CONTACT : hi@eole.me | +33 6 50 83 68 09 | [cv.eole.me](https://cv.eole.me)]
+# 1.9.0 - Jobby Update
+Jobby Update of 06/20/2026 · User Feedback Form and n8n Integration.
+[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
 
-## 🔍 COLLAPSER LE PANNEAU DE DESIGN
-* **Focalisation maximale** : Un nouveau bouton de fermeture (croix SVG) a été ajouté dans l'en-tête du panneau de design. Cliquez dessus pour replier complètement le customizer et libérer tout l'espace pour la prévisualisation !
-* **Bouton flottant interactif** : Un bouton flottant "Design" moderne et glassmorphic apparaît au bas de l'écran lorsque le panneau est masqué, vous permettant de le déplier à tout moment d'un simple clic.
-* *Un grand merci à Maround Boutanos pour le tooltip des raccourcis et la suggestion de masquage du panneau !*
-
-## 🛠️ BARRE D'OUTILS D'ÉDITION RICHE (TOOLBAR)
-* **Accès rapide au style** : Le bouton :accent[Format] est désormais placé avant :accent[Save] et permet de déplier une barre d'outils riche juste au-dessus de la zone d'écriture.
-* **Visibilité accrue** : Le bouton :accent[Format] s'illumine en violet lorsque la barre d'outils est masquée pour attirer votre attention, puis redevient discret et régulier une fois la barre d'outils affichée.
-* **Toutes vos actions en 1 clic** : Insérez des titres (H1, H2, H3), du gras, de l'italique, des liens, des listes à puces, appliquez vos couleurs d'accentuation ou discrètes (muted), ou déplacez vos lignes sans effort.
-
-## 🔄 HISTORIQUE UNDO / REDO INTÉGRÉ
-* **Droit à l'erreur** : Un historique d'actions (Undo/Redo) personnalisé a été intégré au traitement de texte. Annulez et rétablissez vos frappes et modifications à l'aide des nouveaux boutons de la barre d'outils ou via les raccourcis classiques :accent[Ctrl + Z] et :accent[Ctrl + Y] / :accent[Ctrl + Shift + Z].
-
-## 🤖 COMPATIBILITÉ ET CONSEILS IA
-* **Modifiez votre CV avec l'IA** : Le Markdown est le format idéal pour travailler avec l'IA (Gemini, ChatGPT, Claude...). Pour simplifier le copier-coller sans pertes de style, manipulez votre CV dans votre IA préférée et n'oubliez pas de lui demander : :accent["generate in MD format"].
+## 💬 USER FEEDBACK FORM
+* **Interactive Form**: A new "Feedback" button has been added to the editor header. It opens an elegant modal allowing you to rate the app (interactive stars), categorize your feedback (Comment, Suggestion, Bug), and describe your comments.
+* **Secure Processing**: Feedback is sent asynchronously to our Notion database via a secure server proxy and a dedicated n8n workflow, protecting the API keys.
 
 ---
 
-# 1.7.0 - Mise à jour Jobby.
-Mise à jour Jobby du 16/06/2026 · Nouveautés simples & intelligentes.
-[CONTACT : hi@eole.me | +33 6 50 83 68 09 | [cv.eole.me](https://cv.eole.me)]
+# 1.8.2 - Jobby Update
+Jobby Update of 06/20/2026 · Folded Controls Hidden on Print.
+[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
 
-## 💾 SAUVEGARDE ET CHARGEMENT LOCAUX
-* **Sauvegarde de brouillon** : Enregistrez instantanément une copie de votre travail dans le coffre local sécurisé de votre navigateur grâce au nouveau bouton :accent[Save].
-* **Chargement rapide** : Restaurez votre version sauvegardée à tout moment d'un simple clic sur le bouton :accent[Load] (avec demande de confirmation pour éviter toute perte accidentelle).
+## 🖨️ CLEAN PRINTING WITHOUT ARTIFACTS
+* **Hidden Dock**: The side floating folded controls dock, the unfold "Design" button, and modal overlays are now automatically hidden during printing or PDF export. Your resume prints perfectly clean.
 
-## 🎨 PRESETS ET CUSTOMISATION FLEXIBLES
-* **Renommage universel** : Tous les boutons de presets de couleurs (B&W, Dark, Corporate Blue, Soft Blue, Soft Green, Soft Red, Custom, etc.) peuvent désormais être :accent[renommés par double-clic] ! Vos noms personnalisés sont conservés automatiquement dans votre stockage local.
-* **Import/Export de configurations** : Exportez votre configuration de style au format JSON et réimportez-la en un clin d'œil depuis le menu des outils de développement (Developer Tools).
+---
 
-## 🖨️ IMPRESSION SANS BORDURES (FULL-BLEED)
-* **Bordures blanches éliminées** : Les marges d'impression ont été déplacées à l'intérieur du document sous forme de marges internes (paddings). Cela permet aux couleurs de fond (barre latérale, thèmes sombres) de s'imprimer :accent[jusqu'au bord de la feuille] sans bordure blanche disgracieuse !
-* **Format de page dynamique** : Prise en charge dynamique du format de page d'impression (A4 ou US Letter) pour correspondre exactement à votre choix de mise en page.
+# 1.8.1 - Jobby Update
+Jobby Update of 06/19/2026 · Glassmorphic Mode, Improved Accessibility, and Smooth Actions.
+[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
 
-## ✍️ ÉDITION SIMPLIFIÉE
-* **Coloration Syntaxique** : Votre texte se colore en :accent[temps réel] pour vous aider à visualiser la structure de votre document sans effort.
-* **Raccourcis Clavier** : Modifiez votre texte comme dans un traitement de texte classique sans avoir besoin de connaître le Markdown :
-  * :accent[Ctrl + B] : Mettre en gras
-  * :accent[Ctrl + I] : Mettre en italique
-  * :accent[Ctrl + K] : Insérer un lien Internet
-  * :accent[Ctrl + E] : Appliquer la couleur d'accentuation (`:accent[]`)
-  * :accent[Ctrl + M] : Rendre le texte discret/gris (`:muted[]`)
-  * :accent[Ctrl + 1 / 2 / 3] : Créer un titre (Titre principal / Titre de colonne)
-  * :accent[Ctrl + ▲ / ▼] : Déplacer une ligne ou une section entière vers le haut ou le bas
+## 🌌 GLASSMORPHIC EFFECTS AND VISUAL POLISH
+* **Translucent Floating Dock**: The collapsed shortcut panel now features a beautiful frosted glass effect (glassmorphism) in both dark and light modes. Buttons adapt dynamically for perfect visual integration.
+* **Interface Cleanup**: The empty control wrapper disappears completely when folded, eliminating visual layout gaps.
 
-## 🎨 APPARENCE DE LA BARRE LATÉRALE
-* **Position Ajustable** : Votre barre latérale peut désormais passer :accent[à gauche ou à droite] selon vos préférences esthétiques.
-* **Largeur sur Mesure** : Ajustez facilement la taille de votre barre latérale à l'aide d'un curseur dédié pour équilibrer parfaitement votre mise en page.
-* **Finitions Premium** : Personnalisez les bordures, ajoutez des ombres élégantes ou appliquez des dégradés de couleurs modernes sur la barre latérale pour la rendre unique.
+## 👁️ ACCESSIBILITY AND DARK MODE CONTRAST
+* **"What is markdown?" Link**: The helper link in the Markdown editor header now lights up in light purple in dark mode to guarantee optimal contrast and legibility.
 
-## 🚀 MODE EXPERT
-* **Puissant mais Simple** : Activez le mode expert pour débloquer des contrôles avancés de conception tout en conservant une interface propre et accessible pour vos modifications rapides.
+## 🚀 SMOOTH AND UNDOABLE ACTIONS
+* **No More Blocking Dialogs**: The :accent[Sample], :accent[What's New], :accent[Clear], and :accent[Load] buttons now load content instantly without annoying, blocking browser confirm popups.
+* **Safety Net**: Before any destructive overwrite action, your draft is saved to the editor history. A simple :accent[Ctrl + Z] or the Undo button lets you revert immediately!
 
-### 📑 VERSIONING GARANTI
-* **Dernière Version Assurée** : Un système de numérotation intelligent s'affiche sur votre CV.
-* **Zéro Oubli** : Le numéro s'incrémente automatiquement à chaque téléchargement ou impression, garantissant que vos recruteurs consultent toujours la :accent[version la plus récente].
-* **Compteur Quotidien** : Le compteur se réinitialise automatiquement chaque matin.
+---
 
-### ⚡ SUPER-PERFORMANCES
-* **Mise à Jour Instantanée** : Les modifications s'affichent instantanément à l'écran sans aucun temps d'attente.
-* **Plus de Cache** : Plus besoin de vider l'historique ou de rafraîchir la page, les nouveautés se chargent :accent[immédiatement].
+# 1.8.0 - Jobby Update
+Jobby Update of 06/19/2026 · Collapsible Design Panel, Rich Formatting Toolbar, History, and AI Synergy.
+[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
 
-## 🔗 EN SAVOIR PLUS
-* **Code Source & Documentation** : Découvrez les détails techniques et le fonctionnement du projet sur le [README Jobby sur GitHub](https://github.com/gnueole/jobby-md2html#readme).
-* **Historique Complet** : Retrouvez l'historique complet de toutes les versions précédentes dans le [CHANGELOG officiel sur GitHub](https://github.com/gnueole/jobby-md2html/blob/main/CHANGELOG.md).
+## 🔍 COLLAPSIBLE DESIGN PANEL
+* **Maximum Focus**: A new close button (SVG cross) has been added to the design panel header. Click it to collapse the customizer entirely and free up screen space for the preview!
+* **Interactive Floating Button**: A sleek glassmorphic "Design" button appears at the bottom of the screen when the panel is hidden, letting you unfold it at any time.
+* *Special thanks to Maround Boutanos for the shortcuts tooltips and panel folding suggestions!*
+
+## 🛠️ RICH FORMATTING TOOLBAR
+* **Quick Style Access**: The :accent[Format] button is now placed before :accent[Save] and expands a rich formatting toolbar directly above the editor textarea.
+* **Dynamic Highlight**: The :accent[Format] button glows purple when the toolbar is closed to invite interaction, then returns to a neutral shade once opened.
+* **One-Click Actions**: Insert headings (H1, H2, H3), bold, italic, links, bullet lists, apply accent or muted styles, or move lines up/down effortlessly.
+
+## 🔄 INTEGRATED UNDO / REDO HISTORY
+* **Safety First**: A custom Undo/Redo history stack has been integrated into the editor. Easily revert and redo edits using the toolbar buttons or standard keyboard shortcuts: :accent[Ctrl + Z] and :accent[Ctrl + Y] / :accent[Ctrl + Shift + Z].
+
+## 🤖 AI SYSTEM SYNERGY
+* **Edit Resumes with AI**: Markdown is the perfect format to use alongside AI tools (Gemini, ChatGPT, Claude...). To prevent layout issues when copying/pasting, always ask the model to :accent["generate in MD format"].
+
+---
+
+# 1.7.0 - Jobby Update
+Jobby Update of 06/16/2026 · Simple & Smart Features.
+[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+
+## 💾 LOCAL SAVE & LOAD
+* **Draft Saving**: Save a local backup of your current resume to your browser's secure cache using the new :accent[Save] button.
+* **Quick Restores**: Retrieve your saved version instantly by clicking the :accent[Load] button (requires confirmation to avoid accidental overwrites).
+
+## 🎨 FLEXIBLE PRESETS AND CUSTOMIZATION
+* **Universal Preset Renaming**: All color preset buttons (B&W, Dark, Corporate Blue, Soft Blue, Soft Green, Soft Red, Custom, etc.) can now be :accent[renamed by double-clicking] them! Custom names are automatically saved to local storage.
+* **Import/Export Layout Configs**: Export your custom design configuration as a JSON file and re-import it instantly from the Developer Tools modal.
+
+## 🖨️ FULL-BLEED PRINTING (NO BORDERS)
+* **Eliminate White Borders**: Print margins are now handled internally as document paddings. This allows background colors (sidebars, dark themes) to print :accent[all the way to the edge of the paper]!
+* **Dynamic Page Sizes**: Real-time A4 and US Letter page sizes are supported to match your layout preferences precisely.
+
+## ✍️ SIMPLIFIED EDITING
+* **Real-time Syntax Highlighting**: Your markdown text colors in :accent[real-time] as you type, helping you visualize document structure.
+* **Keyboard Shortcuts**: Format text like a standard word processor without knowing Markdown:
+  * :accent[Ctrl + B] : Bold text
+  * :accent[Ctrl + I] : Italic text
+  * :accent[Ctrl + K] : Insert hyperlink
+  * :accent[Ctrl + E] : Apply accent color (`:accent[]`)
+  * :accent[Ctrl + M] : Apply muted text (`:muted[]`)
+  * :accent[Ctrl + 1 / 2 / 3] : Insert headings (H1 / H2 / H3)
+  * :accent[Ctrl + ▲ / ▼] : Move current line or selected section up/down
+
+## 🎨 SIDEBAR CUSTOMIZATION
+* **Flexible Alignment**: Align your sidebar to the :accent[left or right] to suit your taste.
+* **Custom Width**: Adjust sidebar size with a slider to balance the columns perfectly.
+* **Premium Accents**: Customize borders, add shadows, or apply linear gradients to make your sidebar stand out.
+
+## 🚀 EXPERT MODE
+* **Powerful Yet Clean**: Toggle Expert Mode to reveal advanced options (line heights, heading scale, custom color pickers) while keeping the default interface clean and simple.
+
+### 📑 AUTOMATIC VERSIONING
+* **Never Lose Track**: An intelligent printing version indicator is stamped at the bottom of the document.
+* **Auto Increments**: The version number automatically increments each time you print or download the PDF, ensuring recruiters always look at the :accent[latest version].
+* **Daily Resets**: The print count counter resets automatically each morning.
+
+### ⚡ INSTANT PERFORMANCE
+* **Real-time Updates**: Edits reflect in the preview immediately with zero lag.
+* **No Cache Delays**: Updates load :accent[instantly] without requiring page refreshes or cache clearing.
+
+## 🔗 FIND OUT MORE
+* **Source Code & Docs**: Explore details on the [README on GitHub](https://github.com/gnueole/jobby-md2html#readme).
+* **Complete Changelog**: Read about all past updates in the [official CHANGELOG on GitHub](https://github.com/gnueole/jobby-md2html/blob/main/CHANGELOG.md).

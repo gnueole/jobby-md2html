@@ -1,89 +1,89 @@
 <div class="panel-header">
     <h2 class="sr-only">Markdown Editor Panel</h2>
     <div class="header-left">
-        <span class="status-indicator markdown-dot" id="markdown-status-indicator">MARKDOWN</span>
-        <button type="button" class="btn-markdown-help-header" id="btn-markdown-help-header" title="What is Markdown?">
+        <span class="status-indicator markdown-dot" id="markdown-status-indicator" data-i18n="editor.indicator">MARKDOWN</span>
+        <button type="button" class="btn-markdown-help-header" id="btn-markdown-help-header" data-i18n-title="editor.help_tooltip" title="What is Markdown?">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 4px; vertical-align: middle;">
                 <circle cx="12" cy="12" r="10"/>
                 <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
                 <line x1="12" y1="17" x2="12.01" y2="17"/>
             </svg>
-            What is markdown?
+            <span data-i18n="editor.help_btn">What is markdown?</span>
         </button>
     </div>
     <div class="header-actions">
-        <span id="active-file-name" class="active-file-name" style="display: none;"></span>
-        <button id="btn-toggle-toolbar" type="button" class="btn-icon" title="Toggle Formatting Toolbar">
+        <span id="active-file-name" class="active-file-name" data-i18n-title="editor.active_file_tooltip" style="display: none;"></span>
+        <button id="btn-toggle-toolbar" type="button" class="btn-icon" data-i18n-title="editor.toolbar_tooltip" title="Toggle Formatting Toolbar">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M4 7V4h16v3M9 20h6M12 4v16"/>
             </svg>
-            <span class="btn-text">Format</span>
+            <span class="btn-text" data-i18n="editor.toolbar_btn">Format</span>
         </button>
         <div class="save-dropdown-wrapper">
-            <button id="btn-save-dropdown-toggle" type="button" class="btn-icon" title="Save Options">
+            <button id="btn-save-dropdown-toggle" type="button" class="btn-icon" data-i18n-title="editor.save_options_tooltip" title="Save Options">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
                     <polyline points="17 21 17 13 7 13 7 21"/>
                     <polyline points="7 3 7 8 15 8"/>
                 </svg>
-                <span class="btn-text">Save</span>
+                <span class="btn-text" data-i18n="editor.save_btn">Save</span>
                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-left: 2px;">
                     <polyline points="6 9 12 15 18 9"></polyline>
                 </svg>
             </button>
             <div id="save-dropdown-menu" class="save-dropdown-menu">
-                <button id="btn-save-file" type="button" class="save-option" title="Save file to system (Ctrl+S)">
+                <button id="btn-save-file" type="button" class="save-option" data-i18n-title="editor.save_option_save_tooltip" title="Save file to system (Ctrl+S)">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
                         <polyline points="17 21 17 13 7 13 7 21"/>
                         <polyline points="7 3 7 8 15 8"/>
                     </svg>
-                    Save
+                    <span data-i18n="editor.save_option_save">Save</span>
                 </button>
-                <button id="btn-save-as-file" type="button" class="save-option" title="Save as a new file (Ctrl+Shift+S)">
+                <button id="btn-save-as-file" type="button" class="save-option" data-i18n-title="editor.save_option_save_as_tooltip" title="Save as a new file (Ctrl+Shift+S)">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
                         <polyline points="17 21 17 13 7 13 7 21"/>
                         <polyline points="7 3 7 8 15 8"/>
                     </svg>
-                    Save As...
+                    <span data-i18n="editor.save_option_save_as">Save As...</span>
                 </button>
-                <button id="btn-load-bank" type="button" class="save-option" title="Open a Markdown file from your system (Ctrl+O)">
+                <button id="btn-load-bank" type="button" class="save-option" data-i18n-title="editor.save_option_open_tooltip" title="Open a Markdown file from your system (Ctrl+O)">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                         <polyline points="17 8 12 3 7 8"/>
                         <line x1="12" y1="3" x2="12" y2="15"/>
                     </svg>
-                    Open
+                    <span data-i18n="editor.save_option_open">Open</span>
                 </button>
             </div>
         </div>
-        <button id="btn-load-sample" type="button" class="btn-icon" title="Load sample: Julien Avarre">
+        <button id="btn-load-sample" type="button" class="btn-icon" data-i18n-title="editor.sample_tooltip" title="Load sample">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2">
                 <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
             </svg>
-            <span class="btn-text">Sample</span>
+            <span class="btn-text" data-i18n="editor.sample_btn">Sample</span>
         </button>
-        <button id="btn-load-changelog" type="button" class="btn-icon" title="Load Jobby Updates / What's New">
+        <button id="btn-load-changelog" type="button" class="btn-icon" data-i18n-title="editor.whatsnew_tooltip" title="Load Jobby Updates / What's New">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
                 <path d="m5 3 1 2.5L8.5 6 6 7 5 9.5 4 7 1.5 6 4 5.5Z"/>
                 <path d="m19 17 1 2.5 2.5.5-2.5 1-1 2.5-1-2.5-2.5-1 2.5-1Z"/>
             </svg>
-            <span class="btn-text">What's New</span>
+            <span class="btn-text" data-i18n="editor.whatsnew_btn">What's New</span>
         </button>
-        <button id="btn-copy-md" type="button" class="btn-icon" title="Copy Markdown">
+        <button id="btn-copy-md" type="button" class="btn-icon" data-i18n-title="editor.copy_tooltip" title="Copy Markdown">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
                 <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
             </svg>
         </button>
-        <button id="btn-clear" type="button" class="btn-icon text-danger" title="Clear Editor">
+        <button id="btn-clear" type="button" class="btn-icon text-danger" data-i18n-title="editor.clear_tooltip" title="Clear Editor">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <!-- Handle -->
@@ -106,13 +106,13 @@
 <div class="editor-container">
     <div id="editor-toolbar" class="editor-toolbar hidden">
         <div class="toolbar-group">
-            <button id="btn-tb-undo" type="button" class="toolbar-btn" data-action="undo" title="Undo (Ctrl+Z)">
+            <button id="btn-tb-undo" type="button" class="toolbar-btn" data-action="undo" data-i18n-title="editor.undo_tooltip" title="Undo (Ctrl+Z)">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M3 7v6h6"/>
                     <path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"/>
                 </svg>
             </button>
-            <button id="btn-tb-redo" type="button" class="toolbar-btn" data-action="redo" title="Redo (Ctrl+Y)">
+            <button id="btn-tb-redo" type="button" class="toolbar-btn" data-action="redo" data-i18n-title="editor.redo_tooltip" title="Redo (Ctrl+Y)">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21 7v6h-6"/>
                     <path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3l3 2.7"/>
@@ -121,91 +121,91 @@
         </div>
         <div class="toolbar-separator"></div>
         <div class="toolbar-group">
-            <button id="btn-tb-h1" type="button" class="toolbar-btn" data-action="h1" title="Heading 1 (Ctrl+1)">H1</button>
-            <button id="btn-tb-h2" type="button" class="toolbar-btn" data-action="h2" title="Heading 2 (Ctrl+2)">H2</button>
-            <button id="btn-tb-h3" type="button" class="toolbar-btn" data-action="h3" title="Heading 3 (Ctrl+3)">H3</button>
+            <button id="btn-tb-h1" type="button" class="toolbar-btn" data-action="h1" data-i18n-title="editor.h1_tooltip" title="Heading 1 (Ctrl+1)">H1</button>
+            <button id="btn-tb-h2" type="button" class="toolbar-btn" data-action="h2" data-i18n-title="editor.h2_tooltip" title="Heading 2 (Ctrl+2)">H2</button>
+            <button id="btn-tb-h3" type="button" class="toolbar-btn" data-action="h3" data-i18n-title="editor.h3_tooltip" title="Heading 3 (Ctrl+3)">H3</button>
         </div>
         <div class="toolbar-separator"></div>
         <div class="toolbar-group">
-            <button id="btn-tb-bold" type="button" class="toolbar-btn" data-action="bold" title="Bold (Ctrl+B)">
+            <button id="btn-tb-bold" type="button" class="toolbar-btn" data-action="bold" data-i18n-title="editor.bold_tooltip" title="Bold (Ctrl+B)">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/><path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/></svg>
             </button>
-            <button id="btn-tb-italic" type="button" class="toolbar-btn" data-action="italic" title="Italic (Ctrl+I)">
+            <button id="btn-tb-italic" type="button" class="toolbar-btn" data-action="italic" data-i18n-title="editor.italic_tooltip" title="Italic (Ctrl+I)">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="4" x2="10" y2="4"/><line x1="14" y1="20" x2="5" y2="20"/><line x1="15" y1="4" x2="9" y2="20"/></svg>
             </button>
-            <button id="btn-tb-link" type="button" class="toolbar-btn" data-action="link" title="Link (Ctrl+K)">
+            <button id="btn-tb-link" type="button" class="toolbar-btn" data-action="link" data-i18n-title="editor.link_tooltip" title="Link (Ctrl+K)">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
             </button>
-            <button id="btn-tb-list" type="button" class="toolbar-btn" data-action="list" title="Bullet List (-)">
+            <button id="btn-tb-list" type="button" class="toolbar-btn" data-action="list" data-i18n-title="editor.list_tooltip" title="Bullet List (-)">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
             </button>
         </div>
         <div class="toolbar-separator"></div>
         <div class="toolbar-group">
-            <button id="btn-tb-accent" type="button" class="toolbar-btn text-accent" data-action="accent" title="Accent Color (Ctrl+E)">
+            <button id="btn-tb-accent" type="button" class="toolbar-btn text-accent" data-action="accent" data-i18n-title="editor.accent_tooltip" title="Accent Color (Ctrl+E)">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 4.5px;">
                     <path d="M12 20h9"/>
                     <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
-                </svg>Accent</button>
-            <button id="btn-tb-muted" type="button" class="toolbar-btn text-muted" data-action="muted" title="Muted Text (Ctrl+M)">
+                </svg><span data-i18n="editor.accent_btn">Accent</span></button>
+            <button id="btn-tb-muted" type="button" class="toolbar-btn text-muted" data-action="muted" data-i18n-title="editor.muted_tooltip" title="Muted Text (Ctrl+M)">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 4.5px;">
                     <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
                     <line x1="1" y1="1" x2="23" y2="23"/>
-                </svg>Muted</button>
+                </svg><span data-i18n="editor.muted_btn">Muted</span></button>
         </div>
         <div class="toolbar-separator"></div>
         <div class="toolbar-group">
-            <button id="btn-tb-move-up" type="button" class="toolbar-btn" data-action="move-up" title="Move Up (Ctrl+▲)">
+            <button id="btn-tb-move-up" type="button" class="toolbar-btn" data-action="move-up" data-i18n-title="editor.move_up_tooltip" title="Move Up (Ctrl+▲)">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
             </button>
-            <button id="btn-tb-move-down" type="button" class="toolbar-btn" data-action="move-down" title="Move Down (Ctrl+▼)">
+            <button id="btn-tb-move-down" type="button" class="toolbar-btn" data-action="move-down" data-i18n-title="editor.move_down_tooltip" title="Move Down (Ctrl+▼)">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
             </button>
         </div>
         <div class="toolbar-separator"></div>
         <div class="toolbar-group">
-            <label class="syntax-toggle" title="Toggle syntax highlighting in editor">
+            <label class="syntax-toggle" data-i18n-title="editor.syntax_tooltip" title="Toggle syntax highlighting in editor">
                 <input type="checkbox" id="cb-syntax-highlight" checked>
                 <span class="toggle-switch"></span>
-                <span class="toggle-label">Syntax</span>
+                <span class="toggle-label" data-i18n="editor.syntax_label">Syntax</span>
             </label>
         </div>
         <div class="toolbar-spacer"></div>
         <div class="toolbar-group">
             <div class="shortcut-tooltip-container">
-                <button id="btn-tb-shortcuts" class="toolbar-btn shortcut-help-btn" title="Keyboard Shortcuts Help" type="button">
+                <button id="btn-tb-shortcuts" class="toolbar-btn shortcut-help-btn" data-i18n-title="editor.shortcuts_tooltip" title="Keyboard Shortcuts Help" type="button">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right: 4.5px;">
                         <circle cx="12" cy="12" r="10"/>
                         <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
                         <line x1="12" y1="17" x2="12.01" y2="17"/>
                     </svg>
-                    Shortcuts
+                    <span data-i18n="editor.shortcuts_btn">Shortcuts</span>
                 </button>
                 <div class="shortcut-tooltip-dropdown">
-                    <h4>Editor Shortcuts</h4>
+                    <h4 data-i18n="editor.shortcuts_title">Editor Shortcuts</h4>
                     <ul>
-                        <li><kbd>Ctrl + B</kbd> <span>Bold</span></li>
-                        <li><kbd>Ctrl + I</kbd> <span>Italic</span></li>
-                        <li><kbd>Ctrl + K</kbd> <span>Insert Link</span></li>
-                        <li><kbd>Ctrl + E</kbd> <span>Accent Color</span></li>
-                        <li><kbd>Ctrl + M</kbd> <span>Muted Text</span></li>
-                        <li><kbd>Ctrl + 1/2/3</kbd> <span>H1/H2/H3 Headings</span></li>
-                        <li><kbd>Ctrl + ▲/▼</kbd> <span>Move Line / Section</span></li>
+                        <li><kbd>Ctrl + B</kbd> <span data-i18n="editor.shortcuts_bold">Bold</span></li>
+                        <li><kbd>Ctrl + I</kbd> <span data-i18n="editor.shortcuts_italic">Italic</span></li>
+                        <li><kbd>Ctrl + K</kbd> <span data-i18n="editor.shortcuts_link">Insert Link</span></li>
+                        <li><kbd>Ctrl + E</kbd> <span data-i18n="editor.shortcuts_accent">Accent Color</span></li>
+                        <li><kbd>Ctrl + M</kbd> <span data-i18n="editor.shortcuts_muted">Muted Text</span></li>
+                        <li><kbd>Ctrl + 1/2/3</kbd> <span data-i18n="editor.shortcuts_headings">H1/H2/H3 Headings</span></li>
+                        <li><kbd>Ctrl + ▲/▼</kbd> <span data-i18n="editor.shortcuts_move">Move Line / Section</span></li>
                     </ul>
                     <h4 style="margin-top: 12px; border-top: 1px solid var(--border-color); padding-top: 8px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; gap: 8px;">
-                        <span>Markdown Cheatsheet</span>
-                        <a href="#" id="tooltip-help-link" style="font-size: 11px; font-weight: 500; color: var(--accent); text-decoration: underline; white-space: nowrap; text-transform: none; letter-spacing: normal;">(help me more!)</a>
+                        <span data-i18n="editor.cheatsheet_title">Markdown Cheatsheet</span>
+                        <a href="#" id="tooltip-help-link" data-i18n="editor.cheatsheet_more" style="font-size: 11px; font-weight: 500; color: var(--accent); text-decoration: underline; white-space: nowrap; text-transform: none; letter-spacing: normal;">(help me more!)</a>
                     </h4>
                     <ul>
-                        <li><code># Titre</code> <span>H1 Title</span></li>
-                        <li><code>## Titre</code> <span>H2 (Main Column)</span></li>
-                        <li><code>### Titre</code> <span>H3 (Sidebar Column)</span></li>
-                        <li><code>**texte**</code> <span>Bold Text</span></li>
-                        <li><code>*texte*</code> <span>Italic Text</span></li>
-                        <li><code>- élément</code> <span>List Item</span></li>
-                        <li><code>[label](url)</code> <span>Link</span></li>
-                        <li><code>:accent[texte]</code> <span>Accent Color</span></li>
-                        <li><code>:muted[texte]</code> <span>Muted Text</span></li>
+                        <li><code># Titre</code> <span data-i18n="editor.cheatsheet_h1">H1 Title</span></li>
+                        <li><code>## Titre</code> <span data-i18n="editor.cheatsheet_h2">H2 (Main Column)</span></li>
+                        <li><code>### Titre</code> <span data-i18n="editor.cheatsheet_h3">H3 (Sidebar Column)</span></li>
+                        <li><code>**texte**</code> <span data-i18n="editor.cheatsheet_bold">Bold Text</span></li>
+                        <li><code>*texte*</code> <span data-i18n="editor.cheatsheet_italic">Italic Text</span></li>
+                        <li><code>- élément</code> <span data-i18n="editor.cheatsheet_list">List Item</span></li>
+                        <li><code>[label](url)</code> <span data-i18n="editor.cheatsheet_link">Link</span></li>
+                        <li><code>:accent[texte]</code> <span data-i18n="editor.cheatsheet_accent">Accent Color</span></li>
+                        <li><code>:muted[texte]</code> <span data-i18n="editor.cheatsheet_muted">Muted Text</span></li>
                     </ul>
                 </div>
             </div>
@@ -214,7 +214,7 @@
     <div class="textarea-syntax-wrapper syntax-active">
         <pre id="markdown-highlight" aria-hidden="true"><code id="highlight-code"></code></pre>
         <label for="markdown-input" class="sr-only">Markdown Source Code</label>
-        <textarea id="markdown-input" spellcheck="false" placeholder="# YOUR NAME..."></textarea>
+        <textarea id="markdown-input" spellcheck="false" data-i18n-placeholder="editor.placeholder" placeholder="# YOUR NAME..."></textarea>
     </div>
 </div>
 <div class="panel-footer">

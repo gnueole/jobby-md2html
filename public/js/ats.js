@@ -4,6 +4,7 @@
  */
 
 import { ICONS } from './config.js';
+import { t } from './i18n.js';
 
 export function runAtsChecker(md, html) {
     const charWordCount = document.getElementById('char-word-count');
@@ -28,40 +29,40 @@ export function runAtsChecker(md, html) {
     // Count words/chars
     const wordCount = plainText.trim().split(/\s+/).filter(w => w.length > 0).length;
     const charCount = plainText.length;
-    charWordCount.textContent = `Words: ${wordCount} | Characters: ${charCount}`;
+    charWordCount.textContent = t('ats.words_chars', { wordCount, charCount });
 
     // 1. Email Check
     const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
     if (emailRegex.test(plainText)) {
-        checks.push({ status: 'pass', text: 'Valid email address present.' });
+        checks.push({ status: 'pass', text: t('ats.rule_email_pass') });
     } else {
         score -= 15;
-        checks.push({ status: 'fail', text: 'No email address detected.' });
+        checks.push({ status: 'fail', text: t('ats.rule_email_fail') });
     }
 
     // 2. Phone Check
     const phoneRegex = /(?:\+?\d{1,3}[-.\s]?)?\(?\d{2,4}\)?[-.\s]?\d{2,4}[-.\s]?\d{2,4}[-.\s]?\d{2,4}/;
     if (phoneRegex.test(plainText)) {
-        checks.push({ status: 'pass', text: 'Phone number present.' });
+        checks.push({ status: 'pass', text: t('ats.rule_phone_pass') });
     } else {
         score -= 15;
-        checks.push({ status: 'fail', text: 'No phone number detected.' });
+        checks.push({ status: 'fail', text: t('ats.rule_phone_fail') });
     }
 
     // 3. Tables Warning (ATS parsing blocker)
     if (md.includes('| --- |') || html.includes('<table')) {
         score -= 15;
-        checks.push({ status: 'fail', text: 'Table detected: Avoid tables (ATS scanners read table cells out of order).' });
+        checks.push({ status: 'fail', text: t('ats.rule_tables_fail') });
     } else {
-        checks.push({ status: 'pass', text: 'Table-free structure (Compliant).' });
+        checks.push({ status: 'pass', text: t('ats.rule_tables_pass') });
     }
 
     // 4. Image Check
     if (md.includes('![]') || md.includes('![') || html.includes('<img')) {
         score -= 10;
-        checks.push({ status: 'fail', text: 'Image detected: Avoid graphics/images (ATS scanners ignore images and text inside them).' });
+        checks.push({ status: 'fail', text: t('ats.rule_images_fail') });
     } else {
-        checks.push({ status: 'pass', text: 'No graphics/images (Compliant).' });
+        checks.push({ status: 'pass', text: t('ats.rule_images_pass') });
     }
 
     // 5. Headings Check
@@ -75,28 +76,28 @@ export function runAtsChecker(md, html) {
     });
 
     if (standardHeadingCount >= 2) {
-        checks.push({ status: 'pass', text: 'Standard section headings identified.' });
+        checks.push({ status: 'pass', text: t('ats.rule_headings_pass') });
     } else {
         score -= 15;
-        checks.push({ status: 'fail', text: 'Use standard section headings (e.g., "Experience", "Education").' });
+        checks.push({ status: 'fail', text: t('ats.rule_headings_fail') });
     }
 
     // 6. Candidates full name check (First Heading should be candidate name)
     const firstHeader = doc.querySelector('h1');
     if (firstHeader && firstHeader.textContent.trim().length > 2) {
-        checks.push({ status: 'pass', text: 'Candidate full name identified in H1.' });
+        checks.push({ status: 'pass', text: t('ats.rule_name_pass') });
     } else {
         score -= 15;
-        checks.push({ status: 'fail', text: 'Start your resume with your Name in H1.' });
+        checks.push({ status: 'fail', text: t('ats.rule_name_fail') });
     }
 
     // 7. Bullet points formatting check
     const lists = doc.querySelectorAll('li');
     if (lists.length >= 3) {
-        checks.push({ status: 'pass', text: 'Standardized bullet point structure.' });
+        checks.push({ status: 'pass', text: t('ats.rule_bullets_pass') });
     } else {
         score -= 15;
-        checks.push({ status: 'fail', text: 'Use bullet point lists (at least 3 items) for professional experience.' });
+        checks.push({ status: 'fail', text: t('ats.rule_bullets_fail') });
     }
 
     // Ensure score bounds
@@ -118,15 +119,15 @@ export function runAtsChecker(md, html) {
     // Style score indicators based on score
     if (score >= 90) {
         scoreRingProgress.setAttribute('stroke', '#10b981'); // success green
-        verdictTitle.textContent = "Perfect Formatting!";
-        verdictDesc.textContent = "Ready to be parsed by recruiters and ATS scanners.";
+        verdictTitle.textContent = t('ats.verdict_pass');
+        verdictDesc.textContent = t('ats.desc_pass');
     } else if (score >= 70) {
         scoreRingProgress.setAttribute('stroke', '#fbbf24'); // warning yellow
-        verdictTitle.textContent = "Average Formatting";
-        verdictDesc.textContent = "Fix critical warnings to optimize parsing.";
+        verdictTitle.textContent = t('ats.verdict_warn');
+        verdictDesc.textContent = t('ats.desc_warn');
     } else {
         scoreRingProgress.setAttribute('stroke', '#ef4444'); // danger red
-        verdictTitle.textContent = "Optimization Required";
-        verdictDesc.textContent = "Your resume may not be parsed correctly by ATS.";
+        verdictTitle.textContent = t('ats.verdict_fail');
+        verdictDesc.textContent = t('ats.desc_fail');
     }
 }
