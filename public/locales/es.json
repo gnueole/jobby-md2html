@@ -328,7 +328,7 @@
     "preset_saved": "¡\"{name}\" guardado con la configuración de diseño actual!",
     "preset_reset": "¡Preferencias de diseño restauradas al valor por defecto!",
     "reset_confirm": "¿Restaurar todos los valores de diseño predeterminados?",
-    "welcome_upgrade": "¡Bienvenido a Jobby <strong>{version}</strong>! Revisa las novedades.",
+    "welcome_upgrade": "¡Bienvenido a Jobby <strong style=\"color: #ffffff;\">{version}</strong>! Revisa las novedades.",
     "sample_loaded": "¡Ejemplo cargado! (Ctrl+Z para deshacer)",
     "sample_load_fail": "Error al cargar ejemplo: {message}",
     "updates_loaded": "¡Novedades de Jobby cargadas! (Ctrl+Z para deshacer)",

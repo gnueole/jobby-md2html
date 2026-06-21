@@ -328,7 +328,7 @@
     "preset_saved": "\"{name}\" enregistré avec la configuration actuelle !",
     "preset_reset": "Préférences de style réinitialisées !",
     "reset_confirm": "Réinitialiser toutes les configurations de style par défaut ?",
-    "welcome_upgrade": "Bienvenue sur Jobby <strong>{version}</strong> ! Consultez les nouveautés.",
+    "welcome_upgrade": "Bienvenue sur Jobby <strong style=\"color: #ffffff;\">{version}</strong> ! Consultez les nouveautés.",
     "sample_loaded": "Exemple chargé ! (Ctrl+Z pour annuler)",
     "sample_load_fail": "Échec du chargement du modèle : {message}",
     "updates_loaded": "Nouveautés de Jobby chargées ! (Ctrl+Z pour annuler)",

@@ -328,7 +328,7 @@
     "preset_saved": "\"{name}\" uloženo s aktuální konfigurací vzhledu!",
     "preset_reset": "Předvolby designu obnoveny na výchozí hodnoty!",
     "reset_confirm": "Obnovit všechny konfigurace designu na výchozí hodnoty?",
-    "welcome_upgrade": "Vítejte v Jobby <strong>{version}</strong>! Podívejte se na novinky.",
+    "welcome_upgrade": "Vítejte v Jobby <strong style=\"color: #ffffff;\">{version}</strong>! Podívejte se na novinky.",
     "sample_loaded": "Ukázka načtena! (Ctrl+Z pro vrácení)",
     "sample_load_fail": "Nepodařilo se načíst ukázku: {message}",
     "updates_loaded": "Aktualizace Jobby načteny! (Ctrl+Z pro vrácení)",
