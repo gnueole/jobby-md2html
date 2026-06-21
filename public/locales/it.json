@@ -328,7 +328,7 @@
     "preset_saved": "¡\"{name}\" salvato con la configurazione di stile corrente!",
     "preset_reset": "Preferenze grafiche ripristinate al valore di default!",
     "reset_confirm": "Ripristinare tutte le configurazioni grafiche al valore di default?",
-    "welcome_upgrade": "Benvenuto in Jobby {version}! Controlla le novità.",
+    "welcome_upgrade": "Benvenuto in Jobby <strong>{version}</strong>! Controlla le novità.",
     "sample_loaded": "Esempio caricato! (Ctrl+Z per annullare)",
     "sample_load_fail": "Caricamento dell'esempio fallito: {message}",
     "updates_loaded": "Aggiornamenti Jobby caricati! (Ctrl+Z per annullare)",
