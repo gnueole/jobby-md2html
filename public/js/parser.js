@@ -115,8 +115,8 @@ export function compileMarkdown(mdText, styleConfig, markdownInput, onUpdate) {
         currentOffset += token.raw.length;
     });
 
-    // Compile markdown to HTML
-    let html = marked.parse(processedMd);
+    // Compile markdown to HTML and sanitize to prevent XSS
+    let html = DOMPurify.sanitize(marked.parse(processedMd), { ADD_ATTR: ['data-token-index'] });
 
     // Inject data-token-index into the top-level HTML elements
     const docParser = new DOMParser();
