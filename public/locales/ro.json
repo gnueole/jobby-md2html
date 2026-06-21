@@ -202,6 +202,9 @@
   },
   "help": {
     "title": "Ajutor și ghid Markdown",
+    "tuto_cta_title": "Vrei să-l vezi în acțiune?",
+    "tuto_cta_desc": "Pornește tutorialul interactiv de 20 de secunde pentru a vedea cum Jobby procesează Markdown în timp real.",
+    "tuto_cta_btn": "Arată-mi Markdown",
     "intro_q1": "1. Ce este Markdown",
     "intro_a1_1": "Nu este nou",
     "intro_a1_2": "Este doar text",

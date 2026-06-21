@@ -202,6 +202,9 @@
   },
   "help": {
     "title": "Ayuda y guía Markdown",
+    "tuto_cta_title": "¿Quiere verlo en acción?",
+    "tuto_cta_desc": "Inicie el tutorial interactivo de 20 segundos para ver cómo Jobby analiza Markdown en tiempo real.",
+    "tuto_cta_btn": "Muéstrame Markdown",
     "intro_q1": "1. ¿Qué es Markdown?",
     "intro_a1_1": "No es algo nuevo",
     "intro_a1_2": "Es solo texto",

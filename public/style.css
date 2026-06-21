@@ -1219,6 +1219,15 @@ input[type="color"]::-webkit-color-swatch {
     overflow-y: auto;
 }
 
+.btn-cta-tutorial:hover {
+    background-color: var(--accent-hover) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(124, 58, 237, 0.4) !important;
+}
+.btn-cta-tutorial:active {
+    transform: translateY(0) !important;
+}
+
 .modal-brand-section {
     display: flex;
     align-items: center;

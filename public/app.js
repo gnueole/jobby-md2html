@@ -1662,6 +1662,16 @@ async function initializeJobby() {
         helpModal.addEventListener('click', (e) => {
             if (e.target === helpModal) helpModal.classList.remove('show');
         });
+
+        // CTA "Show me markdown" opens animated tutorial
+        const btnShowTuto = helpModal.querySelector('#btn-show-markdown-tuto');
+        if (btnShowTuto) {
+            btnShowTuto.addEventListener('click', (e) => {
+                e.preventDefault();
+                helpModal.classList.remove('show');
+                MarkdownPopupTutorial.mount();
+            });
+        }
     }
 
     if (tooltipHelpLink && helpModal) {

@@ -202,6 +202,9 @@
   },
   "help": {
     "title": "Nápověda & průvodce Markdownem",
+    "tuto_cta_title": "Chcete to vidět v akci?",
+    "tuto_cta_desc": "Spusťte 20sekundový interaktivní návod a podívejte se, jak Jobby zpracovává Markdown v reálném čase.",
+    "tuto_cta_btn": "Ukázat Markdown",
     "intro_q1": "1. Co je Markdown",
     "intro_a1_1": "Není to novinka",
     "intro_a1_2": "Je to jen text",

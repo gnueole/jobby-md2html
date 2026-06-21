@@ -202,6 +202,9 @@
   },
   "help": {
     "title": "Hilfe & Markdown-Handbuch",
+    "tuto_cta_title": "Möchten Sie es in Aktion sehen?",
+    "tuto_cta_desc": "Starten Sie das 20-sekündige interaktive Tutorial, um zu sehen, wie Jobby Markdown in Echtzeit verarbeitet.",
+    "tuto_cta_btn": "Zeig mir Markdown",
     "intro_q1": "1. Was ist Markdown",
     "intro_a1_1": "Es ist nicht neu",
     "intro_a1_2": "Es ist nur Text",
