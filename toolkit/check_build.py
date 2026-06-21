@@ -3,6 +3,9 @@ import json
 import sys
 
 def check_build():
+    # Check for --full argument
+    full = "--full" in sys.argv
+    
     url = "https://api.github.com/repos/gnueole/jobby-md2html/actions/runs?branch=main"
     req = urllib.request.Request(
         url,
@@ -25,19 +28,23 @@ def check_build():
                 commit_msg = head_commit.get("message", "Unknown").split("\n")[0]
                 commit_sha = latest_run.get("head_sha", "Unknown")[:7]
                 
-                print(f"Latest Run details:")
-                print(f"  Commit: [{commit_sha}] {commit_msg}")
-                print(f"  Status: {status}")
-                print(f"  Conclusion: {conclusion}")
-                print(f"  URL: {html_url}")
+                if full:
+                    print(f"Latest Run details:")
+                    print(f"  Commit: [{commit_sha}] {commit_msg}")
+                    print(f"  Status: {status}")
+                    print(f"  Conclusion: {conclusion}")
+                    print(f"  URL: {html_url}")
                 
                 if status == "completed":
                     if conclusion == "success":
                         sys.exit(0)
                     else:
+                        if not full:
+                            print(f"Build failed. Please check the logs at: {html_url}")
                         sys.exit(2)
                 else:
-                    print(f"Build is currently in progress (status: {status}). Please try again later.")
+                    if not full:
+                        print("Build is in progress. Please try again later.")
                     sys.exit(0)
     except Exception as e:
         print(f"Error checking GitHub actions: {e}")

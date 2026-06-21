@@ -32,7 +32,7 @@ DOCKER_DIR   := docker
 COMPOSE_DEV  := $(DOCKER_DIR)/docker-compose.yml
 COMPOSE_PROD := $(DOCKER_DIR)/docker-compose.prod.yml
 
-.PHONY: help configure dev dev-up dev-down up down restart deploy deploy-infra deploy-n8n deploy-all _deploy deploy-delay checklogs check-build n8n-backup n8n-push n8n-backup-dev n8n-push-dev n8n-deploy-error
+.PHONY: help configure dev dev-up dev-down up down restart deploy deploy-infra deploy-n8n deploy-all _deploy deploy-delay checklogs check-build check-build-full n8n-backup n8n-push n8n-backup-dev n8n-push-dev n8n-deploy-error
 
 # Default target
 help:
@@ -55,7 +55,8 @@ help:
 	@echo "  make deploy-all       - Push production compose & pull/recreate all images"
 	@echo "  make deploy-delay     - Wait 150s for GitHub Actions and then deploy"
 	@echo "  make checklogs        - Fetch real-time production logs from VPS"
-	@echo "  make check-build      - Query GitHub Actions workflow run status for latest main commit"
+	@echo "  make check-build      - Query GitHub Actions build status (quiet on success, prints simple message on progress)"
+	@echo "  make check-build-full - Display verbose details of the latest GitHub Actions workflow run"
 	@echo ""
 	@echo "n8n Workflow Syncing (Doppler aware):"
 	@echo "  make n8n-backup       - Backup all workflows from Production n8n to local n8n/"
@@ -160,6 +161,9 @@ check-logs:
 
 check-build:
 	@python3 toolkit/check_build.py
+
+check-build-full:
+	@python3 toolkit/check_build.py --full
 
 deploy-delay:
 	@echo "⏳ Waiting 150 seconds for GitHub Actions build to complete..."
