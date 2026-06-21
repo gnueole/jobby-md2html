@@ -28,14 +28,21 @@ function handleMouseOver(e) {
     const target = e.target.closest('[title], [data-tooltip]');
     if (!target) return;
 
-    // Suppress browser default tooltip
-    let tooltipText = target.getAttribute('data-tooltip');
-    if (!tooltipText) {
-        tooltipText = target.getAttribute('title');
-        if (!tooltipText) return;
+    // If it's inside the folded controls dock, let its custom CSS tooltips handle it
+    if (target.closest('.folded-controls-dock')) {
+        return;
+    }
+
+    // Suppress browser default tooltip and ensure we use the latest translated title if available
+    let tooltipText = target.getAttribute('title');
+    if (tooltipText) {
         target.setAttribute('data-tooltip', tooltipText);
         target.removeAttribute('title'); // Prevents browser native tooltip
+    } else {
+        tooltipText = target.getAttribute('data-tooltip');
     }
+
+    if (!tooltipText) return;
 
     // Set text and show tooltip
     tooltipEl.textContent = tooltipText;
@@ -48,6 +55,10 @@ function handleMouseOver(e) {
 function handleMouseOut(e) {
     const target = e.target.closest('[data-tooltip]');
     if (!target) return;
+
+    if (target.closest('.folded-controls-dock')) {
+        return;
+    }
 
     // Restore title attribute if needed for accessibility (screen readers)
     const text = target.getAttribute('data-tooltip');
