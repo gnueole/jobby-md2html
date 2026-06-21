@@ -293,6 +293,41 @@ export const MarkdownPopupTutorial = {
                         transform: translateY(0) scale(1);
                     }
                 }
+                @media (max-width: 768px), (max-height: 640px) {
+                    .tutorial-window {
+                        max-height: 95vh;
+                    }
+                    .tutorial-body {
+                        height: 280px;
+                    }
+                    .tutorial-editor-column {
+                        padding: 10px;
+                        font-size: 11px;
+                        line-height: 1.4;
+                    }
+                    .tutorial-preview-column {
+                        padding: 12px;
+                        gap: 8px;
+                    }
+                    .tutorial-preview-column h1 {
+                        font-size: 16px;
+                    }
+                    .tutorial-preview-column h2 {
+                        font-size: 13px;
+                    }
+                    .tutorial-preview-column p,
+                    .tutorial-preview-column li {
+                        font-size: 11px;
+                        line-height: 1.4;
+                    }
+                    .tutorial-preview-column ul {
+                        padding-left: 12px;
+                        gap: 4px;
+                    }
+                    .tutorial-preview-column hr {
+                        margin: 6px 0;
+                    }
+                }
             `;
             document.head.appendChild(styleEl);
         }
