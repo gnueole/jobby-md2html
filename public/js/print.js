@@ -4,7 +4,7 @@
  * Refactored from app.js to modularize page layout and print configuration.
  */
 
-import { incrementDailyVersionCounter, showToast } from './utils.js';
+import { incrementDailyVersionCounter, showToast, preventPopupOverflow } from './utils.js';
 
 let showPageBreaks = localStorage.getItem('show_page_breaks') === 'true';
 let pageFormat = 'A4';
@@ -116,6 +116,9 @@ export function initPrint({
             }
             
             pageFormatDropdown.classList.toggle('show');
+            if (pageFormatDropdown.classList.contains('show')) {
+                preventPopupOverflow(pageFormatDropdown);
+            }
         });
         
         const formatOptions = pageFormatDropdown.querySelectorAll('.format-option');

@@ -213,3 +213,29 @@ export function incrementDailyVersionCounter() {
     localStorage.setItem('print_counter_val', counter);
     return counter;
 }
+
+/**
+ * Adjust absolute positioned popups to ensure they stay within screen boundaries.
+ * @param {HTMLElement} popup - The popup element to adjust.
+ */
+export function preventPopupOverflow(popup) {
+    if (!popup) return;
+    
+    // Clear any previous inline adjustments to measure natural CSS bounds first
+    popup.style.left = '';
+    popup.style.right = '';
+    
+    const rect = popup.getBoundingClientRect();
+    const margin = 12;
+    const viewportWidth = window.innerWidth;
+    
+    if (rect.left < margin) {
+        const shiftRight = margin - rect.left;
+        popup.style.left = `${popup.offsetLeft + shiftRight}px`;
+        popup.style.right = 'auto';
+    } else if (rect.right > viewportWidth - margin) {
+        const shiftLeft = rect.right - (viewportWidth - margin);
+        popup.style.left = `${popup.offsetLeft - shiftLeft}px`;
+        popup.style.right = 'auto';
+    }
+}

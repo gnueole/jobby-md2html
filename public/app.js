@@ -5,7 +5,7 @@
  */
 
 import { DEFAULT_STYLE_CONFIG } from './js/config.js';
-import { showToast, debounce } from './js/utils.js';
+import { showToast, debounce, preventPopupOverflow } from './js/utils.js';
 import { runAtsChecker } from './js/ats.js';
 import { initPanning } from './js/panning.js';
 import { initHighlighting, initCursorRadar, initBidirectionalSync } from './js/highlight.js';
@@ -94,6 +94,29 @@ async function initializeJobby() {
         document.documentElement.style.setProperty('--editor-font-size', `${currentFontSize}px`);
     };
     updateEditorFontSize(currentFontSize);
+
+    // --- Dynamic Positioning to Prevent Dropdown/Tooltip Overflow ---
+    const shortcutContainer = document.querySelector('.shortcut-tooltip-container');
+    const shortcutDropdown = document.querySelector('.shortcut-tooltip-dropdown');
+    if (shortcutContainer && shortcutDropdown) {
+        shortcutContainer.addEventListener('mouseenter', () => {
+            preventPopupOverflow(shortcutDropdown);
+        });
+    }
+
+    window.addEventListener('resize', debounce(() => {
+        if (shortcutDropdown) {
+            preventPopupOverflow(shortcutDropdown);
+        }
+        const saveDropdownMenu = document.getElementById('save-dropdown-menu');
+        if (saveDropdownMenu && saveDropdownMenu.classList.contains('show')) {
+            preventPopupOverflow(saveDropdownMenu);
+        }
+        const pageFormatDropdown = document.getElementById('page-format-dropdown');
+        if (pageFormatDropdown && pageFormatDropdown.classList.contains('show')) {
+            preventPopupOverflow(pageFormatDropdown);
+        }
+    }, 100));
 
     // Show welcome upgrade toast if version has changed
     const lastSeenVersion = localStorage.getItem('jobby_last_seen_version');
@@ -1325,6 +1348,9 @@ async function initializeJobby() {
         btnSaveDropdownToggle.addEventListener('click', (e) => {
             e.stopPropagation();
             saveDropdownMenu.classList.toggle('show');
+            if (saveDropdownMenu.classList.contains('show')) {
+                preventPopupOverflow(saveDropdownMenu);
+            }
         });
     }
 
