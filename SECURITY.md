@@ -29,6 +29,13 @@ Please do not open a public issue for security vulnerabilities. Instead, report 
 * **Triage**: We will investigate the issue and coordinate with you on confirmation and timeline.
 * **Resolution**: If confirmed, we will develop a patch and release an update. We ask that you give us reasonable time to fix the issue before public disclosure.
 
+## Client-Side Security & Sanitization
+
+Jobby compiles Markdown to HTML on-the-fly inside the user's browser. To prevent Cross-Site Scripting (XSS) vulnerabilities (for instance, from malicious markdown text containing arbitrary `<script>` tags or event handlers):
+- All compiled HTML is sanitized client-side using **DOMPurify** before being injected into the DOM.
+- The sanitization configuration allows safe HTML elements and preserves the custom `data-token-index` synchronizer attributes while stripping out any malicious active content.
+- Draft content remains strictly local to the user's browser via `localStorage` or local file handles.
+
 ---
 
 ## 🔗 Jobby Project Links
@@ -36,5 +43,6 @@ Please do not open a public issue for security vulnerabilities. Instead, report 
 * **[Installation Guide](INSTALL.md)** - Learn how to set up Jobby locally or via Docker.
 * **[Changelog](CHANGELOG.md)** - Review releases and change history.
 * **[License](LICENSE)** - View the MIT License terms.
+
 
 

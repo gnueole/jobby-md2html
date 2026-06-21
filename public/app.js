@@ -1633,6 +1633,7 @@ async function initializeJobby() {
     if (btnAbout && aboutModal) {
         btnAbout.addEventListener('click', () => {
             aboutModal.classList.add('show');
+            sendTelemetry('About Open');
             startOpeningFireworks();
             // Auto roll logo when popping about
             triggerLogoRoll(aboutModalLogoAnimate);
@@ -1654,6 +1655,7 @@ async function initializeJobby() {
                 e.preventDefault();
                 aboutModal.classList.remove('show');
                 helpModal.classList.add('show');
+                sendTelemetry('Help Open');
                 // Auto roll logo when popping help
                 triggerLogoRoll(helpModalLogoAnimate);
             });
@@ -1686,6 +1688,7 @@ async function initializeJobby() {
         tooltipHelpLink.addEventListener('click', (e) => {
             e.preventDefault();
             helpModal.classList.add('show');
+            sendTelemetry('Help Open');
             // Auto roll logo when popping help from cheatsheet tooltip
             triggerLogoRoll(helpModalLogoAnimate);
         });
@@ -2345,6 +2348,7 @@ async function initializeJobby() {
             const helpModal = document.getElementById('help-modal');
             if (helpModal) {
                 helpModal.classList.add('show');
+                sendTelemetry('Help Open');
                 const helpModalLogoAnimate = document.querySelector('#help-modal .modal-logo svg');
                 if (helpModalLogoAnimate) {
                     helpModalLogoAnimate.classList.remove('logo-roll');

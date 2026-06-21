@@ -17,6 +17,9 @@ This document details the file structure and component architecture of the Jobby
   - `parser.js`: Custom markdown-to-HTML parsing rules aligned with Gotenberg compiler.
   - `shortcuts.js`: Keyboard hotkeys and structural section swapping.
   - `styles.js`: Dynamic styling injector, cosmetics, and slider values handlers.
+  - `tutorial.js`: Interactive animated popup tutorial demonstrating Markdown in 20 seconds, featuring path routing and dynamic theme/media styling.
+  - `i18n.js`: Client-side internationalization engine that loads translation JSON files dynamically.
+  - `tooltip.js`: Interactive markdown cheatsheet tooltip utility.
   - `theme.js`, `zoom.js`, `print.js`, `panning.js`, `utils.js`: Theme, zoom, scaling, panning, print previews, and core DOM utility helpers.
 - `public/templates.css`: Rendering styles for A4 page (screen + PDF print rules).
 - `public/sample.md`: Default resume template (example author) provided as a starting point.

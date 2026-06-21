@@ -187,7 +187,7 @@ To manage your application history and personalize your CV, the system is backed
 Jobby includes a lightweight, secure telemetry pipeline to monitor editor usage and track candidate progress. 
 
 ### How It Works
-1. **Event Capture:** The frontend editor captures key user events (e.g., Session Start, Open/Save File, Copy Markdown, Print PDF, and ATS Scorecard calculations).
+1. **Event Capture:** The frontend editor captures key user events (e.g., Session Start, Open/Save File, Copy Markdown, Print PDF, ATS Scorecard calculations, opening the About Modal, opening the Markdown Help Modal, and starting, completing, replaying, or exiting the popup tutorial).
 2. **Secure Proxy:** Events are POSTed to the local `/api/telemetry` endpoint. This acts as a proxy, forwarding events to n8n without exposing credentials to the client.
 3. **n8n Workflow:** A dedicated self-hosted n8n workflow (`n8n/jobby-telemetry.json`) is triggered via a webhook.
 4. **Notion Database:** The n8n workflow logs the events into a central Notion Database (capturing metrics like session ID, event type, word/character count, ATS score, design preset, layout format, font family, browser, OS, initial ATS score, score delta, rule fixes count, preset switches history, active theme, history stack clicks, and compiler rendering times).
@@ -300,7 +300,8 @@ You can configure the appearance of your sidebar column in 2-column mode inside 
 * Rebuilt print layout margin management to set browser `@page { margin: 0; }` and dynamically translate margins into `.a4-sheet` paddings. This avoids white margin borders on color themes/sidebars.
 * Synchronized `@page` size to Letter or A4 based on the preview's format choice.
 
-### 12. Design Panel Hiding
+### 12. Design Panel Hiding & Width Sizing
+* The Design & Export panel has been widened by 20px (width 340px, min-width 320px) to give text controls, inputs, and sliders more breathing room.
 * Collapse the right customizer panel with a close button (cross SVG) next to the Expert Mode switcher to give the preview canvas maximum horizontal space.
 * Reveal the design customizer at any time via a glassmorphic floating **Design** button in the lower-right corner of the canvas. Collapsed state is automatically persisted in the browser's local storage.
 
@@ -321,6 +322,12 @@ You can configure the appearance of your sidebar column in 2-column mode inside 
 
 ### 17. Dynamic Web App Manifest Integration
 * Created a standard `manifest.json` under the public directory. The server (`server.js`) intercepts `/manifest.json` requests at runtime and dynamically injects the application version from `package.json`, ensuring `package.json` remains the single source of truth for the entire app.
+
+### 18. Shareable Tutorial Route & Dynamic SEO
+* Navigating directly to `/tutorial` or `/tutorial/` routes dynamically boots the Jobby application and launches the interactive 20-second Markdown tutorial overlay.
+* Fully optimized with dynamic server-side SEO header injection (custom page title, canonical tags, description, and social OpenGraph tags) and client-side history state/`popstate` back-button navigation.
+* Supports query parameter localization (e.g. `/tutorial?lang=fr` boots the tutorial in French).
+
 
 
 ## 📸 Screenshot Gallery
@@ -384,7 +391,7 @@ Here is a list of features and enhancements planned for future versions of Jobby
 
 - [x] **Add "Help" button in the UI:** Add a "Help" button in the interface that opens the Installation Guide and links back to the GitHub repository.
 - [x] **Locale Multi-language support (i18n):** Implement a language switcher supporting English, French, Czech, Spanish, Italian, German, and Romanian, loading translation files dynamically.
-- [ ] **Improve SEO:** Optimize meta tags, OpenGraph headers, and robot directives for public-facing resume pages.
+- [x] **Improve SEO:** Optimize meta tags, OpenGraph headers, and robot directives for public-facing resume pages.
 - [ ] **Add GitHub Actions:** Automate syntax checking and dependency building for local developers.
 - [ ] **Implement a download PDF button:** Download the PDF file directly via the running Gotenberg container instead of opening the browser's manual print dialog.
 - [ ] **Automated PDF Sync to Drive:** Append an n8n node to save generated PDF resumes to Google Drive or Dropbox on build automatically.

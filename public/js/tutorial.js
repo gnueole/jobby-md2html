@@ -385,6 +385,10 @@ export const MarkdownPopupTutorial = {
 
         btnReplay.addEventListener('click', () => {
             if (this.isAnimating) return;
+            // Trigger telemetry event for replay
+            window.dispatchEvent(new CustomEvent('jobby-telemetry', {
+                detail: { eventType: 'Tutorial Replay' }
+            }));
             this.playTimeline();
         });
 
@@ -513,6 +517,11 @@ export const MarkdownPopupTutorial = {
 
         this.isAnimating = false;
         btnReplay.disabled = false;
+
+        // Trigger telemetry event for completion
+        window.dispatchEvent(new CustomEvent('jobby-telemetry', {
+            detail: { eventType: 'Tutorial Complete' }
+        }));
     },
 
     highlightMarkdown(text) {
