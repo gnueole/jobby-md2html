@@ -4,7 +4,6 @@
         <button id="btn-close-feedback-modal" class="modal-close-btn" data-i18n-title="feedback.close_tooltip" title="Close modal" style="align-self: center;">&times;</button>
     </div>
     <div class="modal-body" style="position: relative;">
-        <p style="font-size: 13.5px; font-weight: 500; color: var(--text-secondary); margin-top: 0; margin-bottom: 20px; line-height: 1.4;" data-i18n="feedback.thank_you">Thank you for using Jobby! ❤️</p>
         <form id="feedback-form" novalidate>
             <div class="form-group">
                 <label for="feedback-name"><span data-i18n="feedback.label_name">Your Name</span> <span class="required" style="color: var(--danger);">*</span></label>
@@ -38,9 +37,12 @@
                 <label for="feedback-message" data-i18n="feedback.label_message">Details / Suggestions <span class="required" style="color: var(--danger);">*</span></label>
                 <textarea id="feedback-message" data-i18n-placeholder="feedback.placeholder_message" placeholder="What's on your mind? How can we make Jobby even better?" required style="width: 100%; box-sizing: border-box; resize: vertical; min-height: 90px;"></textarea>
             </div>
-            <div class="form-actions" style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px;">
-                <button type="button" id="btn-cancel-feedback" class="btn btn-secondary" data-i18n="feedback.btn_cancel">Cancel</button>
-                <button type="submit" id="btn-submit-feedback" class="btn btn-primary" data-i18n="feedback.btn_submit">Submit Feedback</button>
+            <div class="form-actions" style="display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 24px;">
+                <span style="font-size: 13.5px; font-weight: 500; color: var(--text-secondary);" data-i18n="feedback.thank_you">Thank you for using Jobby! ❤️</span>
+                <div style="display: flex; gap: 12px;">
+                    <button type="button" id="btn-cancel-feedback" class="btn btn-secondary" data-i18n="feedback.btn_cancel">Cancel</button>
+                    <button type="submit" id="btn-submit-feedback" class="btn btn-primary" data-i18n="feedback.btn_submit">Submit Feedback</button>
+                </div>
             </div>
         </form>
         <div id="feedback-loading" class="feedback-status-overlay" style="display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: var(--bg-modal); display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: inherit; z-index: 10;">
