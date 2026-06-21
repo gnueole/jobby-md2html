@@ -37,10 +37,12 @@ def check_build():
                 
                 if status == "completed":
                     if conclusion == "success":
+                        if not full:
+                            print("Build status: completed (success)")
                         sys.exit(0)
                     else:
                         if not full:
-                            print(f"Build failed. Please check the logs at: {html_url}")
+                            print(f"Build status: completed (failed). Please check the logs at: {html_url}")
                         sys.exit(2)
                 else:
                     if not full:
