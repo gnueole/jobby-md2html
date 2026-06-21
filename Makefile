@@ -88,10 +88,10 @@ dev-up:
 	@echo "✨ Starting local development environment..."
 	@if [ ! -f .env ]; then \
 		if $(DOPPLER) --version >/dev/null 2>&1; then \
-			echo "🔑 Téléchargement des secrets de dev depuis Doppler..."; \
+			echo "🔑 Downloading development secrets from Doppler..."; \
 			$(DOPPLER) secrets download --project $(DOPPLER_PROJECT) --config $(DOPPLER_CONFIG_DEV) --no-file --format env > .env; \
 		else \
-			echo "⚠️ Doppler non trouvé. Copie de docker/.env.example comme .env..."; \
+			echo "⚠️ Doppler CLI not found. Copying docker/.env.example as .env fallback..."; \
 			cp docker/.env.example .env; \
 		fi \
 	fi
@@ -132,7 +132,7 @@ _deploy:
 	scp $(COMPOSE_PROD) $(VPS_SSH):$(VPS_PATH)/docker-compose.prod.yml
 # 3. Stream production secrets from Doppler to remote VPS .env
 	@if $(DOPPLER) --version >/dev/null 2>&1; then \
-		echo "🔑 Envoi des secrets de production Doppler vers le VPS..."; \
+		echo "🔑 Sending Doppler production secrets to VPS..."; \
 		if $(DOPPLER) secrets download --project $(DOPPLER_PROJECT) --config $(DOPPLER_CONFIG_PROD) --no-file --format env > docker/.env.prod.temp; then \
 			scp docker/.env.prod.temp $(VPS_SSH):$(VPS_PATH)/.env; \
 			rm -f docker/.env.prod.temp; \
