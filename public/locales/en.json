@@ -328,7 +328,7 @@
     "preset_saved": "\"{name}\" saved with current design configuration!",
     "preset_reset": "Design preferences reset to default!",
     "reset_confirm": "Reset all design configurations to default?",
-    "welcome_upgrade": "Welcome to Jobby <strong style=\"color: #ffffff;\">{version}</strong>! Check the changelog for updates.",
+    "welcome_upgrade": "Welcome to Jobby **{version}**! Check the changelog for updates.",
     "sample_loaded": "Sample loaded! (Ctrl+Z to undo)",
     "sample_load_fail": "Failed to load sample: {message}",
     "updates_loaded": "Jobby updates loaded! (Ctrl+Z to undo)",

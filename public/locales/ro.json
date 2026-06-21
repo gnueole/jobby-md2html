@@ -328,7 +328,7 @@
     "preset_saved": "¡\"{name}\" salvată cu configurația de stil curentă!",
     "preset_reset": "Preferințele de stil restaurate la valorile implicite!",
     "reset_confirm": "Restaurați toate setările de stil la valorile implicite?",
-    "welcome_upgrade": "Bun venit la Jobby <strong style=\"color: #ffffff;\">{version}</strong>! Verifică noutățile.",
+    "welcome_upgrade": "Bun venit la Jobby **{version}**! Verifică noutățile.",
     "sample_loaded": "Exemplu încărcat! (Ctrl+Z pentru anulare)",
     "sample_load_fail": "Eșec la încărcarea exemplului: {message}",
     "updates_loaded": "Noutățile Jobby s-au încărcat! (Ctrl+Z pentru anulare)",

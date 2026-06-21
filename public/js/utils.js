@@ -43,6 +43,18 @@ const toastConfig = [
     }
 ];
 
+// Helper to parse simple markdown inside toast notifications
+function parseToastMarkdown(text) {
+    if (!text) return '';
+    // Escape HTML characters to prevent raw HTML injection / malformed tags
+    let escaped = text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    // Convert **word** -> <strong class="toast-highlight">$1</strong>
+    return escaped.replace(/\*\*([^*]+)\*\*/g, '<strong class="toast-highlight">$1</strong>');
+}
+
 // Show toast alerts in a non-intrusive stack (supports string or API-style object)
 export function showToast(content) {
     let container = document.getElementById('toast-container');
@@ -63,8 +75,8 @@ export function showToast(content) {
         type = content.type || 'info';
         const matched = toastConfig.find(cfg => cfg.type === type);
         icon = content.icon || (matched ? matched.icon : 'ℹ️');
-        title = content.title || '';
-        summary = content.summary || content.message || '';
+        title = parseToastMarkdown(content.title || '');
+        summary = parseToastMarkdown(content.summary || content.message || '');
     } else {
         const message = String(content);
         const msgLower = message.toLowerCase();
@@ -78,20 +90,24 @@ export function showToast(content) {
         }
 
         // Parse title and summary from the message
+        let rawTitle = '';
+        let rawSummary = '';
         const match = message.match(/^([^!.?:;]+[!.?:;])\s+(.+)$/);
         if (match) {
-            title = match[1].trim();
-            summary = match[2].trim();
-            if (title.endsWith(':') || title.endsWith(';')) {
-                title = title.slice(0, -1).trim();
+            rawTitle = match[1].trim();
+            rawSummary = match[2].trim();
+            if (rawTitle.endsWith(':') || rawTitle.endsWith(';')) {
+                rawTitle = rawTitle.slice(0, -1).trim();
             }
         } else {
             // Fallback: title is generic category name, summary is the full message
             const lang = document.documentElement.getAttribute('lang') || currentLocale || 'en';
             const titles = defaultTitles[lang] || defaultTitles['en'];
-            title = titles[type] || 'Notification';
-            summary = message;
+            rawTitle = titles[type] || 'Notification';
+            rawSummary = message;
         }
+        title = parseToastMarkdown(rawTitle);
+        summary = parseToastMarkdown(rawSummary);
     }
 
     const toastItem = document.createElement('div');

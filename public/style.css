@@ -983,6 +983,11 @@ input[type="color"]::-webkit-color-swatch {
     word-break: break-word;
 }
 
+.toast-highlight {
+    color: #ffffff !important;
+    font-weight: 700;
+}
+
 .toast-close-btn {
     background: none;
     border: none;
