@@ -259,9 +259,9 @@
     "title": "Feedback teilen",
     "close_tooltip": "Modal schließen",
     "label_name": "Ihr Name",
-    "placeholder_name": "Julien Avarre",
+    "placeholder_name": "Ihr Name",
     "label_email": "Ihre E-Mail-Adresse",
-    "placeholder_email": "hi@eole.me",
+    "placeholder_email": "Ihre E-Mail-Adresse",
     "optional": "(optional)",
     "label_rating": "Gesamtbewertung",
     "rating_1": "1 Stern",
@@ -308,9 +308,9 @@
     "rule_bullets_fail": "Nutzen Sie Listen (mindestens 3 Punkte) zur Beschreibung Ihrer Berufserfahrung."
   },
   "toasts": {
-    "loaded": "{filename} erfolgreich geladen",
-    "saved": "Als {filename} gespeichert",
-    "saved_as": "Als {filename} gespeichert",
+    "loaded": "**{filename}** erfolgreich geladen",
+    "saved": "Als **{filename}** gespeichert",
+    "saved_as": "Als **{filename}** gespeichert",
     "permission_denied": "Speichern fehlgeschlagen: Berechtigung verweigert.",
     "fallback_download": "Datei über Browser-Fallback heruntergeladen!",
     "clear_warning": "Sind Sie sicher, dass Sie den Editor leeren möchten? Ungespeicherte Änderungen gehen verloren.",
@@ -337,8 +337,8 @@
     "webhook_missing": "Bitte konfigurieren Sie zuerst Ihre Webhook-URL in den Entwickler-Einstellungen!",
     "sync_success": "Design erfolgreich synchronisiert!",
     "sync_fail": "Synchronisation fehlgeschlagen: {message}",
-    "easter_egg": "Geheimnis gefunden! Du hast das Logo gedreht 🌀",
-    "tutorial_complete": "Danke fürs Anschauen! Du bist bereit für die moderne Markdown-Lebenslaufbearbeitung! 🚀"
+    "easter_egg": "Geheimnis **gefunden**! Du hast das Logo gedreht 🌀",
+    "tutorial_complete": "Danke fürs Anschauen! Du bist bereit für die **moderne Markdown-Lebenslaufbearbeitung**! 🚀"
   },
   "tutorial": {
     "title": "Markdown in 20 Sekunden",

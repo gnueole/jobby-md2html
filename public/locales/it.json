@@ -259,9 +259,9 @@
     "title": "Lascia una valutazione",
     "close_tooltip": "Chiudi finestra",
     "label_name": "Il tuo Nome",
-    "placeholder_name": "Julien Avarre",
+    "placeholder_name": "Il tuo nome",
     "label_email": "La tua e-mail",
-    "placeholder_email": "hi@eole.me",
+    "placeholder_email": "La tua e-mail",
     "optional": "(facoltativo)",
     "label_rating": "Valutazione complessiva",
     "rating_1": "1 Stella",
@@ -308,9 +308,9 @@
     "rule_bullets_fail": "Utilizza elenchi puntati (almeno 3 elementi) per descrivere le tue esperienze."
   },
   "toasts": {
-    "loaded": "Caricato {filename}",
-    "saved": "Salvato in {filename}",
-    "saved_as": "Salvato come {filename}",
+    "loaded": "Caricato **{filename}**",
+    "saved": "Salvato in **{filename}**",
+    "saved_as": "Salvato come **{filename}**",
     "permission_denied": "Permesso negato per salvare il file.",
     "fallback_download": "File scaricato tramite il browser!",
     "clear_warning": "Sei sicuro di voler ripulire l'editor? Questo cancellerà il tuo lavoro non salvato.",
@@ -337,8 +337,8 @@
     "webhook_missing": "Configura prima l'URL del webhook nelle opzioni sviluppatore!",
     "sync_success": "Configurazione grafica sincronizzata con successo!",
     "sync_fail": "Sincronizzazione fallita: {message}",
-    "easter_egg": "Segreto Trovato! Hai fatto ruotare il logo 🌀",
-    "tutorial_complete": "Grazie per la visione! Ora sei pronto per la creazione di CV in Markdown moderno! 🚀"
+    "easter_egg": "Segreto **Trovato**! Hai fatto ruotare il logo 🌀",
+    "tutorial_complete": "Grazie per la visione! Ora sei pronto per la creazione di CV in **Markdown moderno**! 🚀"
   },
   "tutorial": {
     "title": "Markdown in 20 secondi",

@@ -259,9 +259,9 @@
     "title": "Podělte se o svůj názor",
     "close_tooltip": "Zavřít okno",
     "label_name": "Vaše jméno",
-    "placeholder_name": "Julien Avarre",
+    "placeholder_name": "Vaše jméno",
     "label_email": "Váš e-mail",
-    "placeholder_email": "hi@eole.me",
+    "placeholder_email": "Váš e-mail",
     "optional": "(nepovinné)",
     "label_rating": "Celkové hodnocení",
     "rating_1": "1 hvězdička",
@@ -308,9 +308,9 @@
     "rule_bullets_fail": "Použijte seznam s odrážkami (alespoň 3 položky) pro profesní zkušenosti."
   },
   "toasts": {
-    "loaded": "Načteno {filename}",
-    "saved": "Uloženo do {filename}",
-    "saved_as": "Uloženo jako {filename}",
+    "loaded": "Načteno **{filename}**",
+    "saved": "Uloženo do **{filename}**",
+    "saved_as": "Uloženo jako **{filename}**",
     "permission_denied": "Přístup odepřen pro uložení souboru.",
     "fallback_download": "Soubor stažen přes nouzové stažení v prohlížeči!",
     "clear_warning": "Opravdu chcete vymazat editor? Tím vymažete svou neuloženou práci.",
@@ -337,8 +337,8 @@
     "webhook_missing": "Nakonfigurujte prosím nejprve URL adresu webhooku ve vývojářských nástrojích!",
     "sync_success": "Konfigurace designu byla úspěšně synchronizována!",
     "sync_fail": "Synchronizace selhala: {message}",
-    "easter_egg": "Tajemství nalezeno! Roztočili jste logo 🌀",
-    "tutorial_complete": "Děkujeme za zhlédnutí! Jste připraveni na moderní úpravu životopisů v Markdownu! 🚀"
+    "easter_egg": "Tajemství **nalezeno**! Roztočili jste logo 🌀",
+    "tutorial_complete": "Děkujeme za zhlédnutí! Jste připraveni na **moderní úpravu životopisů v Markdownu**! 🚀"
   },
   "tutorial": {
     "title": "Markdown ve 20 sekundách",

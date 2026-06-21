@@ -259,9 +259,9 @@
     "title": "Comparta sus comentarios",
     "close_tooltip": "Cerrar ventana",
     "label_name": "Su Nombre",
-    "placeholder_name": "Julien Avarre",
+    "placeholder_name": "Su Nombre",
     "label_email": "Su correo electrónico",
-    "placeholder_email": "hi@eole.me",
+    "placeholder_email": "Su correo electrónico",
     "optional": "(opcional)",
     "label_rating": "Calificación general",
     "rating_1": "1 Estrella",
@@ -308,9 +308,9 @@
     "rule_bullets_fail": "Utilice listas con viñetas (mínimo 3 elementos) para detallar su trayectoria."
   },
   "toasts": {
-    "loaded": "Cargado {filename}",
-    "saved": "Guardado en {filename}",
-    "saved_as": "Guardado como {filename}",
+    "loaded": "Cargado **{filename}**",
+    "saved": "Guardado en **{filename}**",
+    "saved_as": "Guardado como **{filename}**",
     "permission_denied": "Permiso denegado para guardar el archivo.",
     "fallback_download": "¡Archivo descargado a través del navegador!",
     "clear_warning": "¿Está seguro de que desea limpiar el editor? Se perderán las modificaciones no guardadas.",
@@ -337,8 +337,8 @@
     "webhook_missing": "¡Configure primero la URL del webhook en los ajustes de desarrollador!",
     "sync_success": "¡Diseño sincronizado con éxito!",
     "sync_fail": "Error en la sincronización: {message}",
-    "easter_egg": "¡Secreto Encontrado! Has girado el logotipo 🌀",
-    "tutorial_complete": "¡Gracias por ver el tutorial! ¡Ya estás listo para editar tu CV con Markdown moderno! 🚀"
+    "easter_egg": "¡Secreto **Encontrado**! Has girado el logotipo 🌀",
+    "tutorial_complete": "¡Gracias por ver el tutorial! ¡Ya estás listo para editar tu CV con **Markdown moderno**! 🚀"
   },
   "tutorial": {
     "title": "Markdown en 20 segundos",

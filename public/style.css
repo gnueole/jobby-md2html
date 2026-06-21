@@ -2977,6 +2977,18 @@ body.expert-mode-active .font-preferences-row {
         display: inline-flex !important;
         align-items: center;
     }
+    #select-lang {
+        padding: 0 4px !important;
+        font-size: 11px !important;
+        height: 30px !important;
+        min-width: 42px !important;
+        width: auto !important;
+        text-align: center !important;
+        text-align-last: center !important;
+        appearance: none !important;
+        -webkit-appearance: none !important;
+        -moz-appearance: none !important;
+    }
 }
 
 

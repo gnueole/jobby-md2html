@@ -259,9 +259,9 @@
     "title": "Trimiteți părerea dumneavoastră",
     "close_tooltip": "Închide fereastra",
     "label_name": "Numele tău",
-    "placeholder_name": "Julien Avarre",
+    "placeholder_name": "Numele tău",
     "label_email": "Adresa de email",
-    "placeholder_email": "hi@eole.me",
+    "placeholder_email": "Adresa de email",
     "optional": "(opțional)",
     "label_rating": "Evaluare generală",
     "rating_1": "1 Stea",
@@ -308,9 +308,9 @@
     "rule_bullets_fail": "Utilizați liste cu puncte (minim 3 elemente) pentru a detalia experiențele."
   },
   "toasts": {
-    "loaded": "S-a încărcat {filename}",
-    "saved": "Salvat în {filename}",
-    "saved_as": "Salvat ca {filename}",
+    "loaded": "S-a încărcat **{filename}**",
+    "saved": "Salvat în **{filename}**",
+    "saved_as": "Salvat ca **{filename}**",
     "permission_denied": "Permisiune refuzată pentru salvarea fișierului.",
     "fallback_download": "Fișier descărcat prin browser (fallback)!",
     "clear_warning": "Sigur doriți să goliți editorul? Se vor pierde modificările nesalvate.",
@@ -337,8 +337,8 @@
     "webhook_missing": "Vă rugăm să configurați mai întâi URL-ul webhook în setările de dezvoltator!",
     "sync_success": "Configurația de design s-a sincronizat cu succes!",
     "sync_fail": "Sincronizarea a eșuat: {message}",
-    "easter_egg": "Secret Găsit! Ai rotit logoul 🌀",
-    "tutorial_complete": "Mulțumim pentru vizionare! Ești gata pentru editarea modernă a CV-ului în Markdown! 🚀"
+    "easter_egg": "Secret **Găsit**! Ai rotit logoul 🌀",
+    "tutorial_complete": "Mulțumim pentru vizionare! Ești gata pentru **editarea modernă a CV-ului în Markdown**! 🚀"
   },
   "tutorial": {
     "title": "Markdown în 20 de secunde",

@@ -259,9 +259,9 @@
     "title": "Donnez votre Avis",
     "close_tooltip": "Fermer la boîte",
     "label_name": "Votre Nom",
-    "placeholder_name": "Julien Avarre",
+    "placeholder_name": "Votre nom",
     "label_email": "Votre Adresse E-mail",
-    "placeholder_email": "hi@eole.me",
+    "placeholder_email": "Votre adresse e-mail",
     "optional": "(facultatif)",
     "label_rating": "Votre Note Globale",
     "rating_1": "1 Étoile",
@@ -308,9 +308,9 @@
     "rule_bullets_fail": "Utilisez des listes à puces (au moins 3 items) pour détailler vos expériences."
   },
   "toasts": {
-    "loaded": "Fichier {filename} chargé !",
-    "saved": "Fichier enregistré sous {filename}",
-    "saved_as": "Fichier enregistré sous {filename}",
+    "loaded": "Fichier **{filename}** chargé !",
+    "saved": "Fichier enregistré sous **{filename}**",
+    "saved_as": "Fichier enregistré sous **{filename}**",
     "permission_denied": "Permission refusée pour enregistrer le fichier.",
     "fallback_download": "Fichier téléchargé via le navigateur !",
     "clear_warning": "Êtes-vous sûr de vouloir vider l'éditeur ? Vos modifications non sauvegardées seront perdues.",
@@ -337,8 +337,8 @@
     "webhook_missing": "Veuillez d'abord configurer l'URL de votre Webhook dans les paramètres développeur !",
     "sync_success": "Configuration de style synchronisée avec succès !",
     "sync_fail": "Échec de la synchronisation : {message}",
-    "easter_egg": "Secret Trouvé ! Le logo a tourné 🌀",
-    "tutorial_complete": "Merci d'avoir regardé ! Vous êtes prêt pour la rédaction moderne de CV en Markdown ! 🚀"
+    "easter_egg": "Secret **Trouvé** ! Le logo a tourné 🌀",
+    "tutorial_complete": "Merci d'avoir regardé ! Vous êtes prêt pour la rédaction de **CV en Markdown moderne** ! 🚀"
   },
   "tutorial": {
     "title": "Le Markdown en 20 secondes",

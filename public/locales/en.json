@@ -259,9 +259,9 @@
     "title": "Share Your Feedback",
     "close_tooltip": "Close modal",
     "label_name": "Your Name",
-    "placeholder_name": "Julien Avarre",
+    "placeholder_name": "Your Name",
     "label_email": "Your Email",
-    "placeholder_email": "hi@eole.me",
+    "placeholder_email": "Your Email",
     "optional": "(optional)",
     "label_rating": "Overall Rating",
     "rating_1": "1 Star",
@@ -308,9 +308,9 @@
     "rule_bullets_fail": "Use bullet point lists (at least 3 items) for professional experience."
   },
   "toasts": {
-    "loaded": "Loaded {filename}",
-    "saved": "Saved to {filename}",
-    "saved_as": "Saved as {filename}",
+    "loaded": "Loaded **{filename}**",
+    "saved": "Saved to **{filename}**",
+    "saved_as": "Saved as **{filename}**",
     "permission_denied": "Permission denied to save file.",
     "fallback_download": "Downloaded file via browser fallback!",
     "clear_warning": "Are you sure you want to clear the editor? This will erase your unsaved work.",
@@ -337,8 +337,8 @@
     "webhook_missing": "Please configure your Webhook URL in Developer Tools first!",
     "sync_success": "Design configuration synced successfully!",
     "sync_fail": "Sync failed: {message}",
-    "easter_egg": "Secret Found! You rolled the logo 🌀",
-    "tutorial_complete": "Thanks for watching! You are ready for modern Markdown CV editing! 🚀"
+    "easter_egg": "Secret **Found**! You rolled the logo 🌀",
+    "tutorial_complete": "Thanks for watching! You are ready for **modern Markdown CV** editing! 🚀"
   },
   "tutorial": {
     "title": "Markdown in 20 seconds",
