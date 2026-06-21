@@ -28,7 +28,7 @@
     "save_option_open": "Ouvrir",
     "save_option_open_tooltip": "Ouvrir un fichier Markdown local (Ctrl+O)",
     "sample_btn": "Exemple",
-    "sample_tooltip": "Charger l'exemple : Julien Avarre",
+    "sample_tooltip": "Charger l'exemple",
     "whatsnew_btn": "Nouveautés",
     "whatsnew_tooltip": "Charger les nouveautés de Jobby",
     "copy_tooltip": "Copier le Markdown",

@@ -28,7 +28,7 @@
     "save_option_open": "Abrir",
     "save_option_open_tooltip": "Abrir un archivo Markdown del sistema (Ctrl+O)",
     "sample_btn": "Ejemplo",
-    "sample_tooltip": "Cargar ejemplo: Julien Avarre",
+    "sample_tooltip": "Cargar ejemplo",
     "whatsnew_btn": "Novedades",
     "whatsnew_tooltip": "Cargar actualizaciones de Jobby / Novedades",
     "copy_tooltip": "Copiar Markdown",

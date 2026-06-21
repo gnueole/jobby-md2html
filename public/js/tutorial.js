@@ -58,18 +58,29 @@ export const MarkdownPopupTutorial = {
                     padding: 0 16px;
                     position: relative;
                 }
-                .header-dots {
+                .header-logo {
                     display: flex;
-                    gap: 6px;
+                    align-items: center;
                 }
-                .header-dots .dot {
-                    width: 10px;
-                    height: 10px;
-                    border-radius: 50%;
+                .tutorial-close-btn {
+                    position: absolute;
+                    right: 16px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    background: transparent;
+                    border: none;
+                    color: var(--text-secondary, #94a3b8);
+                    font-size: 20px;
+                    cursor: pointer;
+                    line-height: 1;
+                    padding: 4px;
+                    border-radius: 4px;
+                    transition: color 0.15s, background-color 0.15s;
                 }
-                .header-dots .dot.red { background: #ef4444; }
-                .header-dots .dot.yellow { background: #eab308; }
-                .header-dots .dot.green { background: #22c55e; }
+                .tutorial-close-btn:hover {
+                    color: var(--text-primary, #f8fafc);
+                    background-color: rgba(255, 255, 255, 0.05);
+                }
                 .header-title {
                     position: absolute;
                     left: 50%;
@@ -83,7 +94,7 @@ export const MarkdownPopupTutorial = {
                     display: grid;
                     grid-template-columns: 1fr 1fr;
                     height: 280px;
-                    background: var(--bg-primary, #0f172a);
+                    background: var(--bg-editor, #030712);
                 }
                 .tutorial-editor-column {
                     border-right: 1px solid var(--border-color, #334155);
@@ -93,11 +104,11 @@ export const MarkdownPopupTutorial = {
                     font-family: var(--font-mono, monospace);
                     font-size: 13px;
                     line-height: 1.6;
-                    color: var(--text-primary, #f8fafc);
+                    color: var(--text-editor, #e2e8f0);
                     overflow: hidden;
                 }
                 .editor-line-numbers {
-                    color: var(--text-muted, #475569);
+                    color: var(--text-muted, #64748b);
                     text-align: right;
                     user-select: none;
                 }
@@ -221,12 +232,19 @@ export const MarkdownPopupTutorial = {
         overlayEl.innerHTML = `
             <div class="tutorial-window" id="tutorial-window">
                 <div class="tutorial-header">
-                    <div class="header-dots">
-                        <span class="dot red"></span>
-                        <span class="dot yellow"></span>
-                        <span class="dot green"></span>
+                    <div class="header-logo">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent, #7c3aed)" stroke-width="2.5"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <circle cx="12" cy="12" r="4"/>
+                            <line x1="4.93" y1="4.93" x2="9.17" y2="9.17"/>
+                            <line x1="14.83" y1="14.83" x2="19.07" y2="19.07"/>
+                            <line x1="19.07" y1="4.93" x2="14.83" y2="9.17"/>
+                            <line x1="9.17" y1="14.83" x2="4.93" y2="19.07"/>
+                        </svg>
                     </div>
                     <span class="header-title">Markdown in 20 seconds</span>
+                    <button type="button" class="tutorial-close-btn" id="btn-close-tutorial-header" title="Close tutorial">&times;</button>
                 </div>
                 <div class="tutorial-body">
                     <div class="tutorial-editor-column">
@@ -260,6 +278,7 @@ export const MarkdownPopupTutorial = {
         // Bind events
         const btnReplay = overlayEl.querySelector('#btn-replay');
         const btnExit = overlayEl.querySelector('#btn-exit');
+        const btnCloseHeader = overlayEl.querySelector('#btn-close-tutorial-header');
 
         btnReplay.addEventListener('click', () => {
             if (this.isAnimating) return;
@@ -269,6 +288,12 @@ export const MarkdownPopupTutorial = {
         btnExit.addEventListener('click', () => {
             this.exit();
         });
+
+        if (btnCloseHeader) {
+            btnCloseHeader.addEventListener('click', () => {
+                this.exit();
+            });
+        }
 
         // Trigger entrance animation
         setTimeout(() => {
@@ -448,7 +473,7 @@ export const MarkdownPopupTutorial = {
             doneOverlay.style.left = '0';
             doneOverlay.style.width = '100vw';
             doneOverlay.style.height = '100vh';
-            doneOverlay.style.background = 'var(--bg-primary, #0f172a)';
+            doneOverlay.style.background = 'var(--bg-main, #090d16)';
             doneOverlay.style.display = 'flex';
             doneOverlay.style.alignItems = 'center';
             doneOverlay.style.justifyContent = 'center';
