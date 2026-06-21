@@ -244,6 +244,11 @@ export const MarkdownPopupTutorial = {
                     color: var(--text-secondary, #cbd5e1);
                     line-height: 1.5;
                 }
+                .tutorial-preview-column hr {
+                    border: 0;
+                    border-top: 1px solid var(--border-color, #334155);
+                    margin: 12px 0;
+                }
                 .entrance-animation {
                     animation: entrance-fade 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
                 }
@@ -456,9 +461,13 @@ export const MarkdownPopupTutorial = {
         await this.triggerEnter(8, { tag: 'li', text: line8Text });
         await this.sleep(500);
 
-        // 9. Move down past blank line 9
+        // 9. Horizontal separator
+        const line9Text = t('tutorial.line9');
         await this.moveCaret(9);
-        await this.sleep(400);
+        await this.typeText(9, line9Text, typeSpeed);
+        await this.sleep(500);
+        await this.triggerEnter(9, { tag: 'hr', text: '' });
+        await this.sleep(500);
 
         // 10. Last line (with bold & italic)
         const line10Text = t('tutorial.line10');

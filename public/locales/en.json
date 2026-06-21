@@ -348,6 +348,7 @@
     "line6": "- Easy to read, write, and maintain",
     "line7": "- Parses beautifully for resume compilers",
     "line8": "- Highly preferred by modern AI engines",
+    "line9": "---",
     "line10": "Your CV stays structured. **Jobby** handles the *fancy* rest.",
     "btn_replay": "Explain me again",
     "btn_exit": "Markdown is simple"
