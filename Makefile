@@ -145,15 +145,27 @@ _deploy:
 		echo "❌ Error: Doppler CLI is not installed or not found in PATH!"; \
 		exit 1; \
 	fi
-# 4. Pull and recreate
+# 4. Pull images
 	@if [ "$(SERVICES)" = "" ]; then \
 		echo "📥 Pulling all images from GHCR & Docker Hub..."; \
-		ssh $(VPS_SSH) "cd $(VPS_PATH) && docker compose -f docker-compose.prod.yml pull && docker compose -f docker-compose.prod.yml up -d --remove-orphans"; \
+		ssh $(VPS_SSH) "cd $(VPS_PATH) && docker compose -f docker-compose.prod.yml pull"; \
 	else \
 		echo "📥 Pulling specified images ($(SERVICES))..."; \
-		ssh $(VPS_SSH) "cd $(VPS_PATH) && docker compose -f docker-compose.prod.yml pull $(SERVICES) && docker compose -f docker-compose.prod.yml up -d --remove-orphans"; \
+		ssh $(VPS_SSH) "cd $(VPS_PATH) && docker compose -f docker-compose.prod.yml pull $(SERVICES)"; \
 	fi
-	@echo "✅ Deployment of $(PROJECT_NAME) [$(VERSION) / $(VPS_PROJECT_TAG)] successfully completed on production server !"
+# 5. Extract and print the real version from the pulled editor image
+	@if [ "$(SERVICES)" = "" ] || echo "$(SERVICES)" | grep -q "jobby-editor"; then \
+		REAL_VERSION=$$(ssh $(VPS_SSH) "docker run --rm ghcr.io/gnueole/jobby-md2html:latest node -e \"console.log(require('./package.json').version)\" 2>/dev/null || echo 'unknown'"); \
+		echo "📌 Real image version to be deployed: $$REAL_VERSION"; \
+		if [ "$$REAL_VERSION" != "$(VERSION)" ]; then \
+			echo "⚠️ WARNING: The image version ($$REAL_VERSION) differs from the local package.json version ($(VERSION))!"; \
+			echo "   Did you forget to run 'git push' or wait for the GitHub Actions build to complete?"; \
+		fi \
+	fi
+# 6. Recreate and start containers
+	@echo "🔄 Recreating and starting containers..."
+	@ssh $(VPS_SSH) "cd $(VPS_PATH) && docker compose -f docker-compose.prod.yml up -d --remove-orphans"
+	@echo "✅ Deployment of $(PROJECT_NAME) [$(VERSION) / $(VPS_PROJECT_TAG)] successfully completed on production server!"
 
 check-logs:
 	@echo "📟 Fetching real-time production logs from VPS [$(VPS_SSH)]..."
