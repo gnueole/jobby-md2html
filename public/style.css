@@ -1182,6 +1182,47 @@ input[type="color"]::-webkit-color-swatch {
     max-width: 800px;
 }
 
+/* Help Modal Redesign Styles */
+#help-modal .intro-card:hover {
+    border-color: rgba(124, 58, 237, 0.3) !important;
+    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.08);
+}
+
+#help-modal .intro-steps-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#help-modal .intro-step-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    transition: transform var(--transition-speed);
+}
+
+#help-modal .intro-step-item:hover {
+    transform: translateX(2px);
+}
+
+#help-modal .intro-step-bullet {
+    color: var(--accent);
+    font-size: 11px;
+    line-height: 1.5;
+    user-select: none;
+}
+
+#help-modal .intro-step-text {
+    font-size: 11.5px;
+    line-height: 1.5;
+    color: var(--text-secondary);
+}
+
+#help-modal .intro-step-text strong {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
 .modal-overlay.show .modal-card {
     transform: translateY(0);
 }
@@ -2065,7 +2106,7 @@ body.expert-mode-active .format-lock-badge {
     border: none;
     outline: none;
     font-family: 'Consolas', 'Courier New', monospace !important;
-    font-size: 12.5px !important;
+    font-size: var(--editor-font-size, 12.5px) !important;
     line-height: 1.6 !important;
     white-space: pre-wrap !important;
     word-wrap: break-word !important;

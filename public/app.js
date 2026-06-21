@@ -85,6 +85,15 @@ async function initializeJobby() {
     await loadLocale(currentLocale);
     translateDOM();
     initTooltips();
+    
+    // --- Initialize Editor Font Size ---
+    let currentFontSize = parseFloat(localStorage.getItem('jobby_editor_font_size')) || 12.5;
+    const updateEditorFontSize = (size) => {
+        currentFontSize = Math.max(9.5, Math.min(20.5, size));
+        localStorage.setItem('jobby_editor_font_size', currentFontSize.toString());
+        document.documentElement.style.setProperty('--editor-font-size', `${currentFontSize}px`);
+    };
+    updateEditorFontSize(currentFontSize);
 
     // Show welcome upgrade toast if version has changed
     const lastSeenVersion = localStorage.getItem('jobby_last_seen_version');
@@ -1003,6 +1012,12 @@ async function initializeJobby() {
         } else if (key === 'y') {
             e.preventDefault();
             redoState();
+        } else if (key === '=' || key === '+') {
+            e.preventDefault();
+            updateEditorFontSize(currentFontSize + 1);
+        } else if (key === '-') {
+            e.preventDefault();
+            updateEditorFontSize(currentFontSize - 1);
         }
     });
     
@@ -2338,6 +2353,8 @@ async function initializeJobby() {
         'muted': () => { toggleMuted(markdownInput); saveHistoryState(markdownInput.value, markdownInput.selectionStart, markdownInput.selectionEnd); },
         'move-up': () => { moveSectionOrLine(markdownInput, -1); saveHistoryState(markdownInput.value, markdownInput.selectionStart, markdownInput.selectionEnd); },
         'move-down': () => { moveSectionOrLine(markdownInput, 1); saveHistoryState(markdownInput.value, markdownInput.selectionStart, markdownInput.selectionEnd); },
+        'font-increase': () => updateEditorFontSize(currentFontSize + 1),
+        'font-decrease': () => updateEditorFontSize(currentFontSize - 1),
         'help': () => {
             const helpModal = document.getElementById('help-modal');
             if (helpModal) {

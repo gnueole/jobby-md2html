@@ -121,7 +121,7 @@ async function runTutorialTests() {
         await toast.waitFor({ state: 'visible', timeout: 5000 });
         const toastText = await toast.textContent();
         console.log(`   ✅ Toast notification reads: "${toastText}"`);
-        if (!toastText.includes('ready for modern Markdown CV editing')) {
+        if (!toastText.includes('ready for a modern Markdown CV editing')) {
             throw new Error(`Expected thankful toast notification, got "${toastText}"`);
         }
 
