@@ -5,7 +5,12 @@
 
 const supportedLanguages = ['en', 'fr', 'cs', 'es', 'it', 'de', 'ro'];
 
-export let currentLocale = localStorage.getItem('jobby_language') || navigator.language.split('-')[0] || 'en';
+const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
+const urlLang = urlParams ? urlParams.get('lang') : null;
+
+export let currentLocale = (urlLang && supportedLanguages.includes(urlLang))
+    ? urlLang
+    : (localStorage.getItem('jobby_language') || (typeof navigator !== 'undefined' && navigator.language ? navigator.language.split('-')[0] : 'en') || 'en');
 if (!supportedLanguages.includes(currentLocale)) {
     currentLocale = 'en';
 }

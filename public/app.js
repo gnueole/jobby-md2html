@@ -359,6 +359,14 @@ async function initializeJobby() {
     // Debounced telemetry for ATS Scorecard changes to avoid spamming
     const debouncedAtsTelemetry = debounce(() => sendTelemetry('ATS Check'), 5000);
 
+    // Listen for modular components triggering telemetry
+    window.addEventListener('jobby-telemetry', (e) => {
+        const { eventType, extraData } = e.detail || {};
+        if (eventType) {
+            sendTelemetry(eventType, extraData);
+        }
+    });
+
 
     // --- Undo/Redo Custom History Stack ---
     const historyStack = [];

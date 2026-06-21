@@ -339,5 +339,17 @@
     "sync_fail": "Sync failed: {message}",
     "easter_egg": "Secret Found! You rolled the logo 🌀",
     "tutorial_complete": "Thanks for watching! You are ready for modern Markdown CV editing! 🚀"
+  },
+  "tutorial": {
+    "title": "Markdown in 20 seconds",
+    "line1": "# Markdown is Structure",
+    "line2": "## Focus on content first",
+    "line4": "No complex formatting, just **plain text** with simple marks.",
+    "line6": "- Easy to read, write, and maintain",
+    "line7": "- Parses beautifully for resume compilers",
+    "line8": "- Highly preferred by modern AI engines",
+    "line10": "Your CV stays structured. **Jobby** handles the *fancy* rest.",
+    "btn_replay": "Explain me again",
+    "btn_exit": "Markdown is simple"
   }
 }

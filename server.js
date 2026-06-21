@@ -371,7 +371,23 @@ const server = http.createServer((req, res) => {
                     res.end('Internal Server Error');
                     return;
                 }
-                const modifiedHtml = html.replace(/\?v=[0-9.]+/g, `?v=${appVersion}`);
+                let modifiedHtml = html.replace(/\?v=[0-9.]+/g, `?v=${appVersion}`);
+                
+                // Server-side SEO overrides for the tutorial route (social sharing & crawler support)
+                const requestedPath = req.url.split('?')[0].split('#')[0];
+                if (requestedPath === '/tutorial' || requestedPath === '/tutorial/') {
+                    modifiedHtml = modifiedHtml
+                        .replace('<title>Jobby - Premium ATS-Compliant Markdown Resume Editor</title>', '<title>Jobby - 20-Second Interactive Markdown CV Tutorial</title>')
+                        .replace('<meta name="description" content="Jobby is a premium, open-source Markdown resume editor designed for ATS compliance. Tailor your CV in real-time with custom typography, spacing controls, and print-ready PDF export.">', '<meta name="description" content="Learn how to build an ATS-compliant resume in 20 seconds with standard Markdown. Watch Jobby parse CV text in real-time and export to print-ready PDF.">')
+                        .replace('<link rel="canonical" href="https://cv.eole.me">', '<link rel="canonical" href="https://cv.eole.me/tutorial">')
+                        .replace('<meta property="og:url" content="https://cv.eole.me">', '<meta property="og:url" content="https://cv.eole.me/tutorial">')
+                        .replace('<meta property="og:title" content="Jobby - Premium ATS-Compliant Markdown Resume Editor">', '<meta property="og:title" content="Jobby - 20-Second Interactive Markdown CV Tutorial">')
+                        .replace('<meta property="og:description" content="Create a recruitment-ready, ATS-compliant resume in real-time. Standard Markdown, real-time spacing controls, and clean PDF output.">', '<meta property="og:description" content="Learn how to build an ATS-compliant resume in 20 seconds with standard Markdown. Watch Jobby parse CV text in real-time and export to print-ready PDF.">')
+                        .replace('<meta property="twitter:url" content="https://cv.eole.me">', '<meta property="twitter:url" content="https://cv.eole.me/tutorial">')
+                        .replace('<meta property="twitter:title" content="Jobby - Premium ATS-Compliant Markdown Resume Editor">', '<meta property="twitter:title" content="Jobby - 20-Second Interactive Markdown CV Tutorial">')
+                        .replace('<meta property="twitter:description" content="Create a recruitment-ready, ATS-compliant resume in real-time. Standard Markdown, real-time spacing controls, and clean PDF output.">', '<meta property="twitter:description" content="Learn how to build an ATS-compliant resume in 20 seconds with standard Markdown. Watch Jobby parse CV text in real-time and export to print-ready PDF.">');
+                }
+
                 res.writeHead(200, { 'Content-Type': contentType });
                 res.end(modifiedHtml);
             });

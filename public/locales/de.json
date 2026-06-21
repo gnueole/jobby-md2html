@@ -339,5 +339,17 @@
     "sync_fail": "Synchronisation fehlgeschlagen: {message}",
     "easter_egg": "Geheimnis gefunden! Du hast das Logo gedreht 🌀",
     "tutorial_complete": "Danke fürs Anschauen! Du bist bereit für die moderne Markdown-Lebenslaufbearbeitung! 🚀"
+  },
+  "tutorial": {
+    "title": "Markdown in 20 Sekunden",
+    "line1": "# Markdown ist Struktur",
+    "line2": "## Konzentrieren Sie sich zuerst auf den Inhalt",
+    "line4": "Keine komplexe Formatierung, nur **Klartext** mit einfachen Markierungen.",
+    "line6": "- Einfach zu lesen, zu schreiben und zu pflegen",
+    "line7": "- Wird von Lebenslauf-Compilern hervorragend analysiert",
+    "line8": "- Von modernen KI-Engines bevorzugt",
+    "line10": "Ihr Lebenslauf bleibt strukturiert. **Jobby** kümmert sich um den *schicken* Rest.",
+    "btn_replay": "Noch einmal erklären",
+    "btn_exit": "Markdown ist einfach"
   }
 }

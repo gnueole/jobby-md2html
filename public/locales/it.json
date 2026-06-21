@@ -339,5 +339,17 @@
     "sync_fail": "Sincronizzazione fallita: {message}",
     "easter_egg": "Segreto Trovato! Hai fatto ruotare il logo 🌀",
     "tutorial_complete": "Grazie per la visione! Ora sei pronto per la creazione di CV in Markdown moderno! 🚀"
+  },
+  "tutorial": {
+    "title": "Markdown in 20 secondi",
+    "line1": "# Il Markdown è Struttura",
+    "line2": "## Concentrati prima sul contenuto",
+    "line4": "Nessuna formattazione complessa, solo **testo semplice** con contrassegni chiari.",
+    "line6": "- Facile da leggere, scrivere e manutenere",
+    "line7": "- Analizzato perfettamente dai compilatori di CV",
+    "line8": "- Altamente preferito dai moderni motori di IA",
+    "line10": "Il tuo CV rimane strutturato. **Jobby** gestisce il resto in modo *fantastico*.",
+    "btn_replay": "Spiegamelo ancora",
+    "btn_exit": "Il Markdown è semplice"
   }
 }

@@ -339,5 +339,17 @@
     "sync_fail": "Sincronizarea a eșuat: {message}",
     "easter_egg": "Secret Găsit! Ai rotit logoul 🌀",
     "tutorial_complete": "Mulțumim pentru vizionare! Ești gata pentru editarea modernă a CV-ului în Markdown! 🚀"
+  },
+  "tutorial": {
+    "title": "Markdown în 20 de secunde",
+    "line1": "# Markdown înseamnă Structură",
+    "line2": "## Concentrează-te mai întâi pe conținut",
+    "line4": "Fără formatări complexe, doar **text simplu** cu marcaje clare.",
+    "line6": "- Ușor de citit, de scris și de întreținut",
+    "line7": "- Analizat excelent de compilatoarele de CV-uri",
+    "line8": "- Preferat de motoarele moderne de IA",
+    "line10": "CV-ul tău rămâne structurat. **Jobby** se ocupă de restul cu *stil*.",
+    "btn_replay": "Explică-mi din nou",
+    "btn_exit": "Markdown este simplu"
   }
 }

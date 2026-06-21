@@ -78,19 +78,23 @@ async function runTutorialTests() {
         console.log(`📌 Verifying preview contents...`);
         const h1 = page.locator('#tutorial-preview h1');
         const h2 = page.locator('#tutorial-preview h2');
-        const p = page.locator('#tutorial-preview p');
+        const pFirst = page.locator('#tutorial-preview p').first();
+        const pLast = page.locator('#tutorial-preview p').last();
 
         const h1Text = await h1.textContent();
         const h2Text = await h2.textContent();
-        const pText = await p.textContent();
+        const pFirstText = await pFirst.textContent();
+        const pLastText = await pLast.textContent();
 
         console.log(`   ✅ Rendered H1: "${h1Text}"`);
         console.log(`   ✅ Rendered H2: "${h2Text}"`);
-        console.log(`   ✅ Rendered Paragraph: "${pText}"`);
+        console.log(`   ✅ Rendered Paragraph 1: "${pFirstText}"`);
+        console.log(`   ✅ Rendered Paragraph 2: "${pLastText}"`);
 
         if (h1Text !== 'Markdown is Structure') throw new Error(`H1 text mismatch!`);
         if (h2Text !== 'Focus on content first') throw new Error(`H2 text mismatch!`);
-        if (pText !== 'No complex formatting, just plain text with simple marks.') throw new Error(`Paragraph text mismatch!`);
+        if (pFirstText !== 'No complex formatting, just plain text with simple marks.') throw new Error(`Paragraph 1 text mismatch!`);
+        if (pLastText !== 'Your CV stays structured. Jobby handles the fancy rest.') throw new Error(`Paragraph 2 text mismatch!`);
 
         // 4. Test "Explain me again" (Replay)
         console.log(`📌 Testing "Explain me again" (Replay) button...`);

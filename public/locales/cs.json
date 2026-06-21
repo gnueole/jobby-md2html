@@ -339,5 +339,17 @@
     "sync_fail": "Synchronizace selhala: {message}",
     "easter_egg": "Tajemství nalezeno! Roztočili jste logo 🌀",
     "tutorial_complete": "Děkujeme za zhlédnutí! Jste připraveni na moderní úpravu životopisů v Markdownu! 🚀"
+  },
+  "tutorial": {
+    "title": "Markdown ve 20 sekundách",
+    "line1": "# Markdown je struktura",
+    "line2": "## Zaměřte se nejprve na obsah",
+    "line4": "Žádné složité formátování, jen **prostý text** s jednoduchými značkami.",
+    "line6": "- Snadno se čte, píše a udržuje",
+    "line7": "- Skvěle se analyzuje v kompilátorech životopisů",
+    "line8": "- Vysoce preferováno moderními AI nástroji",
+    "line10": "Váš životopis zůstane strukturovaný. **Jobby** se postará o ten *stylový* zbytek.",
+    "btn_replay": "Vysvětlit znovu",
+    "btn_exit": "Markdown je jednoduchý"
   }
 }
