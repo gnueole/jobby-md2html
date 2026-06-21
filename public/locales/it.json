@@ -187,7 +187,7 @@
     "title": "Informazioni sull'editor Jobby MD",
     "sig_designer": "Progettato e sviluppato da",
     "sig_thanks": "Un ringraziamento speciale a Maround Boutanos per i suggerimenti relativi ai tooltip e alla riduzione del pannello.",
-    "desc_html": "Un editor di curricula in Markdown premium progettato per unire un'estetica curata con una conformità totale con i sistemi di tracciamento candidati (ATS). <br><br><span style=\"font-size: 12px; font-weight: 500; display: block; margin: 8px 0; background: var(--bg-modal-directives); padding: 8px 12px; border-radius: 6px; border-left: 3px solid var(--accent);\">Hai bisogno di aiuto? Consulta la nostra <a href=\"#\" id=\"link-to-help\" style=\"color: var(--accent); text-decoration: underline; font-weight: 600;\">Guida d'aiuto e sintassi Markdown</a>.</span>",
+    "desc_html": "Un editor di curricula in Markdown premium progettato per unire un'estetica curata con una conformità totale con i sistemi di tracciamento candidati (ATS).",
     "section_why_md": "✍️ Perché il Markdown (MD)?",
     "why_md_text": "Markdown separa il contenuto dalla formattazione grafica. Questo garantisce che i sistemi di tracciamento candidati (ATS) possano scansionare il testo del tuo curriculum in modo impeccabile, senza essere bloccati da strutture complesse invisibili (come tabelle o caselle di testo di Word/PDF). Mantiene inoltre il curriculum duraturo, leggero e facile da modificare.",
     "section_ai": "🤖 Scrittura del CV assistita dall'IA",
@@ -198,7 +198,8 @@
     "section_disclaimer": "⚠️ Limitazione di responsabilità sul contenuto",
     "disclaimer_text": "L'autore di Jobby declina espressamente ogni responsabilità in merito ai contenuti inseriti dagli utenti o ai documenti generati tramite questo editor. Gli utenti sono gli unici responsabili dell'esattezza, dell'adeguatezza e della liceità dei file che compilano.",
     "github_btn": "Visualizza su GitHub",
-    "inspired_by": "Ispirato da"
+    "inspired_by": "Ispirato da",
+    "help_banner_html": "💡 Hai bisogno di aiuto? Consulta la nostra <a href=\"#\" id=\"link-to-help\" >Guida d'aiuto e sintassi Markdown</a>."
   },
   "help": {
     "title": "Aiuto e guida Markdown",

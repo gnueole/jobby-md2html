@@ -187,7 +187,7 @@
     "title": "À propos de l'Éditeur Jobby",
     "sig_designer": "Conçu et développé par",
     "sig_thanks": "Un grand merci à Maround Boutanos pour les suggestions d'infobulles et de masquage du panneau.",
-    "desc_html": "Un éditeur de CV Markdown premium conçu pour allier une esthétique soignée à une conformité totale avec les ATS (systèmes de tri de candidatures). <br><br><span style=\"font-size: 12px; font-weight: 500; display: block; margin: 8px 0; background: var(--bg-modal-directives); padding: 8px 12px; border-radius: 6px; border-left: 3px solid var(--accent);\">Besoin d'aide ? Consultez notre <a href=\"#\" id=\"link-to-help\" style=\"color: var(--accent); text-decoration: underline; font-weight: 600;\">Guide d'Aide & Syntaxe Markdown</a>.</span>",
+    "desc_html": "Un éditeur de CV Markdown premium conçu pour allier une esthétique soignée à une conformité totale avec les ATS (systèmes de tri de candidatures).",
     "section_why_md": "✍️ Pourquoi le Markdown (MD) ?",
     "why_md_text": "Le Markdown sépare le fond (le contenu) de la forme (le design). Cela garantit que les robots de tri de CV (ATS) analysent parfaitement votre texte sans être bloqués par des structures complexes comme des tableaux ou zones de texte Word/PDF. Vos fichiers restent durables, légers et faciles à éditer.",
     "section_ai": "🤖 Rédaction de CV assistée par IA",
@@ -198,7 +198,8 @@
     "section_disclaimer": "⚠️ Clause de Non-responsabilité",
     "disclaimer_text": "Le créateur de Jobby décline expressément toute responsabilité concernant le contenu généré par les utilisateurs ou les CV compilés avec cet éditeur. Les utilisateurs sont seuls responsables de l'exactitude, de l'adéquation et de la légalité des fichiers créés.",
     "github_btn": "Voir sur GitHub",
-    "inspired_by": "Inspiré par"
+    "inspired_by": "Inspiré par",
+    "help_banner_html": "💡 Besoin d'aide ? Consultez notre <a href=\"#\" id=\"link-to-help\" >Guide d'Aide & Syntaxe Markdown</a>."
   },
   "help": {
     "title": "Aide & Guide Markdown",

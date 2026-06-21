@@ -1,3 +1,15 @@
+# 1.10.1 - Jobby Update
+Jobby Update of 06/21/2026 · About Modal Help Link Fix & Design Refinements.
+[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+
+## 🐛 ABOUT MODAL HELP LINK FIXED
+* **Resolved Navigation Bug**: Fixed a bug where the "Help Guide & Markdown Syntax" link in the About Modal was broken after language translation. We now use event delegation to preserve click event listeners across dynamic DOM language updates.
+
+## 🎨 ABOUT MODAL REFINEMENTS
+* **Visual Polish**: Removed redundant emojis from headers, widened the layout to avoid scrollbars, and styled it with a premium glassmorphic sidebar.
+
+---
+
 # 1.10.0 - Jobby Update
 Jobby Update of 06/21/2026 · Multi-Language Support, Static Header Accent, Visual Theme Switcher, Responsive Modals & Larger Toasts.
 [CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]

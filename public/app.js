@@ -36,7 +36,7 @@ import { MarkdownPopupTutorial } from './js/tutorial.js';
 
 async function initializeJobby() {
     // --- Fetch config (including dynamic version) ---
-    let appVersion = '1.10.0';
+    let appVersion = '1.10.1';
     try {
         const configRes = await fetch('/api/config');
         if (configRes.ok) {
@@ -148,14 +148,8 @@ async function initializeJobby() {
         document.title = "[DEV] " + document.title;
         const favicon = document.querySelector('link[rel="icon"]');
         if (favicon) {
-            let svgText = favicon.getAttribute('href');
-            if (svgText && svgText.startsWith('data:image/svg+xml,')) {
-                svgText = svgText
-                    .replace(/%2378350f/g, '%230f766e')
-                    .replace(/%23451a03/g, '%23115e59')
-                    .replace(/%23b45309/g, '%2314b8a6');
-                favicon.setAttribute('href', svgText);
-            }
+            // For Dev Mode, inject a color-flipped SVG data URI to clearly identify dev environment tab
+            favicon.setAttribute('href', 'data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 24%22 fill=%22none%22><rect x=%223%22 y=%227%22 width=%2218%22 height=%2213%22 rx=%222%22 fill=%22%230f766e%22/><path d=%22M9 7V5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7%22 stroke=%22%23115e59%22 stroke-width=%222%22 stroke-linecap=%22round%22/><rect x=%225%22 y=%2210%22 width=%2214%22 height=%227%22 rx=%221%22 fill=%22%23115e59%22/><rect x=%227%22 y=%227%22 width=%222%22 height=%2213%22 fill=%22%2314b8a6%22/><rect x=%2215%22 y=%227%22 width=%222%22 height=%2213%22 fill=%22%2314b8a6%22/><rect x=%2211%22 y=%2212%22 width=%222%22 height=%222%22 rx=%220.5%22 fill=%22%23facc15%22/></svg>');
         }
         const brandIcon = document.querySelector('.brand-icon');
         if (brandIcon) {
@@ -1645,21 +1639,21 @@ async function initializeJobby() {
             });
         }
         aboutModal.addEventListener('click', (e) => {
-            if (e.target === aboutModal) aboutModal.classList.remove('show');
-        });
-
-        // Event listener for the "Aide" link inside About Modal
-        const linkToHelp = aboutModal.querySelector('#link-to-help');
-        if (linkToHelp && helpModal) {
-            linkToHelp.addEventListener('click', (e) => {
+            if (e.target === aboutModal) {
+                aboutModal.classList.remove('show');
+            }
+            
+            // Event delegation for the "Aide" link inside About Modal (handles language switches)
+            const targetHelpLink = e.target.closest('#link-to-help');
+            if (targetHelpLink && helpModal) {
                 e.preventDefault();
                 aboutModal.classList.remove('show');
                 helpModal.classList.add('show');
                 sendTelemetry('Help Open');
                 // Auto roll logo when popping help
                 triggerLogoRoll(helpModalLogoAnimate);
-            });
-        }
+            }
+        });
     }
 
     if (helpModal) {

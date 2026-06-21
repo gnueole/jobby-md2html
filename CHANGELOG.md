@@ -8,7 +8,7 @@ All notable changes to the Jobby project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.11.0] - 2026-06-21
+## [1.10.1] - 2026-06-21
 
 ### Added
 - **Shareable Tutorial Routes:** Enabled direct routing to `/tutorial` and `/tutorial/` paths that automatically launch the interactive typewriter tutorial popup.
@@ -19,6 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Expanded Design panel width:** Widened the `.controls-panel` container by 20px (width 340px, min-width 320px) to provide comfortable spacing for advanced layout options.
 - **Client-side HTML Sanitization (XSS Mitigation):** Integrated **DOMPurify** to sanitize compiled Markdown HTML output before DOM injection, securing the app against XSS vulnerabilities while preserving the vital `data-token-index` sync attribute.
 - **Advanced Telemetry Triggers:** Added telemetry tracking events for opening the About Modal (`'About Open'`), Help Modal (`'Help Open'`), and tutorial interactions (starting, exit, `'Tutorial Complete'`, and `'Tutorial Replay'`).
+
+### Fixed
+- **Help Link in About Modal:** Resolved a bug where the "Help Guide & Markdown Syntax" link inside the About Modal was broken after language translation by using event delegation.
+- **Refined About Modal Design:** Cleaned up header layout emojis, expanded About modal width, and eliminated unwanted vertical scrollbars.
 
 ## [1.10.0] - 2026-06-21
 

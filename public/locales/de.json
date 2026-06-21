@@ -187,7 +187,7 @@
     "title": "Über den Jobby Markdown-Editor",
     "sig_designer": "Entworfen und entwickelt von",
     "sig_thanks": "Besonderer Dank geht an Maround Boutanos für Feedback zu Tooltips und Design-Panel-Faltung.",
-    "desc_html": "Ein erstklassiger Markdown-Lebenslauf-Editor, der elegante Ästhetik mit kompromissloser ATS-Kompatibilität verbindet. <br><br><span style=\"font-size: 12px; font-weight: 500; display: block; margin: 8px 0; background: var(--bg-modal-directives); padding: 8px 12px; border-radius: 6px; border-left: 3px solid var(--accent);\">Brauchen Sie Hilfe? Lesen Sie unsere <a href=\"#\" id=\"link-to-help\" style=\"color: var(--accent); text-decoration: underline; font-weight: 600;\">Hilfe & Markdown Syntax-Anleitung</a>.</span>",
+    "desc_html": "Ein erstklassiger Markdown-Lebenslauf-Editor, der elegante Ästhetik mit kompromissloser ATS-Kompatibilität verbindet.",
     "section_why_md": "✍️ Warum Markdown (MD)?",
     "why_md_text": "Markdown trennt Inhalt und Formatierung. Dies stellt sicher, dass Bewerber-Management-Systeme (ATS) den Text Ihres Lebenslaufs fehlerfrei lesen können, ohne durch unsichtbare Layout-Strukturen (wie Tabellen oder Textfelder in Word/PDFs) behindert zu werden. Zudem bleibt Ihr Lebenslauf zukunftssicher, portabel und leicht editierbar.",
     "section_ai": "🤖 KI-unterstütztes CV-Schreiben",
@@ -198,7 +198,8 @@
     "section_disclaimer": "⚠️ Haftungsausschluss",
     "disclaimer_text": "Der Ersteller von Jobby schließt jegliche Haftung für nutzergenerierte Inhalte, Lebensläufe oder Dokumentenausgaben aus, die mit diesem Editor erstellt wurden. Nutzer tragen die alleinige Verantwortung für die Richtigkeit, Angemessenheit und Rechtmäßigkeit der von ihnen erstellten Dateien.",
     "github_btn": "Auf GitHub ansehen",
-    "inspired_by": "Inspiriert durch"
+    "inspired_by": "Inspiriert durch",
+    "help_banner_html": "💡 Brauchen Sie Hilfe? Lesen Sie unsere <a href=\"#\" id=\"link-to-help\" >Hilfe & Markdown Syntax-Anleitung</a>."
   },
   "help": {
     "title": "Hilfe & Markdown-Handbuch",

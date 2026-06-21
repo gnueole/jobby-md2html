@@ -1,3 +1,15 @@
+# 1.10.1 - Mise à jour Jobby
+Mise à jour Jobby du 21/06/2026 · Correction du lien d'aide de la modale À propos & Affinements graphiques.
+[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+
+## 🐛 CORRECTION DU LIEN D'AIDE
+* **Résolution du bug de navigation** : Correction d'un bug où le lien « Guide d'Aide & Syntaxe Markdown » dans la modale À propos était cassé après un changement de langue. Nous utilisons désormais la délégation d'événements pour préserver les écouteurs de clics à travers les mises à jour dynamiques du DOM.
+
+## 🎨 AFFINEMENTS DE LA MODALE À PROPOS
+* **Polish visuel** : Suppression des emojis redondants des en-têtes, élargissement de la disposition pour éviter les barres de défilement, et habillage avec une barre latérale glassmorphic premium.
+
+---
+
 # 1.10.0 - Mise à jour Jobby
 Mise à jour Jobby du 21/06/2026 · Support multilingue, Accent d'en-tête statique, Sélecteur de thème visuel, Modales réactives & Toasts agrandis.
 [CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]

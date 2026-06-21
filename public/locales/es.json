@@ -187,7 +187,7 @@
     "title": "Acerca del editor de currículums Jobby MD",
     "sig_designer": "Diseñado y desarrollado por",
     "sig_thanks": "Un agradecimiento especial a Maround Boutanos por sus sugerencias de herramientas y diseño plegable.",
-    "desc_html": "Un editor premium de currículums en Markdown diseñado para combinar una estética elegante con una conformidad total con los sistemas de filtrado ATS. <br><br><span style=\"font-size: 12px; font-weight: 500; display: block; margin: 8px 0; background: var(--bg-modal-directives); padding: 8px 12px; border-radius: 6px; border-left: 3px solid var(--accent);\">¿Necesita ayuda? Consulte nuestra <a href=\"#\" id=\"link-to-help\" style=\"color: var(--accent); text-decoration: underline; font-weight: 600;\">Guía de ayuda y sintaxis Markdown</a>.</span>",
+    "desc_html": "Un editor premium de currículums en Markdown diseñado para combinar una estética elegante con una conformidad total con los sistemas de filtrado ATS.",
     "section_why_md": "✍️ ¿Por qué usar Markdown (MD)?",
     "why_md_text": "Markdown separa el contenido del formato. Esto garantiza que los sistemas de seguimiento de candidatos (ATS) puedan analizar el texto de su currículum de manera impecable sin verse afectados por estructuras complejas ocultas (como tablas o cuadros de texto de Word/PDF). Además, mantiene su currículum duradero, ligero y fácil de editar.",
     "section_ai": "🤖 Redacción de CV asistida por IA",
@@ -198,7 +198,8 @@
     "section_disclaimer": "⚠️ Cláusula de exención de responsabilidad",
     "disclaimer_text": "El creador de Jobby declina explícitamente toda responsabilidad sobre el contenido generado por los usuarios o los currículums generados con este editor. Los usuarios son los únicos responsables de la veracidad, adecuación y legalidad de los archivos que compilen.",
     "github_btn": "Ver en GitHub",
-    "inspired_by": "Inspirado en"
+    "inspired_by": "Inspirado en",
+    "help_banner_html": "💡 ¿Necesita ayuda? Consulte nuestra <a href=\"#\" id=\"link-to-help\" >Guía de ayuda y sintaxis Markdown</a>."
   },
   "help": {
     "title": "Ayuda y guía Markdown",

@@ -187,7 +187,7 @@
     "title": "Despre editorul Jobby MD",
     "sig_designer": "Proiectat și dezvoltat de",
     "sig_thanks": "Mulțumiri speciale lui Maround Boutanos pentru sugestiile privind tooltips-urile și reducerea panourilor.",
-    "desc_html": "Un editor premium de CV-uri în Markdown proiectat pentru a îmbina o estetică îngrijită cu o conformitate totală cu sistemele de filtrare ATS. <br><br><span style=\"font-size: 12px; font-weight: 500; display: block; margin: 8px 0; background: var(--bg-modal-directives); padding: 8px 12px; border-radius: 6px; border-left: 3px solid var(--accent);\">Aveți nevoie de ajutor? Consultați <a href=\"#\" id=\"link-to-help\" style=\"color: var(--accent); text-decoration: underline; font-weight: 600;\">Ghidul de ajutor & Sintaxa Markdown</a>.</span>",
+    "desc_html": "Un editor premium de CV-uri în Markdown proiectat pentru a îmbina o estetică îngrijită cu o conformitate totală cu sistemele de filtrare ATS.",
     "section_why_md": "✍️ De ce Markdown (MD)?",
     "why_md_text": "Markdown separă textul propriu-zis (conținutul) de așezarea grafică (designul). Acest lucru garantează că sistemele de sortare a CV-urilor (ATS) pot scana textul în mod perfect, fără a fi blocate de elemente grafice invizibile complexe (cum ar fi tabele sau casete de text în Word/PDF). Păstrează de asemenea CV-ul ușor de editat și portabil.",
     "section_ai": "🤖 Redactare CV asistată de IA",
@@ -198,7 +198,8 @@
     "section_disclaimer": "⚠️ Exonerare de răspundere",
     "disclaimer_text": "Creatorul Jobby declină în mod explicit orice răspundere pentru conținutul generat de utilizatori sau CV-urile compilate cu acest editor. Utilizatorii sunt singurii responsabili pentru corectitudinea, adecvarea și legalitatea fișierelor pe care le compilează.",
     "github_btn": "Vezi pe GitHub",
-    "inspired_by": "Inspirat de"
+    "inspired_by": "Inspirat de",
+    "help_banner_html": "💡 Aveți nevoie de ajutor? Consultați <a href=\"#\" id=\"link-to-help\" >Ghidul de ajutor & Sintaxa Markdown</a>."
   },
   "help": {
     "title": "Ajutor și ghid Markdown",
