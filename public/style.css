@@ -333,9 +333,9 @@ body {
 }
 
 .controls-panel {
-    width: 240px;
-    min-width: 240px;
-    max-width: 240px;
+    width: 320px;
+    min-width: 280px;
+    max-width: 500px;
 }
 
 /* High Resolution screen enhancements */
