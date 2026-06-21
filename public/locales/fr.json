@@ -1,6 +1,6 @@
 {
   "header": {
-    "title": "Éditeur de CV <span>Markdown</span> Jobby",
+    "title": "<span class=\"full-title\">Éditeur de CV <span>Markdown</span> Jobby</span><span class=\"short-title\">Jobby <span>MD</span></span>",
     "theme_tooltip": "Changer le thème de l'application",
     "theme_auto": "Thème : Auto",
     "theme_light": "Thème : Clair",

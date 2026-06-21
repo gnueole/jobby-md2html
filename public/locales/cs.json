@@ -1,6 +1,6 @@
 {
   "header": {
-    "title": "Jobby <span>Markdown</span> Editor životopisů",
+    "title": "<span class=\"full-title\">Jobby <span>Markdown</span> Editor životopisů</span><span class=\"short-title\">Jobby <span>MD</span></span>",
     "theme_tooltip": "Přepnout motiv aplikace",
     "theme_auto": "Motiv: Automatický",
     "theme_light": "Motiv: Světlý",

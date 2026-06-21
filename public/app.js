@@ -32,6 +32,7 @@ import { initZoom, autoFitZoom } from './js/zoom.js';
 import { initPrint, updatePageBreaks } from './js/print.js';
 import { loadLocale, translateDOM, currentLocale, t } from './js/i18n.js';
 import { initTooltips } from './js/tooltip.js';
+import { MarkdownPopupTutorial } from './js/tutorial.js';
 
 async function initializeJobby() {
     // --- Fetch config (including dynamic version) ---
@@ -167,7 +168,8 @@ async function initializeJobby() {
         }
         const brandH1 = document.querySelector('.brand h1');
         if (brandH1) {
-            brandH1.innerHTML = 'Jobby <span class="fancy-span">Markdown</span> Editor <span class="dev-badge" style="background: #14b8a6 !important; color: #0f172a !important; -webkit-text-fill-color: #0f172a !important; -webkit-background-clip: initial !important; background-clip: initial !important; font-weight: 700;">DEV</span>';
+            brandH1.innerHTML = '<span class="full-title">Jobby <span class="fancy-span">Markdown</span> Editor <span class="dev-badge" style="background: #14b8a6 !important; color: #0f172a !important; -webkit-text-fill-color: #0f172a !important; -webkit-background-clip: initial !important; background-clip: initial !important; font-weight: 700;">DEV</span></span>' +
+                                '<span class="short-title">Jobby <span class="fancy-span">MD</span> <span class="dev-badge" style="background: #14b8a6 !important; color: #0f172a !important; -webkit-text-fill-color: #0f172a !important; -webkit-background-clip: initial !important; background-clip: initial !important; font-weight: 700;">DEV</span></span>';
         }
     }
 
@@ -2137,6 +2139,13 @@ async function initializeJobby() {
     // Launch loading
     await loadWorkspaceData();
     updateSyncButtonState();
+
+    // Check if on tutorial route or search param is present
+    const path = window.location.pathname;
+    const isTutorialRoute = path === '/tutorial' || path === '/tutorial/' || window.location.search.includes('tutorial');
+    if (isTutorialRoute) {
+        MarkdownPopupTutorial.mount();
+    }
 
     // Trigger Session Start telemetry
     sendTelemetry('Session Start');

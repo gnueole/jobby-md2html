@@ -1,6 +1,6 @@
 {
   "header": {
-    "title": "Editor di curricula <span>Markdown</span> Jobby",
+    "title": "<span class=\"full-title\">Editor di curricula <span>Markdown</span> Jobby</span><span class=\"short-title\">Jobby <span>MD</span></span>",
     "theme_tooltip": "Cambia il tema dell'applicazione",
     "theme_auto": "Tema: Auto",
     "theme_light": "Tema: Chiaro",

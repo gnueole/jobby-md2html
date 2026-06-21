@@ -1,6 +1,6 @@
 {
   "header": {
-    "title": "Jobby <span>Markdown</span> Resume Editor",
+    "title": "<span class=\"full-title\">Jobby <span>Markdown</span> Resume Editor</span><span class=\"short-title\">Jobby <span>MD</span></span>",
     "theme_tooltip": "Toggle application theme",
     "theme_auto": "Theme: Auto",
     "theme_light": "Theme: Light",

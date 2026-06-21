@@ -1,6 +1,6 @@
 {
   "header": {
-    "title": "Editor de CV-uri Jobby <span>Markdown</span>",
+    "title": "<span class=\"full-title\">Editor de CV-uri Jobby <span>Markdown</span></span><span class=\"short-title\">Jobby <span>MD</span></span>",
     "theme_tooltip": "Schimbă tema aplicației",
     "theme_auto": "Temă: Auto",
     "theme_light": "Temă: Clară",
