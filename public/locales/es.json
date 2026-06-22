@@ -139,6 +139,8 @@
     "option_layout_2col": "2 columnas (moderno)",
     "label_show_version": "Mostrar versión impresa",
     "label_show_version_tooltip": "Mostrar el incremento de la versión al final del documento",
+    "label_gotenberg_pdf": "Descargar PDF Gotenberg",
+    "label_gotenberg_pdf_tooltip": "Compila y descarga el PDF directamente a través del servicio local de Gotenberg en lugar de abrir la ventana de impresión del navegador",
     "label_sidebar_position": "Posición de barra lateral",
     "btn_sidebar_left": "Izquierda",
     "btn_sidebar_right": "Derecha",
@@ -342,7 +344,10 @@
     "sync_success": "¡Diseño sincronizado con éxito!",
     "sync_fail": "Error en la sincronización: {message}",
     "easter_egg": "¡Secreto **Encontrado**! Has girado el logotipo 🌀",
-    "tutorial_complete": "¡Gracias por ver el tutorial! ¡Ya estás listo para editar tu CV con **Markdown moderno**! 🚀"
+    "tutorial_complete": "¡Gracias por ver el tutorial! ¡Ya estás listo para editar tu CV con **Markdown moderno**! 🚀",
+    "gotenberg_pdf_generating": "Compilando PDF a través de Gotenberg...",
+    "gotenberg_pdf_success": "¡Descarga de PDF iniciada!",
+    "gotenberg_pdf_fail": "Error al generar PDF: {message}"
   },
   "tutorial": {
     "title": "Markdown en 20 segundos",

@@ -1,10 +1,10 @@
 {
-  "//": "Published on 2026-06-20 22:57:38 | Git: c6a9c86 chore: add deploy-n8n target to Makefile",
+  "//": "Published on 2026-06-22 20:56:58 | Git: 1ca0e6f fix: dynamically adjust dropdowns and tooltips to prevent screen overflow",
   "updatedAt": "2026-06-03T11:51:05.635Z",
   "createdAt": "2026-05-25T16:32:59.047Z",
   "id": "K2acY4kGijPJGop0",
   "name": "Jobby - PDF - static",
-  "description": "Published on 2026-06-20 23:29:38 | Git: c6a9c86 chore: add deploy-n8n target to Makefile",
+  "description": "Published on 2026-06-22 20:18:24 | Git: 1ca0e6f fix: dynamically adjust dropdowns and tooltips to prevent screen overflow",
   "active": false,
   "isArchived": false,
   "nodes": [
@@ -291,7 +291,7 @@
     },
     {
       "parameters": {
-        "content": "### Last Publish Info\n\nPublished on 2026-06-20 22:57:38 | Git: c6a9c86 chore: add deploy-n8n target to Makefile",
+        "content": "### Last Publish Info\n\nPublished on 2026-06-22 20:56:58 | Git: 1ca0e6f fix: dynamically adjust dropdowns and tooltips to prevent screen overflow",
         "height": 150,
         "width": 300,
         "color": 6

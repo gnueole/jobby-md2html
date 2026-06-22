@@ -48,16 +48,6 @@ When you are satisfied with your layout:
 - [🔗 Jobby Project Links](#-jobby-project-links)
 - [📄 License](#-license)
 
----
-
-## 🖨️ Generate PDF for Recruiters
-
-When you are satisfied with your layout:
-
-1. Click the **Print / PDF** button at the top right.
-2. In your browser’s print dialog, select **Save as PDF** as the destination.
-3. Check **Background graphics** to preserve colors, and uncheck **Headers and footers** for a clean page.
-4. Save the file!
 
 
 ## 📋 Requirements

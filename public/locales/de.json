@@ -139,6 +139,8 @@
     "option_layout_2col": "2 Spalten (Modern)",
     "label_show_version": "Druckversion anzeigen",
     "label_show_version_tooltip": "Versionsnummer unten auf dem Dokument anzeigen",
+    "label_gotenberg_pdf": "Gotenberg PDF Herunterladen",
+    "label_gotenberg_pdf_tooltip": "PDF direkt über den lokalen Gotenberg-Dienst kompilieren & herunterladen, anstatt das Druckerfenster des Browsers zu öffnen",
     "label_sidebar_position": "Position der Seitenspalte",
     "btn_sidebar_left": "Links",
     "btn_sidebar_right": "Rechts",
@@ -342,7 +344,10 @@
     "sync_success": "Design erfolgreich synchronisiert!",
     "sync_fail": "Synchronisation fehlgeschlagen: {message}",
     "easter_egg": "Geheimnis **gefunden**! Du hast das Logo gedreht 🌀",
-    "tutorial_complete": "Danke fürs Anschauen! Du bist bereit für die **moderne Markdown-Lebenslaufbearbeitung**! 🚀"
+    "tutorial_complete": "Danke fürs Anschauen! Du bist bereit für die **moderne Markdown-Lebenslaufbearbeitung**! 🚀",
+    "gotenberg_pdf_generating": "PDF wird über Gotenberg kompiliert...",
+    "gotenberg_pdf_success": "PDF-Download gestartet!",
+    "gotenberg_pdf_fail": "PDF-Erstellung fehlgeschlagen: {message}"
   },
   "tutorial": {
     "title": "Markdown in 20 Sekunden",

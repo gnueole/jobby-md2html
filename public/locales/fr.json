@@ -139,6 +139,8 @@
     "option_layout_2col": "2 Colonnes (Moderne)",
     "label_show_version": "Afficher la Version du CV",
     "label_show_version_tooltip": "Afficher le numéro de version d'impression en bas du document",
+    "label_gotenberg_pdf": "Téléchargement PDF Gotenberg",
+    "label_gotenberg_pdf_tooltip": "Compile et télécharge directement le PDF via le conteneur Gotenberg local au lieu d'ouvrir le menu d'impression du navigateur",
     "label_sidebar_position": "Position de la Colonne Latérale",
     "btn_sidebar_left": "Gauche",
     "btn_sidebar_right": "Droite",
@@ -342,7 +344,10 @@
     "sync_success": "Configuration de style synchronisée avec succès !",
     "sync_fail": "Échec de la synchronisation : {message}",
     "easter_egg": "Secret **Trouvé** ! Le logo a tourné 🌀",
-    "tutorial_complete": "Merci d'avoir regardé ! Vous êtes prêt pour la rédaction de **CV en Markdown moderne** ! 🚀"
+    "tutorial_complete": "Merci d'avoir regardé ! Vous êtes prêt pour la rédaction de **CV en Markdown moderne** ! 🚀",
+    "gotenberg_pdf_generating": "Compilation du PDF via Gotenberg...",
+    "gotenberg_pdf_success": "Téléchargement du PDF démarré !",
+    "gotenberg_pdf_fail": "Échec de la génération du PDF : {message}"
   },
   "tutorial": {
     "title": "Le Markdown en 20 secondes",

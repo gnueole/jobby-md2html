@@ -139,6 +139,8 @@
     "option_layout_2col": "2 Columns (Modern)",
     "label_show_version": "Display Print Version",
     "label_show_version_tooltip": "Display the version increment at the bottom of the document",
+    "label_gotenberg_pdf": "Gotenberg PDF Download",
+    "label_gotenberg_pdf_tooltip": "Directly compile & download PDF using the local Gotenberg service instead of opening the manual browser print window",
     "label_sidebar_position": "Sidebar Position",
     "btn_sidebar_left": "Left",
     "btn_sidebar_right": "Right",
@@ -342,7 +344,10 @@
     "sync_success": "Design configuration synced successfully!",
     "sync_fail": "Sync failed: {message}",
     "easter_egg": "Secret **Found**! You rolled the logo 🌀",
-    "tutorial_complete": "Thanks for watching! You are ready for a **modern Markdown CV** editing! 🚀"
+    "tutorial_complete": "Thanks for watching! You are ready for a **modern Markdown CV** editing! 🚀",
+    "gotenberg_pdf_generating": "Compiling PDF via Gotenberg...",
+    "gotenberg_pdf_success": "PDF download started!",
+    "gotenberg_pdf_fail": "PDF generation failed: {message}"
   },
   "tutorial": {
     "title": "Markdown in 20 seconds",

@@ -5,6 +5,7 @@
  */
 
 import { incrementDailyVersionCounter, showToast, preventPopupOverflow } from './utils.js';
+import { t } from './i18n.js';
 
 let showPageBreaks = localStorage.getItem('show_page_breaks') === 'true';
 let pageFormat = 'A4';
@@ -89,7 +90,8 @@ export function initPrint({
     getCurrentResumeTitle,
     autoFitZoom,
     triggerCompile,
-    styleConfig
+    styleConfig,
+    getTemplatesCssText
 }) {
     if (btnPageBreaks) {
         btnPageBreaks.classList.toggle('active', showPageBreaks);
@@ -175,9 +177,137 @@ export function initPrint({
         });
     }
 
+    // Set up Gotenberg PDF download toggle
+    const gotenbergToggle = document.getElementById('gotenberg-pdf-toggle');
+    if (gotenbergToggle) {
+        const stored = localStorage.getItem('gotenberg_pdf_enabled');
+        gotenbergToggle.checked = stored === 'true';
+        
+        const updatePrintBtnStyle = () => {
+            if (btnPrint) {
+                if (gotenbergToggle.checked) {
+                    btnPrint.classList.add('gotenberg-active');
+                } else {
+                    btnPrint.classList.remove('gotenberg-active');
+                }
+            }
+        };
+        
+        updatePrintBtnStyle();
+        
+        gotenbergToggle.addEventListener('change', () => {
+            localStorage.setItem('gotenberg_pdf_enabled', gotenbergToggle.checked);
+            updatePrintBtnStyle();
+        });
+    }
+
+    function downloadPdfViaGotenberg() {
+        const counter = incrementDailyVersionCounter();
+        if (triggerCompile) {
+            triggerCompile();
+        }
+        
+        const increment = String(counter).padStart(2, '0');
+        const currentTitle = getCurrentResumeTitle ? getCurrentResumeTitle() : "resume";
+        const filename = `${currentTitle}-${increment}`;
+        
+        const resumeOutputHtml = resumeOutput.innerHTML;
+        const templatesCss = getTemplatesCssText ? getTemplatesCssText() : "";
+        const resumeOutputClass = resumeOutput.className;
+        const resumeOutputStyle = resumeOutput.style.cssText;
+        
+        const format = (styleConfig && styleConfig.pageFormat) ? styleConfig.pageFormat : (localStorage.getItem('page_format') || 'A4');
+
+        const standaloneHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${filename}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Raleway:wght@300;400;500;600;700;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    ${templatesCss}
+    .page-break-indicator {
+      display: none !important;
+    }
+    @media print {
+      body {
+        display: block !important;
+        width: 100% !important;
+        height: auto !important;
+        background: #ffffff !important;
+      }
+      .a4-sheet {
+        width: 100% !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+      }
+    }
+    body {
+        background-color: var(--resume-color-bg, #ffffff);
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+    }
+    .a4-sheet {
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <article class="${resumeOutputClass}" style="${resumeOutputStyle}">
+    ${resumeOutputHtml}
+  </article>
+</body>
+</html>`;
+
+        showToast(t('toasts.gotenberg_pdf_generating') || "Generating PDF via Gotenberg...");
+
+        fetch('/api/pdf', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                html: standaloneHtml,
+                paperFormat: format,
+                filename: filename
+            })
+        })
+        .then(async response => {
+            if (!response.ok) {
+                const text = await response.text();
+                throw new Error(text || `HTTP ${response.status}`);
+            }
+            return response.blob();
+        })
+        .then(blob => {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${filename}.pdf`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast(t('toasts.gotenberg_pdf_success') || "PDF download started!");
+        })
+        .catch(err => {
+            console.error("Gotenberg PDF generation failed:", err);
+            showToast(t('toasts.gotenberg_pdf_fail', { message: err.message }) || `PDF generation failed: ${err.message}`);
+        });
+    }
+
     if (btnPrint) {
         btnPrint.addEventListener('click', () => {
-            window.print();
+            if (gotenbergToggle && gotenbergToggle.checked) {
+                downloadPdfViaGotenberg();
+            } else {
+                window.print();
+            }
         });
     }
 

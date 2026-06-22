@@ -139,6 +139,8 @@
     "option_layout_2col": "2 Coloane (modern)",
     "label_show_version": "Afișează versiunea tipărită",
     "label_show_version_tooltip": "Afișează numărul versiunii de imprimare în partea de jos a documentului",
+    "label_gotenberg_pdf": "Descărcare PDF Gotenberg",
+    "label_gotenberg_pdf_tooltip": "Compilează și descarcă direct PDF-ul prin serviciul local Gotenberg în loc să deschidă fereastra de tipărire a browserului",
     "label_sidebar_position": "Poziție coloană laterală",
     "btn_sidebar_left": "Stânga",
     "btn_sidebar_right": "Dreapta",
@@ -342,7 +344,10 @@
     "sync_success": "Configurația de design s-a sincronizat cu succes!",
     "sync_fail": "Sincronizarea a eșuat: {message}",
     "easter_egg": "Secret **Găsit**! Ai rotit logoul 🌀",
-    "tutorial_complete": "Mulțumim pentru vizionare! Ești gata pentru **editarea modernă a CV-ului în Markdown**! 🚀"
+    "tutorial_complete": "Mulțumim pentru vizionare! Ești gata pentru **editarea modernă a CV-ului în Markdown**! 🚀",
+    "gotenberg_pdf_generating": "Se compilează PDF-ul prin Gotenberg...",
+    "gotenberg_pdf_success": "Descărcarea PDF-ului a început!",
+    "gotenberg_pdf_fail": "Generarea PDF-ului a eșuat: {message}"
   },
   "tutorial": {
     "title": "Markdown în 20 de secunde",

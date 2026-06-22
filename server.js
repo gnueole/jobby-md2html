@@ -87,6 +87,150 @@ const server = http.createServer((req, res) => {
         cleanUrl = '/';
     }
 
+    if (cleanUrl === '/api/pdf') {
+        if (req.method !== 'POST') {
+            res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8' });
+            res.end('Method Not Allowed');
+            return;
+        }
+
+        let body = '';
+        req.on('data', chunk => { body += chunk.toString(); });
+        req.on('end', () => {
+            let payload;
+            try { payload = JSON.parse(body); } catch(e) { payload = {}; }
+
+            const htmlContent = payload.html;
+            const paperFormat = payload.paperFormat || 'A4';
+            const filename = payload.filename || 'resume';
+
+            if (!htmlContent) {
+                res.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8' });
+                res.end('Missing HTML content');
+                return;
+            }
+
+            // Map paper format to gotenberg fields
+            let paperWidth = 8.27; // A4
+            let paperHeight = 11.69; // A4
+            if (paperFormat.toLowerCase() === 'letter') {
+                paperWidth = 8.5;
+                paperHeight = 11.0;
+            } else if (paperFormat.toLowerCase() === 'legal') {
+                paperWidth = 8.5;
+                paperHeight = 14.0;
+            } else if (paperFormat.toLowerCase() === 'a5') {
+                paperWidth = 5.83;
+                paperHeight = 8.27;
+            }
+
+            const boundary = '----WebKitFormBoundary' + crypto.randomBytes(16).toString('hex');
+            const parts = [];
+
+            // Add files field with index.html
+            parts.push(Buffer.from(
+                `--${boundary}\r\n` +
+                `Content-Disposition: form-data; name="files"; filename="index.html"\r\n` +
+                `Content-Type: text/html\r\n\r\n` +
+                `${htmlContent}\r\n`
+            ));
+
+            // Add emulatedMediaType field (so it applies @media print styles!)
+            parts.push(Buffer.from(
+                `--${boundary}\r\n` +
+                `Content-Disposition: form-data; name="emulatedMediaType"\r\n\r\n` +
+                `print\r\n`
+            ));
+
+            // Add paperWidth
+            parts.push(Buffer.from(
+                `--${boundary}\r\n` +
+                `Content-Disposition: form-data; name="paperWidth"\r\n\r\n` +
+                `${paperWidth}\r\n`
+            ));
+
+            // Add paperHeight
+            parts.push(Buffer.from(
+                `--${boundary}\r\n` +
+                `Content-Disposition: form-data; name="paperHeight"\r\n\r\n` +
+                `${paperHeight}\r\n`
+            ));
+
+            // Add zero margins
+            parts.push(Buffer.from(
+                `--${boundary}\r\n` +
+                `Content-Disposition: form-data; name="marginTop"\r\n\r\n` +
+                `0\r\n`
+            ));
+            parts.push(Buffer.from(
+                `--${boundary}\r\n` +
+                `Content-Disposition: form-data; name="marginBottom"\r\n\r\n` +
+                `0\r\n`
+            ));
+            parts.push(Buffer.from(
+                `--${boundary}\r\n` +
+                `Content-Disposition: form-data; name="marginLeft"\r\n\r\n` +
+                `0\r\n`
+            ));
+            parts.push(Buffer.from(
+                `--${boundary}\r\n` +
+                `Content-Disposition: form-data; name="marginRight"\r\n\r\n` +
+                `0\r\n`
+            ));
+
+            parts.push(Buffer.from(`--${boundary}--\r\n`));
+
+            const bodyBuffer = Buffer.concat(parts);
+
+            const gotenbergUrl = process.env.GOTENBERG_URL || 'http://gotenberg:3000';
+            let parsedUrl;
+            try {
+                parsedUrl = new URL(gotenbergUrl + '/forms/chromium/convert/html');
+            } catch (err) {
+                res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
+                res.end(`Invalid Gotenberg URL configuration: ${err.message}`);
+                return;
+            }
+
+            const gotenbergReq = http.request({
+                hostname: parsedUrl.hostname,
+                port: parsedUrl.port || 80,
+                path: parsedUrl.pathname,
+                method: 'POST',
+                headers: {
+                    'Content-Type': `multipart/form-data; boundary=${boundary}`,
+                    'Content-Length': bodyBuffer.length
+                }
+            }, (gotenbergRes) => {
+                if (gotenbergRes.statusCode === 200) {
+                    res.writeHead(200, {
+                        'Content-Type': 'application/pdf',
+                        'Content-Disposition': `attachment; filename="${encodeURIComponent(filename)}.pdf"`
+                    });
+                    gotenbergRes.pipe(res);
+                } else {
+                    let errBody = '';
+                    gotenbergRes.on('data', chunk => { errBody += chunk.toString(); });
+                    gotenbergRes.on('end', () => {
+                        console.error('[Gotenberg Error]:', errBody);
+                        res.writeHead(gotenbergRes.statusCode, { 'Content-Type': 'text/plain; charset=utf-8' });
+                        res.end(`Gotenberg PDF conversion failed: ${errBody}`);
+                    });
+                }
+            });
+
+            gotenbergReq.on('error', (err) => {
+                console.error('[Gotenberg Connection Error]:', err);
+                res.writeHead(503, { 'Content-Type': 'text/plain; charset=utf-8' });
+                res.end(`Gotenberg service not reachable. Check if the container is running: ${err.message}`);
+            });
+
+            gotenbergReq.write(bodyBuffer);
+            gotenbergReq.end();
+        });
+        return;
+    }
+
     if (cleanUrl === '/api/verify-token') {
         if (req.method !== 'POST') {
             res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8' });

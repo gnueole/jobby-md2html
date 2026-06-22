@@ -333,8 +333,8 @@ body {
 }
 
 .controls-panel {
-    width: 340px;
-    min-width: 320px;
+    width: 360px;
+    min-width: 340px;
     max-width: 500px;
 }
 
@@ -3289,6 +3289,29 @@ body.expert-mode-active .font-preferences-row {
         -moz-appearance: none !important;
     }
 }
+
+/* Shining Gotenberg Active State for Print/PDF Button */
+.btn-primary.gotenberg-active {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+    box-shadow: 0 0 15px rgba(37, 99, 235, 0.6) !important;
+    animation: shine-blue 2s infinite alternate !important;
+}
+
+.btn-primary.gotenberg-active:hover {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+    box-shadow: 0 0 25px rgba(37, 99, 235, 0.9) !important;
+    transform: translateY(-1px) !important;
+}
+
+@keyframes shine-blue {
+    0% {
+        box-shadow: 0 0 8px rgba(37, 99, 235, 0.4);
+    }
+    100% {
+        box-shadow: 0 0 20px rgba(37, 99, 235, 0.8), 0 0 8px rgba(37, 99, 235, 0.4);
+    }
+}
+
 
 
 

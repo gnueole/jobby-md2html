@@ -1564,7 +1564,8 @@ async function initializeJobby() {
         getCurrentResumeTitle: () => currentResumeTitle,
         autoFitZoom: () => autoFitZoom(canvasWrapper, previewCanvas, zoomLevelText, () => updatePageBreaks(resumeOutput, styleConfig)),
         triggerCompile: () => runCompileMarkdown(markdownInput.value),
-        styleConfig
+        styleConfig,
+        getTemplatesCssText: () => templatesCssText
     });
 
     // Load sample
@@ -2026,8 +2027,8 @@ async function initializeJobby() {
                 const dx = moveEvent.clientX - startX;
                 const containerWidth = document.querySelector('.app-main').clientWidth;
                 const editorWidth = editorPanel.getBoundingClientRect().width;
-                const maxAllowedWidth = Math.max(300, containerWidth - editorWidth - 400 - 12);
-                const newWidth = Math.min(maxAllowedWidth, Math.max(300, startWidth - dx));
+                const maxAllowedWidth = Math.max(320, containerWidth - editorWidth - 400 - 12);
+                const newWidth = Math.min(maxAllowedWidth, Math.max(320, startWidth - dx));
                 controlsPanel.style.width = `${newWidth}px`;
                 controlsPanel.style.flex = 'initial';
                 autoFitZoom(canvasWrapper, previewCanvas, zoomLevelText, () => updatePageBreaks(resumeOutput));

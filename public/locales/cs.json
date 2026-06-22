@@ -139,6 +139,8 @@
     "option_layout_2col": "2 sloupce (moderní)",
     "label_show_version": "Zobrazit tiskovou verzi",
     "label_show_version_tooltip": "Zobrazit verzi přírůstku ve spodní části dokumentu",
+    "label_gotenberg_pdf": "Gotenberg Stažení PDF",
+    "label_gotenberg_pdf_tooltip": "Přímo zkompilovat a stáhnout PDF přes místní službu Gotenberg namísto otevírání tiskového okna prohlížeče",
     "label_sidebar_position": "Pozice bočního panelu",
     "btn_sidebar_left": "Vlevo",
     "btn_sidebar_right": "Vpravo",
@@ -342,7 +344,10 @@
     "sync_success": "Konfigurace designu byla úspěšně synchronizována!",
     "sync_fail": "Synchronizace selhala: {message}",
     "easter_egg": "Tajemství **nalezeno**! Roztočili jste logo 🌀",
-    "tutorial_complete": "Děkujeme za zhlédnutí! Jste připraveni na **moderní úpravu životopisů v Markdownu**! 🚀"
+    "tutorial_complete": "Děkujeme za zhlédnutí! Jste připraveni na **moderní úpravu životopisů v Markdownu**! 🚀",
+    "gotenberg_pdf_generating": "Kompilace PDF přes Gotenberg...",
+    "gotenberg_pdf_success": "Stahování PDF zahájeno!",
+    "gotenberg_pdf_fail": "Generování PDF selhalo: {message}"
   },
   "tutorial": {
     "title": "Markdown ve 20 sekundách",

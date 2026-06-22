@@ -1,10 +1,10 @@
 {
-  "name": "Jobby - Feedback to Notion",
+  "name": "Eole.me - Contact Form",
   "nodes": [
     {
       "parameters": {
         "httpMethod": "POST",
-        "path": "jobby-feedback",
+        "path": "eoleme-contact",
         "responseMode": "responseNode",
         "options": {}
       },
@@ -38,16 +38,12 @@
               "ignoreIfEmpty": true
             },
             {
-              "key": "Stars|number",
-              "numberValue": "={{ Number($json.body.stars) }}"
-            },
-            {
               "key": "Category|select",
-              "selectValue": "={{ $json.body.category }}"
+              "selectValue": "Comment"
             },
             {
               "key": "Platform|select",
-              "selectValue": "={{ $json.body.platform }}"
+              "selectValue": "prod"
             }
           ]
         }
@@ -85,7 +81,7 @@
         },
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"children\": [\n    {\n      \"object\": \"block\",\n      \"type\": \"heading_1\",\n      \"heading_1\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": {{ JSON.stringify('Feedback from ' + $('Webhook').item.json.body.name) }}\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"heading_2\",\n      \"heading_2\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": \"Details\"\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"bulleted_list_item\",\n      \"bulleted_list_item\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": {{ JSON.stringify('Date: ' + $now.setZone('Europe/Paris').toFormat('yyyy-MM-dd HH:mm')) }}\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"bulleted_list_item\",\n      \"bulleted_list_item\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": {{ JSON.stringify('Name: ' + $('Webhook').item.json.body.name) }}\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"bulleted_list_item\",\n      \"bulleted_list_item\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": {{ JSON.stringify('Email: ' + ($('Webhook').item.json.body.email || 'none')) }}\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"bulleted_list_item\",\n      \"bulleted_list_item\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": {{ JSON.stringify('Category: ' + $('Webhook').item.json.body.category) }}\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"bulleted_list_item\",\n      \"bulleted_list_item\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": {{ JSON.stringify('Rating: ' + $('Webhook').item.json.body.stars + ' Stars') }}\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"bulleted_list_item\",\n      \"bulleted_list_item\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": {{ JSON.stringify('Platform: ' + $('Webhook').item.json.body.platform) }}\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"heading_2\",\n      \"heading_2\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": \"Message\"\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"paragraph\",\n      \"paragraph\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": {{ JSON.stringify($('Webhook').item.json.body.message) }}\n            }\n          }\n        ]\n      }\n    }\n  ]\n}"
+        "jsonBody": "={\n  \"children\": [\n    {\n      \"object\": \"block\",\n      \"type\": \"heading_1\",\n      \"heading_1\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": {{ JSON.stringify('Contact Message from ' + $('Webhook').item.json.body.name) }}\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"paragraph\",\n      \"paragraph\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": {{ JSON.stringify($('Webhook').item.json.body.message) }}\n            }\n          }\n        ]\n      }\n    }\n  ]\n}"
       },
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.1,
@@ -127,7 +123,7 @@
         "width": 300,
         "color": 6
       },
-      "id": "a2bc5eb1-d449-4485-b901-b090e7163d2a",
+      "id": "44c99a1c-cf59-4e5a-9f91-64a232d61311",
       "name": "Last Publish Info",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
@@ -176,9 +172,6 @@
     "executionOrder": "v1"
   },
   "active": true,
-  "meta": {
-    "templateCredsSetupCompleted": true
-  },
   "//": "Published on 2026-06-22 20:56:58 | Git: 1ca0e6f fix: dynamically adjust dropdowns and tooltips to prevent screen overflow",
   "description": "Published on 2026-06-22 20:18:24 | Git: 1ca0e6f fix: dynamically adjust dropdowns and tooltips to prevent screen overflow"
 }

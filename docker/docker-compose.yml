@@ -21,6 +21,8 @@ services:
     image: gotenberg/gotenberg:8
     container_name: gotenberg-dev
     restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:3000"
     environment:
       - GOTENBERG_CHROMIUM_DISABLE_JAVASCRIPT=true
       - GOTENBERG_ALLOW_LIST_ACCESS_LOCAL_FILES=false
