@@ -237,7 +237,7 @@ export function initPrint({
         display: block !important;
         width: 100% !important;
         height: auto !important;
-        background: #ffffff !important;
+        background: var(--resume-color-bg, #ffffff) !important;
       }
       .a4-sheet {
         width: 100% !important;
@@ -260,7 +260,7 @@ export function initPrint({
   </style>
 </head>
 <body>
-  <article class="${resumeOutputClass}" style="${resumeOutputStyle}">
+  <article id="resume-output" class="${resumeOutputClass}" style="${resumeOutputStyle}">
     ${resumeOutputHtml}
   </article>
 </body>
