@@ -116,6 +116,9 @@ To push all workflows from the `n8n/` directory into your local n8n instance:
 
 *Note: Whenever you run a push command (`--push` or `--push-all`), the script automatically appends a root-level `"//"` comment and a canvas sticky note node (`Last Publish Info`) containing the current timestamp and latest git commit hash. These changes are saved back to your local files before being pushed to n8n, ensuring they are version-controlled.*
 
+> [!NOTE]
+> **Workflow Tagging:** The n8n Public API does not support managing workflow tags programmatically (the API treats tag associations as read-only). Workflows pushed via this script will deploy successfully but will remain untagged in the UI. You can manually categorize them in the n8n dashboard interface. In our production environment, tags are automatically injected into n8n's SQLite database via a separate server-side script.
+
 ---
 
 ## 🔗 Jobby Project Links
