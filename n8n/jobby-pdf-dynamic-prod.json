@@ -1,9 +1,9 @@
 {
-  "//": "Published on 2026-06-22 20:56:58 | Git: 1ca0e6f fix: dynamically adjust dropdowns and tooltips to prevent screen overflow",
+  "//": "Published on 2026-06-22 22:35:04 | Git: ebfd771 fix: resolve Gotenberg PDF layout and print background mismatch",
   "updatedAt": "2026-06-03T11:51:05.014Z",
   "createdAt": "2026-05-29T09:56:13.800Z",
   "id": "dSX8vdBy3PnPdiOU",
-  "name": "Jobby - PDF - dyn",
+  "name": "jobby - pdf-dynamic - prod",
   "description": "Published on 2026-06-22 20:18:24 | Git: 1ca0e6f fix: dynamically adjust dropdowns and tooltips to prevent screen overflow",
   "active": true,
   "isArchived": false,
@@ -280,7 +280,7 @@
         "operation": "get",
         "dataTableId": {
           "__rl": true,
-          "value": "OtWoNuYUmoj7knoz",
+          "value": "={{ $env.JOBBY_DATA_TABLE_ID }}",
           "mode": "id"
         },
         "matchType": "allConditions",
@@ -307,7 +307,7 @@
         "operation": "get",
         "dataTableId": {
           "__rl": true,
-          "value": "OtWoNuYUmoj7knoz",
+          "value": "={{ $env.JOBBY_DATA_TABLE_ID }}",
           "mode": "id"
         },
         "matchType": "allConditions",
@@ -349,7 +349,7 @@
     },
     {
       "parameters": {
-        "content": "### Last Publish Info\n\nPublished on 2026-06-22 20:56:58 | Git: 1ca0e6f fix: dynamically adjust dropdowns and tooltips to prevent screen overflow",
+        "content": "### Last Publish Info\n\nPublished on 2026-06-22 22:35:04 | Git: ebfd771 fix: resolve Gotenberg PDF layout and print background mismatch",
         "height": 150,
         "width": 300,
         "color": 6
@@ -1187,7 +1187,7 @@
           "operation": "get",
           "dataTableId": {
             "__rl": true,
-            "value": "OtWoNuYUmoj7knoz",
+            "value": "={{ $env.JOBBY_DATA_TABLE_ID }}",
             "mode": "id"
           },
           "matchType": "allConditions",
@@ -1214,7 +1214,7 @@
           "operation": "get",
           "dataTableId": {
             "__rl": true,
-            "value": "OtWoNuYUmoj7knoz",
+            "value": "={{ $env.JOBBY_DATA_TABLE_ID }}",
             "mode": "id"
           },
           "matchType": "allConditions",

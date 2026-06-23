@@ -2,7 +2,7 @@
   "updatedAt": "2026-06-03T10:12:15.960Z",
   "createdAt": "2026-05-29T10:00:44.806Z",
   "id": "wfIyU3rWwTpk9cXk",
-  "name": "Jobby - sync conf",
+  "name": "jobby - sync-conf - prod",
   "description": "Published on 2026-06-22 20:18:24 | Git: 1ca0e6f fix: dynamically adjust dropdowns and tooltips to prevent screen overflow",
   "active": true,
   "isArchived": false,
@@ -49,7 +49,7 @@
         "operation": "upsert",
         "dataTableId": {
           "__rl": true,
-          "value": "OtWoNuYUmoj7knoz",
+          "value": "={{ $env.JOBBY_DATA_TABLE_ID }}",
           "mode": "id"
         },
         "matchType": "allConditions",
@@ -107,7 +107,7 @@
     },
     {
       "parameters": {
-        "content": "### Last Publish Info\n\nPublished on 2026-06-22 20:56:58 | Git: 1ca0e6f fix: dynamically adjust dropdowns and tooltips to prevent screen overflow",
+        "content": "### Last Publish Info\n\nPublished on 2026-06-22 22:35:04 | Git: ebfd771 fix: resolve Gotenberg PDF layout and print background mismatch",
         "height": 150,
         "width": 300,
         "color": 6
@@ -234,7 +234,7 @@
           "operation": "upsert",
           "dataTableId": {
             "__rl": true,
-            "value": "OtWoNuYUmoj7knoz",
+            "value": "={{ $env.JOBBY_DATA_TABLE_ID }}",
             "mode": "id"
           },
           "matchType": "allConditions",
@@ -330,5 +330,5 @@
       }
     ]
   },
-  "//": "Published on 2026-06-22 20:56:58 | Git: 1ca0e6f fix: dynamically adjust dropdowns and tooltips to prevent screen overflow"
+  "//": "Published on 2026-06-22 22:35:04 | Git: ebfd771 fix: resolve Gotenberg PDF layout and print background mismatch"
 }

@@ -1,5 +1,5 @@
 {
-  "name": "Jobby - Feedback to Notion",
+  "name": "jobby - feedback-to-notion - prod",
   "nodes": [
     {
       "parameters": {
@@ -23,8 +23,8 @@
         "operation": "create",
         "databaseId": {
           "__rl": true,
-          "value": "385ee932-db12-81f6-8256-e350b3d1b0f2",
-          "mode": "list"
+          "value": "={{ $env.JOBBY_FEEDBACK_DB_ID }}",
+          "mode": "id"
         },
         "propertiesUi": {
           "propertyValues": [
@@ -122,7 +122,7 @@
     },
     {
       "parameters": {
-        "content": "### Last Publish Info\n\nPublished on 2026-06-22 20:56:58 | Git: 1ca0e6f fix: dynamically adjust dropdowns and tooltips to prevent screen overflow",
+        "content": "### Last Publish Info\n\nPublished on 2026-06-22 22:35:04 | Git: ebfd771 fix: resolve Gotenberg PDF layout and print background mismatch",
         "height": 150,
         "width": 300,
         "color": 6
@@ -179,6 +179,6 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "//": "Published on 2026-06-22 20:56:58 | Git: 1ca0e6f fix: dynamically adjust dropdowns and tooltips to prevent screen overflow",
+  "//": "Published on 2026-06-22 22:35:04 | Git: ebfd771 fix: resolve Gotenberg PDF layout and print background mismatch",
   "description": "Published on 2026-06-22 20:18:24 | Git: 1ca0e6f fix: dynamically adjust dropdowns and tooltips to prevent screen overflow"
 }

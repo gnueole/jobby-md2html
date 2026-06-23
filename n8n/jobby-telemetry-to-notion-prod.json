@@ -1,5 +1,5 @@
 {
-  "name": "Jobby - Telemetry to Notion",
+  "name": "jobby - telemetry-to-notion - prod",
   "nodes": [
     {
       "parameters": {
@@ -25,8 +25,8 @@
         "resource": "databasePage",
         "databaseId": {
           "__rl": true,
-          "value": "385ee932-db12-80ee-8794-d789554478b8",
-          "mode": "list"
+          "value": "={{ $env.JOBBY_TELEMETRY_DB_ID }}",
+          "mode": "id"
         },
         "title": "Session ID",
         "simple": false,
@@ -144,7 +144,7 @@
     },
     {
       "parameters": {
-        "content": "### Last Publish Info\n\nPublished on 2026-06-22 20:56:58 | Git: 1ca0e6f fix: dynamically adjust dropdowns and tooltips to prevent screen overflow",
+        "content": "### Last Publish Info\n\nPublished on 2026-06-22 22:35:04 | Git: ebfd771 fix: resolve Gotenberg PDF layout and print background mismatch",
         "height": 150,
         "width": 300,
         "color": 6
@@ -179,6 +179,6 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "//": "Published on 2026-06-22 20:56:58 | Git: 1ca0e6f fix: dynamically adjust dropdowns and tooltips to prevent screen overflow",
+  "//": "Published on 2026-06-22 22:35:04 | Git: ebfd771 fix: resolve Gotenberg PDF layout and print background mismatch",
   "description": "Published on 2026-06-22 20:18:24 | Git: 1ca0e6f fix: dynamically adjust dropdowns and tooltips to prevent screen overflow"
 }
