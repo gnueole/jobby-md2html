@@ -116,10 +116,7 @@ deploy:
 	@$(MAKE) --no-print-directory _deploy SERVICES="jobby-editor"
 
 deploy-infra:
-	@$(MAKE) --no-print-directory _deploy SERVICES="traefik mcp-notion gotenberg n8n vector"
-
-deploy-n8n:
-	@$(MAKE) --no-print-directory _deploy SERVICES="n8n"
+	@$(MAKE) --no-print-directory _deploy SERVICES="mcp-notion gotenberg"
 
 deploy-all:
 	@$(MAKE) --no-print-directory _deploy SERVICES=""

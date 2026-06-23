@@ -1,65 +1,6 @@
-name: n8n-eole-prod
+name: jobby-prod
 
 services:
-  # Initialisation des droits pour le certificat SSL (indispensable après un dump/restore)
-  traefik-acme-init:
-    image: alpine:3.20
-    container_name: traefik-acme-init
-    command: >
-      sh -lc "mkdir -p /letsencrypt &&
-              touch /letsencrypt/acme.json &&
-              chmod 600 /letsencrypt/acme.json"
-    volumes:
-      - traefik_letsencrypt:/letsencrypt
-    restart: "no"
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
-
-  # Le "Videur" de ton infrastructure
-  traefik:
-    image: traefik:latest
-    container_name: traefik-n8n
-    restart: unless-stopped
-    depends_on:
-      - traefik-acme-init
-    ports:
-      - "80:80"
-      - "443:443"
-    command:
-      - --log.level=INFO
-      - --providers.docker=true
-      - --providers.docker.exposedbydefault=false
-      - --providers.docker.endpoint=unix:///var/run/docker.sock
-      - --entrypoints.web.address=:80
-      - --entrypoints.websecure.address=:443
-      - --entrypoints.web.http.redirections.entrypoint.to=websecure
-      - --entrypoints.web.http.redirections.entrypoint.scheme=https
-      - --certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL}
-      - --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
-      - --certificatesresolvers.letsencrypt.acme.httpchallenge=true
-      - --certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - traefik_letsencrypt:/letsencrypt
-    networks:
-      default:
-        aliases:
-          - n8n.eole.me
-          - cv.eole.me
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.50'
-          memory: 256M
-
   # Ton nouveau serveur MCP pour Notion
   # Note : n8n l'appellera via http://mcp-notion:3000
   mcp-notion:
@@ -100,51 +41,11 @@ services:
           cpus: '1.0'
           memory: 512M
 
-  # n8n en version 2.25.2 avec support IA et MCP
-  n8n:
-    image: docker.n8n.io/n8nio/n8n:2.25.2
-    container_name: n8n-server
-    restart: unless-stopped
-    depends_on:
-      - traefik
-      - mcp-notion
-      - gotenberg
-    environment:
-      - TZ=${TZ}
-      - N8N_HOST=${DOMAIN_NAME}
-      - N8N_PROTOCOL=https
-      - WEBHOOK_URL=https://${DOMAIN_NAME}/
-      - N8N_SECURE_COOKIE=true
-      - NODE_OPTIONS=--max-old-space-size=2048
-      - N8N_TRUST_PROXY=true
-      - N8N_PROXY_HOPS=1
-    volumes:
-      - n8n_data:/home/node/.n8n
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.n8n.rule=Host(`${DOMAIN_NAME}`)
-      - traefik.http.routers.n8n.entrypoints=websecure
-      - traefik.http.routers.n8n.tls=true
-      - traefik.http.routers.n8n.tls.certresolver=letsencrypt
-      - traefik.http.services.n8n.loadbalancer.server.port=5678
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
-    deploy:
-      resources:
-        limits:
-          cpus: '1.50'
-          memory: 2048M
-
   # Jobby ATS Markdown Resume Editor
   jobby-editor:
     image: ghcr.io/gnueole/jobby-md2html:latest
     container_name: jobby-editor
     restart: unless-stopped
-    depends_on:
-      - traefik
     environment:
       - PORT=3000
       - NODE_ENV=production
@@ -156,20 +57,25 @@ services:
       - VECTOR_TELEMETRY_URL=${VECTOR_TELEMETRY_URL:-}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.jobby.rule=Host(`jobby.eole.me`)"
+      - "traefik.http.routers.jobby.rule=Host(`${JOBBY_SUBDOMAIN:-jobby}.${DOMAIN_NAME}`)"
       - "traefik.http.routers.jobby.entrypoints=websecure"
       - "traefik.http.routers.jobby.tls=true"
       - "traefik.http.routers.jobby.tls.certresolver=letsencrypt"
       - "traefik.http.services.jobby.loadbalancer.server.port=3000"
-      # Redirection from cv.eole.me -> jobby.eole.me
-      - "traefik.http.routers.jobby-redirect.rule=Host(`cv.eole.me`)"
+      
+      # Redirection from cv.yourdomain.com -> jobby.yourdomain.com
+      - "traefik.http.routers.jobby-redirect.rule=Host(`${JOBBY_REDIRECT_SUBDOMAIN:-cv}.${DOMAIN_NAME}`)"
       - "traefik.http.routers.jobby-redirect.entrypoints=websecure"
       - "traefik.http.routers.jobby-redirect.tls=true"
       - "traefik.http.routers.jobby-redirect.tls.certresolver=letsencrypt"
       - "traefik.http.routers.jobby-redirect.middlewares=cv-to-jobby-redirect"
-      - "traefik.http.middlewares.cv-to-jobby-redirect.redirectregex.regex=^https?://cv.eole.me/(.*)"
-      - "traefik.http.middlewares.cv-to-jobby-redirect.redirectregex.replacement=https://jobby.eole.me/$$1"
+      - "traefik.http.middlewares.cv-to-jobby-redirect.redirectregex.regex=^https?://${JOBBY_REDIRECT_SUBDOMAIN:-cv}.${DOMAIN_NAME}/(.*)"
+      - "traefik.http.middlewares.cv-to-jobby-redirect.redirectregex.replacement=https://${JOBBY_SUBDOMAIN:-jobby}.${DOMAIN_NAME}/$$1"
       - "traefik.http.middlewares.cv-to-jobby-redirect.redirectregex.permanent=true"
+
+      # Vector Log Ingestion
+      - "vector.dev/collect=true"
+      - "vector.dev/dataset=${AXIOM_DATASET:-jobby}"
     logging:
       driver: "json-file"
       options:
@@ -181,29 +87,7 @@ services:
           cpus: '0.25'
           memory: 256M
 
-  # Vector Log Shipper to Axiom
-  vector:
-    image: ghcr.io/gnueole/jobby-md2html-vector:latest
-    container_name: vector
-    restart: unless-stopped
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    environment:
-      - AXIOM_TOKEN=${AXIOM_TOKEN}
-      - AXIOM_DATASET=${AXIOM_DATASET}
-      - AXIOM_TELEMETRY_DATASET=${AXIOM_TELEMETRY_DATASET:-jobby-telemetry}
-      - COMPOSE_PROJECT_NAME=n8n-eole-prod
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
-    deploy:
-      resources:
-        limits:
-          cpus: '0.25'
-          memory: 128M
-
-volumes:
-  traefik_letsencrypt:
-  n8n_data:
+networks:
+  default:
+    name: ${DOCKER_NETWORK_NAME:-eole_shared_network}
+    external: ${DOCKER_NETWORK_EXTERNAL:-true}
