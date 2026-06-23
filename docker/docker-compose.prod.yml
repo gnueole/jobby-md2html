@@ -57,20 +57,20 @@ services:
       - VECTOR_TELEMETRY_URL=${VECTOR_TELEMETRY_URL:-}
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.jobby.rule=Host(`${JOBBY_SUBDOMAIN:-jobby}.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.jobby.rule=Host(`${JOBBY_SUBDOMAIN:-jobby}.${ROOT_DOMAIN:-eole.me}`)"
       - "traefik.http.routers.jobby.entrypoints=websecure"
       - "traefik.http.routers.jobby.tls=true"
       - "traefik.http.routers.jobby.tls.certresolver=letsencrypt"
       - "traefik.http.services.jobby.loadbalancer.server.port=3000"
       
       # Redirection from cv.yourdomain.com -> jobby.yourdomain.com
-      - "traefik.http.routers.jobby-redirect.rule=Host(`${JOBBY_REDIRECT_SUBDOMAIN:-cv}.${DOMAIN_NAME}`)"
+      - "traefik.http.routers.jobby-redirect.rule=Host(`${JOBBY_REDIRECT_SUBDOMAIN:-cv}.${ROOT_DOMAIN:-eole.me}`)"
       - "traefik.http.routers.jobby-redirect.entrypoints=websecure"
       - "traefik.http.routers.jobby-redirect.tls=true"
       - "traefik.http.routers.jobby-redirect.tls.certresolver=letsencrypt"
       - "traefik.http.routers.jobby-redirect.middlewares=cv-to-jobby-redirect"
-      - "traefik.http.middlewares.cv-to-jobby-redirect.redirectregex.regex=^https?://${JOBBY_REDIRECT_SUBDOMAIN:-cv}.${DOMAIN_NAME}/(.*)"
-      - "traefik.http.middlewares.cv-to-jobby-redirect.redirectregex.replacement=https://${JOBBY_SUBDOMAIN:-jobby}.${DOMAIN_NAME}/$$1"
+      - "traefik.http.middlewares.cv-to-jobby-redirect.redirectregex.regex=^https?://${JOBBY_REDIRECT_SUBDOMAIN:-cv}.${ROOT_DOMAIN:-eole.me}/(.*)"
+      - "traefik.http.middlewares.cv-to-jobby-redirect.redirectregex.replacement=https://${JOBBY_SUBDOMAIN:-jobby}.${ROOT_DOMAIN:-eole.me}/$$1"
       - "traefik.http.middlewares.cv-to-jobby-redirect.redirectregex.permanent=true"
 
       # Vector Log Ingestion
