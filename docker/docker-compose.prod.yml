@@ -155,12 +155,21 @@ services:
       - N8N_FEEDBACK_WEBHOOK_URL=${N8N_FEEDBACK_WEBHOOK_URL:-}
       - VECTOR_TELEMETRY_URL=${VECTOR_TELEMETRY_URL:-}
     labels:
-      - traefik.enable=true
-      - traefik.http.routers.jobby.rule=Host(`cv.eole.me`)
-      - traefik.http.routers.jobby.entrypoints=websecure
-      - traefik.http.routers.jobby.tls=true
-      - traefik.http.routers.jobby.tls.certresolver=letsencrypt
-      - traefik.http.services.jobby.loadbalancer.server.port=3000
+      - "traefik.enable=true"
+      - "traefik.http.routers.jobby.rule=Host(`jobby.eole.me`)"
+      - "traefik.http.routers.jobby.entrypoints=websecure"
+      - "traefik.http.routers.jobby.tls=true"
+      - "traefik.http.routers.jobby.tls.certresolver=letsencrypt"
+      - "traefik.http.services.jobby.loadbalancer.server.port=3000"
+      # Redirection from cv.eole.me -> jobby.eole.me
+      - "traefik.http.routers.jobby-redirect.rule=Host(`cv.eole.me`)"
+      - "traefik.http.routers.jobby-redirect.entrypoints=websecure"
+      - "traefik.http.routers.jobby-redirect.tls=true"
+      - "traefik.http.routers.jobby-redirect.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.jobby-redirect.middlewares=cv-to-jobby-redirect"
+      - "traefik.http.middlewares.cv-to-jobby-redirect.redirectregex.regex=^https?://cv.eole.me/(.*)"
+      - "traefik.http.middlewares.cv-to-jobby-redirect.redirectregex.replacement=https://jobby.eole.me/$$1"
+      - "traefik.http.middlewares.cv-to-jobby-redirect.redirectregex.permanent=true"
     logging:
       driver: "json-file"
       options:
