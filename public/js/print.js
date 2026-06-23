@@ -52,7 +52,8 @@ export function updatePageBreaks(resumeOutput, styleConfig) {
     const classesToAdd = formatClasses[format] || ['format-a4'];
     resumeOutput.classList.add(...classesToAdd);
 
-    if (!showPageBreaks) return;
+    // Reset min-height first to get accurate scrollHeight of content
+    resumeOutput.style.minHeight = '';
 
     const sheetHeight = resumeOutput.scrollHeight;
     let pageHeightPx = 0;
@@ -73,6 +74,15 @@ export function updatePageBreaks(resumeOutput, styleConfig) {
     if (pageHeightPx <= 0) return;
 
     const pagesCount = Math.ceil(sheetHeight / pageHeightPx);
+    
+    // Set min-height to ensure columns/background fill the last page exactly
+    const unitHeight = formatHeights[format] || '297mm';
+    const heightValue = parseFloat(unitHeight);
+    const heightUnit = unitHeight.replace(/[0-9.]/g, '');
+    resumeOutput.style.minHeight = `${pagesCount * heightValue}${heightUnit}`;
+
+    if (!showPageBreaks) return;
+
     for (let i = 1; i < pagesCount; i++) {
         const breakEl = document.createElement('div');
         breakEl.className = 'page-break-indicator';
@@ -185,10 +195,19 @@ export function initPrint({
         
         const updatePrintBtnStyle = () => {
             if (btnPrint) {
+                const btnTextSpan = btnPrint.querySelector('span[data-i18n]');
                 if (gotenbergToggle.checked) {
                     btnPrint.classList.add('gotenberg-active');
+                    if (btnTextSpan) {
+                        btnTextSpan.setAttribute('data-i18n', 'header.download_btn');
+                        btnTextSpan.textContent = t('header.download_btn');
+                    }
                 } else {
                     btnPrint.classList.remove('gotenberg-active');
+                    if (btnTextSpan) {
+                        btnTextSpan.setAttribute('data-i18n', 'header.print_btn');
+                        btnTextSpan.textContent = t('header.print_btn');
+                    }
                 }
             }
         };
@@ -215,8 +234,19 @@ export function initPrint({
         const templatesCss = getTemplatesCssText ? getTemplatesCssText() : "";
         const resumeOutputClass = resumeOutput.className;
         const resumeOutputStyle = resumeOutput.style.cssText;
-        
         const format = (styleConfig && styleConfig.pageFormat) ? styleConfig.pageFormat : (localStorage.getItem('page_format') || 'A4');
+        const pageSizes = {
+            'letter': 'letter',
+            'legal': 'legal',
+            'a5': 'A5'
+        };
+        const pageSize = pageSizes[format] || 'A4';
+        const formatWidths = {
+            'letter': '8.5in',
+            'legal': '8.5in',
+            'a5': '148mm'
+        };
+        const pageWidth = formatWidths[format] || '210mm';
 
         const standaloneHtml = `<!DOCTYPE html>
 <html lang="en">
@@ -233,15 +263,48 @@ export function initPrint({
       display: none !important;
     }
     @media print {
-      body {
-        display: block !important;
+      @page {
+        size: ${pageSize} portrait;
+        margin: 0 !important;
+      }
+      html, body {
         width: 100% !important;
         height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      body {
+        display: block !important;
         background: var(--resume-color-bg, #ffffff) !important;
       }
+      .a4-sheet.format-a4,
       .a4-sheet {
-        width: 100% !important;
+        width: 210mm !important;
+      }
+      .a4-sheet.format-letter,
+      .a4-sheet.letter-format {
+        width: 8.5in !important;
+      }
+      .a4-sheet.format-legal {
+        width: 8.5in !important;
+      }
+      .a4-sheet.format-a5 {
+        width: 148mm !important;
+      }
+      .a4-sheet.format-a4,
+      .a4-sheet.format-letter,
+      .a4-sheet.letter-format,
+      .a4-sheet.format-legal,
+      .a4-sheet.format-a5,
+      .a4-sheet {
         margin: 0 !important;
+        box-shadow: none !important;
+      }
+      .a4-sheet.has-gradient .resume-sidebar-col,
+      .a4-sheet.has-shadow .resume-sidebar-col,
+      .a4-sheet.has-border .resume-sidebar-col,
+      .a4-sheet .resume-sidebar-col {
+        background: transparent !important;
         box-shadow: none !important;
       }
     }
@@ -259,14 +322,18 @@ export function initPrint({
     }
   </style>
 </head>
-<body>
+<body class="${document.body.className}">
   <article id="resume-output" class="${resumeOutputClass}" style="${resumeOutputStyle}">
     ${resumeOutputHtml}
   </article>
 </body>
 </html>`;
 
-        showToast(t('toasts.gotenberg_pdf_generating') || "Generating PDF via Gotenberg...");
+        showToast({
+            type: 'print',
+            icon: '🖨️',
+            message: t('toasts.gotenberg_pdf_generating') || "Generating PDF via Gotenberg..."
+        });
 
         fetch('/api/pdf', {
             method: 'POST',
@@ -293,7 +360,11 @@ export function initPrint({
             a.download = `${filename}.pdf`;
             a.click();
             URL.revokeObjectURL(url);
-            showToast(t('toasts.gotenberg_pdf_success') || "PDF download started!");
+            showToast({
+                type: 'success',
+                icon: '📥',
+                message: t('toasts.gotenberg_pdf_success') || "PDF download started!"
+            });
         })
         .catch(err => {
             console.error("Gotenberg PDF generation failed:", err);

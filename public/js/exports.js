@@ -11,6 +11,7 @@ export function initExports({
     btnCopyCss,
     btnCopyHtml,
     btnDownloadMd,
+    resumeOutput,
     getStyleConfig,
     getTemplatesCssText,
     getResumeOutputHtml,
@@ -23,6 +24,23 @@ export function initExports({
             const templatesCssText = getTemplatesCssText();
             const resumeOutputHtml = getResumeOutputHtml();
             const filename = getCurrentResumeTitle();
+
+            const format = styleConfig.pageFormat || 'A4';
+            const pageSizes = {
+                'letter': 'letter',
+                'legal': 'legal',
+                'a5': 'A5'
+            };
+            const pageSize = pageSizes[format] || 'A4';
+            const formatWidths = {
+                'letter': '8.5in',
+                'legal': '8.5in',
+                'a5': '148mm'
+            };
+            const pageWidth = formatWidths[format] || '210mm';
+
+            const resumeOutputClass = resumeOutput ? resumeOutput.className : "a4-sheet";
+            const resumeOutputStyle = resumeOutput ? resumeOutput.style.cssText : "";
 
             const inlineVariables = `
 :root {
@@ -54,15 +72,48 @@ export function initExports({
     ${inlineVariables}
     ${templatesCssText}
     @media print {
-      body {
-        display: block !important;
+      @page {
+        size: ${pageSize} portrait;
+        margin: 0 !important;
+      }
+      html, body {
         width: 100% !important;
         height: auto !important;
-        background: #ffffff !important;
-      }
-      .a4-sheet {
-        width: 100% !important;
         margin: 0 !important;
+        padding: 0 !important;
+      }
+      body {
+        display: block !important;
+        background: var(--resume-color-bg, #ffffff) !important;
+      }
+      .a4-sheet.format-a4,
+      .a4-sheet {
+        width: 210mm !important;
+      }
+      .a4-sheet.format-letter,
+      .a4-sheet.letter-format {
+        width: 8.5in !important;
+      }
+      .a4-sheet.format-legal {
+        width: 8.5in !important;
+      }
+      .a4-sheet.format-a5 {
+        width: 148mm !important;
+      }
+      .a4-sheet.format-a4,
+      .a4-sheet.format-letter,
+      .a4-sheet.letter-format,
+      .a4-sheet.format-legal,
+      .a4-sheet.format-a5,
+      .a4-sheet {
+        margin: 0 !important;
+        box-shadow: none !important;
+      }
+      .a4-sheet.has-gradient .resume-sidebar-col,
+      .a4-sheet.has-shadow .resume-sidebar-col,
+      .a4-sheet.has-border .resume-sidebar-col,
+      .a4-sheet .resume-sidebar-col {
+        background: transparent !important;
         box-shadow: none !important;
       }
     }
@@ -80,8 +131,8 @@ export function initExports({
     }
   </style>
 </head>
-<body>
-  <article class="a4-sheet" id="resume-output">
+<body class="${document.body.className}">
+  <article class="${resumeOutputClass}" id="resume-output" style="${resumeOutputStyle}">
     ${resumeOutputHtml}
   </article>
 </body>

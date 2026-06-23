@@ -10,7 +10,8 @@
     "feedback_tooltip": "Send feedback or report bugs",
     "feedback_btn": "Feedback",
     "print_tooltip": "Print to PDF (Ctrl+P)",
-    "print_btn": "Print / PDF"
+    "print_btn": "Print / PDF",
+    "download_btn": "Download CV"
   },
   "editor": {
     "indicator": "MARKDOWN",
@@ -138,7 +139,7 @@
     "option_layout_1col": "1 Column (Standard)",
     "option_layout_2col": "2 Columns (Modern)",
     "label_show_version": "Display Print Version",
-    "label_show_version_tooltip": "Display the version increment at the bottom of the document",
+    "label_show_version_tooltip": "Display the version increment at the bottom of the document. This helps you track revisions, identify which resume variant was sent to which recruiter, and prevent mix-ups during interview cycles.",
     "label_gotenberg_pdf": "Gotenberg PDF Download",
     "label_gotenberg_pdf_tooltip": "Directly compile & download PDF using the local Gotenberg service instead of opening the manual browser print window",
     "label_sidebar_position": "Sidebar Position",
@@ -203,6 +204,7 @@
     "section_disclaimer": "⚠️ Content Disclaimer",
     "disclaimer_text": "The creator of Jobby explicitly disclaims all liability and responsibility for any user-generated content, resumes, or document outputs created using this editor. Users are solely responsible for the correctness, appropriateness, and legality of the files they compile.",
     "github_btn": "View on GitHub",
+    "about_me_btn": "About me",
     "inspired_by": "Inspired by",
     "help_banner_html": "💡 Need help? Check our <a href=\"#\" id=\"link-to-help\" >Help Guide & Markdown Syntax</a>."
   },

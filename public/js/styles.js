@@ -7,6 +7,17 @@ export function applyStyles(styleConfig) {
     const resumeOutput = document.getElementById('resume-output');
     if (!resumeOutput) return;
 
+    // Update body classes for print layout gradients
+    document.body.classList.remove('layout-2-column', 'sidebar-left', 'sidebar-right');
+    if (styleConfig.layoutMode === '2-column') {
+        document.body.classList.add('layout-2-column');
+        if (styleConfig.sidebarPosition === 'left') {
+            document.body.classList.add('sidebar-left');
+        } else {
+            document.body.classList.add('sidebar-right');
+        }
+    }
+
     // Apply cosmetic classes
     if (styleConfig.cosmeticShadow !== false) {
         resumeOutput.classList.add('has-shadow');
@@ -135,13 +146,44 @@ export function applyStyles(styleConfig) {
         'a5': 'A5'
     };
     const pageSize = pageSizes[format] || 'A4';
-    
+    const formatWidths = {
+        'letter': '8.5in',
+        'legal': '8.5in',
+        'a5': '148mm'
+    };
+    const pageWidth = formatWidths[format] || '210mm';
+
     printPageStyle.textContent = `
         @media print {
             @page {
                 size: ${pageSize} portrait;
                 margin: 0 !important;
             }
+            html, body {
+                width: 100% !important;
+                height: auto !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            .a4-sheet.format-a4,
+            .a4-sheet {
+                width: 210mm !important;
+            }
+            .a4-sheet.format-letter,
+            .a4-sheet.letter-format {
+                width: 8.5in !important;
+            }
+            .a4-sheet.format-legal {
+                width: 8.5in !important;
+            }
+            .a4-sheet.format-a5 {
+                width: 148mm !important;
+            }
+            .a4-sheet.format-a4,
+            .a4-sheet.format-letter,
+            .a4-sheet.letter-format,
+            .a4-sheet.format-legal,
+            .a4-sheet.format-a5,
             .a4-sheet {
                 padding-top: ${styleConfig.marginY}px !important;
                 padding-bottom: ${styleConfig.marginY}px !important;
@@ -149,9 +191,6 @@ export function applyStyles(styleConfig) {
                 padding-right: ${styleConfig.marginX}px !important;
                 box-shadow: none !important;
                 border-radius: 0 !important;
-                width: 100% !important;
-                min-height: 0 !important;
-                height: auto !important;
             }
         }
     `;

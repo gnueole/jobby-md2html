@@ -10,7 +10,8 @@
     "feedback_tooltip": "Feedback senden oder Fehler melden",
     "feedback_btn": "Feedback",
     "print_tooltip": "Als PDF drucken (Ctrl+P)",
-    "print_btn": "Drucken / PDF"
+    "print_btn": "Drucken / PDF",
+    "download_btn": "CV herunterladen"
   },
   "editor": {
     "indicator": "MARKDOWN",
@@ -138,7 +139,7 @@
     "option_layout_1col": "1 Spalte (Standard)",
     "option_layout_2col": "2 Spalten (Modern)",
     "label_show_version": "Druckversion anzeigen",
-    "label_show_version_tooltip": "Versionsnummer unten auf dem Dokument anzeigen",
+    "label_show_version_tooltip": "Zeigt die Versionsnummer unten im Dokument an. Dies hilft Ihnen, Revisionen zu verfolgen, festzustellen, welche Lebenslauf-Variante an welchen Personalverantwortlichen gesendet wurde, und Verwechslungen während des Bewerbungsprozesses zu vermeiden.",
     "label_gotenberg_pdf": "Gotenberg PDF Herunterladen",
     "label_gotenberg_pdf_tooltip": "PDF direkt über den lokalen Gotenberg-Dienst kompilieren & herunterladen, anstatt das Druckerfenster des Browsers zu öffnen",
     "label_sidebar_position": "Position der Seitenspalte",
@@ -203,6 +204,7 @@
     "section_disclaimer": "⚠️ Haftungsausschluss",
     "disclaimer_text": "Der Ersteller von Jobby schließt jegliche Haftung für nutzergenerierte Inhalte, Lebensläufe oder Dokumentenausgaben aus, die mit diesem Editor erstellt wurden. Nutzer tragen die alleinige Verantwortung für die Richtigkeit, Angemessenheit und Rechtmäßigkeit der von ihnen erstellten Dateien.",
     "github_btn": "Auf GitHub ansehen",
+    "about_me_btn": "Über mich",
     "inspired_by": "Inspiriert durch",
     "help_banner_html": "💡 Brauchen Sie Hilfe? Lesen Sie unsere <a href=\"#\" id=\"link-to-help\" >Hilfe & Markdown Syntax-Anleitung</a>."
   },

@@ -9,6 +9,8 @@
 
 /* The A4 Canvas Sheet Simulator (Screen-only) */
 .a4-sheet {
+    display: flex;
+    flex-direction: column;
     background-color: var(--resume-color-bg, #ffffff);
     color: var(--resume-color-body, #334155);
     font-family: var(--resume-font-family, 'Raleway', sans-serif);
@@ -67,6 +69,7 @@
     gap: 20px;
     align-items: stretch;
     margin-top: 16px;
+    flex-grow: 1;
 }
 
 .resume-columns.sidebar-left {
@@ -299,7 +302,7 @@
 
 /* Ensure no page breaks inside job details or blocks in print */
 #resume-output p, 
-#resume-output ul, 
+#resume-output li, 
 #resume-output h2,
 #resume-output h3 {
     page-break-inside: avoid;
@@ -327,6 +330,14 @@
         print-color-adjust: exact !important;
     }
     
+    html, body {
+        height: auto !important;
+        overflow: visible !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
     /* Let HTML padding handle the page margins for customizer control */
     @page {
         size: A4 portrait;
@@ -335,22 +346,25 @@
 
     /* Hide entire builder UI */
     body {
-        background: #ffffff !important;
+        background: var(--resume-color-bg, #ffffff) !important;
         color: #000000 !important;
         font-size: var(--resume-font-size, 12px) !important;
-        height: auto !important;
-        width: auto !important;
-        overflow: visible !important;
     }
+    
+
 
     .app-header, 
     .panel:not(.preview-panel),
     .panel-header,
     .preview-controls,
     .toast,
+    .toast-container,
+    .jobby-tooltip,
+    .cursor-radar,
     .folded-controls-dock,
     .floating-unfold-btn,
-    .modal-overlay {
+    .modal-overlay,
+    .resize-handle {
         display: none !important;
     }
 
@@ -359,6 +373,8 @@
         height: auto !important;
         width: 100% !important;
         background: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
 
     .app-main {
@@ -366,6 +382,8 @@
         height: auto !important;
         overflow: visible !important;
         background: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
 
     .preview-panel {
@@ -375,10 +393,13 @@
         border: none !important;
         background: none !important;
         overflow: visible !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
 
     .preview-canvas-wrapper {
         padding: 0 !important;
+        margin: 0 !important;
         overflow: visible !important;
         display: block !important;
         background: none !important;
@@ -389,16 +410,44 @@
         width: 100% !important;
         height: auto !important;
         display: block !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
 
+    .a4-sheet.format-a4,
     .a4-sheet {
+        width: 210mm !important;
+    }
+    .a4-sheet.format-letter,
+    .a4-sheet.letter-format {
+        width: 8.5in !important;
+    }
+    .a4-sheet.format-legal {
+        width: 8.5in !important;
+    }
+    .a4-sheet.format-a5 {
+        width: 148mm !important;
+    }
+    .a4-sheet.format-a4,
+    .a4-sheet.format-letter,
+    .a4-sheet.letter-format,
+    .a4-sheet.format-legal,
+    .a4-sheet.format-a5,
+    .a4-sheet {
+        display: block !important;
         box-shadow: none !important;
         border-radius: 0 !important;
         padding: var(--resume-margin-y, 25px) var(--resume-margin-x, 30px) !important;
-        width: 100% !important;
-        min-height: 0 !important;
         background: var(--resume-color-bg, #ffffff) !important;
         color: var(--resume-color-body, #334155) !important;
+    }
+    
+    body.layout-2-column.sidebar-right .a4-sheet {
+        background: linear-gradient(to right, var(--resume-color-bg, #ffffff) var(--column-split-main, 58%), var(--resume-sidebar-bg, #2d3748) var(--column-split-main, 58%)) !important;
+    }
+    
+    body.layout-2-column.sidebar-left .a4-sheet {
+        background: linear-gradient(to right, var(--resume-sidebar-bg, #2d3748) var(--column-split-sidebar, 42%), var(--resume-color-bg, #ffffff) var(--column-split-sidebar, 42%)) !important;
     }
 
     /* Print layout overrides for columns to prevent Chrome CSS Grid splitting bugs */
@@ -414,6 +463,14 @@
         width: calc(var(--column-split-main, 58%) - 2%) !important;
         flex-shrink: 0 !important;
     }
+    .a4-sheet.has-gradient .resume-sidebar-col,
+    .a4-sheet.has-shadow .resume-sidebar-col,
+    .a4-sheet.has-border .resume-sidebar-col,
+    .a4-sheet .resume-sidebar-col {
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+
     .resume-sidebar-col {
         width: calc(var(--column-split-sidebar, 42%) - 2%) !important;
         flex-shrink: 0 !important;

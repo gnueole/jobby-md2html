@@ -85,6 +85,17 @@ async function initializeJobby() {
     await loadLocale(currentLocale);
     translateDOM();
     initTooltips();
+
+    // --- Initialize Foldable Design Sections ---
+    const controlGroups = document.querySelectorAll('#controls-container .control-group');
+    controlGroups.forEach(group => {
+        const heading = group.querySelector('h3');
+        if (heading) {
+            heading.addEventListener('click', () => {
+                group.classList.toggle('folded');
+            });
+        }
+    });
     
     // --- Initialize Editor Font Size ---
     let currentFontSize = parseFloat(localStorage.getItem('jobby_editor_font_size')) || 12.5;
@@ -1930,13 +1941,16 @@ async function initializeJobby() {
             const urlKey = isDev ? 'dev_webhook_url' : 'prod_webhook_url';
             const tokenKey = isDev ? 'dev_webhook_token' : 'prod_webhook_token';
 
-            const url = localStorage.getItem(urlKey) || '';
+            let url = localStorage.getItem(urlKey) || '';
             const token = localStorage.getItem(tokenKey) || '';
 
             if (!url) {
                 showToast("Please configure your Webhook URL in Developer Tools first!");
                 return;
             }
+
+            // Dynamically swap the webhook path from cv-factory to jobby-sync
+            url = url.replace(/\/cv-factory\/?$/, '/jobby-sync');
 
             const payload = {
                 config: styleConfig,
@@ -1979,6 +1993,7 @@ async function initializeJobby() {
         btnCopyCss,
         btnCopyHtml,
         btnDownloadMd,
+        resumeOutput,
         getStyleConfig: () => styleConfig,
         getTemplatesCssText: () => templatesCssText,
         getResumeOutputHtml: () => resumeOutput.innerHTML,

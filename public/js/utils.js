@@ -1,25 +1,30 @@
 import { t, currentLocale } from './i18n.js';
 
 const defaultTitles = {
-    en: { success: "Success", error: "Error", warning: "Warning", info: "Info", welcome: "Welcome", easter_egg: "Secret Found!" },
-    fr: { success: "Succès", error: "Erreur", warning: "Avertissement", info: "Info", welcome: "Bienvenue", easter_egg: "Secret Trouvé !" },
-    cs: { success: "Úspěch", error: "Chyba", warning: "Varování", info: "Info", welcome: "Vítejte", easter_egg: "Tajemství nalezeno!" },
-    es: { success: "Éxito", error: "Error", warning: "Advertencia", info: "Info", welcome: "Bienvenido", easter_egg: "¡Secreto Encontrado!" },
-    it: { success: "Successo", error: "Errore", warning: "Attenzione", info: "Info", welcome: "Benvenuto", easter_egg: "Segreto Trovato!" },
-    de: { success: "Erfolgreich", error: "Fehler", warning: "Warnung", info: "Info", welcome: "Willkommen", easter_egg: "Geheimnis gefunden!" },
-    ro: { success: "Succes", error: "Eroare", warning: "Avertisment", info: "Info", welcome: "Bun venit", easter_egg: "Secret Găsit!" }
+    en: { success: "Success", error: "Error", warning: "Warning", info: "Info", welcome: "Welcome", easter_egg: "Secret Found!", print: "Print" },
+    fr: { success: "Succès", error: "Erreur", warning: "Avertissement", info: "Info", welcome: "Bienvenue", easter_egg: "Secret Trouvé !", print: "Impression" },
+    cs: { success: "Úspěch", error: "Chyba", warning: "Varování", info: "Info", welcome: "Vítejte", easter_egg: "Tajemství nalezeno!", print: "Tisk" },
+    es: { success: "Éxito", error: "Error", warning: "Advertencia", info: "Info", welcome: "Bienvenido", easter_egg: "¡Secreto Encontrado!", print: "Impresión" },
+    it: { success: "Successo", error: "Errore", warning: "Attenzione", info: "Info", welcome: "Benvenuto", easter_egg: "Segreto Trovato!", print: "Stampa" },
+    de: { success: "Erfolgreich", error: "Fehler", warning: "Warnung", info: "Info", welcome: "Willkommen", easter_egg: "Geheimnis gefunden!", print: "Drucken" },
+    ro: { success: "Succes", error: "Eroare", warning: "Avertisment", info: "Info", welcome: "Bun venit", easter_egg: "Secret Găsit!", print: "Tipărire" }
 };
 
 const toastConfig = [
     {
-        type: 'success',
-        icon: '✅',
-        keywords: ['success', 'saved', 'loaded', 'synced', 'copied']
-    },
-    {
         type: 'error',
         icon: '❌',
         keywords: ['fail', 'error', 'unauthorized', 'denied']
+    },
+    {
+        type: 'print',
+        icon: '🖨️',
+        keywords: ['pdf', 'gotenberg', 'generating', 'print', 'téléchargement', 'descărcare', 'scarica', 'stahování', 'compilando', 'compilazione', 'compilation', 'compilare', 'kompilace', 'compiliert']
+    },
+    {
+        type: 'success',
+        icon: '✅',
+        keywords: ['success', 'saved', 'loaded', 'synced', 'copied']
     },
     {
         type: 'warning',
@@ -75,7 +80,9 @@ export function showToast(content) {
         type = content.type || 'info';
         const matched = toastConfig.find(cfg => cfg.type === type);
         icon = content.icon || (matched ? matched.icon : 'ℹ️');
-        title = parseToastMarkdown(content.title || '');
+        const lang = document.documentElement.getAttribute('lang') || currentLocale || 'en';
+        const titles = defaultTitles[lang] || defaultTitles['en'];
+        title = parseToastMarkdown(content.title || titles[type] || 'Notification');
         summary = parseToastMarkdown(content.summary || content.message || '');
     } else {
         const message = String(content);

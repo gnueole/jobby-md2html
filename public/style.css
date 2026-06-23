@@ -945,6 +945,9 @@ input[type="color"]::-webkit-color-swatch {
 .toast-item.info {
     border-left: 4px solid #3b82f6; /* Blue */
 }
+.toast-item.print {
+    border-left: 4px solid #3b82f6; /* Blue */
+}
 .toast-item.welcome {
     border-left: 4px solid var(--accent); /* Accent Color */
 }
@@ -1912,20 +1915,20 @@ body.expert-mode-active .format-lock-badge {
 /* Page Format Standards Canvas Sizes */
 .a4-sheet.format-a4 {
     width: 210mm !important;
-    min-height: 297mm !important;
+    min-height: 297mm;
 }
 .a4-sheet.format-letter,
 .a4-sheet.letter-format {
     width: 8.5in !important;
-    min-height: 11in !important;
+    min-height: 11in;
 }
 .a4-sheet.format-legal {
     width: 8.5in !important;
-    min-height: 14in !important;
+    min-height: 14in;
 }
 .a4-sheet.format-a5 {
     width: 148mm !important;
-    min-height: 210mm !important;
+    min-height: 210mm;
 }
 
 /* Page Break Indicators */
@@ -1934,30 +1937,36 @@ body.expert-mode-active .format-lock-badge {
     left: 0;
     right: 0;
     height: 0;
-    border-top: 1.5px dashed rgba(124, 58, 237, 0.45);
+    border-top: 1.5px dashed rgba(124, 58, 237, 0.65);
     pointer-events: none;
     z-index: 10;
     display: flex;
     justify-content: flex-end;
     align-items: center;
+    filter: drop-shadow(0 0 3px rgba(124, 58, 237, 0.45));
 }
 
 .page-break-indicator span {
     font-size: 9px;
     font-family: var(--font-ui);
-    color: var(--accent-hover);
-    background-color: var(--resume-color-bg, #ffffff);
-    border: 1px solid rgba(124, 58, 237, 0.3);
+    color: #4a3b32; /* Warm dark brown for high readability on cream */
+    background-color: #faf5ee; /* Premium warm cream color */
+    border: 1px solid rgba(124, 58, 237, 0.45);
     border-radius: 4px;
     padding: 2px 6px;
     margin-right: 12px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 10px rgba(124, 58, 237, 0.35), 0 2px 4px rgba(0, 0, 0, 0.15);
     transform: translateY(-50%);
     pointer-events: none;
+    font-weight: 700;
+    letter-spacing: 0.05em;
 }
 
 @media print {
     .page-break-indicator,
+    .toast-container,
+    .jobby-tooltip,
+    .cursor-radar,
     .folded-controls-dock,
     .floating-unfold-btn,
     .modal-overlay {
@@ -3312,7 +3321,34 @@ body.expert-mode-active .font-preferences-row {
     }
 }
 
+/* Foldable Design Panel Headings */
+.control-group h3 {
+    cursor: pointer;
+    user-select: none;
+    transition: opacity 0.15s ease;
+}
 
+.control-group h3:hover {
+    opacity: 0.8;
+}
 
+.control-group.folded > *:not(h3) {
+    display: none !important;
+}
 
+.control-group.folded h3 {
+    margin-bottom: 0 !important;
+}
 
+.control-group.folded h3 svg {
+    display: none !important;
+}
+
+.control-group.folded h3::before {
+    content: ">";
+    font-family: monospace, sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    color: var(--accent);
+    line-height: 1;
+}

@@ -10,7 +10,8 @@
     "feedback_tooltip": "Poslat zpětnou vazbu nebo nahlásit chybu",
     "feedback_btn": "Zpětná vazba",
     "print_tooltip": "Tisk do PDF (Ctrl+P)",
-    "print_btn": "Tisk / PDF"
+    "print_btn": "Tisk / PDF",
+    "download_btn": "Stáhnout životopis"
   },
   "editor": {
     "indicator": "MARKDOWN",
@@ -138,7 +139,7 @@
     "option_layout_1col": "1 sloupec (standardní)",
     "option_layout_2col": "2 sloupce (moderní)",
     "label_show_version": "Zobrazit tiskovou verzi",
-    "label_show_version_tooltip": "Zobrazit verzi přírůstku ve spodní části dokumentu",
+    "label_show_version_tooltip": "Zobrazí přírůstek verze ve spodní části dokumentu. Pomáhá to sledovat revize, identifikovat, která varianta životopisu byla odeslána kterému personalistovi, a předcházet záměnám během pohovorů.",
     "label_gotenberg_pdf": "Gotenberg Stažení PDF",
     "label_gotenberg_pdf_tooltip": "Přímo zkompilovat a stáhnout PDF přes místní službu Gotenberg namísto otevírání tiskového okna prohlížeče",
     "label_sidebar_position": "Pozice bočního panelu",
@@ -203,6 +204,7 @@
     "section_disclaimer": "⚠️ Vyloučení odpovědnosti za obsah",
     "disclaimer_text": "Tvůrce Jobby se výslovně zříká veškeré odpovědnosti za obsah generovaný uživateli, životopisy nebo výstupy dokumentů vytvořené pomocí tohoto editoru. Uživatelé jsou výhradně odpovědní za správnost, vhodnost a legálnost souborů, které sestavují.",
     "github_btn": "Zobrazit na GitHubu",
+    "about_me_btn": "O mně",
     "inspired_by": "Inspirováno",
     "help_banner_html": "💡 Potřebujete pomoct? Podívejte se na naši <a href=\"#\" id=\"link-to-help\" >Nápovědu & Syntaxi Markdownu</a>."
   },

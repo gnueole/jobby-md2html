@@ -10,7 +10,8 @@
     "feedback_tooltip": "Envoyer un commentaire ou signaler un bug",
     "feedback_btn": "Avis / Bug",
     "print_tooltip": "Imprimer en PDF (Ctrl+P)",
-    "print_btn": "Imprimer / PDF"
+    "print_btn": "Imprimer / PDF",
+    "download_btn": "Télécharger le CV"
   },
   "editor": {
     "indicator": "ÉDITEUR",
@@ -138,7 +139,7 @@
     "option_layout_1col": "1 Colonne (Standard)",
     "option_layout_2col": "2 Colonnes (Moderne)",
     "label_show_version": "Afficher la Version du CV",
-    "label_show_version_tooltip": "Afficher le numéro de version d'impression en bas du document",
+    "label_show_version_tooltip": "Affiche le numéro de version d'impression en bas du document. Cela vous permet de suivre les révisions, d'identifier quelle variante de CV a été envoyée à quel recruteur, et d'éviter les confusions lors des entretiens.",
     "label_gotenberg_pdf": "Téléchargement PDF Gotenberg",
     "label_gotenberg_pdf_tooltip": "Compile et télécharge directement le PDF via le conteneur Gotenberg local au lieu d'ouvrir le menu d'impression du navigateur",
     "label_sidebar_position": "Position de la Colonne Latérale",
@@ -203,6 +204,7 @@
     "section_disclaimer": "⚠️ Clause de Non-responsabilité",
     "disclaimer_text": "Le créateur de Jobby décline expressément toute responsabilité concernant le contenu généré par les utilisateurs ou les CV compilés avec cet éditeur. Les utilisateurs sont seuls responsables de l'exactitude, de l'adéquation et de la légalité des fichiers créés.",
     "github_btn": "Voir sur GitHub",
+    "about_me_btn": "À propos de moi",
     "inspired_by": "Inspiré par",
     "help_banner_html": "💡 Besoin d'aide ? Consultez notre <a href=\"#\" id=\"link-to-help\" >Guide d'Aide & Syntaxe Markdown</a>."
   },
