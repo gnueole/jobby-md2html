@@ -160,7 +160,8 @@ _deploy:
 		fi \
 	fi
 # 6. Recreate and start containers
-	@echo "🔄 Recreating and starting containers..."
+	@echo "🔄 Recreating and starting containers (handling potential container name conflicts)..."
+	@ssh $(VPS_SSH) "docker rm -f jobby-editor mcp-notion gotenberg 2>/dev/null || true"
 	@ssh $(VPS_SSH) "cd $(VPS_PATH) && docker compose -f docker-compose.prod.yml up -d --remove-orphans"
 	@echo "✅ Deployment of $(PROJECT_NAME) [$(VERSION) / $(VPS_PROJECT_TAG)] successfully completed on production server!"
 
