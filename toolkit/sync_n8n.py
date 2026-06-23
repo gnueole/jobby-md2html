@@ -278,11 +278,9 @@ def create_workflow(wf):
         "name": wf.get("name"),
         "nodes": wf.get("nodes"),
         "connections": wf.get("connections"),
-        "settings": clean_settings,
-        "staticData": wf.get("staticData")
+        "settings": clean_settings
     }
-    if "tags" in wf:
-        payload["tags"] = wf.get("tags")
+    pass
     req = urllib.request.Request(
         url,
         data=json.dumps(payload).encode('utf-8'),
@@ -315,11 +313,9 @@ def update_workflow_by_id(workflow_id, wf):
         "name": wf.get("name"),
         "nodes": wf.get("nodes"),
         "connections": wf.get("connections"),
-        "settings": clean_settings,
-        "staticData": wf.get("staticData")
+        "settings": clean_settings
     }
-    if "tags" in wf:
-        payload["tags"] = wf.get("tags")
+    pass
     req = urllib.request.Request(
         url,
         data=json.dumps(payload).encode('utf-8'),
