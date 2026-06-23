@@ -180,5 +180,10 @@
     "templateCredsSetupCompleted": true
   },
   "//": "Published on 2026-06-22 22:35:04 | Git: ebfd771 fix: resolve Gotenberg PDF layout and print background mismatch",
-  "description": "Published on 2026-06-22 20:18:24 | Git: 1ca0e6f fix: dynamically adjust dropdowns and tooltips to prevent screen overflow"
+  "description": "Published on 2026-06-22 20:18:24 | Git: 1ca0e6f fix: dynamically adjust dropdowns and tooltips to prevent screen overflow",
+  "tags": [
+    {
+      "name": "jobby"
+    }
+  ]
 }

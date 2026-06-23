@@ -60,18 +60,14 @@ def ensure_env(require_workflow_id=True, use_dev=False, api_key_override=None, w
     if use_dev:
         API_KEY = (api_key_override or 
                    os.environ.get("DEV_N8N_API_KEY") or 
-                   os.environ.get("N8N_API_KEY") or 
-                   config.get("DEV_N8N_API_KEY") or 
-                   config.get("N8N_API_KEY"))
+                   config.get("DEV_N8N_API_KEY") or
+                   None)
         WORKFLOW_ID = (workflow_id_override or 
                        os.environ.get("DEV_N8N_WORKFLOW_ID") or 
-                       os.environ.get("N8N_WORKFLOW_ID") or 
-                       config.get("DEV_N8N_WORKFLOW_ID") or 
-                       config.get("N8N_WORKFLOW_ID"))
+                       config.get("DEV_N8N_WORKFLOW_ID") or
+                       None)
         BASE_URL = (base_url_override or 
                     os.environ.get("DEV_N8N_BASE_URL") or 
-                    os.environ.get("N8N_BASE_URL") or 
-                    config.get("DEV_N8N_BASE_URL") or 
                     config.get("DEV_N8N_BASE_URL") or 
                     "http://localhost:5678")
     else:
@@ -285,6 +281,8 @@ def create_workflow(wf):
         "settings": clean_settings,
         "staticData": wf.get("staticData")
     }
+    if "tags" in wf:
+        payload["tags"] = wf.get("tags")
     req = urllib.request.Request(
         url,
         data=json.dumps(payload).encode('utf-8'),
@@ -320,6 +318,8 @@ def update_workflow_by_id(workflow_id, wf):
         "settings": clean_settings,
         "staticData": wf.get("staticData")
     }
+    if "tags" in wf:
+        payload["tags"] = wf.get("tags")
     req = urllib.request.Request(
         url,
         data=json.dumps(payload).encode('utf-8'),
@@ -484,13 +484,38 @@ def push_all(n8n_dir, use_dev):
                 print("Please start your dev environment using 'make up' or 'docker compose -f docker/docker-compose.yml up -d' first.")
                 sys.exit(1)
             
-            print(f"Copying workflows to container '{container_name}'...")
-            subprocess.run(["docker", "exec", container_name, "mkdir", "-p", "/tmp/n8n_import"], check=True)
-            subprocess.run(["docker", "cp", f"{n8n_dir}/.", f"{container_name}:/tmp/n8n_import/"], check=True)
+            import tempfile
+            import shutil
+
+            # Create a local temp directory to store sanitized workflows
+            temp_dir = tempfile.mkdtemp()
+            try:
+                for f_name in json_files:
+                    src_path = os.path.join(n8n_dir, f_name)
+                    with open(src_path, "r", encoding="utf-8") as f_in:
+                        wf_data = json.load(f_in)
+                    
+                    # Sanitize schema to avoid SQLite foreign key violations
+                    sanitized = {}
+                    allowed_keys = ['name', 'nodes', 'connections', 'settings', 'staticData', 'meta', 'active', 'tags']
+                    for key in allowed_keys:
+                        if key in wf_data:
+                            sanitized[key] = wf_data[key]
+                            
+                    dst_path = os.path.join(temp_dir, f_name)
+                    with open(dst_path, "w", encoding="utf-8") as f_out:
+                        json.dump(sanitized, f_out, indent=2, ensure_ascii=False)
+
+                print(f"Copying workflows to container '{container_name}'...")
+                subprocess.run(["docker", "exec", container_name, "mkdir", "-p", "/tmp/n8n_import"], check=True)
+                # Copy the sanitized workflows from local temp dir
+                subprocess.run(["docker", "cp", f"{temp_dir}/.", f"{container_name}:/tmp/n8n_import/"], check=True)
+            finally:
+                shutil.rmtree(temp_dir)
             
             print("Importing workflows inside the container...")
             import_res = subprocess.run(
-                ["docker", "exec", "-u", "node", container_name, "n8n", "import:workflow", "--input=/tmp/n8n_import"],
+                ["docker", "exec", "-u", "node", container_name, "n8n", "import:workflow", "--separate", "--input=/tmp/n8n_import"],
                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
             )
             if import_res.returncode == 0:
@@ -506,7 +531,7 @@ def push_all(n8n_dir, use_dev):
             print("\nPlease make sure Docker is running and you have necessary permissions.")
             print("Alternatively, you can run these commands manually:")
             print(f"  sg docker -c \"docker cp {n8n_dir}/. {container_name}:/tmp/n8n_import/\"")
-            print(f"  sg docker -c \"docker exec -u node {container_name} n8n import:workflow --input=/tmp/n8n_import\"")
+            print(f"  sg docker -c \"docker exec -u node {container_name} n8n import:workflow --separate --input=/tmp/n8n_import\"")
             sys.exit(1)
 
     print(f"Connecting to n8n at: {BASE_URL}")
