@@ -11,7 +11,8 @@
     "feedback_btn": "Avis / Bug",
     "print_tooltip": "Imprimer en PDF (Ctrl+P)",
     "print_btn": "Imprimer / PDF",
-    "download_btn": "Télécharger le CV"
+    "download_btn": "Télécharger le CV",
+    "download_tooltip": "Compiler & Télécharger le PDF via Gotenberg"
   },
   "editor": {
     "indicator": "ÉDITEUR",

@@ -202,11 +202,21 @@ export function initPrint({
                         btnTextSpan.setAttribute('data-i18n', 'header.download_btn');
                         btnTextSpan.textContent = t('header.download_btn');
                     }
+                    btnPrint.setAttribute('data-i18n-title', 'header.download_tooltip');
+                    btnPrint.setAttribute('title', t('header.download_tooltip'));
+                    if (btnPrint.hasAttribute('data-tooltip')) {
+                        btnPrint.setAttribute('data-tooltip', t('header.download_tooltip'));
+                    }
                 } else {
                     btnPrint.classList.remove('gotenberg-active');
                     if (btnTextSpan) {
                         btnTextSpan.setAttribute('data-i18n', 'header.print_btn');
                         btnTextSpan.textContent = t('header.print_btn');
+                    }
+                    btnPrint.setAttribute('data-i18n-title', 'header.print_tooltip');
+                    btnPrint.setAttribute('title', t('header.print_tooltip'));
+                    if (btnPrint.hasAttribute('data-tooltip')) {
+                        btnPrint.setAttribute('data-tooltip', t('header.print_tooltip'));
                     }
                 }
             }

@@ -23,8 +23,8 @@
         "operation": "create",
         "databaseId": {
           "__rl": true,
-          "value": "={{ $env.JOBBY_FEEDBACK_DB_ID }}",
-          "mode": "id"
+          "value": "385ee932-db12-81f6-8256-e350b3d1b0f2",
+          "mode": "list"
         },
         "propertiesUi": {
           "propertyValues": [
@@ -47,6 +47,10 @@
             },
             {
               "key": "Platform|select",
+              "selectValue": "jobby"
+            },
+            {
+              "key": "Environment|select",
               "selectValue": "={{ $json.body.platform }}"
             }
           ]
@@ -122,7 +126,7 @@
     },
     {
       "parameters": {
-        "content": "### Last Publish Info\n\nPublished on 2026-06-22 22:35:04 | Git: ebfd771 fix: resolve Gotenberg PDF layout and print background mismatch",
+        "content": "### Last Publish Info\n\nPublished on 2026-06-24 08:19:08 | Git: 1528548 feat(ui): update translation files, printing options, custom styles, and layouts",
         "height": 150,
         "width": 300,
         "color": 6
@@ -179,7 +183,7 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "//": "Published on 2026-06-22 22:35:04 | Git: ebfd771 fix: resolve Gotenberg PDF layout and print background mismatch",
+  "//": "Published on 2026-06-24 08:19:08 | Git: 1528548 feat(ui): update translation files, printing options, custom styles, and layouts",
   "description": "Published on 2026-06-22 20:18:24 | Git: 1ca0e6f fix: dynamically adjust dropdowns and tooltips to prevent screen overflow",
   "tags": [
     {

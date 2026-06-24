@@ -11,7 +11,8 @@
     "feedback_btn": "Feedback",
     "print_tooltip": "Tipărește în PDF (Ctrl+P)",
     "print_btn": "Tipărire / PDF",
-    "download_btn": "Descarcă CV"
+    "download_btn": "Descarcă CV",
+    "download_tooltip": "Compilează și descarcă PDF prin Gotenberg"
   },
   "editor": {
     "indicator": "MARKDOWN",

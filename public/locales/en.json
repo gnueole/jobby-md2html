@@ -11,7 +11,8 @@
     "feedback_btn": "Feedback",
     "print_tooltip": "Print to PDF (Ctrl+P)",
     "print_btn": "Print / PDF",
-    "download_btn": "Download CV"
+    "download_btn": "Download CV",
+    "download_tooltip": "Compile & Download PDF via Gotenberg"
   },
   "editor": {
     "indicator": "MARKDOWN",

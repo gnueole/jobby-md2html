@@ -11,7 +11,8 @@
     "feedback_btn": "Zpětná vazba",
     "print_tooltip": "Tisk do PDF (Ctrl+P)",
     "print_btn": "Tisk / PDF",
-    "download_btn": "Stáhnout životopis"
+    "download_btn": "Stáhnout životopis",
+    "download_tooltip": "Kompilovat a stáhnout PDF přes Gotenberg"
   },
   "editor": {
     "indicator": "MARKDOWN",
