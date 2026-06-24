@@ -190,8 +190,10 @@ export function initExports({
             const a = document.createElement('a');
             a.href = url;
             a.download = `${filename}.md`;
+            document.body.appendChild(a);
             a.click();
             setTimeout(() => {
+                document.body.removeChild(a);
                 URL.revokeObjectURL(url);
             }, 100);
             showToast("Markdown download started!");

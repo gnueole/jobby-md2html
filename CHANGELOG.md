@@ -8,7 +8,7 @@ All notable changes to the Jobby project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.10.3] - 2026-06-24
+## [1.10.4] - 2026-06-25
 
 ### Added
 - **Direct Gotenberg PDF Download:** Implemented a direct PDF generation and download pipeline powered by Gotenberg, resolving print background and layout mismatch issues.

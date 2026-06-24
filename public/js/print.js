@@ -370,8 +370,10 @@ export function initPrint({
             const a = document.createElement('a');
             a.href = url;
             a.download = `${filename}.pdf`;
+            document.body.appendChild(a);
             a.click();
             setTimeout(() => {
+                document.body.removeChild(a);
                 URL.revokeObjectURL(url);
             }, 100);
             showToast({

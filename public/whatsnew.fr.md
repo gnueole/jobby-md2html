@@ -1,4 +1,4 @@
-# 1.10.3 - Mise à jour Jobby
+# 1.10.4 - Mise à jour Jobby
 Mise à jour Jobby du 24/06/2026 · Téléchargements PDF Gotenberg, contrôles de taille de police dans l'éditeur, positionnement dynamique des menus déroulants/infobulles et synchronisation des langues.
 [CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
 
