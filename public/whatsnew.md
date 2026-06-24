@@ -1,3 +1,21 @@
+# 1.10.3 - Jobby Update
+Jobby Update of 06/24/2026 · Gotenberg PDF downloads, Editor Font Size controls, Dynamic dropdowns/tooltips layout, and Locales synchronization.
+[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+
+## 📥 DIRECT GOTENBERG PDF DOWNLOAD
+* **Clean & Dynamic PDF Generation**: Replaced external layout printing hacks with a direct PDF generation and download pipeline utilizing Gotenberg, fully resolving background printing bugs and layout mismatch issues.
+
+## 🔎 EDITOR FONT SIZE CONTROLS
+* **Dynamic Sizing**: Added interactive font-size adjusters inside the markdown editor container so you can customize the editor workspace layout to your liking.
+
+## 🧭 DYNAMIC DROPDOWNS & TOOLTIPS POSITIONING
+* **Adaptive Popups**: Implemented smart viewport checking to position dropdown select menus and tooltip elements dynamically, preventing any screen boundary overflows.
+
+## 🌐 MULTI-LANGUAGE SYNCHRONIZATION
+* **Robust Assets & Layouts**: Synchronized and updated translated locale configurations, style presets, and custom printing layouts across all 7 supported languages.
+
+---
+
 # 1.10.1 - Jobby Update
 Jobby Update of 06/21/2026 · About Modal Help Link Fix & Design Refinements.
 [CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]

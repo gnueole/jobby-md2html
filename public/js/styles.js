@@ -65,6 +65,7 @@ export function applyStyles(styleConfig) {
     resumeOutput.style.setProperty('--resume-section-spacing', styleConfig.sectionSpacing + 'px');
 
     resumeOutput.style.setProperty('--resume-color-bg', styleConfig.colorBg || '#ffffff');
+    document.body.style.setProperty('--resume-color-bg', styleConfig.colorBg || '#ffffff');
     resumeOutput.style.setProperty('--resume-color-headings', styleConfig.colorHeadings);
     resumeOutput.style.setProperty('--resume-color-body', styleConfig.colorBody);
     resumeOutput.style.setProperty('--resume-color-links', styleConfig.colorLinks);

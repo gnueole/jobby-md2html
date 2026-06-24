@@ -8,6 +8,22 @@ All notable changes to the Jobby project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.10.3] - 2026-06-24
+
+### Added
+- **Direct Gotenberg PDF Download:** Implemented a direct PDF generation and download pipeline powered by Gotenberg, resolving print background and layout mismatch issues.
+- **Editor Font Size Controls:** Added controls in the editor panel to dynamically adjust editor text font size.
+- **Dynamic Dropdowns & Tooltips Position:** Implemented auto-adjusting drop-downs and tooltip popups to prevent screen boundary overflows.
+- **Docker Image Version Querying:** Configured the deployment system to query and log pulled Docker image versions dynamically during VPS target deployment.
+- **Multi-Language Synced Locales:** Fully updated translation assets, printing options, custom styles, and layouts across all 7 supported language files.
+- **Workflow Tagging and Conventions in n8n:** Sanitized Notion database IDs, renamed workflows to follow standard naming conventions, and tagged all workflows with the `jobby` identifier.
+
+### Fixed
+- **Gotenberg Print Backgrounds:** Resolved layout mismatch bugs when rendering PDF files using Gotenberg.
+- **n8n Public API Constraints:** Bypassed tags and active status read-only constraints in the public API when synchronizing workflow configurations, and added documentation for tag API limitations.
+- **VPS Deployment Conflicting Names:** Configured deployment script to automatically remove conflicting Docker container names before restarting services.
+- **Routing Mismatches:** Resolved `DOMAIN_NAME` mismatch issues for Jobby routing by introducing `ROOT_DOMAIN` fallback logic.
+
 ## [1.10.1] - 2026-06-21
 
 ### Added

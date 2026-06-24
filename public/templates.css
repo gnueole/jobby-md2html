@@ -347,7 +347,6 @@
     /* Hide entire builder UI */
     body {
         background: var(--resume-color-bg, #ffffff) !important;
-        color: #000000 !important;
         font-size: var(--resume-font-size, 12px) !important;
     }
     
@@ -442,12 +441,21 @@
         color: var(--resume-color-body, #334155) !important;
     }
     
-    body.layout-2-column.sidebar-right .a4-sheet {
+    body.layout-2-column.sidebar-right .a4-sheet:not(.has-gradient):not(.has-shadow):not(.has-border) {
         background: linear-gradient(to right, var(--resume-color-bg, #ffffff) var(--column-split-main, 58%), var(--resume-sidebar-bg, #2d3748) var(--column-split-main, 58%)) !important;
     }
     
-    body.layout-2-column.sidebar-left .a4-sheet {
+    body.layout-2-column.sidebar-left .a4-sheet:not(.has-gradient):not(.has-shadow):not(.has-border) {
         background: linear-gradient(to right, var(--resume-sidebar-bg, #2d3748) var(--column-split-sidebar, 42%), var(--resume-color-bg, #ffffff) var(--column-split-sidebar, 42%)) !important;
+    }
+
+    /* Force the header background to remain solid to prevent layout gradient split */
+    .a4-sheet:not(.has-gradient):not(.has-shadow):not(.has-border) .resume-header {
+        background: var(--resume-color-bg, #ffffff) !important;
+        margin: calc(-1 * var(--resume-margin-y, 25px)) calc(-1 * var(--resume-margin-x, 30px)) 0 calc(-1 * var(--resume-margin-x, 30px)) !important;
+        padding: var(--resume-margin-y, 25px) var(--resume-margin-x, 30px) 10px var(--resume-margin-x, 30px) !important;
+        position: relative;
+        z-index: 2;
     }
 
     /* Print layout overrides for columns to prevent Chrome CSS Grid splitting bugs */
@@ -463,11 +471,10 @@
         width: calc(var(--column-split-main, 58%) - 2%) !important;
         flex-shrink: 0 !important;
     }
-    .a4-sheet.has-gradient .resume-sidebar-col,
-    .a4-sheet.has-shadow .resume-sidebar-col,
-    .a4-sheet.has-border .resume-sidebar-col,
-    .a4-sheet .resume-sidebar-col {
+    .a4-sheet:not(.has-gradient) .resume-sidebar-col {
         background: transparent !important;
+    }
+    .a4-sheet:not(.has-shadow) .resume-sidebar-col {
         box-shadow: none !important;
     }
 

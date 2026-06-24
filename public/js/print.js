@@ -100,7 +100,7 @@ export function initPrint({
     getCurrentResumeTitle,
     autoFitZoom,
     triggerCompile,
-    styleConfig,
+    getStyleConfig,
     getTemplatesCssText
 }) {
     if (btnPageBreaks) {
@@ -109,7 +109,7 @@ export function initPrint({
             showPageBreaks = !showPageBreaks;
             localStorage.setItem('show_page_breaks', showPageBreaks);
             btnPageBreaks.classList.toggle('active', showPageBreaks);
-            updatePageBreaks(resumeOutput, styleConfig);
+            updatePageBreaks(resumeOutput, getStyleConfig ? getStyleConfig() : null);
         });
     }
 
@@ -140,6 +140,7 @@ export function initPrint({
                 pageFormat = val;
                 localStorage.setItem('page_format', pageFormat);
                 
+                const styleConfig = getStyleConfig ? getStyleConfig() : null;
                 if (styleConfig) {
                     styleConfig.pageFormat = val;
                     // Trigger save
@@ -176,6 +177,7 @@ export function initPrint({
         selectPageFormat.addEventListener('change', (e) => {
             pageFormat = e.target.value;
             localStorage.setItem('page_format', pageFormat);
+            const styleConfig = getStyleConfig ? getStyleConfig() : null;
             if (styleConfig) {
                 styleConfig.pageFormat = pageFormat;
                 try {
@@ -240,6 +242,7 @@ export function initPrint({
         const currentTitle = getCurrentResumeTitle ? getCurrentResumeTitle() : "resume";
         const filename = `${currentTitle}-${increment}`;
         
+        const styleConfig = getStyleConfig ? getStyleConfig() : null;
         const resumeOutputHtml = resumeOutput.innerHTML;
         const templatesCss = getTemplatesCssText ? getTemplatesCssText() : "";
         const resumeOutputClass = resumeOutput.className;
@@ -310,11 +313,10 @@ export function initPrint({
         margin: 0 !important;
         box-shadow: none !important;
       }
-      .a4-sheet.has-gradient .resume-sidebar-col,
-      .a4-sheet.has-shadow .resume-sidebar-col,
-      .a4-sheet.has-border .resume-sidebar-col,
-      .a4-sheet .resume-sidebar-col {
+      .a4-sheet:not(.has-gradient) .resume-sidebar-col {
         background: transparent !important;
+      }
+      .a4-sheet:not(.has-shadow) .resume-sidebar-col {
         box-shadow: none !important;
       }
     }
@@ -332,7 +334,7 @@ export function initPrint({
     }
   </style>
 </head>
-<body class="${document.body.className}">
+<body class="${document.body.className}" style="${resumeOutputStyle}">
   <article id="resume-output" class="${resumeOutputClass}" style="${resumeOutputStyle}">
     ${resumeOutputHtml}
   </article>

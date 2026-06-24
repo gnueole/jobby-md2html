@@ -1,3 +1,21 @@
+# 1.10.3 - Mise à jour Jobby
+Mise à jour Jobby du 24/06/2026 · Téléchargements PDF Gotenberg, contrôles de taille de police dans l'éditeur, positionnement dynamique des menus déroulants/infobulles et synchronisation des langues.
+[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+
+## 📥 TÉLÉCHARGEMENT DIRECT DE PDF VIA GOTENBERG
+* **Génération de PDF propre et dynamique** : Remplacement des astuces d'impression externes par un pipeline de génération et de téléchargement de PDF directement géré par Gotenberg, résolvant entièrement les bugs d'impression d'arrière-plan et les décalages de mise en page.
+
+## 🔎 CONTRÔLES DE TAILLE DE POLICE DANS L'ÉDITEUR
+* **Ajustement dynamique** : Ajout de boutons de réglage de taille de police interactifs dans le conteneur de l'éditeur Markdown pour adapter votre espace de travail selon vos préférences.
+
+## 🧭 POSITIONNEMENT DYNAMIQUE DES MENUS ET INFOBULLES
+* **Popups adaptatives** : Implémentation d'un système intelligent de vérification de l'espace d'affichage pour positionner les menus déroulants et infobulles de façon dynamique, évitant tout dépassement des limites de l'écran.
+
+## 🌐 SYNCHRONISATION MULTILINGUE
+* **Interface et ressources robustes** : Synchronisation et mise à jour des ressources de traduction, des presets de style et des configurations d'impression personnalisées pour l'ensemble des 7 langues prises en charge.
+
+---
+
 # 1.10.1 - Mise à jour Jobby
 Mise à jour Jobby du 21/06/2026 · Correction du lien d'aide de la modale À propos & Affinements graphiques.
 [CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]

@@ -109,11 +109,10 @@ export function initExports({
         margin: 0 !important;
         box-shadow: none !important;
       }
-      .a4-sheet.has-gradient .resume-sidebar-col,
-      .a4-sheet.has-shadow .resume-sidebar-col,
-      .a4-sheet.has-border .resume-sidebar-col,
-      .a4-sheet .resume-sidebar-col {
+      .a4-sheet:not(.has-gradient) .resume-sidebar-col {
         background: transparent !important;
+      }
+      .a4-sheet:not(.has-shadow) .resume-sidebar-col {
         box-shadow: none !important;
       }
     }
@@ -131,7 +130,7 @@ export function initExports({
     }
   </style>
 </head>
-<body class="${document.body.className}">
+<body class="${document.body.className}" style="${resumeOutputStyle}">
   <article class="${resumeOutputClass}" id="resume-output" style="${resumeOutputStyle}">
     ${resumeOutputHtml}
   </article>

@@ -142,6 +142,13 @@ const server = http.createServer((req, res) => {
                 `print\r\n`
             ));
 
+            // Add printBackground field to render background colors/gradients
+            parts.push(Buffer.from(
+                `--${boundary}\r\n` +
+                `Content-Disposition: form-data; name="printBackground"\r\n\r\n` +
+                `true\r\n`
+            ));
+
             // Add paperWidth
             parts.push(Buffer.from(
                 `--${boundary}\r\n` +

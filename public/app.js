@@ -36,7 +36,7 @@ import { MarkdownPopupTutorial } from './js/tutorial.js';
 
 async function initializeJobby() {
     // --- Fetch config (including dynamic version) ---
-    let appVersion = '1.10.1';
+    let appVersion = '1.10.3';
     try {
         const configRes = await fetch('/api/config');
         if (configRes.ok) {
@@ -1575,7 +1575,7 @@ async function initializeJobby() {
         getCurrentResumeTitle: () => currentResumeTitle,
         autoFitZoom: () => autoFitZoom(canvasWrapper, previewCanvas, zoomLevelText, () => updatePageBreaks(resumeOutput, styleConfig)),
         triggerCompile: () => runCompileMarkdown(markdownInput.value),
-        styleConfig,
+        getStyleConfig: () => styleConfig,
         getTemplatesCssText: () => templatesCssText
     });
 
