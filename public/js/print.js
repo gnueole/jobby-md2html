@@ -371,7 +371,9 @@ export function initPrint({
             a.href = url;
             a.download = `${filename}.pdf`;
             a.click();
-            URL.revokeObjectURL(url);
+            setTimeout(() => {
+                URL.revokeObjectURL(url);
+            }, 100);
             showToast({
                 type: 'success',
                 icon: '📥',
