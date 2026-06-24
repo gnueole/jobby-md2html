@@ -155,8 +155,13 @@ _deploy:
 		REAL_VERSION=$$(ssh $(VPS_SSH) "docker run --rm ghcr.io/gnueole/jobby-md2html:latest node -e \"console.log(require('./package.json').version)\" 2>/dev/null || echo 'unknown'"); \
 		echo "📌 Real image version to be deployed: $$REAL_VERSION"; \
 		if [ "$$REAL_VERSION" != "$(VERSION)" ]; then \
-			echo "⚠️ WARNING: The image version ($$REAL_VERSION) differs from the local package.json version ($(VERSION))!"; \
-			echo "   Did you forget to run 'git push' or wait for the GitHub Actions build to complete?"; \
+			echo "❌ Error: The image version ($$REAL_VERSION) differs from the local package.json version ($(VERSION))!"; \
+			if [ "$(FORCE)" != "1" ] && [ "$(F)" != "1" ]; then \
+				echo "   Deploy aborted. Wait for the GitHub Action to finish building the new image, or bypass using 'make deploy FORCE=1'."; \
+				exit 1; \
+			else \
+				echo "⚠️ Warning: Bypassing version mismatch check (FORCE=1 active)."; \
+			fi \
 		fi \
 	fi
 # 6. Recreate and start containers
