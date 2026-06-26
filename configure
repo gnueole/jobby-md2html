@@ -11,19 +11,72 @@
 # Exit immediately if a command exits with a non-zero status
 set -e
 
-# Terminal output styling colors
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-NC='\033[0m' # No Color
-BOLD='\033[1m'
+# Terminal output styling colors (TrueColor / 24-bit ANSI)
+ESC_SEQ="\033["
+RESET="${ESC_SEQ}0m"
+BOLD="${ESC_SEQ}1m"
+DIM="${ESC_SEQ}2m"
+ITALIC="${ESC_SEQ}3m"
+UNDERLINE="${ESC_SEQ}4m"
+
+GREEN="${ESC_SEQ}38;2;74;222;128m"    # Bright Neon Green
+BLUE="${ESC_SEQ}38;2;96;165;250m"     # Sky Blue
+YELLOW="${ESC_SEQ}38;2;253;224;71m"   # Yellow
+RED="${ESC_SEQ}38;2;244;63;94m"       # Rose Red
+ORANGE="${ESC_SEQ}38;2;251;146;60m"   # Soft Orange
+PURPLE="${ESC_SEQ}38;2;167;139;250m"  # Pastel Purple
+CYAN="${ESC_SEQ}38;2;45;212;191m"     # Teal/Cyan
+GRAY="${ESC_SEQ}38;2;156;163;175m"     # Medium Gray
+DARK_GRAY="${ESC_SEQ}38;2;75;85;99m"  # Dark Gray
 
 # Logger helper functions
-log_success() { echo -e "${GREEN}✔ $1${NC}"; }
-log_warn() { echo -e "${YELLOW}⚠ $1${NC}"; }
-log_error() { echo -e "${RED}✘ $1${NC}"; }
-log_info() { echo -e "${BLUE}ℹ $1${NC}"; }
+log_success() { echo -e "  ${GREEN}✔${RESET}  $1"; }
+log_warn()    { echo -e "  ${YELLOW}⚠${RESET}  $1"; }
+log_error()   { echo -e "  ${RED}✘${RESET}  $1"; }
+log_info()    { echo -e "  ${BLUE}ℹ${RESET}  $1"; }
+
+print_section() {
+    echo ""
+    echo -e "  ${BOLD}${PURPLE}❯ $1${RESET}"
+    echo -e "  ${DARK_GRAY}────────────────────────────────────────────────────────────${RESET}"
+}
+
+# Helper to print perfectly aligned lines inside a box of width 70
+print_box_line() {
+    local border_color="$1"
+    local left_pad="$2"
+    local content="$3"
+    local max_width=70
+    
+    # Strip ANSI escape codes using portable sed and printf \033
+    local esc
+    esc=$(printf '\033')
+    local clean_content
+    clean_content=$(echo -e "$content" | sed "s/${esc}\[[0-9;]*[a-zA-Z]//g")
+    local content_len=${#clean_content}
+    
+    # Adjust for known 2-column wide characters (like 🛠️, 🐸, 🎭, 🍃)
+    local emoji_count
+    emoji_count=$(echo "$clean_content" | grep -o -E "🛠️|🐸|🎭|🍃" | wc -l || echo 0)
+    content_len=$((content_len + emoji_count))
+    
+    local pad_len=$((max_width - left_pad - content_len))
+    if [ $pad_len -lt 0 ]; then
+        pad_len=0
+    fi
+    
+    local spaces=""
+    if [ $pad_len -gt 0 ]; then
+        spaces=$(printf '%*s' "$pad_len" "")
+    fi
+    
+    local indent=""
+    if [ $left_pad -gt 0 ]; then
+        indent=$(printf '%*s' "$left_pad" "")
+    fi
+    
+    echo -e "  ${border_color}│${RESET}${indent}${content}${spaces}${border_color}│${RESET}"
+}
 
 # Resolve project name dynamically from git remote or directory name
 REPO_NAME=$(git config --get remote.origin.url 2>/dev/null | sed 's/.*\///; s/\.git$//')
@@ -44,13 +97,13 @@ for arg in "$@"; do
     esac
 done
 
-echo -e "${BOLD}======================================================================"
-echo -e "          🛠️  ${PROJECT_NAME_UPPER} — SYSTEM CONFIGURATION & INITIALIZATION  🛠️"
-echo -e "======================================================================${NC}"
+echo -e "  ${CYAN}┌──────────────────────────────────────────────────────────────────────┐${RESET}"
+print_box_line "${CYAN}" 3 "${BOLD}${GREEN}🛠️  ${PROJECT_NAME_UPPER} 🛠️${RESET} ${BLUE}- SYSTEM CONFIGURATION & INITIALIZATION${RESET}"
+echo -e "  ${CYAN}└──────────────────────────────────────────────────────────────────────┘${RESET}"
 echo ""
 
-# 1. Verify system dependencies
-log_info "Verifying required system dependencies..."
+print_section "Verifying system dependencies"
+
 
 # Node.js
 if command -v node >/dev/null 2>&1; then
@@ -108,8 +161,8 @@ fi
 
 echo ""
 
-# 2. Initialize .env file
-log_info "Setting up environment configuration files..."
+print_section "Setting up environment configuration files"
+
 
 if [ ! -f ".env" ]; then
     log_warn "Local configuration file .env was not found."
@@ -126,7 +179,7 @@ fi
 
 echo ""
 
-# 3. Install Node.js package dependencies
+print_section "Installing Node.js package dependencies"
 if [ ! -d "node_modules" ]; then
     log_info "Node dependencies (node_modules) are missing."
     if [ "$AUTO_INSTALL" = true ]; then
@@ -150,12 +203,13 @@ fi
 
 echo ""
 
-# 4. Summary
-echo -e "${BOLD}======================================================================${NC}"
-log_success "${PROJECT_NAME} configuration setup completed successfully!"
+print_section "Summary & Getting Started"
+echo -e "  ${GREEN}┌──────────────────────────────────────────────────────────────────────┐${RESET}"
+print_box_line "${GREEN}" 3 "${BOLD}${GREEN}✔ ${PROJECT_NAME} configuration completed successfully!${RESET}"
+echo -e "  ${GREEN}└──────────────────────────────────────────────────────────────────────┘${RESET}"
 echo ""
-echo "Useful commands to get started:"
-echo -e "  * Run resume editor locally:       ${BOLD}make dev${NC} (or ${BOLD}npm run dev${NC})"
-echo -e "  * Start Dev container stack:       ${BOLD}make up${NC}"
-echo -e "  * Stop dev containers:             ${BOLD}make down${NC}"
-echo -e "${BOLD}======================================================================${NC}"
+echo -e "  ${BOLD}${PURPLE}Useful commands to get started:${RESET}"
+echo -e "    ${GRAY}•${RESET} Run resume editor locally:        ${GREEN}make dev${RESET} (or ${GREEN}npm run dev${RESET})"
+echo -e "    ${GRAY}•${RESET} Start Dev container stack:       ${GREEN}make up${RESET}"
+echo -e "    ${GRAY}•${RESET} Stop dev containers:             ${GREEN}make down${RESET}"
+echo ""
