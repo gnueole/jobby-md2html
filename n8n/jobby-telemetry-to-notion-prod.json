@@ -25,8 +25,8 @@
         "resource": "databasePage",
         "databaseId": {
           "__rl": true,
-          "value": "385ee932-db12-80ee-8794-d789554478b8",
-          "mode": "list"
+          "value": "={{ $('Get Notion DB ID').item.json.value }}",
+          "mode": "id"
         },
         "title": "Session ID",
         "simple": false,
@@ -157,6 +157,33 @@
         -100,
         240
       ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "={{ $env.JOBBY_DATA_TABLE_ID }}",
+          "mode": "id"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "key",
+              "keyValue": "notion_telemetry_db_id"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        250,
+        400
+      ],
+      "id": "get-notion-db-id",
+      "name": "Get Notion DB ID"
     }
   ],
   "connections": {
@@ -165,6 +192,11 @@
         [
           {
             "node": "Notion",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Notion DB ID",
             "type": "main",
             "index": 0
           }

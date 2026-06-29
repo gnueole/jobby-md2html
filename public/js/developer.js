@@ -65,12 +65,34 @@ function bindDeveloperToolsEvents() {
     const btnSaveDevSettings = document.getElementById('btn-save-dev-settings');
 
     const devDisableTelemetry = document.getElementById('dev-disable-telemetry');
+    const notionDetectorDb = document.getElementById('notion-detector-db-id');
+    const notionFeedbackDb = document.getElementById('notion-feedback-db-id');
+    const notionTelemetryDb = document.getElementById('notion-telemetry-db-id');
+
+    const isDev = window.location.hostname === 'localhost' || 
+                  window.location.hostname === '127.0.0.1' || 
+                  window.location.hostname.endsWith('.local');
+
+    const detectorKey = isDev ? 'dev_notion_detector_db_id' : 'prod_notion_detector_db_id';
+    const feedbackKey = isDev ? 'dev_notion_feedback_db_id' : 'prod_notion_feedback_db_id';
+    const telemetryKey = isDev ? 'dev_notion_telemetry_db_id' : 'prod_notion_telemetry_db_id';
 
     // Load saved settings into fields
     prodWebhookUrl.value = localStorage.getItem('prod_webhook_url') || 'https://n8n.eole.me/webhook/cv-factory';
     prodWebhookToken.value = localStorage.getItem('prod_webhook_token') || '';
     devWebhookUrl.value = localStorage.getItem('dev_webhook_url') || 'http://localhost:5678/webhook-test/cv-factory';
     devWebhookToken.value = localStorage.getItem('dev_webhook_token') || '';
+    
+    if (notionDetectorDb) {
+        notionDetectorDb.value = localStorage.getItem(detectorKey) || (isDev ? '' : '127bad1f-b25a-4b6b-8eec-7b342e3aa504');
+    }
+    if (notionFeedbackDb) {
+        notionFeedbackDb.value = localStorage.getItem(feedbackKey) || (isDev ? '' : '385ee932-db12-80ee-8794-d789554478b8');
+    }
+    if (notionTelemetryDb) {
+        notionTelemetryDb.value = localStorage.getItem(telemetryKey) || '';
+    }
+
     if (devDisableTelemetry) {
         devDisableTelemetry.checked = localStorage.getItem('jobby_telemetry_disabled') === 'true';
     }
@@ -112,6 +134,16 @@ function bindDeveloperToolsEvents() {
             localStorage.setItem('n8n_webhook_url', prodUrl);
             localStorage.setItem('n8n_webhook_token', prodToken);
             
+            if (notionDetectorDb) {
+                localStorage.setItem(detectorKey, notionDetectorDb.value.trim());
+            }
+            if (notionFeedbackDb) {
+                localStorage.setItem(feedbackKey, notionFeedbackDb.value.trim());
+            }
+            if (notionTelemetryDb) {
+                localStorage.setItem(telemetryKey, notionTelemetryDb.value.trim());
+            }
+
             if (devDisableTelemetry) {
                 localStorage.setItem('jobby_telemetry_disabled', devDisableTelemetry.checked ? 'true' : 'false');
             }
@@ -225,6 +257,7 @@ function renderAuthForm(developerModal, appVersion, updateSyncButtonState) {
     if (btnClose) {
         btnClose.addEventListener('click', () => {
             developerModal.classList.remove('show');
+            window.history.pushState(null, '', '/');
         });
     }
 
@@ -243,44 +276,48 @@ function renderAuthForm(developerModal, appVersion, updateSyncButtonState) {
     }
 }
 
+export async function openDeveloperTools(developerModal, appVersion, updateSyncButtonState) {
+    window.history.pushState(null, '', '/developer');
+    const savedToken = localStorage.getItem('developer_token');
+    
+    if (savedToken) {
+        const loaded = await loadDeveloperToolsBrick(savedToken, appVersion);
+        if (loaded) {
+            updateSyncButtonState();
+            developerModal.classList.add('show');
+        } else {
+            localStorage.removeItem('developer_token');
+            updateSyncButtonState();
+            renderAuthForm(developerModal, appVersion, updateSyncButtonState);
+            developerModal.classList.add('show');
+        }
+    } else {
+        renderAuthForm(developerModal, appVersion, updateSyncButtonState);
+        developerModal.classList.add('show');
+    }
+}
+
 export function initDeveloperTools(btnDeveloperToggle, developerModal, appVersion, updateSyncButtonState, options = {}) {
     devToolsOptions = options;
     if (btnDeveloperToggle) {
         btnDeveloperToggle.addEventListener('click', () => {
-            const savedToken = localStorage.getItem('developer_token');
-            
-            const verifyAndOpen = async (token) => {
-                const loaded = await loadDeveloperToolsBrick(token, appVersion);
-                if (loaded) {
-                    localStorage.setItem('developer_token', token);
-                    updateSyncButtonState();
-                    developerModal.classList.add('show');
-                } else {
-                    localStorage.removeItem('developer_token');
-                    updateSyncButtonState();
-                    renderAuthForm(developerModal, appVersion, updateSyncButtonState);
-                    developerModal.classList.add('show');
-                }
-            };
-
-            if (savedToken) {
-                verifyAndOpen(savedToken);
-            } else {
-                renderAuthForm(developerModal, appVersion, updateSyncButtonState);
-                developerModal.classList.add('show');
-            }
+            openDeveloperTools(developerModal, appVersion, updateSyncButtonState);
         });
     }
 
     if (developerModal) {
         developerModal.addEventListener('click', (e) => {
-            if (e.target === developerModal) developerModal.classList.remove('show');
+            if (e.target === developerModal) {
+                developerModal.classList.remove('show');
+                window.history.pushState(null, '', '/');
+            }
         });
     }
 
     window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && developerModal && developerModal.classList.contains('show')) {
             developerModal.classList.remove('show');
+            window.history.pushState(null, '', '/');
         }
     });
 }

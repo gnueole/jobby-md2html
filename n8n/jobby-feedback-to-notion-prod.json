@@ -23,8 +23,8 @@
         "operation": "create",
         "databaseId": {
           "__rl": true,
-          "value": "385ee932-db12-81f6-8256-e350b3d1b0f2",
-          "mode": "list"
+          "value": "={{ $('Get Notion DB ID').item.json.value }}",
+          "mode": "id"
         },
         "propertiesUi": {
           "propertyValues": [
@@ -139,6 +139,33 @@
         -100,
         300
       ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "={{ $env.JOBBY_DATA_TABLE_ID }}",
+          "mode": "id"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "key",
+              "keyValue": "notion_feedback_db_id"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        250,
+        460
+      ],
+      "id": "get-notion-db-id",
+      "name": "Get Notion DB ID"
     }
   ],
   "connections": {
@@ -147,6 +174,11 @@
         [
           {
             "node": "Notion",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Notion DB ID",
             "type": "main",
             "index": 0
           }

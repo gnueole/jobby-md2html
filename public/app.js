@@ -23,9 +23,7 @@ import {
 } from './js/shortcuts.js';
 import { startOpeningFireworks } from './js/fireworks.js';
 
-// New Modular Imports
-import { initSyntaxHighlighting, updateSyntaxHighlight } from './js/syntax.js';
-import { initDeveloperTools } from './js/developer.js';
+import { initDeveloperTools, openDeveloperTools } from './js/developer.js';
 import { initExports } from './js/exports.js';
 import { initThemeToggle } from './js/theme.js';
 import { initZoom, autoFitZoom } from './js/zoom.js';
@@ -1956,9 +1954,18 @@ async function initializeJobby() {
             // Dynamically swap the webhook path from cv-factory to jobby-sync
             url = url.replace(/\/cv-factory\/?$/, '/jobby-sync');
 
+            const detectorKey = isDev ? 'dev_notion_detector_db_id' : 'prod_notion_detector_db_id';
+            const feedbackKey = isDev ? 'dev_notion_feedback_db_id' : 'prod_notion_feedback_db_id';
+            const telemetryKey = isDev ? 'dev_notion_telemetry_db_id' : 'prod_notion_telemetry_db_id';
+
             const payload = {
                 config: styleConfig,
-                css: templatesCssText
+                css: templatesCssText,
+                variables: {
+                    notion_detector_db_id: localStorage.getItem(detectorKey) || (isDev ? '' : '127bad1f-b25a-4b6b-8eec-7b342e3aa504'),
+                    notion_feedback_db_id: localStorage.getItem(feedbackKey) || (isDev ? '' : '385ee932-db12-80ee-8794-d789554478b8'),
+                    notion_telemetry_db_id: localStorage.getItem(telemetryKey) || ''
+                }
             };
 
             btnSyncN8n.disabled = true;
@@ -2221,6 +2228,11 @@ async function initializeJobby() {
     const isTutorialRoute = path === '/tutorial' || path === '/tutorial/' || window.location.search.includes('tutorial');
     if (isTutorialRoute) {
         MarkdownPopupTutorial.mount();
+    }
+
+    const isDeveloperRoute = path === '/developer' || path === '/developer/';
+    if (isDeveloperRoute && developerModal) {
+        setTimeout(() => openDeveloperTools(developerModal, appVersion, updateSyncButtonState), 100);
     }
 
     // Trigger Session Start telemetry

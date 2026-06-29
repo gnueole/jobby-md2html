@@ -80,10 +80,11 @@ const server = http.createServer((req, res) => {
     // Resolve file path safely and strip query parameters/hash
     let cleanUrl = req.url.split('?')[0].split('#')[0];
 
-    // SPA routing: redirect /sample, /whatsnew, and /tutorial paths to serve the main index.html
+    // SPA routing: redirect /sample, /whatsnew, /tutorial, and /developer paths to serve the main index.html
     if (cleanUrl === '/sample' || cleanUrl === '/sample/' || 
         cleanUrl === '/whatsnew' || cleanUrl === '/whatsnew/' ||
-        cleanUrl === '/tutorial' || cleanUrl === '/tutorial/') {
+        cleanUrl === '/tutorial' || cleanUrl === '/tutorial/' ||
+        cleanUrl === '/developer' || cleanUrl === '/developer/') {
         cleanUrl = '/';
     }
 
