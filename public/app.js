@@ -35,7 +35,7 @@ import { MarkdownPopupTutorial } from './js/tutorial.js';
 
 async function initializeJobby() {
     // --- Fetch config (including dynamic version) ---
-    let appVersion = '1.10.5';
+    let appVersion = '1.10.6';
     try {
         const configRes = await fetch('/api/config');
         if (configRes.ok) {

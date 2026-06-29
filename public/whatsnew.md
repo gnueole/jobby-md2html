@@ -1,6 +1,25 @@
+# 1.10.6 - Jobby Update
+Jobby Update of 06/29/2026 · Dynamic Notion database variables for Atomic CV & Seeds, auto-formatting of database IDs in developer tools modal, and Makefile push/pull/list sync tools.
+[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+
+## 🗃️ DYNAMIC ATOMIC CV & CV SEEDS VARIABLES
+* **Full Sandbox Environment Compatibility**: Migrated the Atomic CV and CV Seeds Notion database IDs to the n8n Data Table configuration system, resolving production execution blocks due to environment variable sandboxing.
+
+## 🔗 DUAL-MODE COMMAND LINE SYNC & COMPARE TOOLS
+* **Local Terminal Utilities**: Created `make n8n-dbs-push`, `make n8n-dbs-pull`, and `make n8n-dbs-list` commands to easily push, pull, or compare your local Doppler database configs side-by-side with n8n with ANSI color highlight support.
+
+## ✍️ AUTO-FORMATTED DATABASE UIDS
+* **Enhanced Readability**: Added an automatic formatter inside the developer tools modal. Pasting or loading raw 32-character hex database IDs automatically segments them with hyphens into standard UUIDs.
+
+## 🎨 DEVELOPER MODAL INPUT STYLING
+* **Visual Tweaks**: Labels are now larger, and text boxes are smaller with a dimmed monospace font to enhance clarity.
+
+---
+
 # 1.10.5 - Jobby Update
 Jobby Update of 06/29/2026 · SPA /developer route, dynamic Notion DB variables in n8n data tables, telemetry local disable toggle, and color picker contrast fixes.
 [CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+
 
 ## 📥 DIRECT GOTENBERG PDF DOWNLOAD
 * **Clean & Dynamic PDF Generation**: Replaced external layout printing hacks with a direct PDF generation and download pipeline utilizing Gotenberg, fully resolving background printing bugs and layout mismatch issues.

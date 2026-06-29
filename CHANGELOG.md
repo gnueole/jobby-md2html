@@ -8,6 +8,16 @@ All notable changes to the Jobby project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.10.6] - 2026-06-29
+
+### Added
+- **Dynamic Atomic CV & Seeds configuration:** Added support for dynamic Notion Database ID variables for both Atomic CV and CV Seeds, bypassing n8n sandboxing environment restrictions in production.
+- **Terminal Sync Commands:** Introduced `make n8n-dbs-push`, `make n8n-dbs-pull`, and `make n8n-dbs-list` commands to easily sync and compare Doppler config with n8n tables side-by-side (with ANSI color highlight warnings).
+- **Auto-Formatted Database IDs:** Pasting or loading a 32-character hex database ID now automatically segments it with hyphens into standard UUID layout.
+
+### Changed
+- **Developer modal input styling:** Increased label font size to 13px, and set inputs to a smaller, less white monospace font layout to enhance legibility.
+
 ## [1.10.5] - 2026-06-29
 
 ### Added

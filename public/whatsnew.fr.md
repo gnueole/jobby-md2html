@@ -1,6 +1,25 @@
+# 1.10.6 - Mise à jour Jobby
+Mise à jour Jobby du 29/06/2026 · Variables dynamiques de base de données Notion pour l'Atomic CV et les Seeds, formatage automatique des identifiants dans la modale développeur, et outils de synchronisation push/pull/list en ligne de commande.
+[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+
+## 🗃️ CONFIGURATION DYNAMIQUE DE L'ATOMIC CV ET DES SEEDS
+* **Compatibilité totale avec l'environnement sandbox** : Migration des identifiants de base de données Notion de l'Atomic CV et des CV Seeds vers la table de données n8n, éliminant les blocages en production causés par les restrictions d'accès aux variables d'environnement.
+
+## 🔗 OUTILS DE CONFIGURATION DANS LE TERMINAL
+* **Utilitaires en ligne de commande** : Création des commandes `make n8n-dbs-push`, `make n8n-dbs-pull`, et `make n8n-dbs-list` pour pousser, récupérer ou comparer facilement vos variables locales avec n8n, avec coloration ANSI.
+
+## ✍️ FORMATAGE AUTOMATIQUE DES ID DE BDD
+* **Lisibilité améliorée** : Intégration d'un formateur automatique dans la modale d'outils développeur. Coller ou charger un identifiant brut de 32 caractères le convertit instantanément en format standard UUID avec des traits d'union.
+
+## 🎨 AFFICHAGE DE LA MODALE DÉVELOPPEUR
+* **Ajustements visuels** : Les étiquettes sont désormais plus grandes et les zones de saisie utilisent une police monospace plus petite et de luminosité atténuée pour une meilleure lisibilité.
+
+---
+
 # 1.10.5 - Mise à jour Jobby
 Mise à jour Jobby du 29/06/2026 · Route SPA /developer, variables dynamiques de base de données Notion dans les tables n8n, bouton de désactivation de la télémétrie locale, et correction de contraste du sélecteur de couleurs.
 [CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+
 
 ## 📥 TÉLÉCHARGEMENT DIRECT DE PDF VIA GOTENBERG
 * **Génération de PDF propre et dynamique** : Remplacement des astuces d'impression externes par un pipeline de génération et de téléchargement de PDF directement géré par Gotenberg, résolvant entièrement les bugs d'impression d'arrière-plan et les décalages de mise en page.
