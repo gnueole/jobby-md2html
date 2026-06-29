@@ -107,7 +107,7 @@
     },
     {
       "parameters": {
-        "content": "### Last Publish Info\n\nPublished on 2026-06-29 19:08:18 | Git: 2425aa6 bump(release): upgrade patch version to 1.10.5",
+        "content": "### Last Publish Info\n\nPublished on 2026-06-29 19:26:18 | Git: bf24e2b fix(n8n): correct LinkedIn to Notion workflow trigger node connections mapping",
         "height": 150,
         "width": 300,
         "color": 6
@@ -147,13 +147,14 @@
     },
     {
       "parameters": {
-        "operation": "getAll",
+        "operation": "get",
         "dataTableId": {
           "__rl": true,
           "value": "OtWoNuYUmoj7knoz",
           "mode": "id"
         },
-        "options": {}
+        "options": {},
+        "filters": {}
       },
       "id": "d8f8a0c0-f8f8-4e8a-a43b-5511b8bdf8f8",
       "name": "Read Config Table",
@@ -394,13 +395,14 @@
       },
       {
         "parameters": {
-          "operation": "getAll",
+          "operation": "get",
           "dataTableId": {
             "__rl": true,
             "value": "OtWoNuYUmoj7knoz",
             "mode": "id"
           },
-          "options": {}
+          "options": {},
+          "filters": {}
         },
         "id": "d8f8a0c0-f8f8-4e8a-a43b-5511b8bdf8f8",
         "name": "Read Config Table",
@@ -486,5 +488,5 @@
       }
     ]
   },
-  "//": "Published on 2026-06-29 19:08:18 | Git: 2425aa6 bump(release): upgrade patch version to 1.10.5"
+  "//": "Published on 2026-06-29 19:26:18 | Git: bf24e2b fix(n8n): correct LinkedIn to Notion workflow trigger node connections mapping"
 }
