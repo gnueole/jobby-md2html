@@ -25,8 +25,8 @@
         "resource": "databasePage",
         "databaseId": {
           "__rl": true,
-          "value": "={{ $env.JOBBY_TELEMETRY_DB_ID }}",
-          "mode": "id"
+          "value": "385ee932-db12-80ee-8794-d789554478b8",
+          "mode": "list"
         },
         "title": "Session ID",
         "simple": false,

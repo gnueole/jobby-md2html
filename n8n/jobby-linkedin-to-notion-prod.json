@@ -137,8 +137,8 @@
         "resource": "databasePage",
         "databaseId": {
           "__rl": true,
-          "value": "={{ $env.JOBBY_DETECTOR_DB_ID }}",
-          "mode": "id"
+          "value": "127bad1f-b25a-4b6b-8eec-7b342e3aa504",
+          "mode": "list"
         },
         "title": "LinkedIn Detector",
         "simple": false,
