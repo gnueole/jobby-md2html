@@ -1926,6 +1926,7 @@ async function initializeJobby() {
     // --- Lazy load Developer Tools brick on authentication ---
     initDeveloperTools(btnDeveloperToggle, developerModal, appVersion, updateSyncButtonState, {
         getStyleConfig: () => styleConfig,
+        getTemplatesCss: () => templatesCssText,
         importConfig: (importedConfig) => {
             for (const key in styleConfig) {
                 delete styleConfig[key];

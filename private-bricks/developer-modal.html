@@ -49,7 +49,12 @@
                 </div>
                 
                 <div style="border-top: 1px solid var(--border-color); padding-top: 12px;">
-                    <h5 style="font-size: 11px; font-weight: 600; margin-bottom: 6px; color: var(--text-primary);">🗃️ NOTION DATABASE MAPPINGS</h5>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                        <h5 style="font-size: 11px; font-weight: 600; margin: 0; color: var(--text-primary);">🗃️ NOTION DATABASE MAPPINGS</h5>
+                        <button id="btn-fetch-db-mappings" style="font-size: 9.5px; padding: 3px 8px; border-radius: 4px; background: var(--bg-input); border: 1px solid var(--border-color); color: var(--text-primary); cursor: pointer; display: flex; align-items: center; gap: 4px;" type="button">
+                            🔄 Fetch from n8n
+                        </button>
+                    </div>
                     <div style="display: flex; flex-direction: column; gap: 8px;">
                         <div>
                             <label style="font-size: 11px; font-weight: 500; display: block; margin-bottom: 4px;">LinkedIn Detector Database ID</label>
@@ -71,8 +76,9 @@
                         Disable telemetry (Local dev / testing)
                     </label>
                 </div>
-                <div style="text-align: right; margin-top: 6px;">
-                    <button id="btn-save-dev-settings" class="btn btn-primary">Save Settings</button>
+                <div style="display: flex; gap: 8px; justify-content: flex-end; margin-top: 6px;">
+                    <button id="btn-sync-dev-settings" class="btn btn-secondary" style="padding: 8px 16px;" type="button">Sync to n8n</button>
+                    <button id="btn-save-dev-settings" class="btn btn-primary" style="padding: 8px 16px;" type="button">Save Settings</button>
                 </div>
             </div>
             

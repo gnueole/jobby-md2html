@@ -113,6 +113,119 @@ function bindDeveloperToolsEvents() {
     // Initial compile of links
     triggerUpdateLinks();
 
+    const fetchDbMappingsFromN8n = async () => {
+        const urlKey = isDev ? 'dev_webhook_url' : 'prod_webhook_url';
+        const tokenKey = isDev ? 'dev_webhook_token' : 'prod_webhook_token';
+
+        let url = localStorage.getItem(urlKey) || '';
+        const token = localStorage.getItem(tokenKey) || '';
+        if (!url) return;
+
+        url = url.replace(/\/cv-factory\/?$/, '/jobby-sync');
+
+        const btnFetch = document.getElementById('btn-fetch-db-mappings');
+        if (btnFetch) {
+            btnFetch.disabled = true;
+            btnFetch.textContent = '🔄 Fetching...';
+        }
+
+        const headers = { 'Accept': 'application/json' };
+        if (token) headers['Authorization'] = `Bearer ${token}`;
+
+        try {
+            const res = await fetch(url, { method: 'GET', headers });
+            if (res.ok) {
+                const data = await res.json();
+                if (data) {
+                    if (data.notion_detector_db_id && notionDetectorDb) {
+                        notionDetectorDb.value = data.notion_detector_db_id;
+                        localStorage.setItem(detectorKey, data.notion_detector_db_id);
+                    }
+                    if (data.notion_feedback_db_id && notionFeedbackDb) {
+                        notionFeedbackDb.value = data.notion_feedback_db_id;
+                        localStorage.setItem(feedbackKey, data.notion_feedback_db_id);
+                    }
+                    if (data.notion_telemetry_db_id && notionTelemetryDb) {
+                        notionTelemetryDb.value = data.notion_telemetry_db_id;
+                        localStorage.setItem(telemetryKey, data.notion_telemetry_db_id);
+                    }
+                    showToast("Retrieved database mappings from n8n!");
+                }
+            } else {
+                console.warn('[Developer] GET /jobby-sync failed:', res.status);
+            }
+        } catch (err) {
+            console.error('[Developer] Error fetching from n8n:', err);
+        } finally {
+            if (btnFetch) {
+                btnFetch.disabled = false;
+                btnFetch.textContent = '🔄 Fetch from n8n';
+            }
+        }
+    };
+
+    const btnFetchDbMappings = document.getElementById('btn-fetch-db-mappings');
+    if (btnFetchDbMappings) {
+        btnFetchDbMappings.addEventListener('click', fetchDbMappingsFromN8n);
+    }
+
+    const btnSyncDevSettings = document.getElementById('btn-sync-dev-settings');
+    if (btnSyncDevSettings) {
+        btnSyncDevSettings.addEventListener('click', async () => {
+            const urlKey = isDev ? 'dev_webhook_url' : 'prod_webhook_url';
+            const tokenKey = isDev ? 'dev_webhook_token' : 'prod_webhook_token';
+
+            let url = localStorage.getItem(urlKey) || '';
+            const token = localStorage.getItem(tokenKey) || '';
+            if (!url) {
+                showToast("Please configure Webhook URL first!");
+                return;
+            }
+
+            url = url.replace(/\/cv-factory\/?$/, '/jobby-sync');
+
+            const payload = {
+                config: devToolsOptions.getStyleConfig ? devToolsOptions.getStyleConfig() : {},
+                css: devToolsOptions.getTemplatesCss ? devToolsOptions.getTemplatesCss() : "",
+                variables: {
+                    notion_detector_db_id: notionDetectorDb.value.trim(),
+                    notion_feedback_db_id: notionFeedbackDb.value.trim(),
+                    notion_telemetry_db_id: notionTelemetryDb.value.trim()
+                }
+            };
+
+            btnSyncDevSettings.disabled = true;
+            const originalText = btnSyncDevSettings.textContent;
+            btnSyncDevSettings.textContent = "Syncing...";
+
+            const headers = { 'Content-Type': 'application/json' };
+            if (token) headers['Authorization'] = `Bearer ${token}`;
+
+            try {
+                const res = await fetch(url, {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify(payload)
+                });
+                if (res.ok) {
+                    showToast("Settings and design synced to n8n!");
+                    
+                    localStorage.setItem(detectorKey, notionDetectorDb.value.trim());
+                    localStorage.setItem(feedbackKey, notionFeedbackDb.value.trim());
+                    localStorage.setItem(telemetryKey, notionTelemetryDb.value.trim());
+                } else {
+                    throw new Error("HTTP " + res.status);
+                }
+            } catch (err) {
+                console.error('[Developer] Sync failed:', err);
+                showToast("Sync failed: " + err.message);
+            } finally {
+                btnSyncDevSettings.disabled = false;
+                btnSyncDevSettings.textContent = originalText;
+            }
+        });
+    }
+
     if (btnCloseDeveloperModal) {
         btnCloseDeveloperModal.addEventListener('click', () => {
             developerModal.classList.remove('show');
@@ -151,6 +264,9 @@ function bindDeveloperToolsEvents() {
             showToast("Settings saved successfully!");
         });
     }
+
+    // Auto-fetch settings from n8n on load
+    setTimeout(fetchDbMappingsFromN8n, 200);
 
     // JSON Import/Export Event Handlers
     const btnExportJson = document.getElementById('btn-export-json');
