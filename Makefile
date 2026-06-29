@@ -242,3 +242,10 @@ n8n-pull-dbs:
 		python3 toolkit/sync_doppler_dbs.py pull; \
 	fi
 
+n8n-list-dbs:
+	@if $(DOPPLER) --version >/dev/null 2>&1; then \
+		$(DOPPLER) run --project $(DOPPLER_PROJECT) --config $(DOPPLER_CONFIG_PROD) -- python3 toolkit/sync_doppler_dbs.py list; \
+	else \
+		python3 toolkit/sync_doppler_dbs.py list; \
+	fi
+

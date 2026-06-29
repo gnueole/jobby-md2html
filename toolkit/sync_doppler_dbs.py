@@ -114,6 +114,74 @@ def pull_n8n_to_doppler(n_base_url, n_api_key, table_id, mappings):
     except subprocess.CalledProcessError as e:
         print(f"[ERR] Failed to write database IDs to Doppler: {e.stderr or e.output}")
 
+def list_dbs(n_base_url, n_api_key, table_id, mappings):
+    ctx = ssl.create_default_context()
+    ctx.check_hostname = False
+    ctx.verify_mode = ssl.CERT_NONE
+
+    print(f"[*] Fetching database IDs from n8n data table '{table_id}'...")
+
+    req = urllib.request.Request(
+        f"{n_base_url}/api/v1/data-tables/{table_id}/rows?limit=250",
+        headers=get_n8n_headers(n_api_key),
+        method="GET"
+    )
+
+    try:
+        with urllib.request.urlopen(req, context=ctx) as res:
+            response_data = json.loads(res.read().decode("utf-8"))
+    except Exception as e:
+        print(f"[ERR] Failed to fetch rows from n8n: {e}")
+        return
+
+    rows = response_data.get("data", [])
+    n8n_vals = {}
+    for row in rows:
+        key = row.get("key")
+        val = row.get("value")
+        if key and val:
+            n8n_vals[key] = val
+
+    print("\nJobby Notion Database Configuration Comparison:")
+    header_fmt = "{:<25} | {:<20} | {:<20} | {:<10}"
+    row_fmt = "{:<25} | {:<20} | {:<20} | {:<10}"
+    divider = "-" * 85
+    print(divider)
+    print(header_fmt.format("Database Name (Key)", "Doppler Value", "n8n Value", "Status"))
+    print(divider)
+
+    has_diffs = False
+
+    for env_name, table_key in mappings.items():
+        doppler_val = os.environ.get(env_name, "").strip().replace('"', '').replace("'", "")
+        n8n_val = n8n_vals.get(table_key, "").strip()
+
+        doppler_display = doppler_val if doppler_val else "Not Set"
+        n8n_display = n8n_val if n8n_val else "Not Set"
+
+        # Truncate for display if long
+        if len(doppler_display) > 17:
+            doppler_display = doppler_display[:14] + "..."
+        if len(n8n_display) > 17:
+            n8n_display = n8n_display[:14] + "..."
+
+        if doppler_val == n8n_val:
+            status = "MATCH"
+        else:
+            status = "DIFF"
+            has_diffs = True
+
+        print(row_fmt.format(table_key, doppler_display, n8n_display, status))
+
+    print(divider)
+    if has_diffs:
+        print("[!] Warning: Differences detected between Doppler and n8n database IDs.")
+        print("    Run 'make n8n-push-dbs' to push Doppler -> n8n.")
+        print("    Run 'make n8n-pull-dbs' to pull n8n -> Doppler.")
+    else:
+        print("[OK] Doppler and n8n database IDs are in sync.")
+    print()
+
 def main():
     n_base_url = os.environ.get("N8N_BASE_URL", "https://n8n.eole.me")
     n_api_key = os.environ.get("N8N_API_KEY")
@@ -138,11 +206,15 @@ def main():
             mode = "pull"
         elif arg in ["push", "to-n8n"]:
             mode = "push"
+        elif arg in ["list", "diff", "compare"]:
+            mode = "list"
 
     if mode == "push":
         push_doppler_to_n8n(n_base_url, n_api_key, table_id, mappings)
-    else:
+    elif mode == "pull":
         pull_n8n_to_doppler(n_base_url, n_api_key, table_id, mappings)
+    elif mode == "list":
+        list_dbs(n_base_url, n_api_key, table_id, mappings)
 
 if __name__ == "__main__":
     main()
