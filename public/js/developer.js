@@ -88,10 +88,10 @@ function bindDeveloperToolsEvents() {
     devWebhookToken.value = localStorage.getItem('dev_webhook_token') || '';
     
     if (notionDetectorDb) {
-        notionDetectorDb.value = localStorage.getItem(detectorKey) || (isDev ? '' : '127bad1f-b25a-4b6b-8eec-7b342e3aa504');
+        notionDetectorDb.value = localStorage.getItem(detectorKey) || '';
     }
     if (notionFeedbackDb) {
-        notionFeedbackDb.value = localStorage.getItem(feedbackKey) || (isDev ? '' : '385ee932-db12-80ee-8794-d789554478b8');
+        notionFeedbackDb.value = localStorage.getItem(feedbackKey) || '';
     }
     if (notionTelemetryDb) {
         notionTelemetryDb.value = localStorage.getItem(telemetryKey) || '';
