@@ -1191,6 +1191,11 @@ input[type="color"]::-moz-color-swatch {
     max-width: 800px;
 }
 
+#developer-modal .modal-card {
+    max-width: 900px;
+    width: 95%;
+}
+
 /* Help Modal Redesign Styles */
 #help-modal .intro-card:hover {
     border-color: rgba(124, 58, 237, 0.3) !important;

@@ -1,6 +1,23 @@
+# 1.10.7 - Mise à jour Jobby
+Mise à jour Jobby du 29/06/2026 · Mise en page de la modale développeur sur deux colonnes, styles unifiés pour les saisies de webhooks, en-têtes de section capitalisés, et correction de l'exécution en parallèle des nœuds n8n.
+[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+
+## 🥞 NOUVELLE MODALE DÉVELOPPEUR SUR DEUX COLONNES
+* **Disposition côte à côte** : Réorganisation de la modale développeur en élargissant la carte et en plaçant les sections Webhooks et Notion Database Mappings côte à côte, éliminant le besoin de faire défiler verticalement.
+* **En-têtes harmonisés** : Les titres de section ont été capitalisés et agrandis à `14px` (`⚙️ CONFIGURE WEBHOOKS` et `🗃️ NOTION DATABASE MAPPINGS`) pour un équilibre visuel parfait.
+
+## ✍️ STYLES DES SAISIES DE WEBHOOKS UNIFIÉS
+* **Format Monospace aligné** : Mise à jour des 4 entrées d'URL et jeton de sécurité pour correspondre exactement à l'apparence des identifiants de base de données (police monospace de 11.5px et couleur atténuée).
+
+## 🐛 CORRECTION DE L'ERREUR D'EXÉCUTION N8N
+* **Flux séquentiel DAG** : Restructuration de l'ordre d'exécution des identifiants Notion dans le workflow de tailing LinkedIn de manière séquentielle (`CV Factory -> Get Notion DB ID -> Get Atom CV DB ID -> Get Seed DB ID -> Get CV data`), corrigeant définitivement l'erreur `No path back to referenced node`.
+
+---
+
 # 1.10.6 - Mise à jour Jobby
 Mise à jour Jobby du 29/06/2026 · Variables dynamiques de base de données Notion pour l'Atomic CV et les Seeds, formatage automatique des identifiants dans la modale développeur, et outils de synchronisation push/pull/list en ligne de commande.
 [CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+
 
 ## 🗃️ CONFIGURATION DYNAMIQUE DE L'ATOMIC CV ET DES SEEDS
 * **Compatibilité totale avec l'environnement sandbox** : Migration des identifiants de base de données Notion de l'Atomic CV et des CV Seeds vers la table de données n8n, éliminant les blocages en production causés par les restrictions d'accès aux variables d'environnement.

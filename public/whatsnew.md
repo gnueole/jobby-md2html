@@ -1,3 +1,19 @@
+# 1.10.7 - Jobby Update
+Jobby Update of 06/29/2026 · Split dual-column Developer Tools modal layout, styled webhook canvas inputs, capitalized modal section headers, and fixed n8n parallel execution graph paths.
+[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+
+## 🥞 SPLIT DEV TOOLS LAYOUT
+* **Side-by-Side Flex Layout**: Redesigned the Developer Tools modal by widening the card and placing Webhooks and Notion Database Mappings side-by-side in columns, eliminating vertical scrolling fatigue.
+* **Capitalized Headers**: Capitalized and enlarged modal section headers to `14px` (`⚙️ CONFIGURE WEBHOOKS` and `🗃️ NOTION DATABASE MAPPINGS`) for consistent visual weight.
+
+## ✍️ STYLED WEBHOOK INPUTS
+* **Monospace Format alignment**: Updated all 4 active/test webhook URL and security token inputs to match the database ID format (smaller 11.5px monospace font and dimmed text color).
+
+## 🐛 FIXED N8N PARALLEL EXECUTION ERROR
+* **DAG Series Graph Flow**: Restructured the Notion database ID lookup nodes inside the Jobby LinkedIn tailer workflow in series (`CV Factory -> Get Notion DB ID -> Get Atom CV DB ID -> Get Seed DB ID -> Get CV data`), resolving the `No path back to referenced node` error.
+
+---
+
 # 1.10.6 - Jobby Update
 Jobby Update of 06/29/2026 · Dynamic Notion database variables for Atomic CV & Seeds, auto-formatting of database IDs in developer tools modal, and Makefile push/pull/list sync tools.
 [CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]

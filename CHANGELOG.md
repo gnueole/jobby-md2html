@@ -8,6 +8,15 @@ All notable changes to the Jobby project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.10.7] - 2026-06-29
+
+### Added
+- **Split column layout for Developer Tools:** Reorganized the Developer Tools modal by widening the card and placing Webhooks and Notion Database Mappings in side-by-side columns.
+- **Unified input styling:** Styled active/test webhook URL and security token inputs to match the monospace font layout of database IDs.
+
+### Fixed
+- **n8n parallel branch path error:** Changed n8n database lookup connections layout from parallel to sequential series, resolving the NodeOperationError ("No path back to referenced node") on Get CV data.
+
 ## [1.10.6] - 2026-06-29
 
 ### Added
