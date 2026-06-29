@@ -107,7 +107,7 @@
     },
     {
       "parameters": {
-        "content": "### Last Publish Info\n\nPublished on 2026-06-29 19:26:18 | Git: bf24e2b fix(n8n): correct LinkedIn to Notion workflow trigger node connections mapping",
+        "content": "### Last Publish Info\n\nPublished on 2026-06-29 19:33:37 | Git: f852d89 fix(n8n): change dataTable operation from invalid getAll to get in sync-conf workflow",
         "height": 150,
         "width": 300,
         "color": 6
@@ -488,5 +488,5 @@
       }
     ]
   },
-  "//": "Published on 2026-06-29 19:26:18 | Git: bf24e2b fix(n8n): correct LinkedIn to Notion workflow trigger node connections mapping"
+  "//": "Published on 2026-06-29 19:33:37 | Git: f852d89 fix(n8n): change dataTable operation from invalid getAll to get in sync-conf workflow"
 }

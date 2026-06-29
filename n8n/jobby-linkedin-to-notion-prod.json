@@ -294,7 +294,7 @@
     },
     {
       "parameters": {
-        "content": "### Last Publish Info\n\nPublished on 2026-06-29 19:26:00 | Git: 3410772 feat(n8n,developer): add Atomic CV and CV Seeds dynamic mappings, and hardcode data table ID to bypass production environment restrictions",
+        "content": "### Last Publish Info\n\nPublished on 2026-06-29 19:33:37 | Git: f852d89 fix(n8n): change dataTable operation from invalid getAll to get in sync-conf workflow",
         "height": 150,
         "width": 300,
         "color": 6
@@ -1085,5 +1085,5 @@
       }
     ]
   },
-  "//": "Published on 2026-06-29 19:26:00 | Git: 3410772 feat(n8n,developer): add Atomic CV and CV Seeds dynamic mappings, and hardcode data table ID to bypass production environment restrictions"
+  "//": "Published on 2026-06-29 19:33:37 | Git: f852d89 fix(n8n): change dataTable operation from invalid getAll to get in sync-conf workflow"
 }

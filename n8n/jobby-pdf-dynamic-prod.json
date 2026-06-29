@@ -1,5 +1,5 @@
 {
-  "//": "Published on 2026-06-29 19:08:18 | Git: 2425aa6 bump(release): upgrade patch version to 1.10.5",
+  "//": "Published on 2026-06-29 19:33:37 | Git: f852d89 fix(n8n): change dataTable operation from invalid getAll to get in sync-conf workflow",
   "updatedAt": "2026-06-03T11:51:05.014Z",
   "createdAt": "2026-05-29T09:56:13.800Z",
   "id": "dSX8vdBy3PnPdiOU",
@@ -349,7 +349,7 @@
     },
     {
       "parameters": {
-        "content": "### Last Publish Info\n\nPublished on 2026-06-29 19:08:18 | Git: 2425aa6 bump(release): upgrade patch version to 1.10.5",
+        "content": "### Last Publish Info\n\nPublished on 2026-06-29 19:33:37 | Git: f852d89 fix(n8n): change dataTable operation from invalid getAll to get in sync-conf workflow",
         "height": 150,
         "width": 300,
         "color": 6

@@ -17,7 +17,7 @@ def push_doppler_to_n8n(n_base_url, n_api_key, table_id, mappings):
     ctx.check_hostname = False
     ctx.verify_mode = ssl.CERT_NONE
 
-    print(f"[*] Pushing Doppler secrets to n8n data table '{table_id}'...")
+    print(f"[*] Pushing Doppler database IDs to n8n data table '{table_id}'...")
 
     for env_name, table_key in mappings.items():
         val = os.environ.get(env_name)
@@ -86,33 +86,33 @@ def pull_n8n_to_doppler(n_base_url, n_api_key, table_id, mappings):
 
     # Invert the mapping to find Doppler keys by table keys
     rev_mappings = {v: k for k, v in mappings.items()}
-    secrets_to_set = {}
+    db_ids_to_set = {}
 
     for row in rows:
         key = row.get("key")
         val = row.get("value")
         if key in rev_mappings and val:
-            secrets_to_set[rev_mappings[key]] = val
+            db_ids_to_set[rev_mappings[key]] = val
 
-    if not secrets_to_set:
-        print("[i] No matching Jobby configuration keys found in n8n table to pull.")
+    if not db_ids_to_set:
+        print("[i] No matching Jobby database configuration keys found in n8n table to pull.")
         return
 
-    # Call Doppler CLI to set the secrets
+    # Call Doppler CLI to set the database IDs
     project = os.environ.get("DOPPLER_PROJECT", "eole-me")
     config = os.environ.get("DOPPLER_CONFIG", "prd_eole-me-jobby")
 
     cmd = ["doppler", "secrets", "set", f"--project={project}", f"--config={config}"]
-    for k, v in secrets_to_set.items():
+    for k, v in db_ids_to_set.items():
         cmd.append(f"{k}={v}")
 
-    print(f"Updating Doppler config '{config}' with {len(secrets_to_set)} secrets...")
+    print(f"Updating Doppler config '{config}' with {len(db_ids_to_set)} database IDs...")
     try:
         result = subprocess.run(cmd, capture_output=True, text=True, check=True, errors="ignore")
-        print("[OK] Successfully updated Doppler secrets!")
+        print("[OK] Successfully updated Doppler database config!")
         print(result.stdout)
     except subprocess.CalledProcessError as e:
-        print(f"[ERR] Failed to write secrets to Doppler: {e.stderr or e.output}")
+        print(f"[ERR] Failed to write database IDs to Doppler: {e.stderr or e.output}")
 
 def main():
     n_base_url = os.environ.get("N8N_BASE_URL", "https://n8n.eole.me")
