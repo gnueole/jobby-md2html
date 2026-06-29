@@ -89,7 +89,7 @@
         "resource": "database",
         "databaseId": {
           "__rl": true,
-          "value": "={{ $env.JOBBY_ATOM_CV_DB_ID }}",
+          "value": "={{ $('Get Atom CV DB ID').item.json.value }}",
           "mode": "id"
         }
       },
@@ -113,7 +113,7 @@
         "resource": "database",
         "databaseId": {
           "__rl": true,
-          "value": "={{ $env.JOBBY_SEED_DB_ID }}",
+          "value": "={{ $('Get Seed DB ID').item.json.value }}",
           "mode": "id"
         }
       },
@@ -313,7 +313,7 @@
         "operation": "get",
         "dataTableId": {
           "__rl": true,
-          "value": "={{ $env.JOBBY_DATA_TABLE_ID }}",
+          "value": "OtWoNuYUmoj7knoz",
           "mode": "id"
         },
         "matchType": "allConditions",
@@ -334,6 +334,60 @@
       ],
       "id": "get-notion-db-id",
       "name": "Get Notion DB ID"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "OtWoNuYUmoj7knoz",
+          "mode": "id"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "key",
+              "keyValue": "notion_atom_cv_db_id"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        250,
+        -280
+      ],
+      "id": "get-atom-cv-db-id",
+      "name": "Get Atom CV DB ID"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "OtWoNuYUmoj7knoz",
+          "mode": "id"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "key",
+              "keyValue": "notion_seed_db_id"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        250,
+        40
+      ],
+      "id": "get-seed-db-id",
+      "name": "Get Seed DB ID"
     }
   ],
   "connections": {
@@ -432,6 +486,32 @@
         [
           {
             "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Get CV data",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Notion DB ID",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Atom CV DB ID",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Seed DB ID",
             "type": "main",
             "index": 0
           }
@@ -634,7 +714,7 @@
           "resource": "database",
           "databaseId": {
             "__rl": true,
-            "value": "={{ $env.JOBBY_ATOM_CV_DB_ID }}",
+            "value": "={{ $('Get Atom CV DB ID').item.json.value }}",
             "mode": "id"
           }
         },
@@ -658,7 +738,7 @@
           "resource": "database",
           "databaseId": {
             "__rl": true,
-            "value": "={{ $env.JOBBY_SEED_DB_ID }}",
+            "value": "={{ $('Get Seed DB ID').item.json.value }}",
             "mode": "id"
           }
         },
@@ -837,6 +917,60 @@
         ],
         "id": "0334fb31-bc67-410f-89bc-7e0de9ccaa43",
         "name": "Stop and Error"
+      },
+      {
+        "parameters": {
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "value": "OtWoNuYUmoj7knoz",
+            "mode": "id"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "key",
+                "keyValue": "notion_atom_cv_db_id"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1,
+        "position": [
+          250,
+          -280
+        ],
+        "id": "get-atom-cv-db-id",
+        "name": "Get Atom CV DB ID"
+      },
+      {
+        "parameters": {
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "value": "OtWoNuYUmoj7knoz",
+            "mode": "id"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "key",
+                "keyValue": "notion_seed_db_id"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1,
+        "position": [
+          250,
+          40
+        ],
+        "id": "get-seed-db-id",
+        "name": "Get Seed DB ID"
       }
     ],
     "connections": {
@@ -930,6 +1064,32 @@
           [
             {
               "node": "AI Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Get CV data",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Get Notion DB ID",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Get Atom CV DB ID",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "Get Seed DB ID",
               "type": "main",
               "index": 0
             }

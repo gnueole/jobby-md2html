@@ -163,7 +163,7 @@
         "operation": "get",
         "dataTableId": {
           "__rl": true,
-          "value": "={{ $env.JOBBY_DATA_TABLE_ID }}",
+          "value": "OtWoNuYUmoj7knoz",
           "mode": "id"
         },
         "matchType": "allConditions",

@@ -68,6 +68,8 @@ function bindDeveloperToolsEvents() {
     const notionDetectorDb = document.getElementById('notion-detector-db-id');
     const notionFeedbackDb = document.getElementById('notion-feedback-db-id');
     const notionTelemetryDb = document.getElementById('notion-telemetry-db-id');
+    const notionAtomCvDb = document.getElementById('notion-atom-cv-db-id');
+    const notionSeedDb = document.getElementById('notion-seed-db-id');
 
     const isDev = window.location.hostname === 'localhost' || 
                   window.location.hostname === '127.0.0.1' || 
@@ -76,6 +78,8 @@ function bindDeveloperToolsEvents() {
     const detectorKey = isDev ? 'dev_notion_detector_db_id' : 'prod_notion_detector_db_id';
     const feedbackKey = isDev ? 'dev_notion_feedback_db_id' : 'prod_notion_feedback_db_id';
     const telemetryKey = isDev ? 'dev_notion_telemetry_db_id' : 'prod_notion_telemetry_db_id';
+    const atomCvKey = isDev ? 'dev_notion_atom_cv_db_id' : 'prod_notion_atom_cv_db_id';
+    const seedKey = isDev ? 'dev_notion_seed_db_id' : 'prod_notion_seed_db_id';
 
     // Load saved settings into fields
     prodWebhookUrl.value = localStorage.getItem('prod_webhook_url') || 'https://n8n.eole.me/webhook/cv-factory';
@@ -91,6 +95,12 @@ function bindDeveloperToolsEvents() {
     }
     if (notionTelemetryDb) {
         notionTelemetryDb.value = localStorage.getItem(telemetryKey) || '';
+    }
+    if (notionAtomCvDb) {
+        notionAtomCvDb.value = localStorage.getItem(atomCvKey) || '';
+    }
+    if (notionSeedDb) {
+        notionSeedDb.value = localStorage.getItem(seedKey) || '';
     }
 
     if (devDisableTelemetry) {
@@ -149,6 +159,14 @@ function bindDeveloperToolsEvents() {
                         notionTelemetryDb.value = data.notion_telemetry_db_id;
                         localStorage.setItem(telemetryKey, data.notion_telemetry_db_id);
                     }
+                    if (data.notion_atom_cv_db_id && notionAtomCvDb) {
+                        notionAtomCvDb.value = data.notion_atom_cv_db_id;
+                        localStorage.setItem(atomCvKey, data.notion_atom_cv_db_id);
+                    }
+                    if (data.notion_seed_db_id && notionSeedDb) {
+                        notionSeedDb.value = data.notion_seed_db_id;
+                        localStorage.setItem(seedKey, data.notion_seed_db_id);
+                    }
                     showToast("Retrieved database mappings from n8n!");
                 }
             } else {
@@ -190,7 +208,9 @@ function bindDeveloperToolsEvents() {
                 variables: {
                     notion_detector_db_id: notionDetectorDb.value.trim(),
                     notion_feedback_db_id: notionFeedbackDb.value.trim(),
-                    notion_telemetry_db_id: notionTelemetryDb.value.trim()
+                    notion_telemetry_db_id: notionTelemetryDb.value.trim(),
+                    notion_atom_cv_db_id: notionAtomCvDb.value.trim(),
+                    notion_seed_db_id: notionSeedDb.value.trim()
                 }
             };
 
@@ -213,6 +233,8 @@ function bindDeveloperToolsEvents() {
                     localStorage.setItem(detectorKey, notionDetectorDb.value.trim());
                     localStorage.setItem(feedbackKey, notionFeedbackDb.value.trim());
                     localStorage.setItem(telemetryKey, notionTelemetryDb.value.trim());
+                    localStorage.setItem(atomCvKey, notionAtomCvDb.value.trim());
+                    localStorage.setItem(seedKey, notionSeedDb.value.trim());
                 } else {
                     throw new Error("HTTP " + res.status);
                 }
@@ -255,6 +277,12 @@ function bindDeveloperToolsEvents() {
             }
             if (notionTelemetryDb) {
                 localStorage.setItem(telemetryKey, notionTelemetryDb.value.trim());
+            }
+            if (notionAtomCvDb) {
+                localStorage.setItem(atomCvKey, notionAtomCvDb.value.trim());
+            }
+            if (notionSeedDb) {
+                localStorage.setItem(seedKey, notionSeedDb.value.trim());
             }
 
             if (devDisableTelemetry) {
