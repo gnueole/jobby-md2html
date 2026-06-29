@@ -1,5 +1,5 @@
-# 1.10.4 - Mise à jour Jobby
-Mise à jour Jobby du 24/06/2026 · Téléchargements PDF Gotenberg, contrôles de taille de police dans l'éditeur, positionnement dynamique des menus déroulants/infobulles et synchronisation des langues.
+# 1.10.5 - Mise à jour Jobby
+Mise à jour Jobby du 29/06/2026 · Route SPA /developer, variables dynamiques de base de données Notion dans les tables n8n, bouton de désactivation de la télémétrie locale, et correction de contraste du sélecteur de couleurs.
 [CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
 
 ## 📥 TÉLÉCHARGEMENT DIRECT DE PDF VIA GOTENBERG

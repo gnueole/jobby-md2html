@@ -1,5 +1,5 @@
-# 1.10.4 - Jobby Update
-Jobby Update of 06/24/2026 · Gotenberg PDF downloads, Editor Font Size controls, Dynamic dropdowns/tooltips layout, and Locales synchronization.
+# 1.10.5 - Jobby Update
+Jobby Update of 06/29/2026 · SPA /developer route, dynamic Notion DB variables in n8n data tables, telemetry local disable toggle, and color picker contrast fixes.
 [CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
 
 ## 📥 DIRECT GOTENBERG PDF DOWNLOAD

@@ -8,6 +8,16 @@ All notable changes to the Jobby project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.10.5] - 2026-06-29
+
+### Added
+- **Developer Tools SPA Routing:** Added support for a direct `/developer` URL path that auto-launches the Developer Tools panel.
+- **Dynamic Notion Database UIDs:** Migrated all Notion Database UIDs to a dynamic n8n Data Table system, configurable directly from the Developer Tools UI.
+- **Local Telemetry Bypass Flag:** Added a checkbox setting inside the Developer Tools modal to easily disable telemetry during development or local testing.
+
+### Fixed
+- **Color Swatch contrast borders:** Added 35% neutral gray borders to customizer color picker swatches, preventing them from blending invisibly on light/dark backgrounds.
+
 ## [1.10.4] - 2026-06-25
 
 ### Added
