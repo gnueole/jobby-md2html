@@ -107,7 +107,7 @@
     },
     {
       "parameters": {
-        "content": "### Last Publish Info\n\nPublished on 2026-06-29 11:18:35 | Git: 857f802 ux(developer): rename webhook labels to Active/Test and restore default test webhook URL endpoint",
+        "content": "### Last Publish Info\n\nPublished on 2026-06-29 19:08:18 | Git: 2425aa6 bump(release): upgrade patch version to 1.10.5",
         "height": 150,
         "width": 300,
         "color": 6
@@ -119,6 +119,62 @@
       "position": [
         -350,
         0
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "GET",
+        "path": "jobby-sync",
+        "authentication": "headerAuth",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "9f91a0c0-f8f8-4e8a-a43b-5511b8bdf8f8",
+      "name": "Webhook Jobby Get",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        0,
+        200
+      ],
+      "webhookId": "85acc1c2-9244-4ca7-b75e-1d129d879c13",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "QDm4dLNTsiXmLpmM",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "dataTableId": {
+          "__rl": true,
+          "value": "={{ $env.JOBBY_DATA_TABLE_ID }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "id": "d8f8a0c0-f8f8-4e8a-a43b-5511b8bdf8f8",
+      "name": "Read Config Table",
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        256,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst result = {};\nfor (const item of items) {\n    result[item.json.key] = item.json.value;\n}\nreturn { json: result };"
+      },
+      "id": "e8f8a0c0-f8f8-4e8a-a43b-5511b8bdf8f8",
+      "name": "Format Config Output",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        512,
+        200
       ]
     }
   ],
@@ -139,6 +195,28 @@
         [
           {
             "node": "Save to Table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook Jobby Get": {
+      "main": [
+        [
+          {
+            "node": "Read Config Table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Config Table": {
+      "main": [
+        [
+          {
+            "node": "Format Config Output",
             "type": "main",
             "index": 0
           }
@@ -170,7 +248,7 @@
         "updatedAt": "2026-05-11T09:44:44.757Z",
         "createdAt": "2026-05-11T09:34:45.695Z",
         "id": "GfFdmZTqGEJQkrXG",
-        "name": "\u00c9ole Wind <megazef@gmail.com>",
+        "name": "Éole Wind <megazef@gmail.com>",
         "type": "personal",
         "icon": null,
         "description": null,
@@ -289,6 +367,62 @@
         ],
         "id": "t498b1b6-59cb-490b-a890-ea2eea9c06cd",
         "name": "Save to Table"
+      },
+      {
+        "parameters": {
+          "httpMethod": "GET",
+          "path": "jobby-sync",
+          "authentication": "headerAuth",
+          "responseMode": "lastNode",
+          "options": {}
+        },
+        "id": "9f91a0c0-f8f8-4e8a-a43b-5511b8bdf8f8",
+        "name": "Webhook Jobby Get",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 1,
+        "position": [
+          0,
+          200
+        ],
+        "webhookId": "85acc1c2-9244-4ca7-b75e-1d129d879c13",
+        "credentials": {
+          "httpHeaderAuth": {
+            "id": "QDm4dLNTsiXmLpmM",
+            "name": "Header Auth account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "getAll",
+          "dataTableId": {
+            "__rl": true,
+            "value": "={{ $env.JOBBY_DATA_TABLE_ID }}",
+            "mode": "id"
+          },
+          "options": {}
+        },
+        "id": "d8f8a0c0-f8f8-4e8a-a43b-5511b8bdf8f8",
+        "name": "Read Config Table",
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1,
+        "position": [
+          256,
+          200
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "const items = $input.all();\nconst result = {};\nfor (const item of items) {\n    result[item.json.key] = item.json.value;\n}\nreturn { json: result };"
+        },
+        "id": "e8f8a0c0-f8f8-4e8a-a43b-5511b8bdf8f8",
+        "name": "Format Config Output",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          512,
+          200
+        ]
       }
     ],
     "connections": {
@@ -313,9 +447,31 @@
             }
           ]
         ]
+      },
+      "Webhook Jobby Get": {
+        "main": [
+          [
+            {
+              "node": "Read Config Table",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Read Config Table": {
+        "main": [
+          [
+            {
+              "node": "Format Config Output",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
-    "authors": "\u00c9ole Wind",
+    "authors": "Éole Wind",
     "name": "Version 8a29ec96",
     "description": "Authorization",
     "autosaved": true,
@@ -330,5 +486,5 @@
       }
     ]
   },
-  "//": "Published on 2026-06-29 11:18:35 | Git: 857f802 ux(developer): rename webhook labels to Active/Test and restore default test webhook URL endpoint"
+  "//": "Published on 2026-06-29 19:08:18 | Git: 2425aa6 bump(release): upgrade patch version to 1.10.5"
 }
