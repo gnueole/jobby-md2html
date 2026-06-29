@@ -23,6 +23,7 @@ import {
 } from './js/shortcuts.js';
 import { startOpeningFireworks } from './js/fireworks.js';
 
+import { initSyntaxHighlighting, updateSyntaxHighlight } from './js/syntax.js';
 import { initDeveloperTools, openDeveloperTools } from './js/developer.js';
 import { initExports } from './js/exports.js';
 import { initThemeToggle } from './js/theme.js';
