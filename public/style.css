@@ -656,6 +656,7 @@ input[type="color"] {
     border-radius: 4px;
     cursor: pointer;
     background: none;
+    padding: 0;
 }
 
 input[type="color"]::-webkit-color-swatch-wrapper {
@@ -663,7 +664,12 @@ input[type="color"]::-webkit-color-swatch-wrapper {
 }
 
 input[type="color"]::-webkit-color-swatch {
-    border: 1px solid var(--border-color);
+    border: 1px solid rgba(128, 128, 128, 0.35);
+    border-radius: 4px;
+}
+
+input[type="color"]::-moz-color-swatch {
+    border: 1px solid rgba(128, 128, 128, 0.35);
     border-radius: 4px;
 }
 
