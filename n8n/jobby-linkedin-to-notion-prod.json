@@ -294,7 +294,7 @@
     },
     {
       "parameters": {
-        "content": "### Last Publish Info\n\nPublished on 2026-06-29 19:08:18 | Git: 2425aa6 bump(release): upgrade patch version to 1.10.5",
+        "content": "### Last Publish Info\n\nPublished on 2026-06-29 19:26:00 | Git: 3410772 feat(n8n,developer): add Atomic CV and CV Seeds dynamic mappings, and hardcode data table ID to bypass production environment restrictions",
         "height": 150,
         "width": 300,
         "color": 6
@@ -477,6 +477,16 @@
             "node": "Get Notion DB ID",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "Get Atom CV DB ID",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Seed DB ID",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
@@ -486,32 +496,6 @@
         [
           {
             "node": "AI Agent",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Webhook": {
-      "main": [
-        [
-          {
-            "node": "Get CV data",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Get Notion DB ID",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Get Atom CV DB ID",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Get Seed DB ID",
             "type": "main",
             "index": 0
           }
@@ -1055,28 +1039,6 @@
               "node": "Get CV data",
               "type": "main",
               "index": 0
-            }
-          ]
-        ]
-      },
-      "Clean CV": {
-        "main": [
-          [
-            {
-              "node": "AI Agent",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Webhook": {
-        "main": [
-          [
-            {
-              "node": "Get CV data",
-              "type": "main",
-              "index": 0
             },
             {
               "node": "Get Notion DB ID",
@@ -1090,6 +1052,17 @@
             },
             {
               "node": "Get Seed DB ID",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Clean CV": {
+        "main": [
+          [
+            {
+              "node": "AI Agent",
               "type": "main",
               "index": 0
             }
@@ -1112,5 +1085,5 @@
       }
     ]
   },
-  "//": "Published on 2026-06-29 19:08:18 | Git: 2425aa6 bump(release): upgrade patch version to 1.10.5"
+  "//": "Published on 2026-06-29 19:26:00 | Git: 3410772 feat(n8n,developer): add Atomic CV and CV Seeds dynamic mappings, and hardcode data table ID to bypass production environment restrictions"
 }
