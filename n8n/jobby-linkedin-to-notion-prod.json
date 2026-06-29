@@ -145,7 +145,7 @@
         "propertiesUi": {
           "propertyValues": [
             {
-              "key": "Name|title",
+              "key": "Job Title|title",
               "title": "={{ $json.job_title || \"Nouvelle offre LinkedIn (Titre non extrait)\" }}\n"
             },
             {
@@ -772,7 +772,7 @@
           "propertiesUi": {
             "propertyValues": [
               {
-                "key": "Name|title",
+                "key": "Job Title|title",
                 "title": "={{ $json.job_title || \"Nouvelle offre LinkedIn (Titre non extrait)\" }}\n"
               },
               {
