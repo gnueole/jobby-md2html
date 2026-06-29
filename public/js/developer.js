@@ -7,6 +7,14 @@
 import { showToast } from './utils.js';
 import { updateBookmarkletLinks } from './bookmarklet.js';
 
+function formatUuid(val) {
+    const clean = val.replace(/[^a-zA-Z0-9]/g, '');
+    if (clean.length === 32) {
+        return `${clean.slice(0, 8)}-${clean.slice(8, 12)}-${clean.slice(12, 16)}-${clean.slice(16, 20)}-${clean.slice(20)}`;
+    }
+    return val;
+}
+
 let devToolsInitialized = false;
 let devToolsOptions = {};
 
@@ -102,6 +110,23 @@ function bindDeveloperToolsEvents() {
     if (notionSeedDb) {
         notionSeedDb.value = localStorage.getItem(seedKey) || '';
     }
+
+    const dbInputs = [notionDetectorDb, notionFeedbackDb, notionTelemetryDb, notionAtomCvDb, notionSeedDb];
+    const formatDbInput = (input) => {
+        if (!input) return;
+        const val = input.value.trim();
+        const formatted = formatUuid(val);
+        if (formatted !== val) {
+            input.value = formatted;
+        }
+    };
+
+    dbInputs.forEach(input => {
+        if (!input) return;
+        formatDbInput(input);
+        input.addEventListener('blur', () => formatDbInput(input));
+        input.addEventListener('input', () => formatDbInput(input));
+    });
 
     if (devDisableTelemetry) {
         devDisableTelemetry.checked = localStorage.getItem('jobby_telemetry_disabled') === 'true';
