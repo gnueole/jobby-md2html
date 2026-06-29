@@ -36,9 +36,9 @@ services:
     env_file:
       - ../.env
 
-  # n8n Automation Server (v2.25.2 with AI & MCP support)
+  # n8n Automation Server (v2.27.5 with AI & MCP support)
   n8n:
-    image: docker.n8n.io/n8nio/n8n:2.25.2
+    image: docker.n8n.io/n8nio/n8n:2.27.5
     container_name: n8n-server-dev
     restart: unless-stopped
     depends_on:
