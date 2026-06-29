@@ -72,11 +72,11 @@ configure:
 
 # Local Node resume editor
 dev:
-	@if [ ! -f .env ]; then \
-		if $(DOPPLER) --version >/dev/null 2>&1; then \
-			echo "🔑 Downloading development secrets from Doppler ($(DOPPLER_PROJECT))..."; \
-			$(DOPPLER) secrets download --project $(DOPPLER_PROJECT) --config $(DOPPLER_CONFIG_DEV) --no-file --format env > .env; \
-		else \
+	@if $(DOPPLER) --version >/dev/null 2>&1; then \
+		echo "🔑 Refreshing development secrets from Doppler ($(DOPPLER_PROJECT))..."; \
+		$(DOPPLER) secrets download --project $(DOPPLER_PROJECT) --config $(DOPPLER_CONFIG_DEV) --no-file --format env > .env; \
+	else \
+		if [ ! -f .env ]; then \
 			echo "⚠️ Doppler CLI not found. Copying $(DOCKER_DIR)/.env.example as .env fallback..."; \
 			cp $(DOCKER_DIR)/.env.example .env; \
 		fi \
@@ -86,11 +86,11 @@ dev:
 # 💻 DEVELOPMENT COMMANDS (LOCAL DOCKER)
 dev-up:
 	@echo "✨ Starting local development environment..."
-	@if [ ! -f .env ]; then \
-		if $(DOPPLER) --version >/dev/null 2>&1; then \
-			echo "🔑 Downloading development secrets from Doppler..."; \
-			$(DOPPLER) secrets download --project $(DOPPLER_PROJECT) --config $(DOPPLER_CONFIG_DEV) --no-file --format env > .env; \
-		else \
+	@if $(DOPPLER) --version >/dev/null 2>&1; then \
+		echo "🔑 Refreshing development secrets from Doppler..."; \
+		$(DOPPLER) secrets download --project $(DOPPLER_PROJECT) --config $(DOPPLER_CONFIG_DEV) --no-file --format env > .env; \
+	else \
+		if [ ! -f .env ]; then \
 			echo "⚠️ Doppler CLI not found. Copying docker/.env.example as .env fallback..."; \
 			cp docker/.env.example .env; \
 		fi \

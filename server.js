@@ -552,8 +552,9 @@ const server = http.createServer((req, res) => {
 
 const os = require('os');
 const isWSL = os.release().toLowerCase().includes('microsoft');
-const HOST = process.env.HOST || (isWSL || fs.existsSync('/.dockerenv') ? '0.0.0.0' : '127.0.0.1');
+const HOST = process.env.HOST || (isWSL || fs.existsSync('/.dockerenv') ? '::' : '127.0.0.1');
 
 server.listen(PORT, HOST, () => {
-    console.log(`jobby MD Editor Server running at http://${HOST}:${PORT}`);
+    const displayHost = HOST === '::' ? 'localhost' : HOST;
+    console.log(`jobby MD Editor Server running at http://${displayHost}:${PORT}`);
 });
