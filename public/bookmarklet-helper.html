@@ -305,6 +305,39 @@
                 });
 
                 if (response.ok) {
+                    let bodyData = null;
+                    let isWorkflowError = false;
+                    let errorDetails = '';
+                    
+                    try {
+                        const rawText = await response.text();
+                        try {
+                            bodyData = JSON.parse(rawText);
+                        } catch (jsonErr) {
+                            // If it's not JSON, check if the raw text contains error indications
+                            if (rawText.toLowerCase().includes('error') || rawText.toLowerCase().includes('failed')) {
+                                isWorkflowError = true;
+                                errorDetails = rawText;
+                            }
+                        }
+                    } catch (readErr) {}
+
+                    if (bodyData) {
+                        // Check for error or message indicating node failure (e.g. from Stop and Error node)
+                        if (bodyData.error || bodyData.message) {
+                            isWorkflowError = true;
+                            errorDetails = bodyData.message || bodyData.error;
+                            if (typeof errorDetails === 'object') {
+                                errorDetails = JSON.stringify(errorDetails);
+                            }
+                        }
+                    }
+
+                    if (isWorkflowError) {
+                        showError("Workflow Execution Failed", "The n8n workflow encountered a node error during execution.", errorDetails);
+                        return;
+                    }
+
                     // Success!
                     spinnerWrapper.style.display = 'none';
                     successIcon.style.display = 'flex';
