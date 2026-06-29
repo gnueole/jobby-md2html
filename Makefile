@@ -32,7 +32,7 @@ DOCKER_DIR   := docker
 COMPOSE_DEV  := $(DOCKER_DIR)/docker-compose.yml
 COMPOSE_PROD := $(DOCKER_DIR)/docker-compose.prod.yml
 
-.PHONY: help configure dev dev-up dev-down up down restart deploy deploy-infra deploy-n8n deploy-all _deploy deploy-delay checklogs check-build check-build-full n8n-backup n8n-push n8n-backup-dev n8n-push-dev n8n-deploy-error
+.PHONY: help configure dev dev-up dev-down up down restart deploy deploy-infra deploy-n8n deploy-all _deploy deploy-delay checklogs check-build check-build-full n8n-backup n8n-push n8n-backup-dev n8n-push-dev n8n-deploy-error n8n-push-dbs n8n-pull-dbs n8n-list-dbs
 
 # Default target
 help:
@@ -64,6 +64,11 @@ help:
 	@echo "  make n8n-backup-dev   - Backup all workflows from Local Dev n8n to local n8n/"
 	@echo "  make n8n-push-dev     - Push/Import all local n8n/ workflows to Local Dev n8n"
 	@echo "  make n8n-deploy-error - Deploy the Axiom error logging workflow to n8n"
+	@echo ""
+	@echo "Notion Database Config Syncing:"
+	@echo "  make n8n-push-dbs     - Push Notion database UIDs from Doppler config to n8n Data Table"
+	@echo "  make n8n-pull-dbs     - Pull Notion database UIDs from n8n Data Table to Doppler config"
+	@echo "  make n8n-list-dbs     - List and compare database config on both sides (diff status)"
 	@echo "======================================================================"
 
 # Run configure wizard (checks dependencies and copies fallback env)
