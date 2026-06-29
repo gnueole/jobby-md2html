@@ -107,7 +107,7 @@
     },
     {
       "parameters": {
-        "content": "### Last Publish Info\n\nPublished on 2026-06-29 21:35:22 | Git: 0367baa bump(release): upgrade patch version to 1.10.7 with side-by-side modal and n8n serial DAG fix",
+        "content": "### Last Publish Info\n\nPublished on 2026-06-29 21:43:11 | Git: 4a1d2e9 fix(n8n): revert Notion title property mapping key from Name|title back to Job Title|title",
         "height": 150,
         "width": 300,
         "color": 6
@@ -488,5 +488,5 @@
       }
     ]
   },
-  "//": "Published on 2026-06-29 21:35:22 | Git: 0367baa bump(release): upgrade patch version to 1.10.7 with side-by-side modal and n8n serial DAG fix"
+  "//": "Published on 2026-06-29 21:43:11 | Git: 4a1d2e9 fix(n8n): revert Notion title property mapping key from Name|title back to Job Title|title"
 }
