@@ -15,7 +15,7 @@ export function updateBookmarkletLinks(prodUrlVal, prodTokenVal, devUrlVal, devT
         bookmarkletDragLinkProd.setAttribute('href', compileBookmarkletCode(url, token));
     }
     if (bookmarkletDragLinkDev) {
-        const url = devUrlVal.trim() || 'http://localhost:5678/webhook/cv-factory';
+        const url = devUrlVal.trim() || 'http://localhost:5678/webhook-test/cv-factory';
         const token = devTokenVal.trim();
         bookmarkletDragLinkDev.setAttribute('href', compileBookmarkletCode(url, token));
     }

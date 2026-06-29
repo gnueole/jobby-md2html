@@ -67,7 +67,7 @@ function bindDeveloperToolsEvents() {
     // Load saved settings into fields
     prodWebhookUrl.value = localStorage.getItem('prod_webhook_url') || 'https://n8n.eole.me/webhook/cv-factory';
     prodWebhookToken.value = localStorage.getItem('prod_webhook_token') || '';
-    devWebhookUrl.value = localStorage.getItem('dev_webhook_url') || 'http://localhost:5678/webhook/cv-factory';
+    devWebhookUrl.value = localStorage.getItem('dev_webhook_url') || 'http://localhost:5678/webhook-test/cv-factory';
     devWebhookToken.value = localStorage.getItem('dev_webhook_token') || '';
 
     const triggerUpdateLinks = () => {
