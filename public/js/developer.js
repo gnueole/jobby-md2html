@@ -64,11 +64,16 @@ function bindDeveloperToolsEvents() {
     const bookmarkletDragLinkDev = document.getElementById('bookmarklet-drag-link-dev');
     const btnSaveDevSettings = document.getElementById('btn-save-dev-settings');
 
+    const devDisableTelemetry = document.getElementById('dev-disable-telemetry');
+
     // Load saved settings into fields
     prodWebhookUrl.value = localStorage.getItem('prod_webhook_url') || 'https://n8n.eole.me/webhook/cv-factory';
     prodWebhookToken.value = localStorage.getItem('prod_webhook_token') || '';
     devWebhookUrl.value = localStorage.getItem('dev_webhook_url') || 'http://localhost:5678/webhook-test/cv-factory';
     devWebhookToken.value = localStorage.getItem('dev_webhook_token') || '';
+    if (devDisableTelemetry) {
+        devDisableTelemetry.checked = localStorage.getItem('jobby_telemetry_disabled') === 'true';
+    }
 
     const triggerUpdateLinks = () => {
         updateBookmarkletLinks(
@@ -106,6 +111,10 @@ function bindDeveloperToolsEvents() {
 
             localStorage.setItem('n8n_webhook_url', prodUrl);
             localStorage.setItem('n8n_webhook_token', prodToken);
+            
+            if (devDisableTelemetry) {
+                localStorage.setItem('jobby_telemetry_disabled', devDisableTelemetry.checked ? 'true' : 'false');
+            }
 
             showToast("Settings saved successfully!");
         });

@@ -343,6 +343,10 @@ async function initializeJobby() {
     }
 
     async function sendTelemetry(eventType, extraData = {}) {
+        if (localStorage.getItem('jobby_telemetry_disabled') === 'true') {
+            console.log('[Telemetry] Bypassed event sending (disabled by dev flag):', eventType);
+            return;
+        }
         try {
             const counts = getWordAndCharCount();
             const ats = getAtsMetrics();
