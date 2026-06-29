@@ -170,7 +170,7 @@
         "updatedAt": "2026-05-11T09:44:44.757Z",
         "createdAt": "2026-05-11T09:34:45.695Z",
         "id": "GfFdmZTqGEJQkrXG",
-        "name": "Éole Wind <megazef@gmail.com>",
+        "name": "\u00c9ole Wind <megazef@gmail.com>",
         "type": "personal",
         "icon": null,
         "description": null,
@@ -315,7 +315,7 @@
         ]
       }
     },
-    "authors": "Éole Wind",
+    "authors": "\u00c9ole Wind",
     "name": "Version 8a29ec96",
     "description": "Authorization",
     "autosaved": true,
