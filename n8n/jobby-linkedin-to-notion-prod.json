@@ -348,7 +348,7 @@
           "conditions": [
             {
               "keyName": "key",
-              "keyValue": "notion_atom_cv_db_id"
+              "keyValue": "atom_cv_db_id"
             }
           ]
         }
@@ -375,7 +375,7 @@
           "conditions": [
             {
               "keyName": "key",
-              "keyValue": "notion_seed_db_id"
+              "keyValue": "seed_db_id"
             }
           ]
         }
@@ -915,7 +915,7 @@
             "conditions": [
               {
                 "keyName": "key",
-                "keyValue": "notion_atom_cv_db_id"
+                "keyValue": "atom_cv_db_id"
               }
             ]
           }
@@ -942,7 +942,7 @@
             "conditions": [
               {
                 "keyName": "key",
-                "keyValue": "notion_seed_db_id"
+                "keyValue": "seed_db_id"
               }
             ]
           }
