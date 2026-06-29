@@ -269,7 +269,7 @@
     },
     {
       "parameters": {
-        "content": "### Last Publish Info\n\nPublished on 2026-06-29 21:43:11 | Git: 4a1d2e9 fix(n8n): revert Notion title property mapping key from Name|title back to Job Title|title",
+        "content": "### Last Publish Info\n\nPublished on 2026-06-29 21:48:09 | Git: 5ad8795 style(n8n): remove dangling Anthropic node and align sequential nodes horizontally in LinkedIn workflow",
         "height": 150,
         "width": 300,
         "color": 6
@@ -395,11 +395,6 @@
         ]
       ]
     },
-    "Anthropic Chat Model": {
-      "ai_languageModel": [
-        []
-      ]
-    },
     "JSON Cleaner": {
       "main": [
         [
@@ -408,8 +403,7 @@
             "type": "main",
             "index": 0
           }
-        ],
-        []
+        ]
       ]
     },
     "Get CV data": {
@@ -432,12 +426,6 @@
             "index": 0
           }
         ]
-      ]
-    },
-    "update prospect": {
-      "main": [
-        [],
-        []
       ]
     },
     "CV Factory": {
@@ -1078,5 +1066,5 @@
       }
     ]
   },
-  "//": "Published on 2026-06-29 21:43:11 | Git: 4a1d2e9 fix(n8n): revert Notion title property mapping key from Name|title back to Job Title|title"
+  "//": "Published on 2026-06-29 21:48:09 | Git: 5ad8795 style(n8n): remove dangling Anthropic node and align sequential nodes horizontally in LinkedIn workflow"
 }
