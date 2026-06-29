@@ -1,5 +1,7 @@
-# Jobby Project Rules
+# Jobby Customizations Reference
 
-## n8n Workflows Cleanliness & Tidiness
-*   **No Dangling Nodes:** When editing, updating, or syncing n8n workflows, always ensure that all dangling, unused, or disconnected nodes (e.g. inactive model nodes or testing nodes) are completely removed from both the `nodes` array and the `connections` map.
-*   **Clean Layout & Alignment:** Keep the nodes aligned neatly on the canvas. Main pipeline series nodes should be aligned in a clean, straight horizontal series layout to ensure visual tidiness.
+> [!IMPORTANT]
+> The Jobby and general n8n ecosystem rules are maintained at the root workspace level:
+> *   [Parent Ecosystem Rules](file:///c:/Projects/eole.me/.agents/AGENTS.md)
+>
+> Do not recreate, duplicate, or overwrite these rules inside the `jobby-md2html` project. Refer directly to the root workspace rules.
