@@ -228,11 +228,11 @@ def main():
         sys.exit(1)
 
     mappings = {
-        "JOBBY_DETECTOR_DB_ID": "notion_detector_db_id",
-        "JOBBY_FEEDBACK_DB_ID": "notion_feedback_db_id",
-        "JOBBY_TELEMETRY_DB_ID": "notion_telemetry_db_id",
-        "JOBBY_ATOM_CV_DB_ID": "atom_cv_db_id",
-        "JOBBY_SEED_DB_ID": "seed_db_id",
+        "JOBBY_NOTION_DETECTOR_DB_ID": "notion_detector_db_id",
+        "JOBBY_NOTION_FEEDBACK_DB_ID": "notion_feedback_db_id",
+        "JOBBY_NOTION_TELEMETRY_DB_ID": "notion_telemetry_db_id",
+        "JOBBY_NOTION_ATOM_CV_DB_ID": "notion_atom_cv_db_id",
+        "JOBBY_NOTION_SEED_DB_ID": "notion_seed_db_id",
     }
 
     mode = "push"

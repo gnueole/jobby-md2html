@@ -76,8 +76,8 @@ function bindDeveloperToolsEvents() {
     const notionDetectorDb = document.getElementById('notion-detector-db-id');
     const notionFeedbackDb = document.getElementById('notion-feedback-db-id');
     const notionTelemetryDb = document.getElementById('notion-telemetry-db-id');
-    const notionAtomCvDb = document.getElementById('atom-cv-db-id');
-    const notionSeedDb = document.getElementById('seed-db-id');
+    const notionAtomCvDb = document.getElementById('notion-atom-cv-db-id');
+    const notionSeedDb = document.getElementById('notion-seed-db-id');
 
     const isDev = window.location.hostname === 'localhost' || 
                   window.location.hostname === '127.0.0.1' || 
@@ -86,8 +86,8 @@ function bindDeveloperToolsEvents() {
     const detectorKey = isDev ? 'dev_notion_detector_db_id' : 'prod_notion_detector_db_id';
     const feedbackKey = isDev ? 'dev_notion_feedback_db_id' : 'prod_notion_feedback_db_id';
     const telemetryKey = isDev ? 'dev_notion_telemetry_db_id' : 'prod_notion_telemetry_db_id';
-    const atomCvKey = isDev ? 'dev_atom_cv_db_id' : 'prod_atom_cv_db_id';
-    const seedKey = isDev ? 'dev_seed_db_id' : 'prod_seed_db_id';
+    const atomCvKey = isDev ? 'dev_notion_atom_cv_db_id' : 'prod_notion_atom_cv_db_id';
+    const seedKey = isDev ? 'dev_notion_seed_db_id' : 'prod_notion_seed_db_id';
 
     // Load saved settings into fields
     prodWebhookUrl.value = localStorage.getItem('prod_webhook_url') || 'https://n8n.eole.me/webhook/cv-factory';
@@ -184,13 +184,13 @@ function bindDeveloperToolsEvents() {
                         notionTelemetryDb.value = data.notion_telemetry_db_id;
                         localStorage.setItem(telemetryKey, data.notion_telemetry_db_id);
                     }
-                    if (data.atom_cv_db_id && notionAtomCvDb) {
-                        notionAtomCvDb.value = data.atom_cv_db_id;
-                        localStorage.setItem(atomCvKey, data.atom_cv_db_id);
+                    if (data.notion_atom_cv_db_id && notionAtomCvDb) {
+                        notionAtomCvDb.value = data.notion_atom_cv_db_id;
+                        localStorage.setItem(atomCvKey, data.notion_atom_cv_db_id);
                     }
-                    if (data.seed_db_id && notionSeedDb) {
-                        notionSeedDb.value = data.seed_db_id;
-                        localStorage.setItem(seedKey, data.seed_db_id);
+                    if (data.notion_seed_db_id && notionSeedDb) {
+                        notionSeedDb.value = data.notion_seed_db_id;
+                        localStorage.setItem(seedKey, data.notion_seed_db_id);
                     }
                     showToast("Retrieved database mappings from n8n!");
                 }
@@ -234,8 +234,8 @@ function bindDeveloperToolsEvents() {
                     notion_detector_db_id: notionDetectorDb.value.trim(),
                     notion_feedback_db_id: notionFeedbackDb.value.trim(),
                     notion_telemetry_db_id: notionTelemetryDb.value.trim(),
-                    atom_cv_db_id: notionAtomCvDb.value.trim(),
-                    seed_db_id: notionSeedDb.value.trim()
+                    notion_atom_cv_db_id: notionAtomCvDb.value.trim(),
+                    notion_seed_db_id: notionSeedDb.value.trim()
                 }
             };
 
