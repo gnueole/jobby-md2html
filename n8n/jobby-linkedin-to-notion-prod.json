@@ -248,7 +248,7 @@
         "path": "cv-factory",
         "authentication": "headerAuth",
         "options": {},
-        "responseMode": "onLastNode"
+        "responseMode": "lastNode"
       },
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
