@@ -225,3 +225,20 @@ n8n-deploy-error:
 	else \
 		python3 toolkit/sync_n8n.py --deploy-error; \
 	fi
+
+n8n-push-secrets:
+	@if $(DOPPLER) --version >/dev/null 2>&1; then \
+		echo "🔑 Pushing database IDs from Doppler to n8n Data Table..."; \
+		$(DOPPLER) run --project $(DOPPLER_PROJECT) --config $(DOPPLER_CONFIG_PROD) -- python3 toolkit/sync_doppler_to_n8n.py push; \
+	else \
+		python3 toolkit/sync_doppler_to_n8n.py push; \
+	fi
+
+n8n-pull-secrets:
+	@if $(DOPPLER) --version >/dev/null 2>&1; then \
+		echo "🔑 Pulling database IDs from n8n Data Table to Doppler..."; \
+		$(DOPPLER) run --project $(DOPPLER_PROJECT) --config $(DOPPLER_CONFIG_PROD) -- python3 toolkit/sync_doppler_to_n8n.py pull; \
+	else \
+		python3 toolkit/sync_doppler_to_n8n.py pull; \
+	fi
+
