@@ -142,12 +142,16 @@ def list_dbs(n_base_url, n_api_key, table_id, mappings):
         if key and val:
             n8n_vals[key] = val
 
+    # ANSI color codes
+    RED = "\033[91m"
+    GREEN = "\033[92m"
+    YELLOW = "\033[93m"
+    RESET = "\033[0m"
+
     print("\nJobby Notion Database Configuration Comparison:")
-    header_fmt = "{:<25} | {:<20} | {:<20} | {:<10}"
-    row_fmt = "{:<25} | {:<20} | {:<20} | {:<10}"
     divider = "-" * 85
     print(divider)
-    print(header_fmt.format("Database Name (Key)", "Doppler Value", "n8n Value", "Status"))
+    print(f"{'Database Name (Key)':<25} | {'Doppler Value':<20} | {'n8n Value':<20} | {'Status':<10}")
     print(divider)
 
     has_diffs = False
@@ -166,20 +170,52 @@ def list_dbs(n_base_url, n_api_key, table_id, mappings):
             n8n_display = n8n_display[:14] + "..."
 
         if doppler_val == n8n_val:
-            status = "MATCH"
+            if not doppler_val:
+                status_raw = "NOT SET"
+                status_color = RED
+                has_diffs = True  # Treat NOT SET as an issue to prompt action
+            else:
+                status_raw = "MATCH"
+                status_color = GREEN
         else:
-            status = "DIFF"
+            status_raw = "DIFF"
+            status_color = RED
             has_diffs = True
 
-        print(row_fmt.format(table_key, doppler_display, n8n_display, status))
+        # Pad first to preserve column alignment, then wrap with color
+        doppler_padded = f"{doppler_display:<20}"
+        n8n_padded = f"{n8n_display:<20}"
+        status_padded = f"{status_raw:<10}"
+
+        if not doppler_val:
+            doppler_padded = f"{RED}{doppler_padded}{RESET}"
+        if not n8n_val:
+            n8n_padded = f"{RED}{n8n_padded}{RESET}"
+
+        status_colored = f"{status_color}{status_padded}{RESET}"
+
+        print(f"{table_key:<25} | {doppler_padded} | {n8n_padded} | {status_colored}")
 
     print(divider)
     if has_diffs:
-        print("[!] Warning: Differences detected between Doppler and n8n database IDs.")
+        # Check if they are just not set or actually differ
+        actual_diff = False
+        for env_name, table_key in mappings.items():
+            d_val = os.environ.get(env_name, "").strip()
+            n_val = n8n_vals.get(table_key, "").strip()
+            if d_val != n_val:
+                actual_diff = True
+                break
+        
+        if actual_diff:
+            print(f"{RED}[!] Warning: Differences detected between Doppler and n8n database IDs.{RESET}")
+        else:
+            print(f"{RED}[!] Warning: Some database IDs are Not Set (missing configuration).{RESET}")
+        
         print("    Run 'make n8n-push-dbs' to push Doppler -> n8n.")
         print("    Run 'make n8n-pull-dbs' to pull n8n -> Doppler.")
     else:
-        print("[OK] Doppler and n8n database IDs are in sync.")
+        print(f"{GREEN}[OK] Doppler and n8n database IDs are in sync.{RESET}")
     print()
 
 def main():
