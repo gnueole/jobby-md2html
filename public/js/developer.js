@@ -108,7 +108,6 @@ function bindDeveloperToolsEvents() {
             localStorage.setItem('n8n_webhook_token', prodToken);
 
             showToast("Settings saved successfully!");
-            developerModal.classList.remove('show');
         });
     }
 
