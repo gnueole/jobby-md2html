@@ -294,7 +294,7 @@
     },
     {
       "parameters": {
-        "content": "### Last Publish Info\n\nPublished on 2026-06-29 19:33:37 | Git: f852d89 fix(n8n): change dataTable operation from invalid getAll to get in sync-conf workflow",
+        "content": "### Last Publish Info\n\nPublished on 2026-06-29 20:45:51 | Git: b49c80c style(n8n,developer): simplify database config key names from notion_atom_cv/seed to atom_cv/seed",
         "height": 150,
         "width": 300,
         "color": 6
@@ -1085,5 +1085,5 @@
       }
     ]
   },
-  "//": "Published on 2026-06-29 19:33:37 | Git: f852d89 fix(n8n): change dataTable operation from invalid getAll to get in sync-conf workflow"
+  "//": "Published on 2026-06-29 20:45:51 | Git: b49c80c style(n8n,developer): simplify database config key names from notion_atom_cv/seed to atom_cv/seed"
 }

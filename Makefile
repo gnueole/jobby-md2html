@@ -32,7 +32,7 @@ DOCKER_DIR   := docker
 COMPOSE_DEV  := $(DOCKER_DIR)/docker-compose.yml
 COMPOSE_PROD := $(DOCKER_DIR)/docker-compose.prod.yml
 
-.PHONY: help configure dev dev-up dev-down up down restart deploy deploy-infra deploy-n8n deploy-all _deploy deploy-delay checklogs check-build check-build-full n8n-backup n8n-push n8n-backup-dev n8n-push-dev n8n-deploy-error n8n-push-dbs n8n-pull-dbs n8n-list-dbs
+.PHONY: help configure dev dev-up dev-down up down restart deploy deploy-infra deploy-n8n deploy-all _deploy deploy-delay checklogs check-build check-build-full n8n-backup n8n-push n8n-backup-dev n8n-push-dev n8n-deploy-error n8n-dbs-push n8n-dbs-pull n8n-dbs-list
 
 # Default target
 help:
@@ -66,9 +66,9 @@ help:
 	@echo "  make n8n-deploy-error - Deploy the Axiom error logging workflow to n8n"
 	@echo ""
 	@echo "Notion Database Config Syncing:"
-	@echo "  make n8n-push-dbs     - Push Notion database UIDs from Doppler config to n8n Data Table"
-	@echo "  make n8n-pull-dbs     - Pull Notion database UIDs from n8n Data Table to Doppler config"
-	@echo "  make n8n-list-dbs     - List and compare database config on both sides (diff status)"
+	@echo "  make n8n-dbs-push     - Push Notion database UIDs from Doppler config to n8n Data Table"
+	@echo "  make n8n-dbs-pull     - Pull Notion database UIDs from n8n Data Table to Doppler config"
+	@echo "  make n8n-dbs-list     - List and compare database config on both sides (diff status)"
 	@echo "======================================================================"
 
 # Run configure wizard (checks dependencies and copies fallback env)
@@ -231,7 +231,7 @@ n8n-deploy-error:
 		python3 toolkit/sync_n8n.py --deploy-error; \
 	fi
 
-n8n-push-dbs:
+n8n-dbs-push:
 	@if $(DOPPLER) --version >/dev/null 2>&1; then \
 		echo "🔑 Pushing database IDs from Doppler to n8n Data Table..."; \
 		$(DOPPLER) run --project $(DOPPLER_PROJECT) --config $(DOPPLER_CONFIG_PROD) -- python3 toolkit/sync_doppler_dbs.py push; \
@@ -239,7 +239,7 @@ n8n-push-dbs:
 		python3 toolkit/sync_doppler_dbs.py push; \
 	fi
 
-n8n-pull-dbs:
+n8n-dbs-pull:
 	@if $(DOPPLER) --version >/dev/null 2>&1; then \
 		echo "🔑 Pulling database IDs from n8n Data Table to Doppler..."; \
 		$(DOPPLER) run --project $(DOPPLER_PROJECT) --config $(DOPPLER_CONFIG_PROD) -- python3 toolkit/sync_doppler_dbs.py pull; \
@@ -247,7 +247,7 @@ n8n-pull-dbs:
 		python3 toolkit/sync_doppler_dbs.py pull; \
 	fi
 
-n8n-list-dbs:
+n8n-dbs-list:
 	@if $(DOPPLER) --version >/dev/null 2>&1; then \
 		$(DOPPLER) run --project $(DOPPLER_PROJECT) --config $(DOPPLER_CONFIG_PROD) -- python3 toolkit/sync_doppler_dbs.py list; \
 	else \
