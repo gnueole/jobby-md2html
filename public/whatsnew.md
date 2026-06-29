@@ -1,5 +1,5 @@
-# 1.10.7 - Jobby Update
-Jobby Update of 06/29/2026 · Split dual-column Developer Tools modal layout, styled webhook canvas inputs, capitalized modal section headers, and fixed n8n parallel execution graph paths.
+# 1.10.6 - Jobby Update
+Jobby Update of 06/29/2026 · Dynamic database configs for Atomic CV & Seeds, side-by-side Developer Tools split layout, auto-formatted Notion UIDs, styled webhook inputs, and terminal sync targets.
 [CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
 
 ## 🥞 SPLIT DEV TOOLS LAYOUT
@@ -12,12 +12,6 @@ Jobby Update of 06/29/2026 · Split dual-column Developer Tools modal layout, st
 ## 🐛 FIXED N8N PARALLEL EXECUTION ERROR
 * **DAG Series Graph Flow**: Restructured the Notion database ID lookup nodes inside the Jobby LinkedIn tailer workflow in series (`CV Factory -> Get Notion DB ID -> Get Atom CV DB ID -> Get Seed DB ID -> Get CV data`), resolving the `No path back to referenced node` error.
 
----
-
-# 1.10.6 - Jobby Update
-Jobby Update of 06/29/2026 · Dynamic Notion database variables for Atomic CV & Seeds, auto-formatting of database IDs in developer tools modal, and Makefile push/pull/list sync tools.
-[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
-
 ## 🗃️ DYNAMIC ATOMIC CV & CV SEEDS VARIABLES
 * **Full Sandbox Environment Compatibility**: Migrated the Atomic CV and CV Seeds Notion database IDs to the n8n Data Table configuration system, resolving production execution blocks due to environment variable sandboxing.
 
@@ -26,9 +20,6 @@ Jobby Update of 06/29/2026 · Dynamic Notion database variables for Atomic CV & 
 
 ## ✍️ AUTO-FORMATTED DATABASE UIDS
 * **Enhanced Readability**: Added an automatic formatter inside the developer tools modal. Pasting or loading raw 32-character hex database IDs automatically segments them with hyphens into standard UUIDs.
-
-## 🎨 DEVELOPER MODAL INPUT STYLING
-* **Visual Tweaks**: Labels are now larger, and text boxes are smaller with a dimmed monospace font to enhance clarity.
 
 ---
 

@@ -144,7 +144,7 @@
     },
     {
       "parameters": {
-        "content": "### Last Publish Info\n\nPublished on 2026-06-29 21:13:48 | Git: 8dfd663 refactor(n8n,doppler,developer): align database config variables to use 'notion_' prefix everywhere",
+        "content": "### Last Publish Info\n\nPublished on 2026-06-29 21:35:22 | Git: 0367baa bump(release): upgrade patch version to 1.10.7 with side-by-side modal and n8n serial DAG fix",
         "height": 150,
         "width": 300,
         "color": 6
@@ -211,7 +211,7 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "//": "Published on 2026-06-29 21:13:48 | Git: 8dfd663 refactor(n8n,doppler,developer): align database config variables to use 'notion_' prefix everywhere",
+  "//": "Published on 2026-06-29 21:35:22 | Git: 0367baa bump(release): upgrade patch version to 1.10.7 with side-by-side modal and n8n serial DAG fix",
   "description": "Published on 2026-06-22 20:18:24 | Git: 1ca0e6f fix: dynamically adjust dropdowns and tooltips to prevent screen overflow",
   "tags": [
     {

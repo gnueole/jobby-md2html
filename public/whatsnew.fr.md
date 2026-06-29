@@ -1,5 +1,5 @@
-# 1.10.7 - Mise à jour Jobby
-Mise à jour Jobby du 29/06/2026 · Mise en page de la modale développeur sur deux colonnes, styles unifiés pour les saisies de webhooks, en-têtes de section capitalisés, et correction de l'exécution en parallèle des nœuds n8n.
+# 1.10.6 - Mise à jour Jobby
+Mise à jour Jobby du 29/06/2026 · Disposition côte à côte de la modale développeur, formatage automatique des ID de BDD Notion, styles unifiés pour les webhooks et commandes de synchronisation Doppler/n8n.
 [CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
 
 ## 🥞 NOUVELLE MODALE DÉVELOPPEUR SUR DEUX COLONNES
@@ -12,13 +12,6 @@ Mise à jour Jobby du 29/06/2026 · Mise en page de la modale développeur sur d
 ## 🐛 CORRECTION DE L'ERREUR D'EXÉCUTION N8N
 * **Flux séquentiel DAG** : Restructuration de l'ordre d'exécution des identifiants Notion dans le workflow de tailing LinkedIn de manière séquentielle (`CV Factory -> Get Notion DB ID -> Get Atom CV DB ID -> Get Seed DB ID -> Get CV data`), corrigeant définitivement l'erreur `No path back to referenced node`.
 
----
-
-# 1.10.6 - Mise à jour Jobby
-Mise à jour Jobby du 29/06/2026 · Variables dynamiques de base de données Notion pour l'Atomic CV et les Seeds, formatage automatique des identifiants dans la modale développeur, et outils de synchronisation push/pull/list en ligne de commande.
-[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
-
-
 ## 🗃️ CONFIGURATION DYNAMIQUE DE L'ATOMIC CV ET DES SEEDS
 * **Compatibilité totale avec l'environnement sandbox** : Migration des identifiants de base de données Notion de l'Atomic CV et des CV Seeds vers la table de données n8n, éliminant les blocages en production causés par les restrictions d'accès aux variables d'environnement.
 
@@ -27,9 +20,6 @@ Mise à jour Jobby du 29/06/2026 · Variables dynamiques de base de données Not
 
 ## ✍️ FORMATAGE AUTOMATIQUE DES ID DE BDD
 * **Lisibilité améliorée** : Intégration d'un formateur automatique dans la modale d'outils développeur. Coller ou charger un identifiant brut de 32 caractères le convertit instantanément en format standard UUID avec des traits d'union.
-
-## 🎨 AFFICHAGE DE LA MODALE DÉVELOPPEUR
-* **Ajustements visuels** : Les étiquettes sont désormais plus grandes et les zones de saisie utilisent une police monospace plus petite et de luminosité atténuée pour une meilleure lisibilité.
 
 ---
 

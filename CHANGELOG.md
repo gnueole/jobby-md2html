@@ -8,24 +8,20 @@ All notable changes to the Jobby project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.10.7] - 2026-06-29
-
-### Added
-- **Split column layout for Developer Tools:** Reorganized the Developer Tools modal by widening the card and placing Webhooks and Notion Database Mappings in side-by-side columns.
-- **Unified input styling:** Styled active/test webhook URL and security token inputs to match the monospace font layout of database IDs.
-
-### Fixed
-- **n8n parallel branch path error:** Changed n8n database lookup connections layout from parallel to sequential series, resolving the NodeOperationError ("No path back to referenced node") on Get CV data.
-
 ## [1.10.6] - 2026-06-29
 
 ### Added
 - **Dynamic Atomic CV & Seeds configuration:** Added support for dynamic Notion Database ID variables for both Atomic CV and CV Seeds, bypassing n8n sandboxing environment restrictions in production.
 - **Terminal Sync Commands:** Introduced `make n8n-dbs-push`, `make n8n-dbs-pull`, and `make n8n-dbs-list` commands to easily sync and compare Doppler config with n8n tables side-by-side (with ANSI color highlight warnings).
 - **Auto-Formatted Database IDs:** Pasting or loading a 32-character hex database ID now automatically segments it with hyphens into standard UUID layout.
+- **Split column layout for Developer Tools:** Reorganized the Developer Tools modal by widening the card and placing Webhooks and Notion Database Mappings in side-by-side columns.
+- **Unified input styling:** Styled active/test webhook URL and security token inputs to match the monospace font layout of database IDs.
 
 ### Changed
 - **Developer modal input styling:** Increased label font size to 13px, and set inputs to a smaller, less white monospace font layout to enhance legibility.
+
+### Fixed
+- **n8n parallel branch path error:** Changed n8n database lookup connections layout from parallel to sequential series, resolving the NodeOperationError ("No path back to referenced node") on Get CV data.
 
 ## [1.10.5] - 2026-06-29
 
