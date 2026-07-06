@@ -130,7 +130,7 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 2.2,
       "position": [
-        500,
+        700,
         240
       ],
       "id": "notion-node",
@@ -144,7 +144,7 @@
     },
     {
       "parameters": {
-        "content": "### Last Publish Info\n\nPublished on 2026-06-29 21:48:09 | Git: 5ad8795 style(n8n): remove dangling Anthropic node and align sequential nodes horizontally in LinkedIn workflow",
+        "content": "### Last Publish Info\n\nPublished on 2026-07-06 15:52:53 | Git: 87dc6c7 docs(rules): point jobby-md2html agents rules directly to parent ecosystem rules",
         "height": 150,
         "width": 300,
         "color": 6
@@ -179,8 +179,8 @@
       "type": "n8n-nodes-base.dataTable",
       "typeVersion": 1,
       "position": [
-        250,
-        400
+        480,
+        240
       ],
       "id": "get-notion-db-id",
       "name": "Get Notion DB ID"
@@ -191,12 +191,18 @@
       "main": [
         [
           {
-            "node": "Notion",
+            "node": "Get Notion DB ID",
             "type": "main",
             "index": 0
-          },
+          }
+        ]
+      ]
+    },
+    "Get Notion DB ID": {
+      "main": [
+        [
           {
-            "node": "Get Notion DB ID",
+            "node": "Notion",
             "type": "main",
             "index": 0
           }
@@ -211,7 +217,7 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "//": "Published on 2026-06-29 21:48:09 | Git: 5ad8795 style(n8n): remove dangling Anthropic node and align sequential nodes horizontally in LinkedIn workflow",
+  "//": "Published on 2026-07-06 15:52:53 | Git: 87dc6c7 docs(rules): point jobby-md2html agents rules directly to parent ecosystem rules",
   "description": "Published on 2026-06-22 20:18:24 | Git: 1ca0e6f fix: dynamically adjust dropdowns and tooltips to prevent screen overflow",
   "tags": [
     {

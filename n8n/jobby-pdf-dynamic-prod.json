@@ -1,5 +1,5 @@
 {
-  "//": "Published on 2026-06-29 21:48:09 | Git: 5ad8795 style(n8n): remove dangling Anthropic node and align sequential nodes horizontally in LinkedIn workflow",
+  "//": "Published on 2026-07-06 15:52:53 | Git: 87dc6c7 docs(rules): point jobby-md2html agents rules directly to parent ecosystem rules",
   "updatedAt": "2026-06-03T11:51:05.014Z",
   "createdAt": "2026-05-29T09:56:13.800Z",
   "id": "dSX8vdBy3PnPdiOU",
@@ -349,7 +349,7 @@
     },
     {
       "parameters": {
-        "content": "### Last Publish Info\n\nPublished on 2026-06-29 21:48:09 | Git: 5ad8795 style(n8n): remove dangling Anthropic node and align sequential nodes horizontally in LinkedIn workflow",
+        "content": "### Last Publish Info\n\nPublished on 2026-07-06 15:52:53 | Git: 87dc6c7 docs(rules): point jobby-md2html agents rules directly to parent ecosystem rules",
         "height": 150,
         "width": 300,
         "color": 6
