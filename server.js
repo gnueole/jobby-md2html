@@ -280,6 +280,13 @@ const server = http.createServer((req, res) => {
             res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
             res.end(JSON.stringify({ success: true }));
 
+            // Skip sending in development environment
+            const env = process.env.DOPPLER_ENVIRONMENT || 'prod';
+            if (env === 'dev') {
+                console.log('[Telemetry Skip - DEV] Bypassed forwarding in development');
+                return;
+            }
+
             // Asynchronously forward to n8n webhook
             const webhookUrl = process.env.N8N_TELEMETRY_WEBHOOK_URL;
             if (webhookUrl && webhookUrl.trim() !== "") {

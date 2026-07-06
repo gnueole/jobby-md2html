@@ -342,8 +342,9 @@ async function initializeJobby() {
     }
 
     async function sendTelemetry(eventType, extraData = {}) {
-        if (localStorage.getItem('jobby_telemetry_disabled') === 'true') {
-            console.log('[Telemetry] Bypassed event sending (disabled by dev flag):', eventType);
+        const isOptOut = localStorage.getItem('jobby_telemetry_disabled') === 'true' || localStorage.getItem('telemetry-opt-out') === 'true';
+        if (isDev || isOptOut) {
+            console.log(`[Telemetry Skip - ${isDev ? 'DEV' : 'Opt-Out'}]`, eventType);
             return;
         }
         try {
