@@ -27,6 +27,17 @@ DOPPLER_CONFIG_PROD := prd_$(DOPPLER_PROJECT)-$(shell echo $(PROJECT_NAME) | tr 
 # Find doppler binary (robust check for WSL non-interactive paths)
 DOPPLER := $(shell which doppler 2>/dev/null || ( [ -f $(HOME)/bin/doppler ] && echo $(HOME)/bin/doppler ) || echo doppler)
 
+# 🎨 COLOR CODES FOR MODERN HELP MENU (TrueColor ANSI)
+GREEN     := \033[38;2;74;222;128m
+BLUE      := \033[38;2;96;165;250m
+PURPLE    := \033[38;2;167;139;250m
+CYAN      := \033[38;2;45;212;191m
+ORANGE    := \033[38;2;251;146;60m
+GRAY      := \033[38;2;156;163;175m
+DARK_GRAY := \033[38;2;75;85;99m
+BOLD      := \033[1m
+RESET     := \033[0m
+
 # 🛠️ LOCAL DOCKER CONFIGURATION
 DOCKER_DIR   := docker
 COMPOSE_DEV  := $(DOCKER_DIR)/docker-compose.yml
@@ -36,9 +47,9 @@ COMPOSE_PROD := $(DOCKER_DIR)/docker-compose.prod.yml
 
 # Default target
 help:
-	@echo "======================================================================"
-	@echo "                   🛠️  $(PROJECT_NAME) Project Makefile 🛠️"
-	@echo "======================================================================"
+	@printf "$(CYAN)──────────────────────────────────────────────────────────────────────$(RESET)\n"
+	@printf "                   🛠️  $(BOLD)$(PROJECT_NAME) Project Makefile$(RESET) 🛠️\n"
+	@printf "$(CYAN)──────────────────────────────────────────────────────────────────────$(RESET)\n"
 	@echo "Configuration & Setup:"
 	@echo "  make configure        - Run system configuration and env setup"
 	@echo ""
@@ -69,7 +80,7 @@ help:
 	@echo "  make n8n-dbs-push     - Push Notion database UIDs from Doppler config to n8n Data Table"
 	@echo "  make n8n-dbs-pull     - Pull Notion database UIDs from n8n Data Table to Doppler config"
 	@echo "  make n8n-dbs-list     - List and compare database config on both sides (diff status)"
-	@echo "======================================================================"
+	@printf "$(CYAN)──────────────────────────────────────────────────────────────────────$(RESET)\n"
 
 # Run configure wizard (checks dependencies and copies fallback env)
 configure:
