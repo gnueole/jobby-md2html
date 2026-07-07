@@ -138,54 +138,44 @@ deploy-all:
 	@$(MAKE) --no-print-directory _deploy SERVICES=""
 
 _deploy:
-	@echo "🚀 Deploying $(PROJECT_NAME) stack [$(VERSION)/$(VPS_PROJECT_TAG)] to VPS '$(VPS_SSH)' on '$(VPS_PATH)'..."
-# 1. Ensure the remote deployment directory exists
-	ssh $(VPS_SSH) "mkdir -p $(VPS_PATH)"
-# 2. SCP the production compose file
-	scp $(COMPOSE_PROD) $(VPS_SSH):$(VPS_PATH)/docker-compose.prod.yml
-# 3. Stream production secrets from Doppler to remote VPS .env
+	@printf "$(CYAN)🚀 [1/4]$(RESET) Preparing deployment space on VPS $(BOLD)$(VPS_SSH)$(RESET)...\n"
+	@ssh $(VPS_SSH) "mkdir -p $(VPS_PATH)" >/dev/null
+	@printf "$(CYAN)📦 [2/4]$(RESET) Uploading static assets and configuration files...\n"
+	@scp $(COMPOSE_PROD) $(VPS_SSH):$(VPS_PATH)/docker-compose.prod.yml >/dev/null
+	@printf "$(CYAN)🔑 [3/4]$(RESET) Streaming production secrets from Doppler...\n"
 	@if $(DOPPLER) --version >/dev/null 2>&1; then \
-		echo "🔑 Sending Doppler production secrets to VPS..."; \
-		if $(DOPPLER) secrets download --project $(DOPPLER_PROJECT) --config $(DOPPLER_CONFIG_PROD) --no-file --format env > docker/.env.prod.temp; then \
-			scp docker/.env.prod.temp $(VPS_SSH):$(VPS_PATH)/.env; \
+		if $(DOPPLER) secrets download --project $(DOPPLER_PROJECT) --config $(DOPPLER_CONFIG_PROD) --no-file --format env > docker/.env.prod.temp 2>/dev/null; then \
+			scp docker/.env.prod.temp $(VPS_SSH):$(VPS_PATH)/.env >/dev/null; \
 			rm -f docker/.env.prod.temp; \
 		else \
-			echo "❌ Error: Doppler secrets download failed for project $(DOPPLER_PROJECT) (config: $(DOPPLER_CONFIG_PROD))!"; \
+			printf "$(ORANGE)❌ Error: Doppler secrets download failed for project $(DOPPLER_PROJECT) (config: $(DOPPLER_CONFIG_PROD))!$(RESET)\n"; \
 			rm -f docker/.env.prod.temp; \
 			exit 1; \
 		fi; \
 	else \
-		echo "❌ Error: Doppler CLI is not installed or not found in PATH!"; \
+		printf "$(ORANGE)❌ Error: Doppler CLI is not installed or not found in PATH!$(RESET)\n"; \
 		exit 1; \
 	fi
-# 4. Pull images
 	@if [ "$(SERVICES)" = "" ]; then \
-		echo "📥 Pulling all images from GHCR & Docker Hub..."; \
-		ssh $(VPS_SSH) "cd $(VPS_PATH) && docker compose -f docker-compose.prod.yml pull"; \
+		ssh $(VPS_SSH) "cd $(VPS_PATH) && docker compose -f docker-compose.prod.yml pull" >/dev/null; \
 	else \
-		echo "📥 Pulling specified images ($(SERVICES))..."; \
-		ssh $(VPS_SSH) "cd $(VPS_PATH) && docker compose -f docker-compose.prod.yml pull $(SERVICES)"; \
+		ssh $(VPS_SSH) "cd $(VPS_PATH) && docker compose -f docker-compose.prod.yml pull $(SERVICES)" >/dev/null; \
 	fi
-# 5. Extract and print the real version from the pulled editor image
 	@if [ "$(SERVICES)" = "" ] || echo "$(SERVICES)" | grep -q "jobby-editor"; then \
 		REAL_VERSION=$$(ssh $(VPS_SSH) "docker run --rm ghcr.io/gnueole/jobby-md2html:latest node -e \"console.log(require('./package.json').version)\" 2>/dev/null || echo 'unknown'"); \
-		echo "📌 Real image version to be deployed: $$REAL_VERSION"; \
 		if [ "$$REAL_VERSION" != "$(VERSION)" ]; then \
-			echo "❌ Error: The image version ($$REAL_VERSION) differs from the local package.json version ($(VERSION))!"; \
 			if [ "$(FORCE)" != "1" ] && [ "$(F)" != "1" ]; then \
-				echo "   Deploy aborted. Wait for the GitHub Action to finish building the new image, or bypass using 'make deploy FORCE=1'."; \
+				printf "$(ORANGE)❌ Error: The image version ($$REAL_VERSION) differs from the local package.json version ($(VERSION))!$(RESET)\n"; \
+				printf "   Deploy aborted. Wait for the GitHub Action to finish building the new image, or bypass using 'make deploy FORCE=1'.\n"; \
 				exit 1; \
-			else \
-				echo "⚠️ Warning: Bypassing version mismatch check (FORCE=1 active)."; \
 			fi \
 		fi \
 	fi
-# 6. Recreate and start containers
-	@echo "🔄 Recreating and starting containers (handling potential container name conflicts)..."
-	@ssh $(VPS_SSH) "docker rm -f jobby-editor mcp-notion gotenberg 2>/dev/null || true"
-	@ssh $(VPS_SSH) "cd $(VPS_PATH) && docker compose -f docker-compose.prod.yml up -d --remove-orphans"
+	@printf "$(CYAN)🐳 [4/4]$(RESET) Recreating and starting production containers...\n"
+	@ssh $(VPS_SSH) "docker rm -f jobby-editor mcp-notion gotenberg 2>/dev/null || true" >/dev/null
+	@ssh $(VPS_SSH) "cd $(VPS_PATH) && docker compose -f docker-compose.prod.yml up -d --remove-orphans" >/dev/null
 	@DEPLOYED_VERSION=$$(ssh $(VPS_SSH) "docker exec jobby-editor node -e \"console.log(require('./package.json').version)\" 2>/dev/null || echo '$(VERSION)'"); \
-	echo "✅ Deployment of $(PROJECT_NAME) [$$DEPLOYED_VERSION / $(VPS_PROJECT_TAG)] successfully completed on production server!"
+	printf "$(GREEN)✅ Deployment of $(PROJECT_NAME) [$$DEPLOYED_VERSION / $(VPS_PROJECT_TAG)] successfully completed on production server!$(RESET)\n"
 
 check-logs:
 	@echo "📟 Fetching real-time production logs from VPS [$(VPS_SSH)]..."
