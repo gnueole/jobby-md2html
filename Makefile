@@ -38,6 +38,17 @@ DARK_GRAY := \033[38;2;75;85;99m
 BOLD      := \033[1m
 RESET     := \033[0m
 
+# Semantic Typology mappings (Meta-colorization)
+STYLE_TITLE       ?= $(CYAN)
+STYLE_SECTION     ?= $(PURPLE)
+STYLE_PHASE       ?= $(CYAN)
+STYLE_DISCREET    ?= $(GRAY)
+STYLE_INSTRUCTION ?= $(GREEN)
+STYLE_RESULT      ?= $(GREEN)
+STYLE_WARNING     ?= $(ORANGE)
+STYLE_ERROR       ?= $(ORANGE)
+
+
 # 🛠️ LOCAL DOCKER CONFIGURATION
 DOCKER_DIR   := docker
 COMPOSE_DEV  := $(DOCKER_DIR)/docker-compose.yml
@@ -47,9 +58,9 @@ COMPOSE_PROD := $(DOCKER_DIR)/docker-compose.prod.yml
 
 # Default target
 help:
-	@printf "$(CYAN)──────────────────────────────────────────────────────────────────────$(RESET)\n"
+	@printf "$(STYLE_TITLE)──────────────────────────────────────────────────────────────────────$(RESET)\n"
 	@printf "                   🛠️  $(BOLD)$(PROJECT_NAME) Project Makefile$(RESET) 🛠️\n"
-	@printf "$(CYAN)──────────────────────────────────────────────────────────────────────$(RESET)\n"
+	@printf "$(STYLE_TITLE)──────────────────────────────────────────────────────────────────────$(RESET)\n"
 	@echo "Configuration & Setup:"
 	@echo "  make configure        - Run system configuration and env setup"
 	@echo ""
@@ -80,7 +91,7 @@ help:
 	@echo "  make n8n-dbs-push     - Push Notion database UIDs from Doppler config to n8n Data Table"
 	@echo "  make n8n-dbs-pull     - Pull Notion database UIDs from n8n Data Table to Doppler config"
 	@echo "  make n8n-dbs-list     - List and compare database config on both sides (diff status)"
-	@printf "$(CYAN)──────────────────────────────────────────────────────────────────────$(RESET)\n"
+	@printf "$(STYLE_TITLE)──────────────────────────────────────────────────────────────────────$(RESET)\n"
 
 # Run configure wizard (checks dependencies and copies fallback env)
 configure:
@@ -138,22 +149,22 @@ deploy-all:
 	@$(MAKE) --no-print-directory _deploy SERVICES=""
 
 _deploy:
-	@printf "$(CYAN)🚀 [1/4]$(RESET) Preparing deployment space on VPS $(BOLD)$(VPS_SSH)$(RESET)...\n"
+	@printf "$(STYLE_RESULT)🚀 [1/4]$(RESET) Preparing deployment space on VPS $(BOLD)$(VPS_SSH)$(RESET)...\n"
 	@ssh $(VPS_SSH) "mkdir -p $(VPS_PATH)" >/dev/null
-	@printf "$(CYAN)📦 [2/4]$(RESET) Uploading static assets and configuration files...\n"
+	@printf "$(STYLE_PHASE)📦 [2/4]$(RESET) Uploading static assets and configuration files...\n"
 	@scp $(COMPOSE_PROD) $(VPS_SSH):$(VPS_PATH)/docker-compose.prod.yml >/dev/null
-	@printf "$(CYAN)🔑 [3/4]$(RESET) Streaming production secrets from Doppler...\n"
+	@printf "$(STYLE_PHASE)🔑 [3/4]$(RESET) Streaming production secrets from Doppler...\n"
 	@if $(DOPPLER) --version >/dev/null 2>&1; then \
 		if $(DOPPLER) secrets download --project $(DOPPLER_PROJECT) --config $(DOPPLER_CONFIG_PROD) --no-file --format env > docker/.env.prod.temp 2>/dev/null; then \
 			scp docker/.env.prod.temp $(VPS_SSH):$(VPS_PATH)/.env >/dev/null; \
 			rm -f docker/.env.prod.temp; \
 		else \
-			printf "$(ORANGE)❌ Error: Doppler secrets download failed for project $(DOPPLER_PROJECT) (config: $(DOPPLER_CONFIG_PROD))!$(RESET)\n"; \
+			printf "$(STYLE_ERROR)❌ Error: Doppler secrets download failed for project $(DOPPLER_PROJECT) (config: $(DOPPLER_CONFIG_PROD))!$(RESET)\n"; \
 			rm -f docker/.env.prod.temp; \
 			exit 1; \
 		fi; \
 	else \
-		printf "$(ORANGE)❌ Error: Doppler CLI is not installed or not found in PATH!$(RESET)\n"; \
+		printf "$(STYLE_ERROR)❌ Error: Doppler CLI is not installed or not found in PATH!$(RESET)\n"; \
 		exit 1; \
 	fi
 	@if [ "$(SERVICES)" = "" ]; then \
@@ -165,17 +176,17 @@ _deploy:
 		REAL_VERSION=$$(ssh $(VPS_SSH) "docker run --rm ghcr.io/gnueole/jobby-md2html:latest node -e \"console.log(require('./package.json').version)\" 2>/dev/null || echo 'unknown'"); \
 		if [ "$$REAL_VERSION" != "$(VERSION)" ]; then \
 			if [ "$(FORCE)" != "1" ] && [ "$(F)" != "1" ]; then \
-				printf "$(ORANGE)❌ Error: The image version ($$REAL_VERSION) differs from the local package.json version ($(VERSION))!$(RESET)\n"; \
+				printf "$(STYLE_ERROR)❌ Error: The image version ($$REAL_VERSION) differs from the local package.json version ($(VERSION))!$(RESET)\n"; \
 				printf "   Deploy aborted. Wait for the GitHub Action to finish building the new image, or bypass using 'make deploy FORCE=1'.\n"; \
 				exit 1; \
 			fi \
 		fi \
 	fi
-	@printf "$(CYAN)🐳 [4/4]$(RESET) Recreating and starting production containers...\n"
+	@printf "$(STYLE_PHASE)🐳 [4/4]$(RESET) Recreating and starting production containers...\n"
 	@ssh $(VPS_SSH) "docker rm -f jobby-editor mcp-notion gotenberg 2>/dev/null || true" >/dev/null
 	@ssh $(VPS_SSH) "cd $(VPS_PATH) && docker compose -f docker-compose.prod.yml up -d --remove-orphans" >/dev/null
 	@DEPLOYED_VERSION=$$(ssh $(VPS_SSH) "docker exec jobby-editor node -e \"console.log(require('./package.json').version)\" 2>/dev/null || echo '$(VERSION)'"); \
-	printf "$(GREEN)✅ Deployment of $(PROJECT_NAME) [$$DEPLOYED_VERSION / $(VPS_PROJECT_TAG)] successfully completed on production server!$(RESET)\n"
+	printf "$(STYLE_RESULT)✅ Deployment of $(PROJECT_NAME) [$$DEPLOYED_VERSION / $(VPS_PROJECT_TAG)] successfully completed on production server!$(RESET)\n"
 
 check-logs:
 	@echo "📟 Fetching real-time production logs from VPS [$(VPS_SSH)]..."
