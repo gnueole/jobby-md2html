@@ -1,3 +1,15 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+# ==============================================================================
+# Author: Éole <hi@eole.me>
+# Creation Date: 2026-07-08
+# Last Update: 2026-07-08
+# License: MIT
+#
+# [DEPRECATED] Forwards calls to the unified sync_n8n.py script.
+# ==============================================================================
+
 import sys
 import subprocess
 import os

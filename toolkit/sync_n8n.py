@@ -1,3 +1,15 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+# ==============================================================================
+# Author: Éole <hi@eole.me>
+# Creation Date: 2026-06-11
+# Last Update: 2026-07-08
+# License: MIT
+#
+# n8n Workflow Sync & Maintenance Toolkit for the Jobby subproject. Supports logs fetching, backups, restores, and syntax patches.
+# ==============================================================================
+
 import json
 import urllib.request
 import urllib.error
@@ -8,6 +20,39 @@ import argparse
 import re
 import uuid
 import datetime
+
+
+# Terminal escape sequences for TrueColor/ANSI styling
+COLOR_RESET   = "\033[0m"
+COLOR_BOLD    = "\033[1m"
+COLOR_CYAN    = "\033[38;2;45;212;191m"
+COLOR_GREEN   = "\033[38;2;74;222;128m"
+COLOR_YELLOW  = "\033[38;2;253;224;71m"
+COLOR_RED     = "\033[38;2;244;63;94m"
+COLOR_PURPLE  = "\033[38;2;167;139;250m"
+COLOR_GRAY    = "\033[38;2;156;163;175m"
+
+# Semantic style variables (Meta-colorization)
+STYLE_TITLE       = COLOR_CYAN
+STYLE_SECTION     = COLOR_PURPLE
+STYLE_PHASE       = COLOR_CYAN
+STYLE_DISCREET    = COLOR_GRAY
+STYLE_INSTRUCTION = COLOR_GREEN
+STYLE_RESULT      = COLOR_GREEN
+STYLE_WARNING     = COLOR_YELLOW
+STYLE_ERROR       = COLOR_RED
+
+def log_success(msg):
+    print(f"  {STYLE_RESULT}✔{COLOR_RESET}  {msg}")
+
+def log_warn(msg):
+    print(f"  {STYLE_WARNING}⚠{COLOR_RESET}  {msg}")
+
+def log_error(msg):
+    print(f"  {STYLE_ERROR}✘{COLOR_RESET}  {msg}", file=sys.stderr)
+
+def log_info(msg):
+    print(f"  {STYLE_PHASE}ℹ{COLOR_RESET}  {msg}")
 
 # Global configuration variables to be populated by ensure_env()
 API_KEY = None
@@ -644,17 +689,17 @@ def main():
         nodes = wf.get("nodes", [])
         updated = False
         
-        new_js_code = r"""// 1. Récupération du CV et des deux nouvelles propriétés Notion
+        new_js_code = r"""// 1. Retrieve the CV and the two new Notion properties
 const properties = $('Webhook').item.json.body?.data?.properties || {};
 const richTextArray = properties.CV?.rich_text || [];
 
-// Extraction propre depuis Get PageID
+// Clean extraction from Get PageID
 const company = $('Get PageID').first().json.company || 'company';
 const jobTitle = $('Get PageID').first().json.jobTitle || 'job';
 
 let mdText = richTextArray.map(block => block.plain_text || '').join('');
 
-// Fallback: Parser Markdown robuste aligné sur marked.js
+// Fallback: Robust Markdown parser aligned with marked.js
 function robustMarkdownToHtml(md) {
   const lines = md.split(/\r?\n/);
   let htmlOutput = [];
@@ -704,25 +749,25 @@ function robustMarkdownToHtml(md) {
   return finalBody;
 }
 
-// Fonction utilitaire pour nettoyer les caractères spéciaux du futur nom de fichier
+// Utility function to clean special characters from the future filename
 function slugify(text) {
   return text
     .toString()
     .toLowerCase()
-    .normalize('NFD') // Supprime les accents
+    .normalize('NFD') // Remove accents
     .replace(/[\u0300-\u036f]/g, '')
     .trim()
-    .replace(/\s+/g, '-') // Remplace les espaces par des tirets
-    .replace(/[^a-z0-9\-]/g, ''); // Supprime le reste
+    .replace(/\s+/g, '-') // Replace spaces with dashes
+    .replace(/[^a-z0-9\-]/g, ''); // Remove other special characters
 }
 
 const finalFileName = `javarre-${slugify(company)}-${slugify(jobTitle)}`;
 
-// 3. RECUPERATION CONFIG & CSS DE DATA TABLE
+// 3. RETRIEVE CONFIG & CSS FROM DATA TABLE
 const config = JSON.parse($('Read Config from Table').first().json.value);
 const templatesCss = $('Read CSS from Table').first().json.value;
 
-// 4. PARSER MARKDOWN AVEC LE MEME COMPILATEUR QUE L'EDITEUR (MARKED.JS VIA CDN)
+// 4. PARSE MARKDOWN WITH THE SAME COMPILER AS THE EDITOR (MARKED.JS VIA CDN)
 let compiledHtml;
 try {
   const cdnUrl = 'https://cdn.jsdelivr.net/npm/marked/marked.min.js';
@@ -752,7 +797,7 @@ try {
   compiledHtml = compiledHtml.replace(/:muted\[([^\]]+)\]/g, '<span class="resume-muted">$1</span>');
 }
 
-// Traitement du bloc contact si présent
+// Process contact block if present
 compiledHtml = compiledHtml.replace(/\[CONTACT\s*:\s*([^\]]+)\]/gi, (match, contents) => {
     const parts = contents.split('|').map(p => p.trim());
     const formattedParts = parts.map(part => {
@@ -892,13 +937,13 @@ return [
         js_code_to_push = new_js_code.replace("/* INLINED_FONTS_PLACEHOLDER */", inlined_fonts_css)
 
         for node in nodes:
-            if "code" in node.get("type", "").lower() and "Génération" in node.get("name", ""):
+            if "code" in node.get("type", "").lower() and ("Génération" in node.get("name", "") or "Generation" in node.get("name", "")):
                 print(f"Found target Code node: '{node.get('name')}'")
                 js_code = node.get("parameters", {}).get("jsCode", "")
                 if js_code != js_code_to_push:
                     node["parameters"]["jsCode"] = js_code_to_push
                     updated = True
-                    print("Updated Génération Code node parameters to the latest version.")
+                    print("Updated Generation Code node parameters to the latest version.")
 
         if updated:
             print("Applying corrections to n8n...")

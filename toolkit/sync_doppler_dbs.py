@@ -1,9 +1,54 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+# ==============================================================================
+# Author: Éole <hi@eole.me>
+# Creation Date: 2026-07-08
+# Last Update: 2026-07-08
+# License: MIT
+#
+# Synchronizes Notion database UIDs from Doppler configurations to n8n Data Tables for the Jobby subproject.
+# ==============================================================================
+
 import os
 import json
 import urllib.request
 import ssl
 import sys
 import subprocess
+
+# Terminal escape sequences for TrueColor/ANSI styling
+COLOR_RESET   = "\033[0m"
+COLOR_BOLD    = "\033[1m"
+COLOR_CYAN    = "\033[38;2;45;212;191m"
+COLOR_GREEN   = "\033[38;2;74;222;128m"
+COLOR_YELLOW  = "\033[38;2;253;224;71m"
+COLOR_RED     = "\033[38;2;244;63;94m"
+COLOR_PURPLE  = "\033[38;2;167;139;250m"
+COLOR_GRAY    = "\033[38;2;156;163;175m"
+
+# Semantic style variables (Meta-colorization)
+STYLE_TITLE       = COLOR_CYAN
+STYLE_SECTION     = COLOR_PURPLE
+STYLE_PHASE       = COLOR_CYAN
+STYLE_DISCREET    = COLOR_GRAY
+STYLE_INSTRUCTION = COLOR_GREEN
+STYLE_RESULT      = COLOR_GREEN
+STYLE_WARNING     = COLOR_YELLOW
+STYLE_ERROR       = COLOR_RED
+
+def log_success(msg):
+    print(f"  {STYLE_RESULT}✔{COLOR_RESET}  {msg}")
+
+def log_warn(msg):
+    print(f"  {STYLE_WARNING}⚠{COLOR_RESET}  {msg}")
+
+def log_error(msg):
+    print(f"  {STYLE_ERROR}✘{COLOR_RESET}  {msg}", file=sys.stderr)
+
+def log_info(msg):
+    print(f"  {STYLE_PHASE}ℹ{COLOR_RESET}  {msg}")
+
 
 def get_n8n_headers(n_api_key):
     return {
