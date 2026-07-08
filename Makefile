@@ -150,7 +150,7 @@ deploy-all:
 	@$(MAKE) --no-print-directory _deploy SERVICES=""
 
 _deploy:
-	@printf "$(STYLE_RESULT)🚀 [1/4]$(RESET) Preparing deployment space on VPS $(BOLD)$(VPS_SSH)$(RESET)...\n"
+	@printf "$(STYLE_PHASE)🚀 [1/4]$(RESET) Preparing deployment space on VPS $(BOLD)$(VPS_SSH)$(RESET)...\n"
 	@ssh $(VPS_SSH) "mkdir -p $(VPS_PATH)" >/dev/null
 	@printf "$(STYLE_PHASE)📦 [2/4]$(RESET) Uploading static assets and configuration files...\n"
 	@scp $(COMPOSE_PROD) $(VPS_SSH):$(VPS_PATH)/docker-compose.prod.yml >/dev/null
