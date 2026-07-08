@@ -107,7 +107,7 @@
     },
     {
       "parameters": {
-        "content": "### Last Publish Info\n\nPublished on 2026-07-06 15:52:53 | Git: 87dc6c7 docs(rules): point jobby-md2html agents rules directly to parent ecosystem rules",
+        "content": "### Last Publish Info\n\nPublished on 2026-07-08 10:45:09 | Git: No git commit info available",
         "height": 150,
         "width": 300,
         "color": 6
@@ -488,5 +488,5 @@
       }
     ]
   },
-  "//": "Published on 2026-07-06 15:52:53 | Git: 87dc6c7 docs(rules): point jobby-md2html agents rules directly to parent ecosystem rules"
+  "//": "Published on 2026-07-08 10:45:09 | Git: No git commit info available"
 }
