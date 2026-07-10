@@ -381,6 +381,9 @@ const server = http.createServer((req, res) => {
             let payload;
             try { payload = JSON.parse(body); } catch(e) { payload = {}; }
 
+            // Inject app identifier for unified feedback workflow
+            payload.app = "jobby";
+
             // Respond to client immediately to prevent blocking
             res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
             res.end(JSON.stringify({ success: true }));
