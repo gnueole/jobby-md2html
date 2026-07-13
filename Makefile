@@ -141,13 +141,13 @@ restart: down up
 
 # 🚀 AUTOMATED DEPLOYMENT PIPELINE (VPS)
 deploy:
-	@$(MAKE) --no-print-directory _deploy SERVICES="jobby-editor"
+	@"$(MAKE)" --no-print-directory _deploy SERVICES="jobby-editor"
 
 deploy-infra:
-	@$(MAKE) --no-print-directory _deploy SERVICES="mcp-notion gotenberg"
+	@"$(MAKE)" --no-print-directory _deploy SERVICES="mcp-notion gotenberg"
 
 deploy-all:
-	@$(MAKE) --no-print-directory _deploy SERVICES=""
+	@"$(MAKE)" --no-print-directory _deploy SERVICES=""
 
 _deploy:
 	@printf "$(STYLE_PHASE)🚀 [1/4]$(RESET) Preparing deployment space on VPS $(BOLD)$(VPS_SSH)$(RESET)...\n"
@@ -201,7 +201,7 @@ check-build-full:
 
 deploy-delay:
 	@echo "⏳ Waiting 150 seconds for GitHub Actions build to complete..."
-	git push && sleep 150 && $(MAKE) --no-print-directory deploy
+	git push && sleep 150 && "$(MAKE)" --no-print-directory deploy
 
 # 🔄 N8N SYNC COMMANDS (DOPPLER ENHANCED)
 n8n-backup:
