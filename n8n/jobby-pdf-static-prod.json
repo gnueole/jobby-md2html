@@ -1,5 +1,5 @@
 {
-  "//": "Published on 2026-07-08 10:45:09 | Git: No git commit info available",
+  "//": "Published on 2026-07-23 14:58:21 | Git: bf7656e fix(dependabot): use Docker Hub image path for n8n to enable Dependabot support",
   "updatedAt": "2026-06-03T11:51:05.635Z",
   "createdAt": "2026-05-25T16:32:59.047Z",
   "id": "K2acY4kGijPJGop0",
@@ -291,7 +291,7 @@
     },
     {
       "parameters": {
-        "content": "### Last Publish Info\n\nPublished on 2026-07-08 10:45:09 | Git: No git commit info available",
+        "content": "### Last Publish Info\n\nPublished on 2026-07-23 14:58:21 | Git: bf7656e fix(dependabot): use Docker Hub image path for n8n to enable Dependabot support",
         "height": 150,
         "width": 300,
         "color": 6

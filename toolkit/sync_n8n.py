@@ -7,7 +7,7 @@
 # Last Update: 2026-07-08
 # License: MIT
 #
-# n8n Workflow Sync & Maintenance Toolkit for the Jobby subproject. Supports logs fetching, backups, restores, and syntax patches.
+# n8n Workflow Sync & Maintenance Toolkit. Supports logs fetching, backups, restores, and syntax patches.
 # ==============================================================================
 
 import json
@@ -20,6 +20,12 @@ import argparse
 import re
 import uuid
 import datetime
+
+# Ensure UTF-8 output on Windows to prevent UnicodeEncodeErrors with emojis
+if sys.platform == "win32":
+    import io
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
 
 
 # Terminal escape sequences for TrueColor/ANSI styling
@@ -60,12 +66,19 @@ WORKFLOW_ID = None
 BASE_URL = None
 N8N_URL = None
 
-# SSL context bypassing validation
-ctx = ssl.create_default_context()
-ctx.check_hostname = False
-ctx.verify_mode = ssl.CERT_NONE
+# SSL context initialized in main
+ctx = None
 
 def generate_env(force=False):
+    """
+    Generates a default .env configuration file template for the toolkit.
+    
+    Args:
+        force (bool): If True, overwrites the existing .env file.
+        
+    Returns:
+        bool: True if file was created/updated, False if it already existed.
+    """
     env_path = os.path.join(os.path.dirname(__file__), ".env")
     template = (
         "# Production n8n Configuration\n"
@@ -88,8 +101,21 @@ def generate_env(force=False):
         return False
 
 def ensure_env(require_workflow_id=True, use_dev=False, api_key_override=None, workflow_id_override=None, base_url_override=None):
+    """
+    Loads and validates n8n environment variables from the .env configuration file or system environment.
+    
+    Args:
+        require_workflow_id (bool): If True, exits the script if no workflow ID is resolved.
+        use_dev (bool): If True, uses DEV_ variables instead of production variables.
+        api_key_override (str): Manual override for the n8n API Key.
+        workflow_id_override (str): Manual override for the active workflow ID.
+        base_url_override (str): Manual override for the n8n instance base URL.
+    """
     global API_KEY, WORKFLOW_ID, BASE_URL, N8N_URL
-    env_path = os.path.join(os.path.dirname(__file__), ".env")
+    
+    # Try current working directory first, fallback to script directory
+    cwd_env = os.path.join(os.getcwd(), ".env")
+    env_path = cwd_env if os.path.exists(cwd_env) else os.path.join(os.path.dirname(__file__), ".env")
     
     config = {}
     if os.path.exists(env_path) and os.path.getsize(env_path) > 0:
@@ -103,44 +129,38 @@ def ensure_env(require_workflow_id=True, use_dev=False, api_key_override=None, w
                 config[key.strip()] = val
         
     if use_dev:
-        API_KEY = (api_key_override or 
-                   os.environ.get("DEV_N8N_API_KEY") or 
-                   config.get("DEV_N8N_API_KEY") or
-                   None)
-        WORKFLOW_ID = (workflow_id_override or 
-                       os.environ.get("DEV_N8N_WORKFLOW_ID") or 
-                       config.get("DEV_N8N_WORKFLOW_ID") or
-                       None)
-        BASE_URL = (base_url_override or 
-                    os.environ.get("DEV_N8N_BASE_URL") or 
-                    config.get("DEV_N8N_BASE_URL") or 
-                    "http://localhost:5678")
+        API_KEY = api_key_override or config.get("DEV_N8N_API_KEY") or os.environ.get("DEV_N8N_API_KEY")
+        WORKFLOW_ID = workflow_id_override or config.get("DEV_N8N_WORKFLOW_ID") or os.environ.get("DEV_N8N_WORKFLOW_ID")
+        BASE_URL = base_url_override or config.get("DEV_N8N_BASE_URL") or os.environ.get("DEV_N8N_BASE_URL") or "http://localhost:5678"
     else:
-        API_KEY = (api_key_override or 
-                   os.environ.get("N8N_API_KEY") or 
-                   config.get("N8N_API_KEY"))
-        WORKFLOW_ID = (workflow_id_override or 
-                       os.environ.get("N8N_WORKFLOW_ID") or 
-                       config.get("N8N_WORKFLOW_ID"))
-        BASE_URL = (base_url_override or 
-                    os.environ.get("N8N_BASE_URL") or 
-                    config.get("N8N_BASE_URL") or 
-                    "https://n8n.eole.me")
+        API_KEY = api_key_override or config.get("N8N_API_KEY") or os.environ.get("N8N_API_KEY")
+        WORKFLOW_ID = workflow_id_override or config.get("N8N_WORKFLOW_ID") or os.environ.get("N8N_WORKFLOW_ID")
+        BASE_URL = base_url_override or config.get("N8N_BASE_URL") or os.environ.get("N8N_BASE_URL") or "https://n8n.eole.me"
         
     BASE_URL = BASE_URL.rstrip("/")
     
     if not API_KEY and not use_dev:
-        print("Error: Missing credentials. N8N_API_KEY must be set in environment variables or toolkit/.env file.")
+        print("Error: Missing credentials in .env file or environment.")
+        print("Please ensure N8N_API_KEY and N8N_BASE_URL are populated in your .env file or environment.")
         sys.exit(1)
         
     if require_workflow_id and not WORKFLOW_ID:
-        print("Error: Missing WORKFLOW_ID. N8N_WORKFLOW_ID must be set in environment variables, toolkit/.env file, or command override (--id).")
+        print("Error: Missing WORKFLOW_ID in .env file, environment, or command override (--id).")
         sys.exit(1)
         
     if WORKFLOW_ID:
         N8N_URL = f"{BASE_URL}/api/v1/workflows/{WORKFLOW_ID}"
 
 def slugify(text):
+    """
+    Converts arbitrary string content into a URL-friendly, lowercase slug.
+    
+    Args:
+        text (str): The string content to slugify.
+        
+    Returns:
+        str: The cleaned and formatted slug string.
+    """
     text = text.lower()
     text = re.sub(r"[^\w\s-]", "", text)
     return re.sub(r"[-\s]+", "-", text).strip("-")
@@ -211,6 +231,12 @@ def update_publish_info_nodes(wf, comment):
     sticky_node["parameters"]["content"] = f"### Last Publish Info\n\n{comment}"
 
 def fetch_workflow():
+    """
+    Downloads the active workflow configuration from the target n8n instance.
+    
+    Returns:
+        dict: The parsed JSON representation of the workflow.
+    """
     req = urllib.request.Request(
         N8N_URL,
         headers={
@@ -228,6 +254,15 @@ def fetch_workflow():
         sys.exit(1)
 
 def push_workflow(wf):
+    """
+    Pushes a workflow structure to update the active workflow on the n8n instance.
+    
+    Args:
+        wf (dict): The workflow JSON object.
+        
+    Returns:
+        bool: True if updated successfully, False otherwise.
+    """
     raw_settings = wf.get("settings", {})
     clean_settings = {}
     for k in ["executionOrder", "errorWorkflow"]:
@@ -266,10 +301,16 @@ def push_workflow(wf):
         print(e.read().decode('utf-8'))
         return False
     except Exception as e:
-        print(f"Error pushing workflow: {e}")
+        print(f"Error push workflow: {e}")
         return False
 
 def activate_workflow():
+    """
+    Triggers publishing/activation of the active workflow on the n8n instance.
+    
+    Returns:
+        bool: True if successfully activated, False otherwise.
+    """
     req = urllib.request.Request(
         f"{N8N_URL}/activate",
         data=b"{}",
@@ -292,7 +333,43 @@ def activate_workflow():
         print(f"Warning: Could not auto-activate workflow via API: {e}")
         return False
 
+def deactivate_workflow_by_id(workflow_id):
+    """
+    Deactivates a specific workflow on n8n by its ID.
+    
+    Args:
+        workflow_id (str): The target n8n workflow ID.
+        
+    Returns:
+        bool: True if successfully deactivated, False otherwise.
+    """
+    url = f"{BASE_URL}/api/v1/workflows/{workflow_id}/deactivate"
+    req = urllib.request.Request(
+        url,
+        data=b"{}",
+        headers={
+            "X-N8N-API-KEY": API_KEY,
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        method="POST"
+    )
+    try:
+        with urllib.request.urlopen(req, context=ctx) as response:
+            if response.status == 200:
+                print(f"SUCCESS: Workflow {workflow_id} successfully deactivated on n8n!")
+                return True
+    except Exception as e:
+        print(f"Warning: Could not deactivate workflow {workflow_id}: {e}")
+    return False
+
 def list_workflows():
+    """
+    Fetches the metadata list of all workflows configured on the target n8n server.
+    
+    Returns:
+        list: A list of dict objects containing workflow metadata.
+    """
     url = f"{BASE_URL}/api/v1/workflows"
     req = urllib.request.Request(
         url,
@@ -311,7 +388,79 @@ def list_workflows():
         print(f"Error listing workflows from n8n: {e}")
     return []
 
+def fetch_executions(limit=10, status=None):
+    """
+    Queries and prints recent execution logs/history from the target n8n instance.
+    
+    Args:
+        limit (int): The maximum number of executions to fetch (default: 10).
+        status (str): Optional status filter ('success', 'failed', 'running', 'waiting').
+    """
+    global API_KEY, BASE_URL, WORKFLOW_ID
+    url = f"{BASE_URL}/api/v1/executions"
+    params = []
+    if WORKFLOW_ID:
+        params.append(f"workflowId={WORKFLOW_ID}")
+    params.append(f"limit={limit}")
+    if status:
+        api_status = "error" if status == "failed" else status
+        params.append(f"status={api_status}")
+        
+    url += "?" + "&".join(params)
+    
+    req = urllib.request.Request(
+        url,
+        headers={
+            "X-N8N-API-KEY": API_KEY,
+            "Accept": "application/json"
+        },
+        method="GET"
+    )
+    try:
+        with urllib.request.urlopen(req, context=ctx) as response:
+            if response.status == 200:
+                res = json.loads(response.read().decode('utf-8'))
+                executions = res.get("data", [])
+                if not executions:
+                    print("No executions found.")
+                    return
+                print(f"\n📋 Last {len(executions)} executions on {BASE_URL}:")
+                print("-" * 80)
+                for item in executions:
+                    e_id = item.get("id")
+                    e_status = item.get("status", "unknown").upper()
+                    started = item.get("startedAt", "")
+                    stopped = item.get("stoppedAt", "")
+                    w_id = item.get("workflowId", "")
+                    
+                    status_symbol = "🟢" if e_status == "SUCCESS" else "🔴" if e_status == "FAILED" else "🟡"
+                    print(f"{status_symbol} Execution ID: {e_id} | Status: {e_status} | Workflow ID: {w_id}")
+                    print(f"   Started: {started} | Stopped: {stopped}")
+                    
+                    error = item.get("error")
+                    if error:
+                        if isinstance(error, dict):
+                            print(f"   ❌ Error: {error.get('message', 'Unknown error')}")
+                            if error.get("description"):
+                                print(f"      Description: {error.get('description')}")
+                        else:
+                            print(f"   ❌ Error: {error}")
+                    print("-" * 80)
+            else:
+                print(f"Failed to fetch executions, status={response.status}")
+    except Exception as e:
+        print(f"Error fetching executions: {e}")
+
 def create_workflow(wf):
+    """
+    Creates a new workflow on the target n8n instance.
+    
+    Args:
+        wf (dict): The workflow configuration to create.
+        
+    Returns:
+        dict: The created workflow metadata on success, None on failure.
+    """
     url = f"{BASE_URL}/api/v1/workflows"
     raw_settings = wf.get("settings", {})
     clean_settings = {}
@@ -323,9 +472,9 @@ def create_workflow(wf):
         "name": wf.get("name"),
         "nodes": wf.get("nodes"),
         "connections": wf.get("connections"),
-        "settings": clean_settings
+        "settings": clean_settings,
+        "staticData": wf.get("staticData")
     }
-    pass
     req = urllib.request.Request(
         url,
         data=json.dumps(payload).encode('utf-8'),
@@ -347,6 +496,16 @@ def create_workflow(wf):
     return None
 
 def update_workflow_by_id(workflow_id, wf):
+    """
+    Updates an existing workflow on n8n by its workflow ID.
+    
+    Args:
+        workflow_id (str): The target n8n workflow ID.
+        wf (dict): The workflow configuration to push.
+        
+    Returns:
+        bool: True if successfully updated, False otherwise.
+    """
     url = f"{BASE_URL}/api/v1/workflows/{workflow_id}"
     raw_settings = wf.get("settings", {})
     clean_settings = {}
@@ -358,9 +517,9 @@ def update_workflow_by_id(workflow_id, wf):
         "name": wf.get("name"),
         "nodes": wf.get("nodes"),
         "connections": wf.get("connections"),
-        "settings": clean_settings
+        "settings": clean_settings,
+        "staticData": wf.get("staticData")
     }
-    pass
     req = urllib.request.Request(
         url,
         data=json.dumps(payload).encode('utf-8'),
@@ -381,6 +540,15 @@ def update_workflow_by_id(workflow_id, wf):
     return False
 
 def activate_workflow_by_id(workflow_id):
+    """
+    Activates/Publishes a specific workflow on n8n by its ID.
+    
+    Args:
+        workflow_id (str): The target n8n workflow ID.
+        
+    Returns:
+        bool: True if successfully activated, False otherwise.
+    """
     url = f"{BASE_URL}/api/v1/workflows/{workflow_id}/activate"
     req = urllib.request.Request(
         url,
@@ -401,13 +569,24 @@ def activate_workflow_by_id(workflow_id):
         print(f"Warning: Could not auto-activate workflow {workflow_id}: {e}")
     return False
 
-def backup_all(n8n_dir, use_dev):
+def backup_all(n8n_dir, use_dev, container_name="n8n-server-dev"):
+    """
+    Downloads all workflows from n8n and saves them locally as JSON files.
+    If in dev mode without an API key, falls back to using local Docker CLI exports.
+    
+    Args:
+        n8n_dir (str): Destination directory path.
+        use_dev (bool): Whether to attempt Docker fallback if API credentials are missing.
+        container_name (str): Docker container name for the fallback command.
+        
+    Returns:
+        bool: True if successful, False otherwise.
+    """
     import subprocess
     global API_KEY, BASE_URL
     
     if use_dev and not API_KEY:
         print("API Key not set. Attempting Docker fallback for workflow export...")
-        container_name = "n8n-server-dev"
         try:
             check_res = subprocess.run(
                 ["docker", "inspect", "-f", "{{.State.Running}}", container_name],
@@ -426,7 +605,7 @@ def backup_all(n8n_dir, use_dev):
                 sys.exit(1)
             elif "true" not in check_res.stdout.lower():
                 print(f"Error: Docker container '{container_name}' is not running.")
-                print("Please start your dev environment using 'make up' or 'docker compose -f docker/docker-compose.yml up -d' first.")
+                print("Please start your dev environment using 'docker compose -f docker/dev/docker-compose.yml up -d' first.")
                 sys.exit(1)
             
             print("Exporting workflows inside the container...")
@@ -478,7 +657,7 @@ def backup_all(n8n_dir, use_dev):
                         full_wf = json.loads(wf_res.read().decode("utf-8"))
                         with open(file_path, "w", encoding="utf-8") as out:
                             json.dump(full_wf, out, indent=2, ensure_ascii=False)
-                        print(f"  - Saved: n8n/{filename} (ID: {wf_id})")
+                        print(f"  - Saved: {n8n_dir}/{filename} (ID: {wf_id})")
                 print("SUCCESS: All workflows saved locally.")
                 return True
             else:
@@ -488,7 +667,19 @@ def backup_all(n8n_dir, use_dev):
         print(f"Error fetching workflows: {e}")
         sys.exit(1)
 
-def push_all(n8n_dir, use_dev):
+def push_all(n8n_dir, use_dev, container_name="n8n-server-dev"):
+    """
+    Imports/updates all local JSON workflows in the target n8n instance.
+    If in dev mode without an API key, falls back to using local Docker CLI imports.
+    
+    Args:
+        n8n_dir (str): Source directory containing local workflow JSON files.
+        use_dev (bool): Whether to attempt Docker fallback if API credentials are missing.
+        container_name (str): Docker container name for the fallback command.
+        
+    Returns:
+        bool: True if successful, False otherwise.
+    """
     import subprocess
     global API_KEY, BASE_URL
     
@@ -503,7 +694,6 @@ def push_all(n8n_dir, use_dev):
         
     if use_dev and not API_KEY:
         print("API Key not set. Attempting Docker fallback for workflow import...")
-        container_name = "n8n-server-dev"
         try:
             check_res = subprocess.run(
                 ["docker", "inspect", "-f", "{{.State.Running}}", container_name],
@@ -522,41 +712,16 @@ def push_all(n8n_dir, use_dev):
                 sys.exit(1)
             elif "true" not in check_res.stdout.lower():
                 print(f"Error: Docker container '{container_name}' is not running.")
-                print("Please start your dev environment using 'make up' or 'docker compose -f docker/docker-compose.yml up -d' first.")
+                print("Please start your dev environment using 'docker compose -f docker/dev/docker-compose.yml up -d' first.")
                 sys.exit(1)
             
-            import tempfile
-            import shutil
-
-            # Create a local temp directory to store sanitized workflows
-            temp_dir = tempfile.mkdtemp()
-            try:
-                for f_name in json_files:
-                    src_path = os.path.join(n8n_dir, f_name)
-                    with open(src_path, "r", encoding="utf-8") as f_in:
-                        wf_data = json.load(f_in)
-                    
-                    # Sanitize schema to avoid SQLite foreign key violations
-                    sanitized = {}
-                    allowed_keys = ['name', 'nodes', 'connections', 'settings', 'staticData', 'meta', 'active', 'tags']
-                    for key in allowed_keys:
-                        if key in wf_data:
-                            sanitized[key] = wf_data[key]
-                            
-                    dst_path = os.path.join(temp_dir, f_name)
-                    with open(dst_path, "w", encoding="utf-8") as f_out:
-                        json.dump(sanitized, f_out, indent=2, ensure_ascii=False)
-
-                print(f"Copying workflows to container '{container_name}'...")
-                subprocess.run(["docker", "exec", container_name, "mkdir", "-p", "/tmp/n8n_import"], check=True)
-                # Copy the sanitized workflows from local temp dir
-                subprocess.run(["docker", "cp", f"{temp_dir}/.", f"{container_name}:/tmp/n8n_import/"], check=True)
-            finally:
-                shutil.rmtree(temp_dir)
+            print(f"Copying workflows to container '{container_name}'...")
+            subprocess.run(["docker", "exec", container_name, "mkdir", "-p", "/tmp/n8n_import"], check=True)
+            subprocess.run(["docker", "cp", f"{n8n_dir}/.", f"{container_name}:/tmp/n8n_import/"], check=True)
             
             print("Importing workflows inside the container...")
             import_res = subprocess.run(
-                ["docker", "exec", "-u", "node", container_name, "n8n", "import:workflow", "--separate", "--input=/tmp/n8n_import"],
+                ["docker", "exec", "-u", "node", container_name, "n8n", "import:workflow", "--input=/tmp/n8n_import"],
                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True
             )
             if import_res.returncode == 0:
@@ -572,7 +737,7 @@ def push_all(n8n_dir, use_dev):
             print("\nPlease make sure Docker is running and you have necessary permissions.")
             print("Alternatively, you can run these commands manually:")
             print(f"  sg docker -c \"docker cp {n8n_dir}/. {container_name}:/tmp/n8n_import/\"")
-            print(f"  sg docker -c \"docker exec -u node {container_name} n8n import:workflow --separate --input=/tmp/n8n_import\"")
+            print(f"  sg docker -c \"docker exec -u node {container_name} n8n import:workflow --input=/tmp/n8n_import\"")
             sys.exit(1)
 
     print(f"Connecting to n8n at: {BASE_URL}")
@@ -620,6 +785,9 @@ def push_all(n8n_dir, use_dev):
     return True
 
 def activate_all():
+    """
+    Loops through all workflows registered on n8n and activates them.
+    """
     global API_KEY, BASE_URL
     print(f"Listing workflows to activate on: {BASE_URL}")
     workflows = list_workflows()
@@ -632,7 +800,405 @@ def activate_all():
                 count += 1
     print(f"SUCCESS: Activated {count} workflows.")
 
+def deactivate_all():
+    """
+    Loops through all workflows registered on n8n and deactivates them.
+    """
+    global API_KEY, BASE_URL
+    print(f"Listing workflows to deactivate on: {BASE_URL}")
+    workflows = list_workflows()
+    count = 0
+    for wf in workflows:
+        wf_id = wf.get("id")
+        if wf_id:
+            print(f"Deactivating workflow: '{wf.get('name')}' (ID: {wf_id})...")
+            if deactivate_workflow_by_id(wf_id):
+                count += 1
+    print(f"SUCCESS: Deactivated {count} workflows.")
+
+def retry_execution(execution_id):
+    """
+    Retries a failed execution by ID via n8n public API.
+    """
+    url = f"{BASE_URL}/api/v1/executions/{execution_id}/retry"
+    req = urllib.request.Request(
+        url,
+        data=b"{}",
+        headers={
+            "X-N8N-API-KEY": API_KEY,
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        method="POST"
+    )
+    try:
+        with urllib.request.urlopen(req, context=ctx) as response:
+            if response.status in (200, 201):
+                res = json.loads(response.read().decode('utf-8'))
+                print(f"SUCCESS: Successfully triggered retry for execution {execution_id}.")
+                print(f"New Execution ID: {res.get('id') or 'unknown'}")
+                return True
+    except urllib.error.HTTPError as e:
+        print(f"HTTPError retrying execution {execution_id}: {e.code} - {e.reason}")
+        print(e.read().decode('utf-8'))
+    except Exception as e:
+        print(f"Error retrying execution {execution_id}: {e}")
+    return False
+
+def inspect_execution(execution_id):
+    """
+    Fetches details of a specific execution and prints detailed error logs if failed.
+    """
+    url = f"{BASE_URL}/api/v1/executions/{execution_id}"
+    req = urllib.request.Request(
+        url,
+        headers={
+            "X-N8N-API-KEY": API_KEY,
+            "Accept": "application/json"
+        },
+        method="GET"
+    )
+    try:
+        with urllib.request.urlopen(req, context=ctx) as response:
+            if response.status == 200:
+                item = json.loads(response.read().decode('utf-8'))
+                print(f"\n🔍 Inspecting Execution ID: {execution_id}")
+                print("-" * 80)
+                e_status = item.get("status", "unknown").upper()
+                w_id = item.get("workflowId", "")
+                started = item.get("startedAt", "")
+                stopped = item.get("stoppedAt", "")
+                
+                status_symbol = "🟢" if e_status == "SUCCESS" else "🔴" if e_status == "FAILED" else "🟡"
+                print(f"Status: {status_symbol} {e_status} | Workflow ID: {w_id}")
+                print(f"Timestamps: Started {started} | Stopped {stopped}")
+                
+                error = item.get("error")
+                if error:
+                    print(f"❌ Failure Details:")
+                    if isinstance(error, dict):
+                        print(f"   Message: {error.get('message', 'Unknown error')}")
+                        if error.get("description"):
+                            print(f"   Description: {error.get('description')}")
+                        if error.get("stack"):
+                            print(f"   Stack Trace:\n{error.get('stack')}")
+                    else:
+                        print(f"   Message: {error}")
+                
+                # Check for failed node execution details
+                execution_data = item.get("data", {})
+                result_data = execution_data.get("resultData", {})
+                run_data = result_data.get("runData", {})
+                
+                failed_nodes = []
+                for node_name, run_info in run_data.items():
+                    for run_index, task_info in enumerate(run_info):
+                        if task_info.get("error"):
+                            failed_nodes.append((node_name, task_info.get("error")))
+                
+                if failed_nodes:
+                    print("\n🛑 Failed Node Details:")
+                    for node_name, node_error in failed_nodes:
+                        print(f"  • Node Name: '{node_name}'")
+                        if isinstance(node_error, dict):
+                            print(f"    Error: {node_error.get('message') or node_error.get('description')}")
+                        else:
+                            print(f"    Error: {node_error}")
+                print("-" * 80)
+                return True
+    except urllib.error.HTTPError as e:
+        print(f"HTTPError fetching execution {execution_id}: {e.code} - {e.reason}")
+        print(e.read().decode('utf-8'))
+    except Exception as e:
+        print(f"Error fetching execution {execution_id}: {e}")
+    return False
+
+def check_credentials(n8n_dir):
+    """
+    Fetches registered credentials from n8n and checks them against credentials referenced in local workflows.
+    """
+    global API_KEY, BASE_URL
+    print(f"Fetching registered credentials from n8n at {BASE_URL}...")
+    url = f"{BASE_URL}/api/v1/credentials"
+    req = urllib.request.Request(
+        url,
+        headers={
+            "X-N8N-API-KEY": API_KEY,
+            "Accept": "application/json"
+        },
+        method="GET"
+    )
+    
+    server_creds = set()
+    try:
+        with urllib.request.urlopen(req, context=ctx) as response:
+            if response.status == 200:
+                creds_data = json.loads(response.read().decode('utf-8')).get("data", [])
+                for cred in creds_data:
+                    c_name = cred.get("name")
+                    c_id = cred.get("id")
+                    if c_name:
+                        server_creds.add(c_name)
+                    if c_id:
+                        server_creds.add(c_id)
+    except Exception as e:
+        print(f"Error fetching credentials: {e}")
+        return False
+        
+    print(f"Found {len(server_creds)} configured credentials on n8n server.")
+    
+    # Read local workflows and search for referenced credentials
+    if not os.path.exists(n8n_dir):
+        print(f"Warning: Workflow directory '{n8n_dir}' does not exist. Cannot check local workflow credentials.")
+        return False
+        
+    json_files = [f for f in os.listdir(n8n_dir) if f.endswith(".json")]
+    if not json_files:
+        print("No local workflow files found to inspect.")
+        return True
+        
+    print(f"Analyzing {len(json_files)} local workflows for credentials...")
+    referenced_creds = {}
+    
+    for filename in json_files:
+        file_path = os.path.join(n8n_dir, filename)
+        try:
+            with open(file_path, "r", encoding="utf-8") as f:
+                wf = json.load(f)
+                nodes = wf.get("nodes", [])
+                for node in nodes:
+                    credentials = node.get("credentials")
+                    if credentials:
+                        for cred_type, cred_ref in credentials.items():
+                            cred_name = cred_ref.get("id") or cred_ref.get("name")
+                            if cred_name:
+                                referenced_creds.setdefault(cred_name, []).append(wf.get("name", filename))
+        except Exception as e:
+            continue
+
+    if not referenced_creds:
+        print("No credentials references found in local workflows.")
+        return True
+        
+    print("\n🔍 Cross-referencing credentials:")
+    print("-" * 80)
+    missing_count = 0
+    for cred_name, wf_list in referenced_creds.items():
+        unique_wfs = list(set(wf_list))
+        if cred_name in server_creds:
+            print(f"🟢 OK: '{cred_name}' is configured on server (used by: {', '.join(unique_wfs)})")
+        else:
+            print(f"⚠️  MISSING: '{cred_name}' NOT found on server! (required by: {', '.join(unique_wfs)})")
+            missing_count += 1
+            
+    print("-" * 80)
+    if missing_count > 0:
+        print(f"WARNING: {missing_count} required credentials seem to be missing on the target n8n instance.")
+        print("Please configure them in the n8n UI before executing these workflows.")
+    else:
+        print("SUCCESS: All referenced credentials are present on the target server.")
+    return True
+
+def sync_token(n8n_dir, use_dev=False, container_name="n8n-server-dev", credential_name="webhook-token"):
+    """
+    1. Reads X_N8N_TOKEN from .env.
+    2. Creates or updates the httpHeaderAuth credential via n8n API.
+    3. Programmatically modifies local workflows in n8n_dir to:
+       - Set Webhook node to use Header Auth and bind it to the credential.
+       - Remove vps_token setting from Load Token node.
+       - Configure Verify Token node as a pass-through.
+     4. Pushes the modified workflows to the n8n server.
+    """
+    global API_KEY, BASE_URL
+    
+    if not API_KEY:
+        print("Error: N8N API Key is required to sync credentials. Please set it in your .env or pass --api-key.")
+        return False
+        
+    # 1. Resolve X_N8N_TOKEN
+    env_paths = [
+        os.path.join(os.path.dirname(n8n_dir), ".env"),
+        os.path.join(os.getcwd(), ".env"),
+        os.path.join(os.path.dirname(__file__), ".env")
+    ]
+    
+    token_value = os.environ.get("X_N8N_TOKEN")
+    if token_value:
+        print("Loaded X_N8N_TOKEN from environment variables.")
+    else:
+        for env_path in env_paths:
+            if os.path.exists(env_path):
+                with open(env_path, "r", encoding="utf-8") as f:
+                    for line in f:
+                        if line.strip().startswith("X_N8N_TOKEN="):
+                            token_value = line.split("=", 1)[1].strip().strip('"').strip("'")
+                            break
+                if token_value:
+                    print(f"Loaded X_N8N_TOKEN from {env_path}")
+                    break
+                
+    if not token_value:
+        print("Error: X_N8N_TOKEN not found in environment or any .env file checked.")
+        return False
+        
+    print(f"Token value: {token_value[:6]}...{token_value[-6:]}")
+    
+    # 2. Check n8n server for credential
+    print(f"Checking registered credentials on n8n server for '{credential_name}'...")
+    url = f"{BASE_URL}/api/v1/credentials"
+    req = urllib.request.Request(
+        url,
+        headers={"X-N8N-API-KEY": API_KEY, "Accept": "application/json"}
+    )
+    
+    cred_id = None
+    try:
+        with urllib.request.urlopen(req, context=ctx) as response:
+            if response.status == 200:
+                creds = json.loads(response.read().decode('utf-8')).get("data", [])
+                for c in creds:
+                    if c.get("name") == credential_name and c.get("type") == "httpHeaderAuth":
+                        cred_id = c.get("id")
+                        break
+    except Exception as e:
+        print(f"Error checking credentials: {e}")
+        return False
+        
+    payload = {
+        "name": credential_name,
+        "type": "httpHeaderAuth",
+        "data": {
+            "name": "x-n8n-token",
+            "value": token_value,
+            "allowedHttpRequestDomains": "all"
+        }
+    }
+    
+    if cred_id:
+        print(f"Credential '{credential_name}' already exists (ID: {cred_id}). Deleting old one to recreate...")
+        cred_url = f"{BASE_URL}/api/v1/credentials/{cred_id}"
+        del_req = urllib.request.Request(
+            cred_url,
+            headers={"X-N8N-API-KEY": API_KEY},
+            method="DELETE"
+        )
+        try:
+            with urllib.request.urlopen(del_req, context=ctx) as response:
+                if response.status == 200:
+                    print(f"Successfully deleted old credential {cred_id}.")
+        except Exception as e:
+            print(f"Warning: Could not delete old credential: {e}")
+
+    print(f"Creating credential '{credential_name}'...")
+    req = urllib.request.Request(
+        url,
+        data=json.dumps(payload).encode('utf-8'),
+        headers={
+            "X-N8N-API-KEY": API_KEY,
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        },
+        method="POST"
+    )
+        
+    try:
+        with urllib.request.urlopen(req, context=ctx) as response:
+            if response.status in (200, 201):
+                res_data = json.loads(response.read().decode('utf-8'))
+                cred_id = res_data.get("id")
+                print(f"SUCCESS: Credential sync completed. (ID: {cred_id})")
+            else:
+                print(f"Failed to sync credential, status={response.status}")
+                return False
+    except Exception as e:
+        print(f"Error syncing credential: {e}")
+        return False
+        
+    # 3. Modify local workflow JSON files
+    if not os.path.exists(n8n_dir):
+        print(f"Error: Workflows directory '{n8n_dir}' does not exist.")
+        return False
+        
+    json_files = [f for f in os.listdir(n8n_dir) if f.endswith(".json")]
+    modified_any = False
+    
+    for filename in json_files:
+        file_path = os.path.join(n8n_dir, filename)
+        try:
+            with open(file_path, "r", encoding="utf-8") as f:
+                wf = json.load(f)
+        except Exception:
+            continue
+            
+        nodes = wf.get("nodes", [])
+        webhook_node = None
+        load_token_node = None
+        verify_token_node = None
+        file_modified = False
+        
+        # Generic credential ID update
+        for n in nodes:
+            creds = n.get("credentials", {})
+            for cred_type, cred_ref in creds.items():
+                if cred_ref.get("name") == credential_name and cred_ref.get("id") != cred_id:
+                    print(f"  - Updating credential '{credential_name}' ID to {cred_id} in node '{n.get('name')}'")
+                    cred_ref["id"] = cred_id
+                    file_modified = True
+            
+            # Identify specific nodes for compatibility patches
+            if n.get("type") == "n8n-nodes-base.webhook" and n.get("name") == "Webhook":
+                webhook_node = n
+            elif n.get("type") == "n8n-nodes-base.set" and n.get("name") == "Load Token":
+                load_token_node = n
+            elif n.get("type") == "n8n-nodes-base.code" and n.get("name") == "Verify Token":
+                verify_token_node = n
+
+        if webhook_node and (load_token_node or verify_token_node):
+            # Configure Webhook Auth
+            if webhook_node.get("parameters", {}).get("authentication") != "headerAuth":
+                webhook_node.setdefault("parameters", {})["authentication"] = "headerAuth"
+                file_modified = True
+            
+            web_creds = webhook_node.setdefault("credentials", {}).setdefault("httpHeaderAuth", {})
+            if web_creds.get("id") != cred_id:
+                web_creds["id"] = cred_id
+                web_creds["name"] = credential_name
+                file_modified = True
+            
+            # Remove vps_token parameter from Load Token if present
+            if load_token_node:
+                vals = load_token_node.get("parameters", {}).get("values", {})
+                strings = vals.get("string", [])
+                new_strings = [s for s in strings if s.get("name") != "vps_token"]
+                if len(new_strings) != len(strings):
+                    vals["string"] = new_strings
+                    file_modified = True
+                
+            # If Verify Token node exists, update its jsCode to be a secure pass-through
+            if verify_token_node:
+                expected_js = "return { json: { system_prompt: $input.item.json.body.system_prompt, body: $input.item.json.body } };"
+                if verify_token_node.get("parameters", {}).get("jsCode") != expected_js:
+                    verify_token_node.setdefault("parameters", {})["jsCode"] = expected_js
+                    print(f"  - Updated 'Verify Token' node to be a secure pass-through.")
+                    file_modified = True
+                    
+        if file_modified:
+            print(f"Modifying workflow file: '{filename}'...")
+            with open(file_path, "w", encoding="utf-8") as f:
+                json.dump(wf, f, indent=2, ensure_ascii=False)
+            modified_any = True
+            
+    if modified_any:
+        print("SUCCESS: Local workflows modified. Pushing updated workflows to n8n server...")
+        return push_all(n8n_dir, use_dev=use_dev, container_name=container_name)
+        
+    return True
+
 def main():
+    """
+    Main CLI entrypoint. Parses arguments and dispatches the corresponding utility actions.
+    """
+    global ctx
     parser = argparse.ArgumentParser(description="n8n Jobby Workflow Sync & Maintenance Toolkit")
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument("--backup", action="store_true", help="Download current workflow from n8n and save as local backup JSON")
@@ -642,14 +1208,27 @@ def main():
     group.add_argument("--push-all", action="store_true", help="Push/import all workflows in local n8n/ directory to the target n8n instance")
     group.add_argument("--activate", action="store_true", help="Activate/Publish the workflow on n8n")
     group.add_argument("--activate-all", action="store_true", help="Activate/Publish all workflows on n8n")
+    group.add_argument("--deactivate", action="store_true", help="Deactivate the workflow on n8n")
+    group.add_argument("--deactivate-all", action="store_true", help="Deactivate all workflows on n8n")
     group.add_argument("--deploy-error", action="store_true", help="Deploy the error trigger to Axiom workflow to n8n")
     group.add_argument("--init-env", action="store_true", help="Generate a default .env file template")
+    group.add_argument("--logs", action="store_true", help="Fetch and display execution logs/history from n8n")
+    group.add_argument("--retry", type=str, metavar="EXECUTION_ID", help="Retry a failed execution by its ID")
+    group.add_argument("--inspect", type=str, metavar="EXECUTION_ID", help="Inspect detailed error logs of a specific execution ID")
+    group.add_argument("--check-credentials", action="store_true", help="Check if n8n server has credentials required by local workflows")
+    group.add_argument("--sync-token", action="store_true", help="Sync Webhook token credential to n8n server and update local workflows")
     
     parser.add_argument("--dev", action="store_true", help="Target the local development n8n instance instead of production")
     parser.add_argument("--id", type=str, help="Override N8N_WORKFLOW_ID / DEV_N8N_WORKFLOW_ID")
     parser.add_argument("--api-key", type=str, help="Override N8N_API_KEY / DEV_N8N_API_KEY")
     parser.add_argument("--base-url", type=str, help="Override N8N_BASE_URL / DEV_N8N_BASE_URL")
     parser.add_argument("--file", type=str, help="Override input/output file path for --backup, --push, or --fix")
+    parser.add_argument("--dir", type=str, help="Override n8n directory (defaults to workspace 'n8n/' if found, otherwise skill's 'n8n/')")
+    parser.add_argument("--container", type=str, default="n8n-server-dev", help="Name of Docker container for dev backup/push fallback (default: n8n-server-dev)")
+    parser.add_argument("--credential-name", type=str, default="webhook-token", help="Name of n8n httpHeaderAuth credential (default: webhook-token)")
+    parser.add_argument("--insecure", action="store_true", help="Bypass SSL certificate verification")
+    parser.add_argument("--limit", type=int, default=10, help="Number of execution logs to fetch (default: 10)")
+    parser.add_argument("--status", type=str, choices=["success", "failed", "error", "running", "waiting"], help="Filter executions by status")
 
     args = parser.parse_args()
     
@@ -657,7 +1236,7 @@ def main():
         generate_env(force=True)
         sys.exit(0)
         
-    require_wf_id = not (args.backup_all or args.push_all or args.activate_all or args.deploy_error)
+    require_wf_id = not (args.backup_all or args.push_all or args.activate_all or args.deactivate_all or args.deploy_error or args.logs or args.retry or args.inspect or args.check_credentials or args.sync_token)
     
     ensure_env(
         require_workflow_id=require_wf_id,
@@ -667,8 +1246,26 @@ def main():
         base_url_override=args.base_url
     )
     
+    # Initialize SSL context
+    if args.dev or args.insecure:
+        ctx = ssl.create_default_context()
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
+    else:
+        ctx = ssl.create_default_context()
+        
     project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    n8n_dir = os.path.join(project_root, "n8n")
+    
+    if args.dir:
+        n8n_dir = os.path.abspath(args.dir)
+    else:
+        # Check if an 'n8n' folder exists in the current working directory
+        cwd_n8n = os.path.join(os.getcwd(), "n8n")
+        if os.path.isdir(cwd_n8n):
+            n8n_dir = cwd_n8n
+        else:
+            n8n_dir = os.path.join(project_root, "n8n")
+            
     os.makedirs(n8n_dir, exist_ok=True)
     
     backup_file = args.file or os.path.join(os.path.dirname(__file__), "workflow_backup.json")
@@ -681,250 +1278,25 @@ def main():
         print(f"Backup saved successfully to: {backup_file}")
         
     elif args.backup_all:
-        backup_all(n8n_dir, args.dev)
+        backup_all(n8n_dir, args.dev, container_name=args.container)
         
     elif args.fix:
         print("Fetching workflow from n8n to apply fixes...")
+        
+        # Load JS template dynamically from templates/generation_node.js
+        templates_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates")
+        template_file = os.path.join(templates_dir, "generation_node.js")
+        
+        if not os.path.exists(template_file):
+            print(f"Error: JS template file not found at {template_file}")
+            sys.exit(1)
+            
+        with open(template_file, "r", encoding="utf-8") as tf:
+            new_js_code = tf.read()
+            
         wf = fetch_workflow()
         nodes = wf.get("nodes", [])
         updated = False
-        
-        new_js_code = r"""// 1. Retrieve the CV and the two new Notion properties
-const properties = $('Webhook').item.json.body?.data?.properties || {};
-const richTextArray = properties.CV?.rich_text || [];
-
-// Clean extraction from Get PageID
-const company = $('Get PageID').first().json.company || 'company';
-const jobTitle = $('Get PageID').first().json.jobTitle || 'job';
-
-let mdText = richTextArray.map(block => block.plain_text || '').join('');
-
-// Fallback: Robust Markdown parser aligned with marked.js
-function robustMarkdownToHtml(md) {
-  const lines = md.split(/\r?\n/);
-  let htmlOutput = [];
-  let inList = false;
-
-  for (let line of lines) {
-    let trimmed = line.trim();
-    if (!/^[-\*]\s+/.test(trimmed) && inList) {
-      htmlOutput.push('</ul>');
-      inList = false;
-    }
-    if (trimmed === '---' || trimmed === '***') {
-      htmlOutput.push('<hr />');
-      continue;
-    }
-    if (trimmed.startsWith('>')) {
-      let content = line.replace(/^>\s*/, '').trim().replace(/^"(.*)"$/, '$1');
-      htmlOutput.push(`<blockquote>${content}</blockquote>`);
-      continue;
-    }
-    if (trimmed.startsWith('# ')) { htmlOutput.push(`<h1>${trimmed.substring(2)}</h1>`); continue; }
-    if (trimmed.startsWith('## ')) { htmlOutput.push(`<h2>${trimmed.substring(3)}</h2>`); continue; }
-    if (trimmed.startsWith('### ')) { htmlOutput.push(`<h3>${trimmed.substring(4)}</h3>`); continue; }
-    if (trimmed.startsWith('#### ')) { htmlOutput.push(`<h4>${trimmed.substring(5)}</h4>`); continue; }
-    if (trimmed.startsWith('##### ')) { htmlOutput.push(`<h5>${trimmed.substring(6)}</h5>`); continue; }
-    if (trimmed.startsWith('###### ')) { htmlOutput.push(`<h6>${trimmed.substring(7)}</h6>`); continue; }
-
-    if (/^[-\*]\s+/.test(trimmed)) {
-      if (!inList) { htmlOutput.push('<ul>'); inList = true; }
-      htmlOutput.push(`<li>${trimmed.replace(/^[-\*]\s+/, '')}</li>`);
-      continue;
-    }
-    if (trimmed !== '') {
-      if (line.includes('•') || line.includes('·')) {
-        htmlOutput.push(`<p style="text-align: justify; text-justify: inter-word;">${line}</p>`);
-      } else {
-        htmlOutput.push(`<p>${line}</p>`);
-      }
-    }
-  }
-  if (inList) htmlOutput.push('</ul>');
-
-  let finalBody = htmlOutput.join('\n');
-  finalBody = finalBody.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-  finalBody = finalBody.replace(/\*(.*?)\*/g, '<em>$1</em>');
-  finalBody = finalBody.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
-  return finalBody;
-}
-
-// Utility function to clean special characters from the future filename
-function slugify(text) {
-  return text
-    .toString()
-    .toLowerCase()
-    .normalize('NFD') // Remove accents
-    .replace(/[\u0300-\u036f]/g, '')
-    .trim()
-    .replace(/\s+/g, '-') // Replace spaces with dashes
-    .replace(/[^a-z0-9\-]/g, ''); // Remove other special characters
-}
-
-const finalFileName = `javarre-${slugify(company)}-${slugify(jobTitle)}`;
-
-// 3. RETRIEVE CONFIG & CSS FROM DATA TABLE
-const config = JSON.parse($('Read Config from Table').first().json.value);
-const templatesCss = $('Read CSS from Table').first().json.value;
-
-// 4. PARSE MARKDOWN WITH THE SAME COMPILER AS THE EDITOR (MARKED.JS VIA CDN)
-let compiledHtml;
-try {
-  const cdnUrl = 'https://cdn.jsdelivr.net/npm/marked/marked.min.js';
-  const response = await fetch(cdnUrl);
-  if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-  const markedText = await response.text();
-  const evalGlobal = new Function(markedText + '\nreturn marked;');
-  const marked = evalGlobal();
-  
-  marked.setOptions({
-    gfm: true,
-    breaks: true
-  });
-  
-  let processedMd = mdText;
-  processedMd = processedMd.replace(/:accent\[([^\]]+)\]/g, '<span class="resume-accent">$1</span>');
-  processedMd = processedMd.replace(/:muted\[([^\]]+)\]/g, '<span class="resume-muted">$1</span>');
-  
-  compiledHtml = marked.parse(processedMd);
-  
-  // Post-process styling for paragraph tags with separators/bullets to justify
-  compiledHtml = compiledHtml.replace(/<p>((?:(?!<\/p>).)*(?:[•·])(?:(?!<\/p>).)*)<\/p>/g, '<p style="text-align: justify; text-justify: inter-word;">$1</p>');
-} catch (error) {
-  console.warn('Fallback: Failed to load marked.js from CDN, using robustMarkdownToHtml', error);
-  compiledHtml = robustMarkdownToHtml(mdText);
-  compiledHtml = compiledHtml.replace(/:accent\[([^\]]+)\]/g, '<span class="resume-accent">$1</span>');
-  compiledHtml = compiledHtml.replace(/:muted\[([^\]]+)\]/g, '<span class="resume-muted">$1</span>');
-}
-
-// Process contact block if present
-compiledHtml = compiledHtml.replace(/\[CONTACT\s*:\s*([^\]]+)\]/gi, (match, contents) => {
-    const parts = contents.split('|').map(p => p.trim());
-    const formattedParts = parts.map(part => {
-        if (part.includes('@') && !part.includes(' ')) {
-            return `<a href="mailto:${part}">${part}</a>`;
-        }
-        if (part.startsWith('http://') || part.startsWith('https://')) {
-            const cleanUrl = part.replace(/^https?:\/\/(www\.)?/, '');
-            return `<a href="${part}" target="_blank">${cleanUrl}</a>`;
-        }
-        return `<span>${part}</span>`;
-    });
-    return `<div class="resume-contact-bar">${formattedParts.join(' &nbsp;•&nbsp; ')}</div>`;
-});
-
-// 5. LAYOUT 2 COLUMNS RESTRUCTURING
-let finalHtml = compiledHtml;
-if (config.layoutMode === '2-column') {
-    const parts = compiledHtml.split(/(?=<h[23]\b)/i);
-    const headerHtml = parts[0];
-    let mainHtml = '';
-    let sidebarHtml = '';
-    
-    for (let i = 1; i < parts.length; i++) {
-        const part = parts[i];
-        if (part.toLowerCase().startsWith('<h2')) {
-            mainHtml += part;
-        } else if (part.toLowerCase().startsWith('<h3')) {
-            sidebarHtml += part;
-        }
-    }
-    
-    finalHtml = `
-        <div class="resume-header">
-            ${headerHtml}
-        </div>
-        <div class="resume-columns ${config.sidebarPosition === 'left' ? 'sidebar-left' : ''}">
-            <div class="resume-main-col">
-                ${mainHtml}
-            </div>
-            <div class="resume-sidebar-col" style="background-color: ${config.sidebarBg}; color: ${config.sidebarText};">
-                ${sidebarHtml}
-            </div>
-        </div>
-    `;
-}
-
-// 6. GENERATE INLINE CSS VARIABLES
-const inlineVariables = `
-:root {
-    --resume-font-family: ${config.fontFamily};
-    --resume-font-size: ${config.fontSize}px;
-    --resume-line-height: ${config.lineHeight};
-    --resume-heading-scale: ${config.headingScale};
-    --resume-margin-x: ${config.marginX}px;
-    --resume-margin-y: ${config.marginY}px;
-    --resume-section-spacing: ${config.sectionSpacing}px;
-    --resume-color-bg: ${config.colorBg || '#ffffff'};
-    --resume-color-headings: ${config.colorHeadings};
-    --resume-color-body: ${config.colorBody};
-    --resume-color-links: ${config.colorLinks};
-    --resume-color-accent: ${config.colorAccent};
-    --resume-sidebar-bg: ${config.sidebarBg || '#2d3748'};
-    --resume-sidebar-text: ${config.sidebarText || '#ffffff'};
-}`;
-
-// 7. ASSEMBLE STANDALONE DOCUMENT
-const standaloneHtml = `<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>${finalFileName}</title>
-  <style>
-    /* INLINED_FONTS_PLACEHOLDER */
-  </style>
-  <style>
-    ${inlineVariables}
-    ${templatesCss}
-    @media print {
-      @page {
-        size: A4 portrait;
-        margin-top: ${config.marginY}px;
-        margin-bottom: ${config.marginY}px;
-        margin-left: ${config.marginX}px;
-        margin-right: ${config.marginX}px;
-      }
-      .a4-sheet {
-        padding: 0 !important;
-        margin: 0 !important;
-        box-shadow: none !important;
-      }
-    }
-    body {
-        background-color: var(--resume-color-bg, #ffffff);
-        margin: 0;
-        padding: 0;
-        display: flex;
-        justify-content: center;
-    }
-    .a4-sheet {
-        box-shadow: none !important;
-        border-radius: 0 !important;
-        margin: 0 auto;
-    }
-  </style>
-</head>
-<body>
-  <article class="a4-sheet" id="resume-output">
-    ${finalHtml}
-  </article>
-</body>
-</html>`;
-
-return [
-  {
-    json: {
-      compiledBody: standaloneHtml,
-      pdfFileName: finalFileName,
-      printBackground: "true",
-      marginTop: "0in",
-      marginBottom: "0in",
-      marginLeft: "0in",
-      marginRight: "0in"
-    }
-  }
-];"""
 
         fonts_css_path = os.path.join(os.path.dirname(__file__), "inlined_fonts.css")
         if os.path.exists(fonts_css_path):
@@ -970,7 +1342,7 @@ return [
             activate_workflow()
             
     elif args.push_all:
-        push_all(n8n_dir, args.dev)
+        push_all(n8n_dir, args.dev, container_name=args.container)
             
     elif args.activate:
         print("Activating workflow on n8n...")
@@ -978,6 +1350,14 @@ return [
         
     elif args.activate_all:
         activate_all()
+
+    elif args.deactivate:
+        print("Deactivating workflow on n8n...")
+        if WORKFLOW_ID:
+            deactivate_workflow_by_id(WORKFLOW_ID)
+            
+    elif args.deactivate_all:
+        deactivate_all()
         
     elif args.deploy_error:
         error_wf_file = os.path.join(os.path.dirname(__file__), "error_workflow.json")
@@ -1007,6 +1387,21 @@ return [
             new_wf = create_workflow(error_wf)
             if new_wf:
                 activate_workflow_by_id(new_wf.get("id"))
+                
+    elif args.logs:
+        fetch_executions(limit=args.limit, status=args.status)
+        
+    elif args.retry:
+        retry_execution(args.retry)
+        
+    elif args.inspect:
+        inspect_execution(args.inspect)
+        
+    elif args.check_credentials:
+        check_credentials(n8n_dir)
+        
+    elif args.sync_token:
+        sync_token(n8n_dir, use_dev=args.dev, container_name=args.container, credential_name=args.credential_name)
 
 if __name__ == "__main__":
     main()
