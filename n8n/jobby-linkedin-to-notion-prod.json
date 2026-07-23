@@ -150,6 +150,10 @@
             {
               "key": "analysis|rich_text",
               "textContent": "={{ $json.summary }}"
+            },
+            {
+              "key": "CV|rich_text",
+              "textContent": "={{ $json.generated_cv_markdown }}"
             }
           ]
         },
@@ -269,7 +273,7 @@
     },
     {
       "parameters": {
-        "content": "### Last Publish Info\n\nPublished on 2026-07-23 14:58:21 | Git: bf7656e fix(dependabot): use Docker Hub image path for n8n to enable Dependabot support",
+        "content": "### Last Publish Info\n\nPublished on 2026-07-23 16:40:05 | Git: b88f793 fix(bookmarklet): enhance text extraction fallbacks and prompt user on empty description",
         "height": 150,
         "width": 300,
         "color": 6
@@ -760,11 +764,15 @@
               },
               {
                 "key": "domain|multi_select",
-                "multiSelectValue": "={{ $json.domain }}S"
+                "multiSelectValue": "={{ $json.domain }}"
               },
               {
                 "key": "analysis|rich_text",
                 "textContent": "={{ $json.summary }}"
+              },
+              {
+                "key": "CV|rich_text",
+                "textContent": "={{ $json.generated_cv_markdown }}"
               }
             ]
           },
@@ -1066,5 +1074,5 @@
       }
     ]
   },
-  "//": "Published on 2026-07-23 14:58:21 | Git: bf7656e fix(dependabot): use Docker Hub image path for n8n to enable Dependabot support"
+  "//": "Published on 2026-07-23 16:40:05 | Git: b88f793 fix(bookmarklet): enhance text extraction fallbacks and prompt user on empty description"
 }
