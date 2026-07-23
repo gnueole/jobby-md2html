@@ -1,5 +1,5 @@
 {
-  "//": "Published on 2026-07-23 17:05:31 | Git: 6ce7003 fix(n8n): extract correct Notion properties and unescape linebreaks in generated CV",
+  "//": "Published on 2026-07-23 17:06:30 | Git: c227438 feat(n8n): enforce :accent[...] formatting on experience subtitles in AI prompt",
   "updatedAt": "2026-06-03T11:51:05.635Z",
   "createdAt": "2026-05-25T16:32:59.047Z",
   "id": "K2acY4kGijPJGop0",
@@ -291,7 +291,7 @@
     },
     {
       "parameters": {
-        "content": "### Last Publish Info\n\nPublished on 2026-07-23 17:05:31 | Git: 6ce7003 fix(n8n): extract correct Notion properties and unescape linebreaks in generated CV",
+        "content": "### Last Publish Info\n\nPublished on 2026-07-23 17:06:30 | Git: c227438 feat(n8n): enforce :accent[...] formatting on experience subtitles in AI prompt",
         "height": 150,
         "width": 300,
         "color": 6
