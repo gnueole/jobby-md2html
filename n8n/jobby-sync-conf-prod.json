@@ -107,7 +107,7 @@
     },
     {
       "parameters": {
-        "content": "### Last Publish Info\n\nPublished on 2026-07-23 17:06:30 | Git: c227438 feat(n8n): enforce :accent[...] formatting on experience subtitles in AI prompt",
+        "content": "### Last Publish Info\n\nPublished on 2026-07-23 17:11:04 | Git: 198b46b fix(n8n): explicitly set candidate full name Julien Avarre in AI prompt",
         "height": 150,
         "width": 300,
         "color": 6
@@ -488,5 +488,5 @@
       }
     ]
   },
-  "//": "Published on 2026-07-23 17:06:30 | Git: c227438 feat(n8n): enforce :accent[...] formatting on experience subtitles in AI prompt"
+  "//": "Published on 2026-07-23 17:11:04 | Git: 198b46b fix(n8n): explicitly set candidate full name Julien Avarre in AI prompt"
 }
