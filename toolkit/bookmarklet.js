@@ -11,16 +11,57 @@
     const webhookUrl = "{{WEBHOOK_URL}}";
     const editorOrigin = "{{EDITOR_ORIGIN}}";
 
-    /* 1. Extraction chirurgicale */
+    /* 1. Extraction chirurgicale multi-sélecteur & sélection manuelle */
     const getTxt = (s) => document.querySelector(s)?.innerText?.trim() || "";
-    let description = getTxt('#job-details') || getTxt('.jobs-description') || getTxt('.jobs-box__html-content') || "";
-    if (description.length < 50) {
-        description = window.getSelection().toString();
+    const getFirst = (arr) => {
+        for (let s of arr) {
+            let t = getTxt(s);
+            if (t && t.length > 10) return t;
+        }
+        return "";
+    };
+
+    let sel = (window.getSelection() ? window.getSelection().toString() : "").trim();
+    let description = sel.length > 20 ? sel : getFirst([
+        '#job-details',
+        '.jobs-description__content',
+        '.jobs-description-content',
+        '.jobs-description',
+        '.jobs-box__html-content',
+        '.jobs-search__job-details',
+        '.job-details-about-the-job-module',
+        '[class*="jobs-description"]',
+        '[class*="job-details"]',
+        'article'
+    ]);
+
+    /* Fallback interactif si l'extraction automatique et la sélection ont échoué */
+    if (!description || description.length < 20) {
+        description = prompt("Jobby : Impossible d'extraire la description du poste automatiquement.\n\nVeuillez coller le texte de l'offre ci-dessous :", "") || "";
+        description = description.trim();
+    }
+
+    if (!description) {
+        alert("Jobby : Analyse annulée car aucune description n'a été fournie.");
+        return;
     }
 
     /* 2. Encodage et préparation du payload */
-    const title = encodeURIComponent(getTxt('.job-details-jobs-unified-top-card__job-title') || document.title);
-    const company = encodeURIComponent(getTxt('.job-details-jobs-unified-top-card__company-name') || "");
+    const title = encodeURIComponent(getFirst([
+        '.job-details-jobs-unified-top-card__job-title',
+        '.jobs-unified-top-card__job-title',
+        '[class*="top-card__job-title"]',
+        '.jobs-search__job-details h1',
+        'h1'
+    ]) || document.title);
+
+    const company = encodeURIComponent(getFirst([
+        '.job-details-jobs-unified-top-card__company-name',
+        '.jobs-unified-top-card__company-name',
+        '[class*="top-card__company-name"]',
+        '[class*="primary-description"]'
+    ]) || "");
+
     const jobUrl = encodeURIComponent(window.location.href);
     const shortDesc = encodeURIComponent(description.substring(0, 1800));
 
