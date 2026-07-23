@@ -47,7 +47,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// 1. On récupère le texte généré par l'Agent\nconst text = $json.output || \"\"; \nconst match = text.match(/\\{[\\s\\S]*\\}/);\n\nif (match) {\n  try {\n    // On parse uniquement le bloc JSON trouvé\n    const data = JSON.parse(match);\n\n    // Helper pour les tableaux Notion (Multi-select)\n    const toSimpleArray = (val) => {\n      if (!val) return [];\n      const rawItems = Array.isArray(val) ? val : val.toString().split(/[|,\\/&]|\\band\\b/);\n      return rawItems.map(i => i.trim()).filter(i => i.length > 1);\n    };\n\n    // 2. On reconstruit l'objet propre pour alimenter le nœud \"Update Notion\"\n    return [{\n      json: {\n        domain: toSimpleArray(data.domain),\n        category: toSimpleArray(data.category || data.job_title),\n        job_title: data.job_title || \"Position inconnue\",\n        company: data.company || \"Entreprise inconnue\",\n        score: parseInt(data.match_score) || 0,\n        status: \"To review\",\n        summary: data.quick_summary || \"Analyse terminée\",\n        analysis_pros: data.analysis_pros || \"N/A\",\n        analysis_cons: data.analysis_cons || \"N/A\",\n        action_plan: data.action_plan || \"N/A\",\n        generated_cv_markdown: data.generated_cv_markdown || \"\",\n        response_date: new Date().toISOString().split('T')\n      }\n    }];\n\n  } catch (e) {\n    return [{ json: { error: \"JSON Parsing Error\", message: e.message, raw: text.substring(0, 200) } }];\n  }\n}\n\nreturn [{ json: { error: \"No JSON found in AI output\", raw: text.substring(0, 100) } }];"
+        "jsCode": "// 1. On récupère le texte généré par l'Agent\nconst text = $json.output || \"\"; \nconst match = text.match(/\\{[\\s\\S]*\\}/);\n\nif (match) {\n  try {\n    // On parse uniquement le bloc JSON trouvé\n    const data = JSON.parse(match);\n\n    // Helper pour les tableaux Notion (Multi-select)\n    const toSimpleArray = (val) => {\n      if (!val) return [];\n      const rawItems = Array.isArray(val) ? val : val.toString().split(/[|,\\/&]|\\band\\b/);\n      return rawItems.map(i => i.trim()).filter(i => i.length > 1);\n    };\n\n    let cvMarkdown = data.generated_cv_markdown || \"\";\n    if (typeof cvMarkdown === 'string') {\n      cvMarkdown = cvMarkdown.replace(/\\\\n/g, '\\n');\n    }\n\n    // 2. On reconstruit l'objet propre pour alimenter le nœud \"Update Notion\"\n    return [{\n      json: {\n        domain: toSimpleArray(data.domain),\n        category: toSimpleArray(data.category || data.job_title),\n        job_title: data.job_title || \"Position inconnue\",\n        company: data.company || \"Entreprise inconnue\",\n        score: parseInt(data.match_score) || 0,\n        status: \"To review\",\n        summary: data.quick_summary || \"Analyse terminée\",\n        analysis_pros: data.analysis_pros || \"N/A\",\n        analysis_cons: data.analysis_cons || \"N/A\",\n        action_plan: data.action_plan || \"N/A\",\n        generated_cv_markdown: cvMarkdown,\n        response_date: new Date().toISOString().split('T')\n      }\n    }];\n\n  } catch (e) {\n    return [{ json: { error: \"JSON Parsing Error\", message: e.message, raw: text.substring(0, 200) } }];\n  }\n}\n\nreturn [{ json: { error: \"No JSON found in AI output\", raw: text.substring(0, 100) } }];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -61,7 +61,8 @@
     },
     {
       "parameters": {
-        "resource": "database",
+        "resource": "databasePage",
+        "operation": "getAll",
         "databaseId": {
           "__rl": true,
           "value": "={{ $('Get Atom CV DB ID').item.json.value }}",
@@ -85,7 +86,8 @@
     },
     {
       "parameters": {
-        "resource": "database",
+        "resource": "databasePage",
+        "operation": "getAll",
         "databaseId": {
           "__rl": true,
           "value": "={{ $('Get Seed DB ID').item.json.value }}",
@@ -247,7 +249,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// 1. Récupération des lignes du CV Atomique\nlet cvRows = [];\ntry {\n  cvRows = $('Get CV data').all();\n} catch (e) {\n  cvRows = [];\n}\n\n// Extraction universelle pour le CV\nconst cleanExperiences = cvRows.map((row, index) => {\n  const props = row.json?.properties || {};\n  \n  // Fonction helper pour extraire le texte brut d'une propriété Notion, quel que soit son type (title ou rich_text)\n  const extractText = (propObj) => {\n    if (!propObj) return \"\";\n    const arr = propObj.rich_text || propObj.title || [];\n    return arr?.plain_text || propObj.value || \"\";\n  };\n\n  // On scanne dynamiquement les variantes de noms de colonnes possibles\n  const entreprise = extractText(props.Entreprise) || extractText(props.Company) || \"Entreprise \" + (index + 1);\n  const poste = extractText(props.Poste) || extractText(props.Role) || \"Solutions Engineer\";\n  const description = extractText(props.Description) || \"\";\n  const dates = extractText(props.Dates) || extractText(props.Date) || \"\";\n\n  return `### ${poste} chez ${entreprise} (${dates})\\n${description}`;\n}).join(\"\\n\\n\");\n\n// 2. Récupération et isolation de la Graine UNIQUE\nlet seedBaseline = \"Solutions Engineer\";\nlet seedDirectives = \"Standard tailoring\";\n\ntry {\n  const allSeeds = $('CV Seed').all();\n  // On cherche la graine active via la checkbox, sinon on prend la première disponible\n  const selectedSeedItem = allSeeds.find(item => {\n    const props = item.json?.properties || {};\n    // Gère la checkbox Notion (qu'elle s'appelle Active ou active)\n    const checkObj = props.Active || props.active;\n    return checkObj?.checkbox === true;\n  }) || allSeeds;\n\n  if (selectedSeedItem && selectedSeedItem.json?.properties) {\n    const sProps = selectedSeedItem.json.properties;\n    \n    const extractSeedText = (propObj) => {\n      if (!propObj) return null;\n      const arr = propObj.title || propObj.rich_text || [];\n      return arr?.plain_text || null;\n    };\n\n    seedBaseline = extractSeedText(sProps.Baseline) || extractSeedText(sProps.baseline) || seedBaseline;\n    seedDirectives = extractSeedText(sProps.Directives) || extractSeedText(sProps.directives) || seedDirectives;\n  }\n} catch (e) {\n  // En cas de problème de lecture de la graine, on garde les valeurs par défaut pour ne pas bloquer le flux\n}\n\n// 3. Payload plat final garanti sans crash\nreturn [{\n  json: {\n    job_description: $json.job_description || \"Pas de description\",\n    seed_baseline: seedBaseline,\n    seed_directives: seedDirectives,\n    cv_master_payload: cleanExperiences || \"CV Master vide\"\n  }\n}];"
+        "jsCode": "// 1. Récupération des lignes du CV Atomique\nlet cvRows = [];\ntry {\n  cvRows = $('Get CV data').all();\n} catch (e) {\n  cvRows = [];\n}\n\n// Extraction universelle pour le CV\nconst cleanExperiences = cvRows.map((row, index) => {\n  const props = row.json?.properties || {};\n  \n  const extractText = (propObj) => {\n    if (!propObj) return \"\";\n    const arr = propObj.rich_text || propObj.title || [];\n    return arr?.plain_text || propObj.value || \"\";\n  };\n\n  const extractDate = (propObj) => {\n    if (!propObj) return \"\";\n    if (propObj.date) {\n      const s = propObj.date.start || \"\";\n      const e = propObj.date.end || \"\";\n      return s ? (e ? `${s} - ${e}` : s) : \"\";\n    }\n    const arr = propObj.rich_text || propObj.title || [];\n    return arr?.plain_text || propObj.value || \"\";\n  };\n\n  const entreprise = extractText(props['Structure/Company']) || extractText(props.Entreprise) || extractText(props.Company) || \"Entreprise \" + (index + 1);\n  const poste = extractText(props.Name) || extractText(props.Poste) || extractText(props.Role) || \"Solutions Engineer\";\n  const description = extractText(props.Comment) || extractText(props.Description) || \"\";\n  const dates = extractDate(props.Timespan) || extractText(props.Dates) || extractText(props.Date) || \"\";\n\n  return `### ${poste} chez ${entreprise} (${dates})\\n${description}`;\n}).filter(exp => exp.trim().length > 0).join(\"\\n\\n\");\n\n// 2. Récupération et isolation de la Graine UNIQUE\nlet seedBaseline = \"Solutions Engineer\";\nlet seedDirectives = \"Standard tailoring\";\n\ntry {\n  const allSeeds = $('CV Seed').all();\n  const selectedSeedItem = allSeeds.find(item => {\n    const props = item.json?.properties || {};\n    const checkObj = props.Active || props.active;\n    return checkObj?.checkbox === true;\n  }) || (allSeeds.length > 0 ? allSeeds[0] : null);\n\n  if (selectedSeedItem && selectedSeedItem.json?.properties) {\n    const sProps = selectedSeedItem.json.properties;\n    \n    const extractSeedText = (propObj) => {\n      if (!propObj) return null;\n      const arr = propObj.title || propObj.rich_text || [];\n      return arr?.plain_text || null;\n    };\n\n    seedBaseline = extractSeedText(sProps.Baseline) || extractSeedText(sProps.baseline) || extractSeedText(sProps.Name) || seedBaseline;\n    seedDirectives = extractSeedText(sProps.Directives) || extractSeedText(sProps.directives) || seedDirectives;\n  }\n} catch (e) {\n  // Fallback\n}\n\n// 3. Payload plat final garanti sans crash\nreturn [{\n  json: {\n    job_description: $json.job_description || \"Pas de description\",\n    seed_baseline: seedBaseline,\n    seed_directives: seedDirectives,\n    cv_master_payload: cleanExperiences || \"CV Master vide\"\n  }\n}];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -273,7 +275,7 @@
     },
     {
       "parameters": {
-        "content": "### Last Publish Info\n\nPublished on 2026-07-23 16:40:05 | Git: b88f793 fix(bookmarklet): enhance text extraction fallbacks and prompt user on empty description",
+        "content": "### Last Publish Info\n\nPublished on 2026-07-23 16:42:42 | Git: 240cb6b fix(n8n): map generated_cv_markdown to Notion CV column",
         "height": 150,
         "width": 300,
         "color": 6
@@ -654,77 +656,7 @@
         "position": [
           -544,
           384
-        ],
-        "id": "29dd6f16-98a6-48f5-ad0b-7a76b5eb335a",
-        "name": "Anthropic Chat Model",
-        "credentials": {
-          "anthropicApi": {
-            "id": "ZLxe6Yv6rEgDYs00",
-            "name": "Anthropic account"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "jsCode": "// 1. On récupère le texte généré par l'Agent\nconst text = $json.output || \"\"; \nconst match = text.match(/\\{[\\s\\S]*\\}/);\n\nif (match) {\n  try {\n    // On parse uniquement le bloc JSON trouvé\n    const data = JSON.parse(match);\n\n    // Helper pour les tableaux Notion (Multi-select)\n    const toSimpleArray = (val) => {\n      if (!val) return [];\n      const rawItems = Array.isArray(val) ? val : val.toString().split(/[|,\\/&]|\\band\\b/);\n      return rawItems.map(i => i.trim()).filter(i => i.length > 1);\n    };\n\n    // 2. On reconstruit l'objet propre pour alimenter le nœud \"Update Notion\"\n    return [{\n      json: {\n        domain: toSimpleArray(data.domain),\n        category: toSimpleArray(data.category || data.job_title),\n        job_title: data.job_title || \"Position inconnue\",\n        company: data.company || \"Entreprise inconnue\",\n        score: parseInt(data.match_score) || 0,\n        status: \"To review\",\n        summary: data.quick_summary || \"Analyse terminée\",\n        analysis_pros: data.analysis_pros || \"N/A\",\n        analysis_cons: data.analysis_cons || \"N/A\",\n        action_plan: data.action_plan || \"N/A\",\n        generated_cv_markdown: data.generated_cv_markdown || \"\",\n        response_date: new Date().toISOString().split('T')\n      }\n    }];\n\n  } catch (e) {\n    return [{ json: { error: \"JSON Parsing Error\", message: e.message, raw: text.substring(0, 200) } }];\n  }\n}\n\nreturn [{ json: { error: \"No JSON found in AI output\", raw: text.substring(0, 100) } }];"
-        },
-        "type": "n8n-nodes-base.code",
-        "typeVersion": 2,
-        "position": [
-          704,
-          -48
-        ],
-        "id": "bc6d9e53-7c47-4b19-97f4-e78868ea7cdd",
-        "name": "JSON Cleaner",
-        "onError": "continueErrorOutput"
-      },
-      {
-        "parameters": {
-          "resource": "database",
-          "databaseId": {
-            "__rl": true,
-            "value": "={{ $('Get Atom CV DB ID').item.json.value }}",
-            "mode": "id"
-          }
-        },
-        "type": "n8n-nodes-base.notion",
-        "typeVersion": 2.2,
-        "position": [
-          -320,
-          48
-        ],
-        "id": "98b735c7-3087-4ff3-83a7-c749cba35b8b",
-        "name": "Get CV data",
-        "credentials": {
-          "notionApi": {
-            "id": "KYrsxF0plfLkPpqW",
-            "name": "Notion LinkedIn Auto"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "resource": "database",
-          "databaseId": {
-            "__rl": true,
-            "value": "={{ $('Get Seed DB ID').item.json.value }}",
-            "mode": "id"
-          }
-        },
-        "type": "n8n-nodes-base.notion",
-        "typeVersion": 2.2,
-        "position": [
-          -96,
-          48
-        ],
-        "id": "1c3e6440-cbf2-472c-ab63-959a496a7e6f",
-        "name": "CV Seed",
-        "credentials": {
-          "notionApi": {
-            "id": "KYrsxF0plfLkPpqW",
-            "name": "Notion LinkedIn Auto"
-          }
-        }
+        ]
       },
       {
         "parameters": {
@@ -1074,5 +1006,5 @@
       }
     ]
   },
-  "//": "Published on 2026-07-23 16:40:05 | Git: b88f793 fix(bookmarklet): enhance text extraction fallbacks and prompt user on empty description"
+  "//": "Published on 2026-07-23 16:42:42 | Git: 240cb6b fix(n8n): map generated_cv_markdown to Notion CV column"
 }

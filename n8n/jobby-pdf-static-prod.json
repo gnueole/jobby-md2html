@@ -1,5 +1,5 @@
 {
-  "//": "Published on 2026-07-23 16:40:05 | Git: b88f793 fix(bookmarklet): enhance text extraction fallbacks and prompt user on empty description",
+  "//": "Published on 2026-07-23 16:42:42 | Git: 240cb6b fix(n8n): map generated_cv_markdown to Notion CV column",
   "updatedAt": "2026-06-03T11:51:05.635Z",
   "createdAt": "2026-05-25T16:32:59.047Z",
   "id": "K2acY4kGijPJGop0",
@@ -291,7 +291,7 @@
     },
     {
       "parameters": {
-        "content": "### Last Publish Info\n\nPublished on 2026-07-23 16:40:05 | Git: b88f793 fix(bookmarklet): enhance text extraction fallbacks and prompt user on empty description",
+        "content": "### Last Publish Info\n\nPublished on 2026-07-23 16:42:42 | Git: 240cb6b fix(n8n): map generated_cv_markdown to Notion CV column",
         "height": 150,
         "width": 300,
         "color": 6
