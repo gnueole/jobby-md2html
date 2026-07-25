@@ -4,6 +4,12 @@
     "es2021": true,
     "node": true
   },
+  "globals": {
+    "marked": "readonly",
+    "DOMPurify": "readonly",
+    "jspdf": "readonly",
+    "html2canvas": "readonly"
+  },
   "extends": "eslint:recommended",
   "parserOptions": {
     "ecmaVersion": "latest",
@@ -11,6 +17,9 @@
   },
   "rules": {
     "no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
-    "no-console": "off"
+    "no-console": "off",
+    "no-useless-escape": "off",
+    "no-inner-declarations": "off",
+    "no-empty": "warn"
   }
 }

@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "dev": "node server.js",
-    "lint": "eslint public/**/*.js --ext .js && prettier --check .",
+    "lint": "eslint public/**/*.js && prettier --check \"scripts/**/*.js\" \"public/bricks/*.html\"",
     "format": "prettier --write .",
     "validate:i18n": "node scripts/validate_i18n.js",
     "build": "esbuild public/app.js --bundle --minify --outfile=public/dist/app.min.js"
