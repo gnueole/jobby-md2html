@@ -8,6 +8,19 @@ All notable changes to the Jobby project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.12.0] - 2026-07-25
+
+### Added
+- **Automated Front-End Quality Pipeline**: Added ESLint (`.eslintrc.json`), Stylelint (`.stylelintrc.json`), and Prettier (`.prettierrc`) configurations.
+- **i18n Locale Integrity Validator**: Added `scripts/validate_i18n.js` to automatically verify translation key parity across all 7 supported locale JSON files.
+- **GitHub Actions CI Workflow**: Added `.github/workflows/ci.yml` running lint, format check, i18n validation, and build verification on push and pull requests.
+- **Modern Typography**: Added Google Fonts **Outfit** typography support alongside **Inter** for display headers and badges.
+
+### Changed
+- **Glassmorphism & Frosted UI**: Enhanced `.panel-header` and modal overlays with `backdrop-filter: blur(8px)`.
+- **Button & Card Micro-animations**: Added elevation micro-animations (`transform: translateY(-1px)`) and purple glow hover effects to `.btn-primary`, `.btn-secondary`, and `.control-group`.
+- **NPM Scripts**: Added `npm run lint`, `npm run format`, `npm run validate:i18n`, and `npm run build` commands in `package.json`.
+
 ## [1.10.6] - 2026-06-29
 
 ### Added

@@ -1,3 +1,19 @@
+# 1.12.0 - Mise à jour Jobby
+Mise à jour Jobby du 25/07/2026 · Pipeline de linting automatisé, script de validation i18n, workflow GitHub Actions CI, typographie Outfit, en-têtes dépolis en glassmorphism et micro-animations sur les boutons.
+[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+
+## 🎨 GLASSMORPHISM & DESIGN SYSTEM
+* **En-têtes dépolis** : Amélioration des en-têtes de panneaux (`.panel-header`) et des modaux avec un filtre dépoli `backdrop-filter: blur(8px)`.
+* **Micro-animations & Boutons** : Ajout d'animations d'élévation au survol (`transform: translateY(-1px)`) et halos lumineux violets sur les boutons et cartes de contrôle.
+* **Typographie Outfit** : Intégration de la police Google Fonts **Outfit** aux côtés d'**Inter** pour des titres et badges ultra-nets.
+
+## ⚙️ PIPELINE CI & QUALITÉ DU CODE
+* **Linting & Formatage** : Intégration des configurations ESLint (`.eslintrc.json`), Stylelint (`.stylelintrc.json`) et Prettier (`.prettierrc`).
+* **Validateur d'internationalisation** : Création du script `scripts/validate_i18n.js` pour contrôler automatiquement la parité des clés de traduction sur les 7 langues supportées.
+* **Workflow GitHub Actions** : Ajout de `.github/workflows/ci.yml` pour exécuter automatiquement le lint, le contrôle de formatage et la validation des langues lors de chaque push/PR.
+
+---
+
 # 1.10.6 - Mise à jour Jobby
 Mise à jour Jobby du 29/06/2026 · Disposition côte à côte de la modale développeur, formatage automatique des ID de BDD Notion, styles unifiés pour les webhooks et commandes de synchronisation Doppler/n8n.
 [CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]

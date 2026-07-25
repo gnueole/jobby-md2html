@@ -394,6 +394,7 @@ body {
     padding: 0 16px;
     border-bottom: 1px solid var(--border-color);
     background-color: var(--bg-panel-header);
+    backdrop-filter: blur(8px);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -524,6 +525,12 @@ body {
     border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 16px;
+    transition: border-color var(--transition-speed), box-shadow var(--transition-speed), transform var(--transition-speed);
+}
+
+.control-group:hover {
+    border-color: rgba(124, 58, 237, 0.3);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
 .control-group h3 {
@@ -808,8 +815,10 @@ input[type="color"]::-moz-color-swatch {
 }
 
 .btn-secondary:hover {
-    background-color: var(--bg-button-secondary-hover, rgba(255, 255, 255, 0.12));
-    border-color: var(--border-color-hover, rgba(255, 255, 255, 0.2));
+    background-color: var(--bg-button-secondary-hover, rgba(255, 255, 255, 0.14));
+    border-color: rgba(124, 58, 237, 0.4);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.15);
 }
 
 .btn-outline {

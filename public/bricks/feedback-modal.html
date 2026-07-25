@@ -1,63 +1,292 @@
-<div class="modal-card" style="max-width: 500px;">
-    <div class="modal-header" style="align-items: center;">
-        <h2 data-i18n="feedback.title" style="margin: 0; line-height: 1.2;">Share Your Feedback</h2>
-        <button id="btn-close-feedback-modal" class="modal-close-btn" data-i18n-title="feedback.close_tooltip" title="Close modal" style="align-self: center;">&times;</button>
-    </div>
-    <div class="modal-body" style="position: relative;">
-        <form id="feedback-form" novalidate>
-            <div class="form-group">
-                <label for="feedback-name"><span data-i18n="feedback.label_name">Your Name</span> <span class="required" style="color: var(--danger);">*</span></label>
-                <input type="text" id="feedback-name" data-i18n-placeholder="feedback.placeholder_name" placeholder="Julien Avarre" required>
-            </div>
-            <div class="form-group">
-                <label for="feedback-email"><span data-i18n="feedback.label_email">Your Email</span> <span class="text-muted" style="font-size: 11px; opacity: 0.85;" data-i18n="feedback.optional">(optional)</span></label>
-                <input type="email" id="feedback-email" data-i18n-placeholder="feedback.placeholder_email" placeholder="hi@eole.me">
-            </div>
-            <div class="form-group">
-                <label style="margin-bottom: 8px; display: block;" data-i18n="feedback.label_rating">Overall Rating <span class="required" style="color: var(--danger);">*</span></label>
-                <div class="star-rating" style="display: flex; gap: 8px; font-size: 26px;">
-                    <button type="button" class="star-btn" data-value="1" data-i18n-title="feedback.rating_1" title="1 Star" style="background: none; border: none; cursor: pointer; padding: 0;">⭐</button>
-                    <button type="button" class="star-btn" data-value="2" data-i18n-title="feedback.rating_2" title="2 Stars" style="background: none; border: none; cursor: pointer; padding: 0;">⭐</button>
-                    <button type="button" class="star-btn" data-value="3" data-i18n-title="feedback.rating_3" title="3 Stars" style="background: none; border: none; cursor: pointer; padding: 0;">⭐</button>
-                    <button type="button" class="star-btn" data-value="4" data-i18n-title="feedback.rating_4" title="4 Stars" style="background: none; border: none; cursor: pointer; padding: 0;">⭐</button>
-                    <button type="button" class="star-btn" data-value="5" data-i18n-title="feedback.rating_5" title="5 Stars" style="background: none; border: none; cursor: pointer; padding: 0;">⭐</button>
-                </div>
-                <input type="hidden" id="feedback-stars" name="stars" value="0" required>
-                <div id="star-error" class="validation-error" style="display: none; color: var(--danger); font-size: 11px; margin-top: 6px; font-weight: 500;" data-i18n="feedback.error_rating">Please select a star rating.</div>
-            </div>
-            <div class="form-group">
-                <label for="feedback-category" data-i18n="feedback.label_category">Feedback Category <span class="required" style="color: var(--danger);">*</span></label>
-                <select id="feedback-category" required style="width: 100%; box-sizing: border-box;">
-                    <option value="Comment" data-i18n="feedback.cat_comment">💬 Comment / general feedback</option>
-                    <option value="Improvement" data-i18n="feedback.cat_improvement">✨ Feature Improvement / suggestion</option>
-                    <option value="Bug" data-i18n="feedback.cat_bug">🐛 Bug report</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="feedback-message" data-i18n="feedback.label_message">Details / Suggestions <span class="required" style="color: var(--danger);">*</span></label>
-                <textarea id="feedback-message" data-i18n-placeholder="feedback.placeholder_message" placeholder="What's on your mind? How can we make Jobby even better?" required style="width: 100%; box-sizing: border-box; resize: vertical; min-height: 90px;"></textarea>
-            </div>
-            <div class="form-actions" style="display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 24px;">
-                <span style="font-size: 13.5px; font-weight: 500; color: var(--text-secondary);" data-i18n="feedback.thank_you">Thank you for using Jobby! ❤️</span>
-                <div style="display: flex; gap: 12px;">
-                    <button type="button" id="btn-cancel-feedback" class="btn btn-secondary" data-i18n="feedback.btn_cancel">Cancel</button>
-                    <button type="submit" id="btn-submit-feedback" class="btn btn-primary" data-i18n="feedback.btn_submit">Submit Feedback</button>
-                </div>
-            </div>
-        </form>
-        <div id="feedback-loading" class="feedback-status-overlay" style="display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: var(--bg-modal); display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: inherit; z-index: 10;">
-            <div class="feedback-spinner" style="width: 32px; height: 32px; border: 3px solid rgba(124, 58, 237, 0.1); border-top-color: var(--accent); border-radius: 50%; animation: feedback-spin 0.8s linear infinite;"></div>
-            <p style="margin-top: 16px; font-size: 14px; font-weight: 500; color: var(--text-primary);" data-i18n="feedback.loading_text">Sending feedback to Notion...</p>
+<div class="modal-card" style="max-width: 500px">
+  <div class="modal-header" style="align-items: center">
+    <h2 data-i18n="feedback.title" style="margin: 0; line-height: 1.2">Share Your Feedback</h2>
+    <button
+      id="btn-close-feedback-modal"
+      class="modal-close-btn"
+      data-i18n-title="feedback.close_tooltip"
+      title="Close modal"
+      style="align-self: center"
+    >
+      &times;
+    </button>
+  </div>
+  <div class="modal-body" style="position: relative">
+    <form id="feedback-form" novalidate>
+      <div class="form-group">
+        <label for="feedback-name"
+          ><span data-i18n="feedback.label_name">Your Name</span>
+          <span class="required" style="color: var(--danger)">*</span></label
+        >
+        <input
+          type="text"
+          id="feedback-name"
+          data-i18n-placeholder="feedback.placeholder_name"
+          placeholder="Julien Avarre"
+          required
+        />
+      </div>
+      <div class="form-group">
+        <label for="feedback-email"
+          ><span data-i18n="feedback.label_email">Your Email</span>
+          <span
+            class="text-muted"
+            style="font-size: 11px; opacity: 0.85"
+            data-i18n="feedback.optional"
+            >(optional)</span
+          ></label
+        >
+        <input
+          type="email"
+          id="feedback-email"
+          data-i18n-placeholder="feedback.placeholder_email"
+          placeholder="hi@eole.me"
+        />
+      </div>
+      <div class="form-group">
+        <label style="margin-bottom: 8px; display: block" data-i18n="feedback.label_rating"
+          >Overall Rating <span class="required" style="color: var(--danger)">*</span></label
+        >
+        <div class="star-rating" style="display: flex; gap: 8px; font-size: 26px">
+          <button
+            type="button"
+            class="star-btn"
+            data-value="1"
+            data-i18n-title="feedback.rating_1"
+            title="1 Star"
+            style="background: none; border: none; cursor: pointer; padding: 0"
+          >
+            ⭐
+          </button>
+          <button
+            type="button"
+            class="star-btn"
+            data-value="2"
+            data-i18n-title="feedback.rating_2"
+            title="2 Stars"
+            style="background: none; border: none; cursor: pointer; padding: 0"
+          >
+            ⭐
+          </button>
+          <button
+            type="button"
+            class="star-btn"
+            data-value="3"
+            data-i18n-title="feedback.rating_3"
+            title="3 Stars"
+            style="background: none; border: none; cursor: pointer; padding: 0"
+          >
+            ⭐
+          </button>
+          <button
+            type="button"
+            class="star-btn"
+            data-value="4"
+            data-i18n-title="feedback.rating_4"
+            title="4 Stars"
+            style="background: none; border: none; cursor: pointer; padding: 0"
+          >
+            ⭐
+          </button>
+          <button
+            type="button"
+            class="star-btn"
+            data-value="5"
+            data-i18n-title="feedback.rating_5"
+            title="5 Stars"
+            style="background: none; border: none; cursor: pointer; padding: 0"
+          >
+            ⭐
+          </button>
         </div>
-        <div id="feedback-success" class="feedback-status-overlay" style="display: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: var(--bg-modal); display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 24px; border-radius: inherit; z-index: 10;">
-            <div class="success-checkmark" style="background: rgba(34, 197, 94, 0.1); width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 16px;">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
-            </div>
-            <h3 style="font-size: 18px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px;" data-i18n="feedback.success_title">Thank You!</h3>
-            <p style="font-size: 13.5px; color: var(--text-secondary); max-width: 320px; line-height: 1.5; margin-bottom: 20px;" data-i18n="feedback.success_desc">Your feedback has been successfully recorded in our Jobby Feedback database.</p>
-            <button type="button" id="btn-close-success" class="btn btn-primary" style="width: auto; padding: 8px 24px;" data-i18n="feedback.btn_close">Close</button>
+        <input type="hidden" id="feedback-stars" name="stars" value="0" required />
+        <div
+          id="star-error"
+          class="validation-error"
+          style="
+            display: none;
+            color: var(--danger);
+            font-size: 11px;
+            margin-top: 6px;
+            font-weight: 500;
+          "
+          data-i18n="feedback.error_rating"
+        >
+          Please select a star rating.
         </div>
+      </div>
+      <div class="form-group">
+        <label for="feedback-category" data-i18n="feedback.label_category"
+          >Feedback Category <span class="required" style="color: var(--danger)">*</span></label
+        >
+        <select id="feedback-category" required style="width: 100%; box-sizing: border-box">
+          <option value="Comment" data-i18n="feedback.cat_comment">
+            💬 Comment / general feedback
+          </option>
+          <option value="Improvement" data-i18n="feedback.cat_improvement">
+            ✨ Feature Improvement / suggestion
+          </option>
+          <option value="Bug" data-i18n="feedback.cat_bug">🐛 Bug report</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="feedback-message" data-i18n="feedback.label_message"
+          >Details / Suggestions <span class="required" style="color: var(--danger)">*</span></label
+        >
+        <textarea
+          id="feedback-message"
+          data-i18n-placeholder="feedback.placeholder_message"
+          placeholder="What's on your mind? How can we make Jobby even better?"
+          required
+          style="width: 100%; box-sizing: border-box; resize: vertical; min-height: 90px"
+        ></textarea>
+      </div>
+      <div
+        class="form-actions"
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 12px;
+          margin-top: 24px;
+        "
+      >
+        <span
+          style="font-size: 13.5px; font-weight: 500; color: var(--text-secondary)"
+          data-i18n="feedback.thank_you"
+          >Thank you for using Jobby! ❤️</span
+        >
+        <div style="display: flex; gap: 12px">
+          <button
+            type="button"
+            id="btn-cancel-feedback"
+            class="btn btn-secondary"
+            data-i18n="feedback.btn_cancel"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            id="btn-submit-feedback"
+            class="btn btn-primary"
+            data-i18n="feedback.btn_submit"
+          >
+            Submit Feedback
+          </button>
+        </div>
+      </div>
+    </form>
+    <div
+      id="feedback-loading"
+      class="feedback-status-overlay"
+      style="
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--bg-modal);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border-radius: inherit;
+        z-index: 10;
+      "
+    >
+      <div
+        class="feedback-spinner"
+        style="
+          width: 32px;
+          height: 32px;
+          border: 3px solid rgba(124, 58, 237, 0.1);
+          border-top-color: var(--accent);
+          border-radius: 50%;
+          animation: feedback-spin 0.8s linear infinite;
+        "
+      ></div>
+      <p
+        style="margin-top: 16px; font-size: 14px; font-weight: 500; color: var(--text-primary)"
+        data-i18n="feedback.loading_text"
+      >
+        Sending feedback to Notion...
+      </p>
     </div>
+    <div
+      id="feedback-success"
+      class="feedback-status-overlay"
+      style="
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--bg-modal);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 24px;
+        border-radius: inherit;
+        z-index: 10;
+      "
+    >
+      <div
+        class="success-checkmark"
+        style="
+          background: rgba(34, 197, 94, 0.1);
+          width: 64px;
+          height: 64px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-bottom: 16px;
+        "
+      >
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="#22c55e"
+          stroke-width="3"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+      <h3
+        style="font-size: 18px; font-weight: 600; color: var(--text-primary); margin-bottom: 8px"
+        data-i18n="feedback.success_title"
+      >
+        Thank You!
+      </h3>
+      <p
+        style="
+          font-size: 13.5px;
+          color: var(--text-secondary);
+          max-width: 320px;
+          line-height: 1.5;
+          margin-bottom: 20px;
+        "
+        data-i18n="feedback.success_desc"
+      >
+        Your feedback has been successfully recorded in our Jobby Feedback database.
+      </p>
+      <button
+        type="button"
+        id="btn-close-success"
+        class="btn btn-primary"
+        style="width: auto; padding: 8px 24px"
+        data-i18n="feedback.btn_close"
+      >
+        Close
+      </button>
+    </div>
+  </div>
 </div>

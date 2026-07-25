@@ -1,3 +1,19 @@
+# 1.12.0 - Jobby Update
+Jobby Update of 07/25/2026 · Automated linting pipeline, i18n validator script, GitHub Actions CI workflow, Outfit typography, frosted glassmorphism headers, and button micro-animations.
+[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+
+## 🎨 GLASSMORPHISM & FROSTED UI
+* **Frosted Panel Headers**: Enhanced panel headers (`.panel-header`) and modal backdrops with `backdrop-filter: blur(8px)` for a sleek, modern glass aesthetic.
+* **Button & Card Micro-animations**: Added elevation micro-animations (`transform: translateY(-1px)`) and purple glow hover highlights to buttons and control cards.
+* **Outfit Typography**: Integrated Google Fonts **Outfit** alongside **Inter** for crisp display headings and badges.
+
+## ⚙️ CI & FRONT-END QUALITY PIPELINE
+* **Linting & Formatting**: Added ESLint (`.eslintrc.json`), Stylelint (`.stylelintrc.json`), and Prettier (`.prettierrc`) configurations.
+* **i18n Validator Tool**: Added `scripts/validate_i18n.js` to ensure complete translation key parity across all 7 supported locale JSON files.
+* **GitHub Actions Workflow**: Added `.github/workflows/ci.yml` running linting, formatting checks, and i18n validation automatically.
+
+---
+
 # 1.10.6 - Jobby Update
 Jobby Update of 06/29/2026 · Dynamic database configs for Atomic CV & Seeds, side-by-side Developer Tools split layout, auto-formatted Notion UIDs, styled webhook inputs, and terminal sync targets.
 [CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]

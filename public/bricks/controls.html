@@ -3,495 +3,909 @@
   Sidebar controls and preferences.
 -->
 <div class="panel-header">
-    <h2 class="panel-title" data-i18n="controls.title">● DESIGN & EXPORTS</h2>
-    <div class="advanced-toggle-wrapper">
-        <label class="syntax-toggle" data-i18n-title="controls.expert_mode_tooltip" title="Unlock advanced design controls (Line Height, Heading Scale, Section Spacing, Custom Colors, and Webhook Sync)">
-            <input type="checkbox" id="advanced-mode-toggle">
-            <div class="toggle-switch"></div>
-            <span data-i18n="controls.expert_mode_label">Expert Mode</span>
-        </label>
-        <span class="expert-help-trigger" id="btn-expert-help" data-i18n-title="controls.expert_help_tooltip" title="Learn more about advanced customizer options">?</span>
-        <button type="button" class="panel-close-btn" id="btn-close-design-panel" data-i18n-title="controls.close_panel_tooltip" title="Hide Design Panel">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
+  <h2 class="panel-title" data-i18n="controls.title">● DESIGN & EXPORTS</h2>
+  <div class="advanced-toggle-wrapper">
+    <label
+      class="syntax-toggle"
+      data-i18n-title="controls.expert_mode_tooltip"
+      title="Unlock advanced design controls (Line Height, Heading Scale, Section Spacing, Custom Colors, and Webhook Sync)"
+    >
+      <input type="checkbox" id="advanced-mode-toggle" />
+      <div class="toggle-switch"></div>
+      <span data-i18n="controls.expert_mode_label">Expert Mode</span>
+    </label>
+    <span
+      class="expert-help-trigger"
+      id="btn-expert-help"
+      data-i18n-title="controls.expert_help_tooltip"
+      title="Learn more about advanced customizer options"
+      >?</span
+    >
+    <button
+      type="button"
+      class="panel-close-btn"
+      id="btn-close-design-panel"
+      data-i18n-title="controls.close_panel_tooltip"
+      title="Hide Design Panel"
+    >
+      <svg
+        width="12"
+        height="12"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+
+    <div class="expert-popup" id="expert-popup-box">
+      <div class="expert-popup-header">
+        <h4 data-i18n="controls.expert_popup_title">Expert Mode Unlocked</h4>
+        <button type="button" class="expert-popup-close" id="btn-close-expert-popup">
+          &times;
         </button>
-        
-        <div class="expert-popup" id="expert-popup-box">
-            <div class="expert-popup-header">
-                <h4 data-i18n="controls.expert_popup_title">Expert Mode Unlocked</h4>
-                <button type="button" class="expert-popup-close" id="btn-close-expert-popup">&times;</button>
-            </div>
-            <ul>
-                <li data-i18n-html="controls.expert_popup_item_typo"><strong>Typography:</strong> Line Height & Heading Scale</li>
-                <li data-i18n-html="controls.expert_popup_item_spacing"><strong>Spacing:</strong> Section Spacing</li>
-                <li data-i18n-html="controls.expert_popup_item_split"><strong>Column Width:</strong> Custom Main/Sidebar split slider</li>
-                <li data-i18n-html="controls.expert_popup_item_coltypo"><strong>Column Typography:</strong> Font Size & Alternative Font style</li>
-                <li data-i18n-html="controls.expert_popup_item_cosmetics"><strong>Column Cosmetics:</strong> Shadow blur, Gradient length & color</li>
-                <li data-i18n-html="controls.expert_popup_item_colors"><strong>Custom Colors:</strong> 5 Custom Color pickers</li>
-                <li data-i18n-html="controls.expert_popup_item_pipeline"><strong>n8n Pipeline:</strong> Direct webhook sync button</li>
-            </ul>
-        </div>
+      </div>
+      <ul>
+        <li data-i18n-html="controls.expert_popup_item_typo">
+          <strong>Typography:</strong> Line Height & Heading Scale
+        </li>
+        <li data-i18n-html="controls.expert_popup_item_spacing">
+          <strong>Spacing:</strong> Section Spacing
+        </li>
+        <li data-i18n-html="controls.expert_popup_item_split">
+          <strong>Column Width:</strong> Custom Main/Sidebar split slider
+        </li>
+        <li data-i18n-html="controls.expert_popup_item_coltypo">
+          <strong>Column Typography:</strong> Font Size & Alternative Font style
+        </li>
+        <li data-i18n-html="controls.expert_popup_item_cosmetics">
+          <strong>Column Cosmetics:</strong> Shadow blur, Gradient length & color
+        </li>
+        <li data-i18n-html="controls.expert_popup_item_colors">
+          <strong>Custom Colors:</strong> 5 Custom Color pickers
+        </li>
+        <li data-i18n-html="controls.expert_popup_item_pipeline">
+          <strong>n8n Pipeline:</strong> Direct webhook sync button
+        </li>
+      </ul>
     </div>
+  </div>
 </div>
 <div class="controls-content">
+  <!-- TYPOGRAPHY SECTION -->
+  <div class="control-group">
+    <h3>
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <polyline points="4 7 4 4 20 4 20 7" />
+        <line x1="9" y1="20" x2="15" y2="20" />
+        <line x1="12" y1="4" x2="12" y2="20" />
+      </svg>
+      <span data-i18n="controls.group_typography">Typography</span>
+    </h3>
+    <div class="control-item">
+      <label data-i18n="controls.label_font_family">Font Family</label>
+      <div class="font-tiles-grid" id="font-family-tiles">
+        <button
+          type="button"
+          class="font-tile"
+          data-font="'Raleway', 'Inter', sans-serif"
+          style="font-family: &quot;Raleway&quot;, sans-serif"
+          data-i18n-title="controls.font_raleway_tooltip"
+          title="Raleway (Modern & Sleek)"
+        >
+          <span class="font-tile-preview">T</span>
+          <span class="font-tile-name">Raleway</span>
+        </button>
+        <button
+          type="button"
+          class="font-tile"
+          data-font="'Inter', sans-serif"
+          style="font-family: &quot;Inter&quot;, sans-serif"
+          data-i18n-title="controls.font_inter_tooltip"
+          title="Inter (Sleek & Neutral)"
+        >
+          <span class="font-tile-preview">T</span>
+          <span class="font-tile-name">Inter</span>
+        </button>
+        <button
+          type="button"
+          class="font-tile"
+          data-font="'Merriweather', serif"
+          style="font-family: &quot;Merriweather&quot;, serif"
+          data-i18n-title="controls.font_merriweather_tooltip"
+          title="Merriweather (Traditional Serif)"
+        >
+          <span class="font-tile-preview">T</span>
+          <span class="font-tile-name">Merri</span>
+        </button>
+        <button
+          type="button"
+          class="font-tile"
+          data-font="'Playfair Display', serif"
+          style="font-family: &quot;Playfair Display&quot;, serif"
+          data-i18n-title="controls.font_playfair_tooltip"
+          title="Playfair (Elegant & Premium)"
+        >
+          <span class="font-tile-preview">T</span>
+          <span class="font-tile-name">Playfair</span>
+        </button>
+        <button
+          type="button"
+          class="font-tile"
+          data-font="'Lora', serif"
+          style="font-family: &quot;Lora&quot;, serif"
+          data-i18n-title="controls.font_lora_tooltip"
+          title="Lora (Literary & Polished)"
+        >
+          <span class="font-tile-preview">T</span>
+          <span class="font-tile-name">Lora</span>
+        </button>
+        <button
+          type="button"
+          class="font-tile"
+          data-font="'JetBrains Mono', monospace"
+          style="font-family: &quot;JetBrains Mono&quot;, monospace"
+          data-i18n-title="controls.font_jetbrains_tooltip"
+          title="JetBrains Mono (Tech & Minimal)"
+        >
+          <span class="font-tile-preview">T</span>
+          <span class="font-tile-name">JetBrains</span>
+        </button>
+      </div>
+    </div>
+    <div class="control-item">
+      <div class="slider-header">
+        <label for="font-size" data-i18n="controls.label_font_size">Font Size</label>
+        <span id="val-font-size">14px</span>
+      </div>
+      <input type="range" id="font-size" min="9" max="18" step="0.5" value="14" />
+    </div>
+    <div class="control-item expert-only">
+      <div class="slider-header">
+        <label for="line-height" data-i18n="controls.label_line_height">Line Height</label>
+        <span id="val-line-height">1.4</span>
+      </div>
+      <input type="range" id="line-height" min="1.1" max="2.0" step="0.05" value="1.4" />
+    </div>
+    <div class="control-item expert-only">
+      <div class="slider-header">
+        <label for="heading-scale" data-i18n="controls.label_heading_scale">Heading Scale</label>
+        <span id="val-heading-scale">1.6</span>
+      </div>
+      <input type="range" id="heading-scale" min="1.2" max="2.5" step="0.1" value="1.6" />
+    </div>
+  </div>
 
-    <!-- TYPOGRAPHY SECTION -->
-    <div class="control-group">
-        <h3>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2">
-                <polyline points="4 7 4 4 20 4 20 7" />
-                <line x1="9" y1="20" x2="15" y2="20" />
-                <line x1="12" y1="4" x2="12" y2="20" />
-            </svg>
-            <span data-i18n="controls.group_typography">Typography</span>
-        </h3>
-        <div class="control-item">
-            <label data-i18n="controls.label_font_family">Font Family</label>
-            <div class="font-tiles-grid" id="font-family-tiles">
-                <button type="button" class="font-tile" data-font="'Raleway', 'Inter', sans-serif"
-                    style="font-family: 'Raleway', sans-serif;" data-i18n-title="controls.font_raleway_tooltip" title="Raleway (Modern & Sleek)">
-                    <span class="font-tile-preview">T</span>
-                    <span class="font-tile-name">Raleway</span>
-                </button>
-                <button type="button" class="font-tile" data-font="'Inter', sans-serif"
-                    style="font-family: 'Inter', sans-serif;" data-i18n-title="controls.font_inter_tooltip" title="Inter (Sleek & Neutral)">
-                    <span class="font-tile-preview">T</span>
-                    <span class="font-tile-name">Inter</span>
-                </button>
-                <button type="button" class="font-tile" data-font="'Merriweather', serif"
-                    style="font-family: 'Merriweather', serif;" data-i18n-title="controls.font_merriweather_tooltip"
-                    title="Merriweather (Traditional Serif)">
-                    <span class="font-tile-preview">T</span>
-                    <span class="font-tile-name">Merri</span>
-                </button>
-                <button type="button" class="font-tile" data-font="'Playfair Display', serif"
-                    style="font-family: 'Playfair Display', serif;" data-i18n-title="controls.font_playfair_tooltip"
-                    title="Playfair (Elegant & Premium)">
-                    <span class="font-tile-preview">T</span>
-                    <span class="font-tile-name">Playfair</span>
-                </button>
-                <button type="button" class="font-tile" data-font="'Lora', serif"
-                    style="font-family: 'Lora', serif;" data-i18n-title="controls.font_lora_tooltip" title="Lora (Literary & Polished)">
-                    <span class="font-tile-preview">T</span>
-                    <span class="font-tile-name">Lora</span>
-                </button>
-                <button type="button" class="font-tile" data-font="'JetBrains Mono', monospace"
-                    style="font-family: 'JetBrains Mono', monospace;" data-i18n-title="controls.font_jetbrains_tooltip"
-                    title="JetBrains Mono (Tech & Minimal)">
-                    <span class="font-tile-preview">T</span>
-                    <span class="font-tile-name">JetBrains</span>
-                </button>
-            </div>
-        </div>
-        <div class="control-item">
-            <div class="slider-header">
-                <label for="font-size" data-i18n="controls.label_font_size">Font Size</label>
-                <span id="val-font-size">14px</span>
-            </div>
-            <input type="range" id="font-size" min="9" max="18" step="0.5" value="14">
-        </div>
-        <div class="control-item expert-only">
-            <div class="slider-header">
-                <label for="line-height" data-i18n="controls.label_line_height">Line Height</label>
-                <span id="val-line-height">1.4</span>
-            </div>
-            <input type="range" id="line-height" min="1.1" max="2.0" step="0.05" value="1.4">
-        </div>
-        <div class="control-item expert-only">
-            <div class="slider-header">
-                <label for="heading-scale" data-i18n="controls.label_heading_scale">Heading Scale</label>
-                <span id="val-heading-scale">1.6</span>
-            </div>
-            <input type="range" id="heading-scale" min="1.2" max="2.5" step="0.1" value="1.6">
-        </div>
+  <!-- COLORS SECTION -->
+  <div class="control-group">
+    <h3>
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path
+          d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+        />
+        <path d="M12 6V18" />
+        <path d="M6 12H18" />
+      </svg>
+      <span data-i18n="controls.group_colors">Colors</span>
+    </h3>
+
+    <!-- Color presets -->
+    <div class="color-presets-container">
+      <label data-i18n="controls.label_color_presets">Color Presets</label>
+      <div class="color-presets-grid">
+        <button
+          type="button"
+          class="preset-btn"
+          id="preset-classic-nb"
+          data-i18n-title="controls.preset_classic_title"
+          title="Classic B&W (Black and White)"
+        >
+          B&W
+        </button>
+        <button
+          type="button"
+          class="preset-btn"
+          id="preset-dark-mode"
+          data-i18n-title="controls.preset_dark_title"
+          title="Dark Mode"
+        >
+          Dark
+        </button>
+        <button
+          type="button"
+          class="preset-btn"
+          id="preset-clean-blue"
+          data-i18n-title="controls.preset_clean_blue_title"
+          title="Corporate Blue"
+        >
+          Corporate Blue
+        </button>
+        <button
+          type="button"
+          class="preset-btn"
+          id="preset-soft-blue"
+          data-i18n-title="controls.preset_soft_blue_title"
+          title="Soft Blue Preset"
+        >
+          Soft Blue
+        </button>
+        <button
+          type="button"
+          class="preset-btn"
+          id="preset-green"
+          data-i18n-title="controls.preset_green_title"
+          title="Soft Green Preset"
+        >
+          Soft Green
+        </button>
+        <button
+          type="button"
+          class="preset-btn"
+          id="preset-soft-red"
+          data-i18n-title="controls.preset_soft_red_title"
+          title="Soft Red Preset"
+        >
+          Soft Red
+        </button>
+        <button
+          type="button"
+          class="preset-btn"
+          id="preset-custom-1"
+          data-i18n-title="controls.preset_custom1_title"
+          title="custom (double click to rename)"
+        >
+          Custom
+        </button>
+        <button
+          type="button"
+          class="preset-btn"
+          id="preset-custom-2"
+          data-i18n-title="controls.preset_custom2_title"
+          title="Funky (double click to rename)"
+        >
+          Funky
+        </button>
+        <button
+          type="button"
+          class="preset-btn"
+          id="preset-reset"
+          data-i18n-title="controls.preset_reset_title"
+          title="Reset Style Preferences"
+          style="color: var(--danger); font-weight: 700"
+          data-i18n="controls.preset_reset_btn"
+        >
+          Reset
+        </button>
+      </div>
     </div>
 
-    <!-- COLORS SECTION -->
-    <div class="control-group">
-        <h3>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2">
-                <path
-                    d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" />
-                <path d="M12 6V18" />
-                <path d="M6 12H18" />
-            </svg>
-            <span data-i18n="controls.group_colors">Colors</span>
-        </h3>
+    <div class="control-item color-picker-row expert-only">
+      <label for="color-bg" data-i18n="controls.label_color_bg">Canvas Background</label>
+      <div class="color-input-wrapper">
+        <span class="hex-text" id="hex-bg">#ffffff</span>
+        <input type="color" id="color-bg" value="#ffffff" />
+      </div>
+    </div>
+    <div class="control-item color-picker-row expert-only">
+      <label for="color-headings" data-i18n="controls.label_color_headings">Headings</label>
+      <div class="color-input-wrapper">
+        <span class="hex-text" id="hex-headings">#1e293b</span>
+        <input type="color" id="color-headings" value="#1e293b" />
+      </div>
+    </div>
+    <div class="control-item color-picker-row expert-only">
+      <label for="color-body" data-i18n="controls.label_color_body">Body Text</label>
+      <div class="color-input-wrapper">
+        <span class="hex-text" id="hex-body">#334155</span>
+        <input type="color" id="color-body" value="#334155" />
+      </div>
+    </div>
+    <div class="control-item color-picker-row expert-only">
+      <label for="color-links" data-i18n="controls.label_color_links">Links & Contact</label>
+      <div class="color-input-wrapper">
+        <span class="hex-text" id="hex-links">#7c3aed</span>
+        <input type="color" id="color-links" value="#7c3aed" />
+      </div>
+    </div>
+    <div class="control-item color-picker-row expert-only">
+      <label for="color-accent" data-i18n="controls.label_color_accent">Accent Details</label>
+      <div class="color-input-wrapper">
+        <span class="hex-text" id="hex-accent">#0d9488</span>
+        <input type="color" id="color-accent" value="#0d9488" />
+      </div>
+    </div>
+  </div>
 
-        <!-- Color presets -->
-        <div class="color-presets-container">
-            <label data-i18n="controls.label_color_presets">Color Presets</label>
-            <div class="color-presets-grid">
-                <button type="button" class="preset-btn" id="preset-classic-nb"
-                    data-i18n-title="controls.preset_classic_title" title="Classic B&W (Black and White)">B&W</button>
-                <button type="button" class="preset-btn" id="preset-dark-mode"
-                    data-i18n-title="controls.preset_dark_title" title="Dark Mode">Dark</button>
-                <button type="button" class="preset-btn" id="preset-clean-blue"
-                    data-i18n-title="controls.preset_clean_blue_title" title="Corporate Blue">Corporate Blue</button>
-                <button type="button" class="preset-btn" id="preset-soft-blue"
-                    data-i18n-title="controls.preset_soft_blue_title" title="Soft Blue Preset">Soft Blue</button>
-                <button type="button" class="preset-btn" id="preset-green"
-                    data-i18n-title="controls.preset_green_title" title="Soft Green Preset">Soft Green</button>
-                <button type="button" class="preset-btn" id="preset-soft-red"
-                    data-i18n-title="controls.preset_soft_red_title" title="Soft Red Preset">Soft Red</button>
-                 <button type="button" class="preset-btn" id="preset-custom-1"
-                    data-i18n-title="controls.preset_custom1_title" title="custom (double click to rename)">Custom</button>
-                <button type="button" class="preset-btn" id="preset-custom-2"
-                    data-i18n-title="controls.preset_custom2_title" title="Funky (double click to rename)">Funky</button>
-                <button type="button" class="preset-btn" id="preset-reset"
-                    data-i18n-title="controls.preset_reset_title" title="Reset Style Preferences" style="color: var(--danger); font-weight: 700;" data-i18n="controls.preset_reset_btn">Reset</button>
-            </div>
-        </div>
-
-        <div class="control-item color-picker-row expert-only">
-            <label for="color-bg" data-i18n="controls.label_color_bg">Canvas Background</label>
-            <div class="color-input-wrapper">
-                <span class="hex-text" id="hex-bg">#ffffff</span>
-                <input type="color" id="color-bg" value="#ffffff">
-            </div>
-        </div>
-        <div class="control-item color-picker-row expert-only">
-            <label for="color-headings" data-i18n="controls.label_color_headings">Headings</label>
-            <div class="color-input-wrapper">
-                <span class="hex-text" id="hex-headings">#1e293b</span>
-                <input type="color" id="color-headings" value="#1e293b">
-            </div>
-        </div>
-        <div class="control-item color-picker-row expert-only">
-            <label for="color-body" data-i18n="controls.label_color_body">Body Text</label>
-            <div class="color-input-wrapper">
-                <span class="hex-text" id="hex-body">#334155</span>
-                <input type="color" id="color-body" value="#334155">
-            </div>
-        </div>
-        <div class="control-item color-picker-row expert-only">
-            <label for="color-links" data-i18n="controls.label_color_links">Links & Contact</label>
-            <div class="color-input-wrapper">
-                <span class="hex-text" id="hex-links">#7c3aed</span>
-                <input type="color" id="color-links" value="#7c3aed">
-            </div>
-        </div>
-        <div class="control-item color-picker-row expert-only">
-            <label for="color-accent" data-i18n="controls.label_color_accent">Accent Details</label>
-            <div class="color-input-wrapper">
-                <span class="hex-text" id="hex-accent">#0d9488</span>
-                <input type="color" id="color-accent" value="#0d9488">
-            </div>
-        </div>
+  <!-- LAYOUT SECTION -->
+  <div class="control-group">
+    <h3>
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+        <line x1="9" y1="3" x2="9" y2="21" />
+      </svg>
+      <span data-i18n="controls.group_layout">Layout</span>
+    </h3>
+    <div class="control-item">
+      <label data-i18n="controls.label_resume_structure">Resume Structure</label>
+      <div class="btn-group-toggle" id="layout-mode-group">
+        <button
+          type="button"
+          class="toggle-btn"
+          data-value="1-column"
+          id="btn-layout-1col"
+          data-i18n="controls.btn_layout_1col"
+        >
+          1 Column
+        </button>
+        <button
+          type="button"
+          class="toggle-btn"
+          data-value="2-column"
+          id="btn-layout-2col"
+          data-i18n="controls.btn_layout_2col"
+        >
+          2 Columns
+        </button>
+      </div>
+      <select id="layout-mode" style="display: none">
+        <option value="1-column" data-i18n="controls.option_layout_1col">
+          1 Column (Standard)
+        </option>
+        <option value="2-column" data-i18n="controls.option_layout_2col">2 Columns (Modern)</option>
+      </select>
     </div>
 
-    <!-- LAYOUT SECTION -->
-    <div class="control-group">
-        <h3>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                <line x1="9" y1="3" x2="9" y2="21" />
-            </svg>
-            <span data-i18n="controls.group_layout">Layout</span>
-        </h3>
-        <div class="control-item">
-            <label data-i18n="controls.label_resume_structure">Resume Structure</label>
-            <div class="btn-group-toggle" id="layout-mode-group">
-                <button type="button" class="toggle-btn" data-value="1-column" id="btn-layout-1col" data-i18n="controls.btn_layout_1col">1 Column</button>
-                <button type="button" class="toggle-btn" data-value="2-column" id="btn-layout-2col" data-i18n="controls.btn_layout_2col">2 Columns</button>
-            </div>
-            <select id="layout-mode" style="display: none;">
-                <option value="1-column" data-i18n="controls.option_layout_1col">1 Column (Standard)</option>
-                <option value="2-column" data-i18n="controls.option_layout_2col">2 Columns (Modern)</option>
-            </select>
-        </div>
-
-        <div class="control-item" style="margin-top: 10px;">
-            <label class="checkbox-label" data-i18n-title="controls.label_show_version_tooltip" title="Display the version increment at the bottom of the document">
-                <input type="checkbox" id="show-version">
-                <span data-i18n="controls.label_show_version">Display Print Version</span>
-            </label>
-        </div>
-
-        <div class="control-item expert-only" style="margin-top: 10px;">
-            <label class="checkbox-label" data-i18n-title="controls.label_gotenberg_pdf_tooltip" title="Directly compile & download PDF using the local Gotenberg service instead of opening the manual browser print window">
-                <input type="checkbox" id="gotenberg-pdf-toggle">
-                <span data-i18n="controls.label_gotenberg_pdf">Gotenberg PDF Download</span>
-            </label>
-        </div>
-
-        <!-- Sidebar Specific Controls -->
-        <div id="sidebar-only-controls"
-            style="display: none; margin-top: 12px; border-top: 1px solid var(--border-color); padding-top: 12px;">
-            <div class="control-item">
-                <label data-i18n="controls.label_sidebar_position">Sidebar Position</label>
-                <div class="btn-group-toggle" id="sidebar-position-group">
-                    <button type="button" class="toggle-btn" data-value="left" id="btn-sidebar-left" data-i18n="controls.btn_sidebar_left">Left</button>
-                    <button type="button" class="toggle-btn" data-value="right" id="btn-sidebar-right" data-i18n="controls.btn_sidebar_right">Right</button>
-                </div>
-                <select id="sidebar-position" style="display: none;">
-                    <option value="right">Right</option>
-                    <option value="left">Left</option>
-                </select>
-            </div>
-
-            <!-- Visual Split Slider -->
-            <div class="control-item expert-only">
-                <label for="column-split" data-i18n="controls.label_column_split">Column Split</label>
-                <div class="slick-split-container">
-                    <div class="slick-split-visual">
-                        <div class="slick-split-col main-col" id="split-main-visual" style="width: 58%;">
-                            <span class="col-name" data-i18n="controls.label_col_main">Main</span>
-                            <span class="col-pct" id="split-main-pct">58%</span>
-                        </div>
-                        <div class="slick-split-col sidebar-col" id="split-sidebar-visual" style="width: 42%;">
-                            <span class="col-name" data-i18n="controls.label_col_sidebar">Sidebar</span>
-                            <span class="col-pct" id="split-sidebar-pct">42%</span>
-                        </div>
-                    </div>
-                    <input type="range" id="column-split" min="0" max="100" value="58" class="split-slider-range">
-                </div>
-            </div>
-
-            <!-- Column Font Preferences (Size & Family side-by-side) -->
-            <div class="control-item expert-only font-preferences-row">
-                <div class="font-pref-col">
-                    <label data-i18n="controls.label_column_font_size">Column Font Size</label>
-                    <div class="btn-group-toggle compact-toggle" id="column-font-size-group">
-                        <button type="button" class="toggle-btn active" data-value="normal" id="btn-colfont-std" data-i18n="controls.btn_colfont_std">Standard</button>
-                        <button type="button" class="toggle-btn" data-value="smaller" id="btn-colfont-sm" data-i18n="controls.btn_colfont_sm">Smaller</button>
-                    </div>
-                </div>
-                <div class="font-pref-col">
-                    <label data-i18n="controls.label_column_font_family">Column Font Family</label>
-                    <div class="btn-group-toggle compact-toggle" id="column-font-style-group">
-                        <button type="button" class="toggle-btn active" data-value="inherit" id="btn-colfont-inherit" data-i18n="controls.btn_colfont_inherit">Default</button>
-                        <button type="button" class="toggle-btn" data-value="alternative" id="btn-colfont-alt" data-i18n="controls.btn_colfont_alt">Alternative</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Compact Options (Shadow/Border/Gradient cards with aligned sub-grids) -->
-            <div class="control-item expert-only">
-                <label data-i18n="controls.label_column_cosmetics">Column Cosmetics</label>
-                <div class="compact-options-block">
-                    <!-- Shadow Group -->
-                    <div class="cosmetic-group" id="group-cosmetic-shadow">
-                        <div class="compact-option-row">
-                            <label class="checkbox-label" data-i18n-title="controls.label_cosmetic_shadow_tooltip" title="Enable column shadow" for="cosmetic-shadow">
-                                <input type="checkbox" id="cosmetic-shadow" checked>
-                                <span data-i18n="controls.label_cosmetic_shadow">Shadow</span>
-                            </label>
-                        </div>
-                        <div class="cosmetic-details" id="details-cosmetic-shadow">
-                            <div class="details-row">
-                                <label for="column-shadow-distance" class="sr-only">Shadow Blur Distance</label>
-                                <span class="details-label" aria-hidden="true" data-i18n="controls.label_cosmetic_shadow_blur">Blur</span>
-                                <input type="range" id="column-shadow-distance" min="2" max="25" value="10" title="Shadow blur distance">
-                                <span class="details-val" id="val-column-shadow">10px</span>
-                            </div>
-                            <div class="details-row">
-                                <label for="column-shadow-color" class="sr-only">Shadow Color</label>
-                                <span class="details-label" aria-hidden="true" data-i18n="controls.group_colors">Color</span>
-                                <div class="compact-color-wrapper" data-i18n-title="controls.label_cosmetic_shadow_color_tooltip" title="Shadow color">
-                                    <input type="color" id="column-shadow-color" value="#000000">
-                                </div>
-                                <span class="details-val hex-val" id="val-column-shadow-color">#000000</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Border Group -->
-                    <div class="cosmetic-group" id="group-cosmetic-border">
-                        <div class="compact-option-row">
-                            <label class="checkbox-label" data-i18n-title="controls.label_cosmetic_border_tooltip" title="Enable column border" for="cosmetic-border">
-                                <input type="checkbox" id="cosmetic-border">
-                                <span data-i18n="controls.label_cosmetic_border">Border</span>
-                            </label>
-                        </div>
-                        <div class="cosmetic-details" id="details-cosmetic-border">
-                            <div class="details-row">
-                                <label for="column-border-width" class="sr-only">Border Width</label>
-                                <span class="details-label" aria-hidden="true" data-i18n="controls.label_cosmetic_border_width">Width</span>
-                                <input type="range" id="column-border-width" min="1" max="10" value="2" title="Border width (px)">
-                                <span class="details-val" id="val-column-border-width">2px</span>
-                            </div>
-                            <div class="details-row">
-                                <label for="column-border-opacity" class="sr-only">Border Opacity</label>
-                                <span class="details-label" aria-hidden="true" data-i18n="controls.label_cosmetic_border_opacity">Opacity</span>
-                                <input type="range" id="column-border-opacity" min="10" max="100" step="5" value="100" title="Border opacity (%)">
-                                <span class="details-val" id="val-column-border-opacity">100%</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Gradient Group -->
-                    <div class="cosmetic-group" id="group-cosmetic-gradient">
-                        <div class="compact-option-row">
-                            <label class="checkbox-label" data-i18n-title="controls.label_cosmetic_gradient_tooltip" title="Enable column gradient" for="cosmetic-gradient">
-                                <input type="checkbox" id="cosmetic-gradient">
-                                <span data-i18n="controls.label_cosmetic_gradient">Gradient</span>
-                            </label>
-                        </div>
-                        <div class="cosmetic-details" id="details-cosmetic-gradient">
-                            <div class="details-row">
-                                <label for="column-gradient-length" class="sr-only">Gradient Length</label>
-                                <span class="details-label" aria-hidden="true" data-i18n="controls.label_cosmetic_gradient_length">Length</span>
-                                <input type="range" id="column-gradient-length" min="50" max="300" value="150" step="5" title="Gradient end color distance percentage">
-                                <span class="details-val" id="val-column-gradient">150%</span>
-                            </div>
-                            <div class="details-row">
-                                <label for="column-gradient-color" class="sr-only">Gradient Color</label>
-                                <span class="details-label" aria-hidden="true" data-i18n="controls.group_colors">Color</span>
-                                <div class="compact-color-wrapper" data-i18n-title="controls.label_cosmetic_gradient_color_tooltip" title="Gradient end color">
-                                    <input type="color" id="column-gradient-color" value="#000000">
-                                </div>
-                                <span class="details-val hex-val" id="val-column-gradient-color">#000000</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="control-item color-picker-row">
-                <label for="color-sidebar-bg" data-i18n="controls.label_color_sidebar_bg">Sidebar Background</label>
-                <div class="color-input-wrapper">
-                    <span class="hex-text" id="hex-sidebar-bg">#2d3748</span>
-                    <input type="color" id="color-sidebar-bg" value="#2d3748">
-                </div>
-            </div>
-
-            <div class="control-item color-picker-row">
-                <label for="color-sidebar-text" data-i18n="controls.label_color_sidebar_text">Sidebar Text</label>
-                <div class="color-input-wrapper">
-                    <span class="hex-text" id="hex-sidebar-text">#ffffff</span>
-                    <input type="color" id="color-sidebar-text" value="#ffffff">
-                </div>
-            </div>
-
-            <div class="control-item">
-                <label data-i18n="controls.label_sidebar_sections">Sidebar Sections</label>
-                <div id="sidebar-sections-checklist" class="sidebar-checklist">
-                    <!-- Populated dynamically with checkboxes -->
-                </div>
-            </div>
-        </div>
+    <div class="control-item" style="margin-top: 10px">
+      <label
+        class="checkbox-label"
+        data-i18n-title="controls.label_show_version_tooltip"
+        title="Display the version increment at the bottom of the document"
+      >
+        <input type="checkbox" id="show-version" />
+        <span data-i18n="controls.label_show_version">Display Print Version</span>
+      </label>
     </div>
 
-    <!-- SPACING SECTION -->
-    <div class="control-group">
-        <h3>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2">
-                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                <line x1="9" y1="3" x2="9" y2="21" />
-                <line x1="15" y1="3" x2="15" y2="21" />
-            </svg>
-            <span data-i18n="controls.group_spacing">Spacing</span>
-        </h3>
-        <div class="control-item">
-            <div class="slider-header">
-                <label for="margin-x" data-i18n="controls.label_margin_x">Horizontal Margin</label>
-                <span id="val-margin-x">24px</span>
-            </div>
-            <input type="range" id="margin-x" min="15" max="60" step="1" value="30">
-        </div>
-        <div class="control-item">
-            <div class="slider-header">
-                <label for="margin-y" data-i18n="controls.label_margin_y">Vertical Margin</label>
-                <span id="val-margin-y">20px</span>
-            </div>
-            <input type="range" id="margin-y" min="15" max="60" step="1" value="25">
-        </div>
-        <div class="control-item expert-only">
-            <div class="slider-header">
-                <label for="section-spacing" data-i18n="controls.label_section_spacing">Section Spacing</label>
-                <span id="val-section-spacing">12px</span>
-            </div>
-            <input type="range" id="section-spacing" min="5" max="30" step="1" value="12">
-        </div>
+    <div class="control-item expert-only" style="margin-top: 10px">
+      <label
+        class="checkbox-label"
+        data-i18n-title="controls.label_gotenberg_pdf_tooltip"
+        title="Directly compile & download PDF using the local Gotenberg service instead of opening the manual browser print window"
+      >
+        <input type="checkbox" id="gotenberg-pdf-toggle" />
+        <span data-i18n="controls.label_gotenberg_pdf">Gotenberg PDF Download</span>
+      </label>
     </div>
 
-    <!-- ATS SCORECARD WIDGET -->
-    <div class="control-group scorecard-group">
-        <h3>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                <polyline points="22 4 12 14.01 9 11.01" />
-            </svg>
-            <span data-i18n="ats.title">ATS Compliance Analysis</span>
-        </h3>
-        <div class="scorecard-summary">
-            <div class="score-radial">
-                <svg class="score-ring" width="60" height="60">
-                    <circle class="score-ring-bg" cx="30" cy="30" r="26" fill="transparent"
-                        stroke="#334155" stroke-width="4" />
-                    <circle id="score-ring-progress" class="score-ring-progress" cx="30" cy="30" r="26"
-                        fill="transparent" stroke="#10b981" stroke-width="4" stroke-dasharray="163.36"
-                        stroke-dashoffset="0" />
-                </svg>
-                <span id="score-value" class="score-text">100%</span>
-            </div>
-            <div class="score-verdict">
-                <span id="verdict-title" data-i18n="ats.verdict_pass">Perfect Formatting!</span>
-                <span id="verdict-desc" data-i18n="ats.desc_pass">Your resume is optimized for ATS parsing.</span>
-            </div>
+    <!-- Sidebar Specific Controls -->
+    <div
+      id="sidebar-only-controls"
+      style="
+        display: none;
+        margin-top: 12px;
+        border-top: 1px solid var(--border-color);
+        padding-top: 12px;
+      "
+    >
+      <div class="control-item">
+        <label data-i18n="controls.label_sidebar_position">Sidebar Position</label>
+        <div class="btn-group-toggle" id="sidebar-position-group">
+          <button
+            type="button"
+            class="toggle-btn"
+            data-value="left"
+            id="btn-sidebar-left"
+            data-i18n="controls.btn_sidebar_left"
+          >
+            Left
+          </button>
+          <button
+            type="button"
+            class="toggle-btn"
+            data-value="right"
+            id="btn-sidebar-right"
+            data-i18n="controls.btn_sidebar_right"
+          >
+            Right
+          </button>
         </div>
-        <ul class="ats-checklist" id="ats-checklist">
-            <!-- Checked items injected dynamically -->
-        </ul>
-    </div>
+        <select id="sidebar-position" style="display: none">
+          <option value="right">Right</option>
+          <option value="left">Left</option>
+        </select>
+      </div>
 
-    <!-- N8N / COPY PASTE LAB -->
-    <div class="control-group export-group">
-        <h3>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2">
-                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
-                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-            </svg>
-            <span data-i18n="controls.group_export">n8n Export & Clipboard</span>
-        </h3>
-        <p class="export-note" data-i18n="controls.export_note">Copy ready-to-use code for n8n workflows or automated scripts:</p>
-        <div class="export-buttons">
-            <button id="btn-copy-standalone" class="btn btn-secondary btn-full"
-                data-i18n-title="controls.btn_copy_standalone_title" title="Copy full document (HTML + encapsulated CSS)">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                    stroke-width="2">
-                    <path
-                        d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
-                    <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
-                </svg>
-                <span data-i18n="controls.btn_copy_standalone">Copy Standalone HTML</span>
+      <!-- Visual Split Slider -->
+      <div class="control-item expert-only">
+        <label for="column-split" data-i18n="controls.label_column_split">Column Split</label>
+        <div class="slick-split-container">
+          <div class="slick-split-visual">
+            <div class="slick-split-col main-col" id="split-main-visual" style="width: 58%">
+              <span class="col-name" data-i18n="controls.label_col_main">Main</span>
+              <span class="col-pct" id="split-main-pct">58%</span>
+            </div>
+            <div class="slick-split-col sidebar-col" id="split-sidebar-visual" style="width: 42%">
+              <span class="col-name" data-i18n="controls.label_col_sidebar">Sidebar</span>
+              <span class="col-pct" id="split-sidebar-pct">42%</span>
+            </div>
+          </div>
+          <input
+            type="range"
+            id="column-split"
+            min="0"
+            max="100"
+            value="58"
+            class="split-slider-range"
+          />
+        </div>
+      </div>
+
+      <!-- Column Font Preferences (Size & Family side-by-side) -->
+      <div class="control-item expert-only font-preferences-row">
+        <div class="font-pref-col">
+          <label data-i18n="controls.label_column_font_size">Column Font Size</label>
+          <div class="btn-group-toggle compact-toggle" id="column-font-size-group">
+            <button
+              type="button"
+              class="toggle-btn active"
+              data-value="normal"
+              id="btn-colfont-std"
+              data-i18n="controls.btn_colfont_std"
+            >
+              Standard
             </button>
-            <div class="export-row">
-                <button id="btn-copy-css" class="btn btn-outline" data-i18n-title="controls.btn_copy_css_title" title="Copy CSS only" data-i18n="controls.btn_copy_css">
-                    Copy CSS
-                </button>
-                <button id="btn-copy-html" class="btn btn-outline" data-i18n-title="controls.btn_copy_html_title" title="Copy inner HTML only" data-i18n="controls.btn_copy_html">
-                    Copy HTML
-                </button>
-            </div>
-            <button id="btn-download-md" class="btn btn-outline btn-full"
-                data-i18n-title="controls.btn_download_md_title" title="Download Markdown source" data-i18n="controls.btn_download_md">
-                Download Markdown (.md)
+            <button
+              type="button"
+              class="toggle-btn"
+              data-value="smaller"
+              id="btn-colfont-sm"
+              data-i18n="controls.btn_colfont_sm"
+            >
+              Smaller
             </button>
-            <button id="btn-developer-toggle" class="btn btn-outline btn-full" data-i18n-title="controls.btn_developer_toggle_title" title="Developer Tools">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px; vertical-align: middle;">
-                    <polyline points="16 18 22 12 16 6" />
-                    <polyline points="8 6 2 12 8 18" />
-                </svg>
-                <span data-i18n="controls.btn_developer_toggle">Developer Settings</span>
-            </button>
-            <div class="n8n-webhook-sync expert-only"
-                 style="margin-top: 16px; border-top: 1px solid var(--border-color); padding-top: 12px;">
-                <button id="btn-sync-n8n" class="btn btn-primary btn-full"
-                    style="cursor: pointer;"
-                    data-i18n-title="controls.btn_sync_n8n_title"
-                    title="Send design config directly to your n8n workflow" data-i18n="controls.btn_sync_n8n">Sync Design to n8n</button>
-            </div>
+          </div>
         </div>
-    </div>
+        <div class="font-pref-col">
+          <label data-i18n="controls.label_column_font_family">Column Font Family</label>
+          <div class="btn-group-toggle compact-toggle" id="column-font-style-group">
+            <button
+              type="button"
+              class="toggle-btn active"
+              data-value="inherit"
+              id="btn-colfont-inherit"
+              data-i18n="controls.btn_colfont_inherit"
+            >
+              Default
+            </button>
+            <button
+              type="button"
+              class="toggle-btn"
+              data-value="alternative"
+              id="btn-colfont-alt"
+              data-i18n="controls.btn_colfont_alt"
+            >
+              Alternative
+            </button>
+          </div>
+        </div>
+      </div>
 
+      <!-- Compact Options (Shadow/Border/Gradient cards with aligned sub-grids) -->
+      <div class="control-item expert-only">
+        <label data-i18n="controls.label_column_cosmetics">Column Cosmetics</label>
+        <div class="compact-options-block">
+          <!-- Shadow Group -->
+          <div class="cosmetic-group" id="group-cosmetic-shadow">
+            <div class="compact-option-row">
+              <label
+                class="checkbox-label"
+                data-i18n-title="controls.label_cosmetic_shadow_tooltip"
+                title="Enable column shadow"
+                for="cosmetic-shadow"
+              >
+                <input type="checkbox" id="cosmetic-shadow" checked />
+                <span data-i18n="controls.label_cosmetic_shadow">Shadow</span>
+              </label>
+            </div>
+            <div class="cosmetic-details" id="details-cosmetic-shadow">
+              <div class="details-row">
+                <label for="column-shadow-distance" class="sr-only">Shadow Blur Distance</label>
+                <span
+                  class="details-label"
+                  aria-hidden="true"
+                  data-i18n="controls.label_cosmetic_shadow_blur"
+                  >Blur</span
+                >
+                <input
+                  type="range"
+                  id="column-shadow-distance"
+                  min="2"
+                  max="25"
+                  value="10"
+                  title="Shadow blur distance"
+                />
+                <span class="details-val" id="val-column-shadow">10px</span>
+              </div>
+              <div class="details-row">
+                <label for="column-shadow-color" class="sr-only">Shadow Color</label>
+                <span class="details-label" aria-hidden="true" data-i18n="controls.group_colors"
+                  >Color</span
+                >
+                <div
+                  class="compact-color-wrapper"
+                  data-i18n-title="controls.label_cosmetic_shadow_color_tooltip"
+                  title="Shadow color"
+                >
+                  <input type="color" id="column-shadow-color" value="#000000" />
+                </div>
+                <span class="details-val hex-val" id="val-column-shadow-color">#000000</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Border Group -->
+          <div class="cosmetic-group" id="group-cosmetic-border">
+            <div class="compact-option-row">
+              <label
+                class="checkbox-label"
+                data-i18n-title="controls.label_cosmetic_border_tooltip"
+                title="Enable column border"
+                for="cosmetic-border"
+              >
+                <input type="checkbox" id="cosmetic-border" />
+                <span data-i18n="controls.label_cosmetic_border">Border</span>
+              </label>
+            </div>
+            <div class="cosmetic-details" id="details-cosmetic-border">
+              <div class="details-row">
+                <label for="column-border-width" class="sr-only">Border Width</label>
+                <span
+                  class="details-label"
+                  aria-hidden="true"
+                  data-i18n="controls.label_cosmetic_border_width"
+                  >Width</span
+                >
+                <input
+                  type="range"
+                  id="column-border-width"
+                  min="1"
+                  max="10"
+                  value="2"
+                  title="Border width (px)"
+                />
+                <span class="details-val" id="val-column-border-width">2px</span>
+              </div>
+              <div class="details-row">
+                <label for="column-border-opacity" class="sr-only">Border Opacity</label>
+                <span
+                  class="details-label"
+                  aria-hidden="true"
+                  data-i18n="controls.label_cosmetic_border_opacity"
+                  >Opacity</span
+                >
+                <input
+                  type="range"
+                  id="column-border-opacity"
+                  min="10"
+                  max="100"
+                  step="5"
+                  value="100"
+                  title="Border opacity (%)"
+                />
+                <span class="details-val" id="val-column-border-opacity">100%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Gradient Group -->
+          <div class="cosmetic-group" id="group-cosmetic-gradient">
+            <div class="compact-option-row">
+              <label
+                class="checkbox-label"
+                data-i18n-title="controls.label_cosmetic_gradient_tooltip"
+                title="Enable column gradient"
+                for="cosmetic-gradient"
+              >
+                <input type="checkbox" id="cosmetic-gradient" />
+                <span data-i18n="controls.label_cosmetic_gradient">Gradient</span>
+              </label>
+            </div>
+            <div class="cosmetic-details" id="details-cosmetic-gradient">
+              <div class="details-row">
+                <label for="column-gradient-length" class="sr-only">Gradient Length</label>
+                <span
+                  class="details-label"
+                  aria-hidden="true"
+                  data-i18n="controls.label_cosmetic_gradient_length"
+                  >Length</span
+                >
+                <input
+                  type="range"
+                  id="column-gradient-length"
+                  min="50"
+                  max="300"
+                  value="150"
+                  step="5"
+                  title="Gradient end color distance percentage"
+                />
+                <span class="details-val" id="val-column-gradient">150%</span>
+              </div>
+              <div class="details-row">
+                <label for="column-gradient-color" class="sr-only">Gradient Color</label>
+                <span class="details-label" aria-hidden="true" data-i18n="controls.group_colors"
+                  >Color</span
+                >
+                <div
+                  class="compact-color-wrapper"
+                  data-i18n-title="controls.label_cosmetic_gradient_color_tooltip"
+                  title="Gradient end color"
+                >
+                  <input type="color" id="column-gradient-color" value="#000000" />
+                </div>
+                <span class="details-val hex-val" id="val-column-gradient-color">#000000</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="control-item color-picker-row">
+        <label for="color-sidebar-bg" data-i18n="controls.label_color_sidebar_bg"
+          >Sidebar Background</label
+        >
+        <div class="color-input-wrapper">
+          <span class="hex-text" id="hex-sidebar-bg">#2d3748</span>
+          <input type="color" id="color-sidebar-bg" value="#2d3748" />
+        </div>
+      </div>
+
+      <div class="control-item color-picker-row">
+        <label for="color-sidebar-text" data-i18n="controls.label_color_sidebar_text"
+          >Sidebar Text</label
+        >
+        <div class="color-input-wrapper">
+          <span class="hex-text" id="hex-sidebar-text">#ffffff</span>
+          <input type="color" id="color-sidebar-text" value="#ffffff" />
+        </div>
+      </div>
+
+      <div class="control-item">
+        <label data-i18n="controls.label_sidebar_sections">Sidebar Sections</label>
+        <div id="sidebar-sections-checklist" class="sidebar-checklist">
+          <!-- Populated dynamically with checkboxes -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SPACING SECTION -->
+  <div class="control-group">
+    <h3>
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+        <line x1="9" y1="3" x2="9" y2="21" />
+        <line x1="15" y1="3" x2="15" y2="21" />
+      </svg>
+      <span data-i18n="controls.group_spacing">Spacing</span>
+    </h3>
+    <div class="control-item">
+      <div class="slider-header">
+        <label for="margin-x" data-i18n="controls.label_margin_x">Horizontal Margin</label>
+        <span id="val-margin-x">24px</span>
+      </div>
+      <input type="range" id="margin-x" min="15" max="60" step="1" value="30" />
+    </div>
+    <div class="control-item">
+      <div class="slider-header">
+        <label for="margin-y" data-i18n="controls.label_margin_y">Vertical Margin</label>
+        <span id="val-margin-y">20px</span>
+      </div>
+      <input type="range" id="margin-y" min="15" max="60" step="1" value="25" />
+    </div>
+    <div class="control-item expert-only">
+      <div class="slider-header">
+        <label for="section-spacing" data-i18n="controls.label_section_spacing"
+          >Section Spacing</label
+        >
+        <span id="val-section-spacing">12px</span>
+      </div>
+      <input type="range" id="section-spacing" min="5" max="30" step="1" value="12" />
+    </div>
+  </div>
+
+  <!-- ATS SCORECARD WIDGET -->
+  <div class="control-group scorecard-group">
+    <h3>
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+        <polyline points="22 4 12 14.01 9 11.01" />
+      </svg>
+      <span data-i18n="ats.title">ATS Compliance Analysis</span>
+    </h3>
+    <div class="scorecard-summary">
+      <div class="score-radial">
+        <svg class="score-ring" width="60" height="60">
+          <circle
+            class="score-ring-bg"
+            cx="30"
+            cy="30"
+            r="26"
+            fill="transparent"
+            stroke="#334155"
+            stroke-width="4"
+          />
+          <circle
+            id="score-ring-progress"
+            class="score-ring-progress"
+            cx="30"
+            cy="30"
+            r="26"
+            fill="transparent"
+            stroke="#10b981"
+            stroke-width="4"
+            stroke-dasharray="163.36"
+            stroke-dashoffset="0"
+          />
+        </svg>
+        <span id="score-value" class="score-text">100%</span>
+      </div>
+      <div class="score-verdict">
+        <span id="verdict-title" data-i18n="ats.verdict_pass">Perfect Formatting!</span>
+        <span id="verdict-desc" data-i18n="ats.desc_pass"
+          >Your resume is optimized for ATS parsing.</span
+        >
+      </div>
+    </div>
+    <ul class="ats-checklist" id="ats-checklist">
+      <!-- Checked items injected dynamically -->
+    </ul>
+  </div>
+
+  <!-- N8N / COPY PASTE LAB -->
+  <div class="control-group export-group">
+    <h3>
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+      >
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+      </svg>
+      <span data-i18n="controls.group_export">n8n Export & Clipboard</span>
+    </h3>
+    <p class="export-note" data-i18n="controls.export_note">
+      Copy ready-to-use code for n8n workflows or automated scripts:
+    </p>
+    <div class="export-buttons">
+      <button
+        id="btn-copy-standalone"
+        class="btn btn-secondary btn-full"
+        data-i18n-title="controls.btn_copy_standalone_title"
+        title="Copy full document (HTML + encapsulated CSS)"
+      >
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+          <rect x="8" y="2" width="8" height="4" rx="1" ry="1" />
+        </svg>
+        <span data-i18n="controls.btn_copy_standalone">Copy Standalone HTML</span>
+      </button>
+      <div class="export-row">
+        <button
+          id="btn-copy-css"
+          class="btn btn-outline"
+          data-i18n-title="controls.btn_copy_css_title"
+          title="Copy CSS only"
+          data-i18n="controls.btn_copy_css"
+        >
+          Copy CSS
+        </button>
+        <button
+          id="btn-copy-html"
+          class="btn btn-outline"
+          data-i18n-title="controls.btn_copy_html_title"
+          title="Copy inner HTML only"
+          data-i18n="controls.btn_copy_html"
+        >
+          Copy HTML
+        </button>
+      </div>
+      <button
+        id="btn-download-md"
+        class="btn btn-outline btn-full"
+        data-i18n-title="controls.btn_download_md_title"
+        title="Download Markdown source"
+        data-i18n="controls.btn_download_md"
+      >
+        Download Markdown (.md)
+      </button>
+      <button
+        id="btn-developer-toggle"
+        class="btn btn-outline btn-full"
+        data-i18n-title="controls.btn_developer_toggle_title"
+        title="Developer Tools"
+      >
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          style="margin-right: 6px; vertical-align: middle"
+        >
+          <polyline points="16 18 22 12 16 6" />
+          <polyline points="8 6 2 12 8 18" />
+        </svg>
+        <span data-i18n="controls.btn_developer_toggle">Developer Settings</span>
+      </button>
+      <div
+        class="n8n-webhook-sync expert-only"
+        style="margin-top: 16px; border-top: 1px solid var(--border-color); padding-top: 12px"
+      >
+        <button
+          id="btn-sync-n8n"
+          class="btn btn-primary btn-full"
+          style="cursor: pointer"
+          data-i18n-title="controls.btn_sync_n8n_title"
+          title="Send design config directly to your n8n workflow"
+          data-i18n="controls.btn_sync_n8n"
+        >
+          Sync Design to n8n
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

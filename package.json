@@ -1,19 +1,28 @@
 {
   "name": "jobby",
-  "version": "1.11.2",
+  "version": "1.12.0",
   "description": "Jobby ATS Markdown resume editor",
   "main": "server.js",
   "scripts": {
-    "dev": "node server.js"
+    "dev": "node server.js",
+    "lint": "eslint public/**/*.js --ext .js && prettier --check .",
+    "format": "prettier --write .",
+    "validate:i18n": "node scripts/validate_i18n.js",
+    "build": "esbuild public/app.js --bundle --minify --outfile=public/dist/app.min.js"
   },
   "keywords": [
     "markdown",
     "resume",
     "ats"
   ],
-  "author": "Julien (\u00c9ole) Avarre",
+  "author": "Julien (Éole) Avarre",
   "license": "MIT",
   "devDependencies": {
-    "playwright": "^1.61.0"
+    "esbuild": "^0.20.2",
+    "eslint": "^8.57.0",
+    "playwright": "^1.61.0",
+    "prettier": "^3.3.2",
+    "stylelint": "^16.3.1",
+    "stylelint-config-standard": "^36.0.0"
   }
 }

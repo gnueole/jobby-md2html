@@ -1,52 +1,135 @@
 <div class="brand">
-    <svg class="brand-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
-        <polyline points="14 2 14 8 20 8" />
-        <line x1="16" y1="13" x2="8" y2="13" />
-        <line x1="16" y1="17" x2="8" y2="17" />
-        <line x1="10" y1="9" x2="8" y2="9" />
-    </svg>
-    <h1 data-i18n-html="header.title">Jobby Markdown Editor</h1>
+  <svg
+    class="brand-icon"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+    <polyline points="14 2 14 8 20 8" />
+    <line x1="16" y1="13" x2="8" y2="13" />
+    <line x1="16" y1="17" x2="8" y2="17" />
+    <line x1="10" y1="9" x2="8" y2="9" />
+  </svg>
+  <h1 data-i18n-html="header.title">Jobby Markdown Editor</h1>
 </div>
-<nav class="actions" aria-label="Application Actions" style="display: flex; gap: 8px; align-items: center;">
-    <div class="lang-selector-wrapper">
-        <select id="select-lang" class="btn btn-secondary select-input" style="padding: 0 10px; font-weight: 600; cursor: pointer; height: 36px; border-radius: 6px; background: var(--bg-button-secondary); color: var(--text-primary); border: 1px solid var(--border-color); outline: none;" title="Switch language">
-            <option value="en">EN</option>
-            <option value="fr">FR</option>
-            <option value="cs">CS</option>
-            <option value="es">ES</option>
-            <option value="it">IT</option>
-            <option value="de">DE</option>
-            <option value="ro">RO</option>
-        </select>
-    </div>
-    <button id="btn-theme-toggle" class="btn btn-secondary" data-i18n-title="header.theme_tooltip" title="Toggle application theme" style="padding: 0 10px; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">
-        <span id="theme-btn-icon" style="display: flex; align-items: center; justify-content: center;"></span>
-    </button>
-    <button id="btn-about" class="btn btn-secondary" data-i18n-title="header.about_tooltip" title="About Jobby">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10" />
-            <line x1="12" y1="16" x2="12" y2="12" />
-            <line x1="12" y1="8" x2="12.01" y2="8" />
-        </svg>
-        <span data-i18n="header.about_btn">About</span>
-    </button>
-    <button id="btn-feedback" class="btn btn-secondary" data-i18n-title="header.feedback_tooltip" title="Send feedback or report bugs">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-        </svg>
-        <span data-i18n="header.feedback_btn">Feedback</span>
-    </button>
-    <button id="btn-print" class="btn btn-primary" data-i18n-title="header.print_tooltip" title="Print to PDF (Ctrl+P)">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-            stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="6 9 6 2 18 2 18 9" />
-            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
-            <rect x="6" y="14" width="12" height="8" />
-        </svg>
-        <span data-i18n="header.print_btn">Print / PDF</span>
-    </button>
+<nav
+  class="actions"
+  aria-label="Application Actions"
+  style="display: flex; gap: 8px; align-items: center"
+>
+  <div class="lang-selector-wrapper">
+    <select
+      id="select-lang"
+      class="btn btn-secondary select-input"
+      style="
+        padding: 0 10px;
+        font-weight: 600;
+        cursor: pointer;
+        height: 36px;
+        border-radius: 6px;
+        background: var(--bg-button-secondary);
+        color: var(--text-primary);
+        border: 1px solid var(--border-color);
+        outline: none;
+      "
+      title="Switch language"
+    >
+      <option value="en">EN</option>
+      <option value="fr">FR</option>
+      <option value="cs">CS</option>
+      <option value="es">ES</option>
+      <option value="it">IT</option>
+      <option value="de">DE</option>
+      <option value="ro">RO</option>
+    </select>
+  </div>
+  <button
+    id="btn-theme-toggle"
+    class="btn btn-secondary"
+    data-i18n-title="header.theme_tooltip"
+    title="Toggle application theme"
+    style="
+      padding: 0 10px;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    "
+  >
+    <span
+      id="theme-btn-icon"
+      style="display: flex; align-items: center; justify-content: center"
+    ></span>
+  </button>
+  <button
+    id="btn-about"
+    class="btn btn-secondary"
+    data-i18n-title="header.about_tooltip"
+    title="About Jobby"
+  >
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <circle cx="12" cy="12" r="10" />
+      <line x1="12" y1="16" x2="12" y2="12" />
+      <line x1="12" y1="8" x2="12.01" y2="8" />
+    </svg>
+    <span data-i18n="header.about_btn">About</span>
+  </button>
+  <button
+    id="btn-feedback"
+    class="btn btn-secondary"
+    data-i18n-title="header.feedback_tooltip"
+    title="Send feedback or report bugs"
+  >
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+    </svg>
+    <span data-i18n="header.feedback_btn">Feedback</span>
+  </button>
+  <button
+    id="btn-print"
+    class="btn btn-primary"
+    data-i18n-title="header.print_tooltip"
+    title="Print to PDF (Ctrl+P)"
+  >
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <polyline points="6 9 6 2 18 2 18 9" />
+      <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+      <rect x="6" y="14" width="12" height="8" />
+    </svg>
+    <span data-i18n="header.print_btn">Print / PDF</span>
+  </button>
 </nav>
