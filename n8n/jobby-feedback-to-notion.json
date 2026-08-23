@@ -1,0 +1,432 @@
+{
+  "id": "0KyUBNMUzuGAoM7q",
+  "name": "Jobby - Feedback to Notion",
+  "description": "Published on 2026-06-22 20:18:24 | Git: 1ca0e6f fix: dynamically adjust dropdowns and tooltips to prevent screen overflow",
+  "active": true,
+  "activeVersionId": "a2ae4d90-4854-4bd7-9f49-31e476631c8b",
+  "createdAt": "2026-06-20T16:34:33.224Z",
+  "updatedAt": "2026-07-06T13:42:09.977Z",
+  "isArchived": false,
+  "versionId": "a2ae4d90-4854-4bd7-9f49-31e476631c8b",
+  "versionCounter": 20,
+  "sourceWorkflowId": null,
+  "triggerCount": 1,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "jobby-feedback",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        250,
+        300
+      ],
+      "id": "webhook-trigger",
+      "name": "Webhook",
+      "webhookId": "96153d69-4987-4c08-a1da-9a97c412e2c1"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "create",
+        "databaseId": {
+          "__rl": true,
+          "value": "385ee932-db12-81f6-8256-e350b3d1b0f2",
+          "mode": "list"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Name|title",
+              "title": "={{ $json.body.name }}"
+            },
+            {
+              "key": "Email|email",
+              "emailValue": "={{ $json.body.email || null }}",
+              "ignoreIfEmpty": true
+            },
+            {
+              "key": "Stars|number",
+              "numberValue": "={{ Number($json.body.stars) }}"
+            },
+            {
+              "key": "Category|select",
+              "selectValue": "={{ $json.body.category }}"
+            },
+            {
+              "key": "Platform|select",
+              "selectValue": "={{ $json.body.platform }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        480,
+        300
+      ],
+      "id": "notion-node",
+      "name": "Notion",
+      "onError": "continue",
+      "credentials": {
+        "notionApi": {
+          "id": "KYrsxF0plfLkPpqW",
+          "name": "Notion LinkedIn Auto"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://api.notion.com/v1/blocks/{{ $json.id }}/children",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "notionApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Notion-Version",
+              "value": "2022-06-28"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"children\": [\n    {\n      \"object\": \"block\",\n      \"type\": \"heading_1\",\n      \"heading_1\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": {{ JSON.stringify('Feedback from ' + $('Webhook').item.json.body.name) }}\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"heading_2\",\n      \"heading_2\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": \"Details\"\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"bulleted_list_item\",\n      \"bulleted_list_item\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": {{ JSON.stringify('Date: ' + $now.setZone('Europe/Paris').toFormat('yyyy-MM-dd HH:mm')) }}\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"bulleted_list_item\",\n      \"bulleted_list_item\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": {{ JSON.stringify('Name: ' + $('Webhook').item.json.body.name) }}\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"bulleted_list_item\",\n      \"bulleted_list_item\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": {{ JSON.stringify('Email: ' + ($('Webhook').item.json.body.email || 'none')) }}\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"bulleted_list_item\",\n      \"bulleted_list_item\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": {{ JSON.stringify('Category: ' + $('Webhook').item.json.body.category) }}\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"bulleted_list_item\",\n      \"bulleted_list_item\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": {{ JSON.stringify('Rating: ' + $('Webhook').item.json.body.stars + ' Stars') }}\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"bulleted_list_item\",\n      \"bulleted_list_item\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": {{ JSON.stringify('Platform: ' + $('Webhook').item.json.body.platform) }}\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"heading_2\",\n      \"heading_2\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": \"Message\"\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"paragraph\",\n      \"paragraph\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": {{ JSON.stringify($('Webhook').item.json.body.message) }}\n            }\n          }\n        ]\n      }\n    }\n  ]\n}"
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        680,
+        300
+      ],
+      "id": "notion-append-node",
+      "name": "Notion Append Blocks",
+      "onError": "continue",
+      "credentials": {
+        "notionApi": {
+          "id": "KYrsxF0plfLkPpqW",
+          "name": "Notion LinkedIn Auto"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $('Notion').item.json.id && !$json.message ? { \"success\": true } : { \"success\": false, \"error\": $json.message || $('Notion').item.json.message || \"Notion API Error\" } }}",
+        "options": {
+          "responseCode": "={{ $('Notion').item.json.id && !$json.message ? 200 : 500 }}"
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        880,
+        300
+      ],
+      "id": "respond-node",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "content": "### Last Publish Info\n\nPublished on 2026-07-06 15:42:06 | Git: b94e66d feat: implement web UI for trail mapping with multi-language support, elevation charts, and route processing features",
+        "height": 150,
+        "width": 300,
+        "color": 6
+      },
+      "id": "a2bc5eb1-d449-4485-b901-b090e7163d2a",
+      "name": "Last Publish Info",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -100,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Notion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion": {
+      "main": [
+        [
+          {
+            "node": "Notion Append Blocks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion Append Blocks": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodeGroups": [],
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "pinData": null,
+  "meta": null,
+  "tags": [
+    {
+      "id": "5zynHpPHQi9PRMyD",
+      "name": "jobby",
+      "createdAt": "2026-05-29T11:31:39.972Z",
+      "updatedAt": "2026-05-29T11:31:39.972Z"
+    }
+  ],
+  "shared": [
+    {
+      "role": "workflow:owner",
+      "workflowId": "0KyUBNMUzuGAoM7q",
+      "projectId": "GfFdmZTqGEJQkrXG",
+      "project": {
+        "id": "GfFdmZTqGEJQkrXG",
+        "name": "Éole Wind <megazef@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "customTelemetryTags": [],
+        "creatorId": "2792484d-cba3-4156-adba-fbc49134eb55",
+        "createdAt": "2026-05-11T09:34:45.695Z",
+        "updatedAt": "2026-07-06T15:34:54.223Z"
+      },
+      "createdAt": "2026-06-20T16:34:33.229Z",
+      "updatedAt": "2026-06-20T16:34:33.229Z"
+    }
+  ],
+  "activeVersion": {
+    "versionId": "a2ae4d90-4854-4bd7-9f49-31e476631c8b",
+    "workflowId": "0KyUBNMUzuGAoM7q",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "jobby-feedback",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 1,
+        "position": [
+          250,
+          300
+        ],
+        "id": "webhook-trigger",
+        "name": "Webhook",
+        "webhookId": "96153d69-4987-4c08-a1da-9a97c412e2c1"
+      },
+      {
+        "parameters": {
+          "resource": "databasePage",
+          "operation": "create",
+          "databaseId": {
+            "__rl": true,
+            "value": "385ee932-db12-81f6-8256-e350b3d1b0f2",
+            "mode": "list"
+          },
+          "propertiesUi": {
+            "propertyValues": [
+              {
+                "key": "Name|title",
+                "title": "={{ $json.body.name }}"
+              },
+              {
+                "key": "Email|email",
+                "emailValue": "={{ $json.body.email || null }}",
+                "ignoreIfEmpty": true
+              },
+              {
+                "key": "Stars|number",
+                "numberValue": "={{ Number($json.body.stars) }}"
+              },
+              {
+                "key": "Category|select",
+                "selectValue": "={{ $json.body.category }}"
+              },
+              {
+                "key": "Platform|select",
+                "selectValue": "={{ $json.body.platform }}"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.notion",
+        "typeVersion": 2.2,
+        "position": [
+          480,
+          300
+        ],
+        "id": "notion-node",
+        "name": "Notion",
+        "onError": "continue",
+        "credentials": {
+          "notionApi": {
+            "id": "KYrsxF0plfLkPpqW",
+            "name": "Notion LinkedIn Auto"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "PATCH",
+          "url": "=https://api.notion.com/v1/blocks/{{ $json.id }}/children",
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "notionApi",
+          "sendHeaders": true,
+          "headerParameters": {
+            "parameters": [
+              {
+                "name": "Notion-Version",
+                "value": "2022-06-28"
+              }
+            ]
+          },
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"children\": [\n    {\n      \"object\": \"block\",\n      \"type\": \"heading_1\",\n      \"heading_1\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": {{ JSON.stringify('Feedback from ' + $('Webhook').item.json.body.name) }}\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"heading_2\",\n      \"heading_2\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": \"Details\"\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"bulleted_list_item\",\n      \"bulleted_list_item\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": {{ JSON.stringify('Date: ' + $now.setZone('Europe/Paris').toFormat('yyyy-MM-dd HH:mm')) }}\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"bulleted_list_item\",\n      \"bulleted_list_item\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": {{ JSON.stringify('Name: ' + $('Webhook').item.json.body.name) }}\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"bulleted_list_item\",\n      \"bulleted_list_item\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": {{ JSON.stringify('Email: ' + ($('Webhook').item.json.body.email || 'none')) }}\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"bulleted_list_item\",\n      \"bulleted_list_item\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": {{ JSON.stringify('Category: ' + $('Webhook').item.json.body.category) }}\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"bulleted_list_item\",\n      \"bulleted_list_item\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": {{ JSON.stringify('Rating: ' + $('Webhook').item.json.body.stars + ' Stars') }}\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"bulleted_list_item\",\n      \"bulleted_list_item\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": {{ JSON.stringify('Platform: ' + $('Webhook').item.json.body.platform) }}\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"heading_2\",\n      \"heading_2\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": \"Message\"\n            }\n          }\n        ]\n      }\n    },\n    {\n      \"object\": \"block\",\n      \"type\": \"paragraph\",\n      \"paragraph\": {\n        \"rich_text\": [\n          {\n            \"type\": \"text\",\n            \"text\": {\n              \"content\": {{ JSON.stringify($('Webhook').item.json.body.message) }}\n            }\n          }\n        ]\n      }\n    }\n  ]\n}"
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+          680,
+          300
+        ],
+        "id": "notion-append-node",
+        "name": "Notion Append Blocks",
+        "onError": "continue",
+        "credentials": {
+          "notionApi": {
+            "id": "KYrsxF0plfLkPpqW",
+            "name": "Notion LinkedIn Auto"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={{ $('Notion').item.json.id && !$json.message ? { \"success\": true } : { \"success\": false, \"error\": $json.message || $('Notion').item.json.message || \"Notion API Error\" } }}",
+          "options": {
+            "responseCode": "={{ $('Notion').item.json.id && !$json.message ? 200 : 500 }}"
+          }
+        },
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1,
+        "position": [
+          880,
+          300
+        ],
+        "id": "respond-node",
+        "name": "Respond to Webhook"
+      },
+      {
+        "parameters": {
+          "content": "### Last Publish Info\n\nPublished on 2026-07-06 15:42:06 | Git: b94e66d feat: implement web UI for trail mapping with multi-language support, elevation charts, and route processing features",
+          "height": 150,
+          "width": 300,
+          "color": 6
+        },
+        "id": "a2bc5eb1-d449-4485-b901-b090e7163d2a",
+        "name": "Last Publish Info",
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          -100,
+          300
+        ]
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Notion",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Notion": {
+        "main": [
+          [
+            {
+              "node": "Notion Append Blocks",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Notion Append Blocks": {
+        "main": [
+          [
+            {
+              "node": "Respond to Webhook",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "nodeGroups": [],
+    "authors": "Éole Wind",
+    "name": null,
+    "description": null,
+    "autosaved": false,
+    "createdAt": "2026-07-06T13:42:09.979Z",
+    "updatedAt": "2026-07-06T13:42:09.979Z",
+    "workflowPublishHistory": [
+      {
+        "id": 1895,
+        "workflowId": "0KyUBNMUzuGAoM7q",
+        "versionId": "a2ae4d90-4854-4bd7-9f49-31e476631c8b",
+        "event": "activated",
+        "userId": "2792484d-cba3-4156-adba-fbc49134eb55",
+        "createdAt": "2026-07-23T13:58:27.963Z"
+      },
+      {
+        "id": 2023,
+        "workflowId": "0KyUBNMUzuGAoM7q",
+        "versionId": "a2ae4d90-4854-4bd7-9f49-31e476631c8b",
+        "event": "activated",
+        "userId": "2792484d-cba3-4156-adba-fbc49134eb55",
+        "createdAt": "2026-08-03T21:31:34.167Z"
+      },
+      {
+        "id": 2022,
+        "workflowId": "0KyUBNMUzuGAoM7q",
+        "versionId": "a2ae4d90-4854-4bd7-9f49-31e476631c8b",
+        "event": "deactivated",
+        "userId": "2792484d-cba3-4156-adba-fbc49134eb55",
+        "createdAt": "2026-08-03T21:31:34.127Z"
+      }
+    ]
+  }
+}
