@@ -1,11 +1,16 @@
 {
-  "updatedAt": "2026-06-03T10:11:59.136Z",
-  "createdAt": "2026-05-25T13:51:11.721Z",
-  "id": "olgL8wb7nrJumkct",
+  "id": "QEcsp5jJkdidLPgb",
   "name": "jobby - linkedin-to-notion - prod",
-  "description": "Published on 2026-06-22 20:18:24 | Git: 1ca0e6f fix: dynamically adjust dropdowns and tooltips to prevent screen overflow",
+  "description": null,
   "active": true,
+  "activeVersionId": "ebbe1c3d-7ebe-43b4-8ba9-323f468ef641",
+  "createdAt": "2026-06-24T07:15:39.303Z",
+  "updatedAt": "2026-08-27T09:03:06.577Z",
   "isArchived": false,
+  "versionId": "ebbe1c3d-7ebe-43b4-8ba9-323f468ef641",
+  "versionCounter": 42,
+  "sourceWorkflowId": null,
+  "triggerCount": 1,
   "nodes": [
     {
       "parameters": {
@@ -490,53 +495,46 @@
       ]
     }
   },
+  "nodeGroups": [],
   "settings": {
     "executionOrder": "v1",
     "binaryMode": "separate",
-    "timeSavedMode": "fixed",
-    "timezone": "Europe/Paris",
-    "callerPolicy": "workflowsFromSameOwner",
-    "availableInMCP": false
+    "availableInMCP": true
   },
   "staticData": null,
-  "meta": {
-    "templateCredsSetupCompleted": true
-  },
   "pinData": {
     "CV Factory": [
       {
         "json": {
           "headers": {
             "host": "n8n.eole.me",
-            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36",
-            "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
+            "accept": "application/json",
             "accept-encoding": "gzip, deflate, br, zstd",
             "accept-language": "en-US,en;q=0.9,fr;q=0.8",
-            "cookie": "rl_page_init_referrer=RudderEncrypt%3AU2FsdGVkX1%2B8kFV5p%2B3HAj3Son4FMJUEk4%2BqxIx7UWc%3D; rl_page_init_referring_domain=RudderEncrypt%3AU2FsdGVkX19n86jBmCOvZ4Wcb8Nqnk3ZjYzMHoWGGZo%3D; rl_anonymous_id=RudderEncrypt%3AU2FsdGVkX19dq6dMs%2B%2B1hfuFbeCZQ5qPDBEUjrUyooY0cOF924umj6j0IVbg3qguoMd8w7B2khYShgj9CwXoiQ%3D%3D; rl_user_id=RudderEncrypt%3AU2FsdGVkX19hGVedlMd5DBinnJnRgI9lfTDukn7tHCOjXqRDuVwSByddZslC15Xnh8kksm5X4BpKBj2RAajADYz8yNHxroHnO2NO5l1cdsJd0cgnyZl3NyC29Bx8dJOMsdlOyOdCTTNsHs7iOc1EqzxqC%2BshkdmFdMUc2Nub9PI%3D; rl_trait=RudderEncrypt%3AU2FsdGVkX1%2FEx3EfpM%2BZY9sEq0Qz8j%2BSd%2F7AnjFJHnTDmIy8QzUBiZFF%2FEPu7AU0ueVFTq4JY98i2mt9Fyd4gr43myIUw%2F8v6HlQ0S3FJHv57gAlsCURjfQoxNlmfxEGGQCsJRDY8jHdEuXmucmz%2Bcy2e4u5vUa1499j67jRLJvihhyCfHL9cb1Z5xvvy9ATHUqkEp8UapZXpy8os1QUkg%3D%3D; rl_session=RudderEncrypt%3AU2FsdGVkX1%2B4P0LGLoRl8uEoeZegFHu5T6Tr29wOFnblVdw1p5I6dFPEzpBVFBtQu9PB%2BpsXm5MH%2Ff7FHHVC6rg3S1eZHyG45kkrL0wfjhCxH2vu6FcLGeHk%2FzibmJhC1tZ%2BFWJt4DFNiOrWPdqpPg%3D%3D; ph_phc_kMstNfAgBcBkWSh6KdsgN09heqqNe5VNmalHP1Ni9Q4_posthog=%7B%22%24device_id%22%3A%22019e1b19-8798-7500-9c38-01c093f6b68e%22%2C%22distinct_id%22%3A%2253cbaa32121366d355af3e3f2eb2d42a33c0bffe309b3f0f597c923db082ae29%232792484d-cba3-4156-adba-fbc49134eb55%22%2C%22%24sesid%22%3A%5B1779721754711%2C%22019e5f67-63a1-742f-ac1e-0500fc488204%22%2C1779717071777%5D%2C%22%24epp%22%3Atrue%2C%22%24initial_person_info%22%3A%7B%22r%22%3A%22%24direct%22%2C%22u%22%3A%22https%3A%2F%2Fn8n.eole.me%2Fsignin%3Fredirect%3D%25252F%22%7D%2C%22%24user_state%22%3A%22identified%22%7D",
-            "if-none-match": "W/\"18-u4VS43Duo4gxS1w+mEwu+tPAZ1g\"",
-            "priority": "u=0, i",
-            "referer": "https://www.linkedin.com/",
-            "sec-ch-ua": "\"Google Chrome\";v=\"149\", \"Chromium\";v=\"149\", \"Not)A;Brand\";v=\"24\"",
+            "authorization": "Bearer a56ca7bdd2ad74dfdfa80f356e8c4d7cc3544e4022f5ce52",
+            "origin": "https://jobby.eole.me",
+            "priority": "u=1, i",
+            "referer": "https://jobby.eole.me/",
+            "sec-ch-ua": "\"Not;A=Brand\";v=\"8\", \"Chromium\";v=\"150\", \"Google Chrome\";v=\"150\"",
             "sec-ch-ua-mobile": "?0",
             "sec-ch-ua-platform": "\"Windows\"",
-            "sec-fetch-dest": "document",
-            "sec-fetch-mode": "navigate",
-            "sec-fetch-site": "cross-site",
-            "sec-fetch-user": "?1",
-            "upgrade-insecure-requests": "1",
-            "x-forwarded-for": "176.173.197.207",
+            "sec-fetch-dest": "empty",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-site": "same-site",
+            "x-forwarded-for": "176.134.37.100",
             "x-forwarded-host": "n8n.eole.me",
             "x-forwarded-port": "443",
             "x-forwarded-proto": "https",
-            "x-forwarded-server": "1f7ad518ac8c",
-            "x-real-ip": "176.173.197.207"
+            "x-forwarded-server": "eaf93e0cc201",
+            "x-real-ip": "176.134.37.100"
           },
           "params": {},
           "query": {
-            "job_title": "Solutions Sales Engineer",
-            "company": "Dust",
-            "job_url": "https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4411718983",
-            "job_description": "About the job\n\nAbout Dust\n\n\n\n\nWork is being rewritten, and the people holding the pen are the ones who actually run it.\n\n\n\n\nWe call them AI operators: the employees inside companies who build, deploy, and run AI agents for their teams, without waiting for someone to hand them a tool. Dust is the platform they choose to rewire how their company works.\n\n\n\n\nWith 70%+ weekly active users, people stick with Dust as much as they do with Slack and Notion. We don't get piloted and shelved. We land once, and spread. We're at an exciting stage of our journey, and growing fast.\n\n\n\n\nWe're serving great customers like Datadog, 1Password, Cursor, Clay, and Persona, and aim to x5 our growth by the end of 2026.\n\n\n\n\nDust is backed by Sequoia with a determined team of optimists (coming from Stripe, OpenAI, and Stanford) who like to focus on users, ship fast, and don't take themselves too seriously while doing so. The Generalist named us among the Future 50.\n\nTLDR;\n\nAs a Post-Sales Solutions Engineer at Dust, you will act as the technical partner for our existing customers, ensuring they maximize value from our AI operating system throughout their journey with us. Your primary focus will be driving long-term customer success through value realization, identifying expansion opportunities, and creating high-value, sticky use cases that make Dust indispensable to their operations. You will work closely with our Customer Success and Product & Engineering teams to deepen customer relationships and drive retention.\n\n\n\n\nResponsibilities\n\nDevelop and maintain deep expertise in Dust's product, platform capabilities, and prompt engineering best practices to serve as the internal expert for customer scenarios\nServe as a trusted technical advisor to our Enterprise customers, building deep relationshi"
+            "job_title": "Solutions Consultant (Paris, France) | Figma | LinkedIn",
+            "company": "",
+            "job_url": "https://www.linkedin.com/jobs/view/4343955597/?trk=eml-email_job_alert_digest_01-primary_job_list-0-jobcard_body_0_jobid_4343955597_ssid_8160885338_fmid_2o865~mr0pccxt~bg&refId=7PAqSEVJdcdOPMljBtp23g%3D%3D&trackingId=IilOTZ3ghpQjJuxyc19Zhw%3D%3D",
+            "job_description": "Figma is growing our team of passionate creatives and builders on a mission to make design accessible to all. Figma’s platform helps teams bring ideas to life—whether you're brainstorming, creating a prototype, translating designs into code, or iterating with AI. From idea to product, Figma empowers teams to streamline workflows, move faster, and work together in real time from anywhere in the world. If you're excited to shape the future of design and collaboration, join us!\n\nAt Figma, our Solutions Consulting team bridges technical expertise with business context to help customers realize what’s possible with our platform. As a Solutions Consultant supporting enterprise accounts, you’ll partner with Sales and cross-functional teams to craft and deliver consultative strategies that showcase Figma’s value. You’ll lead technical discussions, demos, and solution design to help customers achieve their goals and transform how they build products, playing a key role in driving revenue and growth as Figma continues to innovate.\n\nThis is a full time role that can be held from our Paris hub.\n\nWhat you'll do at Figma:\n\nPaint the vision of the Figma Platform and guide customers in realizing the value through product demonstrations and presentations\nSupport the Sales team by addressing Figma platform questions and showcasing how Figma accelerates digital product delivery to customers\nOwn the customer IT and Security relationship during the deal cycle by addressing security questionnaires, RFIs, RFPs, identity and enterprise questions\nCollaborate with Product and Support to identify opportunities for enhancing account security through new product features and help influence the product roadmap\nDesign and scale technical sales efforts, facilitating conversations and connections betwe"
           },
           "body": {},
           "webhookUrl": "https://n8n.eole.me/webhook/cv-factory",
@@ -548,60 +546,31 @@
       }
     ]
   },
-  "versionId": "1f38b6c8-cab7-4bb2-a645-f6c092f23ca5",
-  "activeVersionId": "1f38b6c8-cab7-4bb2-a645-f6c092f23ca5",
-  "versionCounter": 167,
-  "triggerCount": 1,
+  "meta": null,
+  "tags": [],
   "shared": [
     {
-      "updatedAt": "2026-05-25T13:51:11.748Z",
-      "createdAt": "2026-05-25T13:51:11.748Z",
       "role": "workflow:owner",
-      "workflowId": "olgL8wb7nrJumkct",
+      "workflowId": "QEcsp5jJkdidLPgb",
       "projectId": "GfFdmZTqGEJQkrXG",
       "project": {
-        "updatedAt": "2026-05-11T09:44:44.757Z",
-        "createdAt": "2026-05-11T09:34:45.695Z",
         "id": "GfFdmZTqGEJQkrXG",
         "name": "Éole Wind <megazef@gmail.com>",
         "type": "personal",
         "icon": null,
         "description": null,
-        "creatorId": "2792484d-cba3-4156-adba-fbc49134eb55"
-      }
-    }
-  ],
-  "tags": [
-    {
-      "updatedAt": "2026-05-29T11:31:39.972Z",
-      "createdAt": "2026-05-29T11:31:39.972Z",
-      "id": "5zynHpPHQi9PRMyD",
-      "name": "jobby"
-    },
-    {
-      "updatedAt": "2026-05-11T12:19:25.326Z",
-      "createdAt": "2026-05-11T12:19:25.326Z",
-      "id": "8yiCAJZW8fFXfFqI",
-      "name": "notion"
-    },
-    {
-      "updatedAt": "2026-05-29T11:33:37.867Z",
-      "createdAt": "2026-05-29T11:33:37.867Z",
-      "id": "oVl5DgcCQROKFX7w",
-      "name": "AI"
-    },
-    {
-      "updatedAt": "2026-05-29T11:33:25.261Z",
-      "createdAt": "2026-05-29T11:33:25.261Z",
-      "id": "sTPsdvgfTYjdu5g7",
-      "name": "live"
+        "customTelemetryTags": [],
+        "creatorId": "2792484d-cba3-4156-adba-fbc49134eb55",
+        "createdAt": "2026-05-11T09:34:45.695Z",
+        "updatedAt": "2026-07-06T15:34:54.223Z"
+      },
+      "createdAt": "2026-06-24T07:15:39.307Z",
+      "updatedAt": "2026-06-24T07:15:39.307Z"
     }
   ],
   "activeVersion": {
-    "updatedAt": "2026-06-03T10:12:33.000Z",
-    "createdAt": "2026-06-03T10:11:59.138Z",
-    "versionId": "1f38b6c8-cab7-4bb2-a645-f6c092f23ca5",
-    "workflowId": "olgL8wb7nrJumkct",
+    "versionId": "ebbe1c3d-7ebe-43b4-8ba9-323f468ef641",
+    "workflowId": "QEcsp5jJkdidLPgb",
     "nodes": [
       {
         "parameters": {
@@ -614,7 +583,7 @@
         "type": "@n8n/n8n-nodes-langchain.agent",
         "typeVersion": 3.1,
         "position": [
-          352,
+          700,
           48
         ],
         "id": "b28e3fb0-c3bf-42f4-9a63-a95c5c8d4055",
@@ -629,7 +598,7 @@
         "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
         "typeVersion": 1.1,
         "position": [
-          352,
+          700,
           320
         ],
         "id": "c09c542b-80ca-4d47-a542-15fc14eabccd",
@@ -643,28 +612,75 @@
       },
       {
         "parameters": {
-          "model": {
-            "__rl": true,
-            "mode": "list",
-            "value": "claude-sonnet-4-6",
-            "cachedResultName": "Claude Sonnet 4.6"
-          },
-          "options": {}
+          "jsCode": "// 1. On récupère le texte généré par l'Agent\nconst text = $json.output || \"\"; \nconst match = text.match(/\\{[\\s\\S]*\\}/);\n\nif (match) {\n  try {\n    // On parse uniquement le bloc JSON trouvé\n    const data = JSON.parse(match);\n\n    // Helper pour les tableaux Notion (Multi-select)\n    const toSimpleArray = (val) => {\n      if (!val) return [];\n      const rawItems = Array.isArray(val) ? val : val.toString().split(/[|,\\/&]|\\band\\b/);\n      return rawItems.map(i => i.trim()).filter(i => i.length > 1);\n    };\n\n    let cvMarkdown = data.generated_cv_markdown || \"\";\n    if (typeof cvMarkdown === 'string') {\n      cvMarkdown = cvMarkdown.replace(/\\\\n/g, '\\n');\n    }\n\n    // 2. On reconstruit l'objet propre pour alimenter le nœud \"Update Notion\"\n    return [{\n      json: {\n        domain: toSimpleArray(data.domain),\n        category: toSimpleArray(data.category || data.job_title),\n        job_title: data.job_title || \"Position inconnue\",\n        company: data.company || \"Entreprise inconnue\",\n        score: parseInt(data.match_score) || 0,\n        status: \"To review\",\n        summary: data.quick_summary || \"Analyse terminée\",\n        analysis_pros: data.analysis_pros || \"N/A\",\n        analysis_cons: data.analysis_cons || \"N/A\",\n        action_plan: data.action_plan || \"N/A\",\n        generated_cv_markdown: cvMarkdown,\n        response_date: new Date().toISOString().split('T')\n      }\n    }];\n\n  } catch (e) {\n    return [{ json: { error: \"JSON Parsing Error\", message: e.message, raw: text.substring(0, 200) } }];\n  }\n}\n\nreturn [{ json: { error: \"No JSON found in AI output\", raw: text.substring(0, 100) } }];"
         },
-        "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
-        "typeVersion": 1.4,
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
         "position": [
-          -544,
-          384
-        ]
+          940,
+          -48
+        ],
+        "id": "bc6d9e53-7c47-4b19-97f4-e78868ea7cdd",
+        "name": "JSON Cleaner",
+        "onError": "continueErrorOutput"
+      },
+      {
+        "parameters": {
+          "resource": "databasePage",
+          "operation": "getAll",
+          "databaseId": {
+            "__rl": true,
+            "value": "={{ $('Get Atom CV DB ID').item.json.value }}",
+            "mode": "id"
+          }
+        },
+        "type": "n8n-nodes-base.notion",
+        "typeVersion": 2.2,
+        "position": [
+          160,
+          48
+        ],
+        "id": "98b735c7-3087-4ff3-83a7-c749cba35b8b",
+        "name": "Get CV data",
+        "credentials": {
+          "notionApi": {
+            "id": "KYrsxF0plfLkPpqW",
+            "name": "Notion LinkedIn Auto"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "resource": "databasePage",
+          "operation": "getAll",
+          "databaseId": {
+            "__rl": true,
+            "value": "={{ $('Get Seed DB ID').item.json.value }}",
+            "mode": "id"
+          }
+        },
+        "type": "n8n-nodes-base.notion",
+        "typeVersion": 2.2,
+        "position": [
+          340,
+          48
+        ],
+        "id": "1c3e6440-cbf2-472c-ab63-959a496a7e6f",
+        "name": "CV Seed",
+        "credentials": {
+          "notionApi": {
+            "id": "KYrsxF0plfLkPpqW",
+            "name": "Notion LinkedIn Auto"
+          }
+        }
       },
       {
         "parameters": {
           "resource": "databasePage",
           "databaseId": {
             "__rl": true,
-            "value": "127bad1f-b25a-4b6b-8eec-7b342e3aa504",
-            "mode": "list"
+            "value": "={{ $('Get Notion DB ID').item.json.value }}",
+            "mode": "id"
           },
           "title": "LinkedIn Detector",
           "simple": false,
@@ -759,7 +775,7 @@
         "type": "n8n-nodes-base.notion",
         "typeVersion": 2.2,
         "position": [
-          928,
+          1120,
           -48
         ],
         "id": "a801be3c-190f-4c32-a564-050e9ba194f2",
@@ -777,14 +793,13 @@
         "parameters": {
           "path": "cv-factory",
           "authentication": "headerAuth",
-          "options": {
-            "responseData": "{\"status\": \"processing\"}"
-          }
+          "options": {},
+          "responseMode": "lastNode"
         },
         "type": "n8n-nodes-base.webhook",
         "typeVersion": 2.1,
         "position": [
-          -544,
+          -560,
           48
         ],
         "id": "4f70d8ad-1003-4506-b630-04d85c94d2e1",
@@ -799,12 +814,12 @@
       },
       {
         "parameters": {
-          "jsCode": "// 1. Récupération des lignes du CV Atomique\nlet cvRows = [];\ntry {\n  cvRows = $('Get CV data').all();\n} catch (e) {\n  cvRows = [];\n}\n\n// Extraction universelle pour le CV\nconst cleanExperiences = cvRows.map((row, index) => {\n  const props = row.json?.properties || {};\n  \n  // Fonction helper pour extraire le texte brut d'une propriété Notion, quel que soit son type (title ou rich_text)\n  const extractText = (propObj) => {\n    if (!propObj) return \"\";\n    const arr = propObj.rich_text || propObj.title || [];\n    return arr?.plain_text || propObj.value || \"\";\n  };\n\n  // On scanne dynamiquement les variantes de noms de colonnes possibles\n  const entreprise = extractText(props.Entreprise) || extractText(props.Company) || \"Entreprise \" + (index + 1);\n  const poste = extractText(props.Poste) || extractText(props.Role) || \"Solutions Engineer\";\n  const description = extractText(props.Description) || \"\";\n  const dates = extractText(props.Dates) || extractText(props.Date) || \"\";\n\n  return `### ${poste} chez ${entreprise} (${dates})\\n${description}`;\n}).join(\"\\n\\n\");\n\n// 2. Récupération et isolation de la Graine UNIQUE\nlet seedBaseline = \"Solutions Engineer\";\nlet seedDirectives = \"Standard tailoring\";\n\ntry {\n  const allSeeds = $('CV Seed').all();\n  // On cherche la graine active via la checkbox, sinon on prend la première disponible\n  const selectedSeedItem = allSeeds.find(item => {\n    const props = item.json?.properties || {};\n    // Gère la checkbox Notion (qu'elle s'appelle Active ou active)\n    const checkObj = props.Active || props.active;\n    return checkObj?.checkbox === true;\n  }) || allSeeds;\n\n  if (selectedSeedItem && selectedSeedItem.json?.properties) {\n    const sProps = selectedSeedItem.json.properties;\n    \n    const extractSeedText = (propObj) => {\n      if (!propObj) return null;\n      const arr = propObj.title || propObj.rich_text || [];\n      return arr?.plain_text || null;\n    };\n\n    seedBaseline = extractSeedText(sProps.Baseline) || extractSeedText(sProps.baseline) || seedBaseline;\n    seedDirectives = extractSeedText(sProps.Directives) || extractSeedText(sProps.directives) || seedDirectives;\n  }\n} catch (e) {\n  // En cas de problème de lecture de la graine, on garde les valeurs par défaut pour ne pas bloquer le flux\n}\n\n// 3. Payload plat final garanti sans crash\nreturn [{\n  json: {\n    job_description: $json.job_description || \"Pas de description\",\n    seed_baseline: seedBaseline,\n    seed_directives: seedDirectives,\n    cv_master_payload: cleanExperiences || \"CV Master vide\"\n  }\n}];"
+          "jsCode": "// 1. Récupération des lignes du CV Atomique\nlet cvRows = [];\ntry {\n  cvRows = $('Get CV data').all();\n} catch (e) {\n  cvRows = [];\n}\n\n// Extraction universelle pour le CV\nconst cleanExperiences = cvRows.map((row, index) => {\n  const props = row.json?.properties || {};\n  \n  const extractText = (propObj) => {\n    if (!propObj) return \"\";\n    const arr = propObj.rich_text || propObj.title || [];\n    return arr?.plain_text || propObj.value || \"\";\n  };\n\n  const extractDate = (propObj) => {\n    if (!propObj) return \"\";\n    if (propObj.date) {\n      const s = propObj.date.start || \"\";\n      const e = propObj.date.end || \"\";\n      return s ? (e ? `${s} - ${e}` : s) : \"\";\n    }\n    const arr = propObj.rich_text || propObj.title || [];\n    return arr?.plain_text || propObj.value || \"\";\n  };\n\n  const entreprise = extractText(props['Structure/Company']) || extractText(props.Entreprise) || extractText(props.Company) || \"Entreprise \" + (index + 1);\n  const poste = extractText(props.Name) || extractText(props.Poste) || extractText(props.Role) || \"Solutions Engineer\";\n  const description = extractText(props.Comment) || extractText(props.Description) || \"\";\n  const dates = extractDate(props.Timespan) || extractText(props.Dates) || extractText(props.Date) || \"\";\n\n  return `### ${poste} chez ${entreprise} (${dates})\\n${description}`;\n}).filter(exp => exp.trim().length > 0).join(\"\\n\\n\");\n\n// 2. Récupération et isolation de la Graine UNIQUE\nlet seedBaseline = \"Solutions Engineer\";\nlet seedDirectives = \"Standard tailoring\";\nlet candidateName = \"Julien Avarre\";\n\ntry {\n  const allSeeds = $('CV Seed').all();\n  const selectedSeedItem = allSeeds.find(item => {\n    const props = item.json?.properties || {};\n    const checkObj = props.Active || props.active;\n    return checkObj?.checkbox === true;\n  }) || (allSeeds.length > 0 ? allSeeds[0] : null);\n\n  if (selectedSeedItem && selectedSeedItem.json?.properties) {\n    const sProps = selectedSeedItem.json.properties;\n    \n    const extractSeedText = (propObj) => {\n      if (!propObj) return null;\n      const arr = propObj.title || propObj.rich_text || [];\n      return arr?.plain_text || null;\n    };\n\n    seedBaseline = extractSeedText(sProps.Baseline) || extractSeedText(sProps.baseline) || extractSeedText(sProps.Name) || seedBaseline;\n    seedDirectives = extractSeedText(sProps.Directives) || extractSeedText(sProps.directives) || seedDirectives;\n    candidateName = extractSeedText(sProps['Candidate Name']) || extractSeedText(sProps.Candidate) || extractSeedText(sProps.Author) || candidateName;\n  }\n} catch (e) {\n  // Fallback\n}\n\n// 3. Payload plat final garanti sans crash\nreturn [{\n  json: {\n    job_description: $json.job_description || \"Pas de description\",\n    seed_baseline: seedBaseline,\n    seed_directives: seedDirectives,\n    candidate_name: candidateName,\n    cv_master_payload: cleanExperiences || \"CV Master vide\"\n  }\n}];"
         },
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
         "position": [
-          128,
+          520,
           48
         ],
         "id": "6fc7730a-c6d3-48db-919d-c700c1c6bed1",
@@ -817,11 +832,54 @@
         "type": "n8n-nodes-base.stopAndError",
         "typeVersion": 1,
         "position": [
-          704,
+          940,
           144
         ],
         "id": "0334fb31-bc67-410f-89bc-7e0de9ccaa43",
         "name": "Stop and Error"
+      },
+      {
+        "parameters": {
+          "content": "### Last Publish Info\n\nPublished on 2026-07-23 17:11:04 | Git: 198b46b fix(n8n): explicitly set candidate full name Julien Avarre in AI prompt",
+          "height": 150,
+          "width": 300,
+          "color": 6
+        },
+        "id": "0a2bc84a-de29-4f02-b582-a13a1e0626a0",
+        "name": "Last Publish Info",
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          -880,
+          48
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "get",
+          "dataTableId": {
+            "__rl": true,
+            "value": "OtWoNuYUmoj7knoz",
+            "mode": "id"
+          },
+          "matchType": "allConditions",
+          "filters": {
+            "conditions": [
+              {
+                "keyName": "key",
+                "keyValue": "notion_detector_db_id"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.dataTable",
+        "typeVersion": 1,
+        "position": [
+          -380,
+          48
+        ],
+        "id": "get-notion-db-id",
+        "name": "Get Notion DB ID"
       },
       {
         "parameters": {
@@ -844,8 +902,8 @@
         "type": "n8n-nodes-base.dataTable",
         "typeVersion": 1,
         "position": [
-          250,
-          -280
+          -200,
+          48
         ],
         "id": "get-notion-atom-cv-db-id",
         "name": "Get Atom CV DB ID"
@@ -871,8 +929,8 @@
         "type": "n8n-nodes-base.dataTable",
         "typeVersion": 1,
         "position": [
-          250,
-          40
+          -20,
+          48
         ],
         "id": "get-notion-seed-db-id",
         "name": "Get Seed DB ID"
@@ -908,11 +966,6 @@
           ]
         ]
       },
-      "Anthropic Chat Model": {
-        "ai_languageModel": [
-          []
-        ]
-      },
       "JSON Cleaner": {
         "main": [
           [
@@ -921,8 +974,7 @@
               "type": "main",
               "index": 0
             }
-          ],
-          []
+          ]
         ]
       },
       "Get CV data": {
@@ -947,32 +999,11 @@
           ]
         ]
       },
-      "update prospect": {
-        "main": [
-          [],
-          []
-        ]
-      },
       "CV Factory": {
         "main": [
           [
             {
-              "node": "Get CV data",
-              "type": "main",
-              "index": 0
-            },
-            {
               "node": "Get Notion DB ID",
-              "type": "main",
-              "index": 0
-            },
-            {
-              "node": "Get Atom CV DB ID",
-              "type": "main",
-              "index": 0
-            },
-            {
-              "node": "Get Seed DB ID",
               "type": "main",
               "index": 0
             }
@@ -989,22 +1020,113 @@
             }
           ]
         ]
+      },
+      "Get Notion DB ID": {
+        "main": [
+          [
+            {
+              "node": "Get Atom CV DB ID",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Atom CV DB ID": {
+        "main": [
+          [
+            {
+              "node": "Get Seed DB ID",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Seed DB ID": {
+        "main": [
+          [
+            {
+              "node": "Get CV data",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
       }
     },
+    "nodeGroups": [],
     "authors": "Éole Wind",
-    "name": "Version 1f38b6c8",
-    "description": "Authorization",
-    "autosaved": true,
+    "name": null,
+    "description": null,
+    "autosaved": false,
+    "createdAt": "2026-07-23T15:11:04.779Z",
+    "updatedAt": "2026-07-23T15:11:04.779Z",
     "workflowPublishHistory": [
       {
-        "createdAt": "2026-06-03T10:12:33.619Z",
-        "id": 208,
-        "workflowId": "olgL8wb7nrJumkct",
-        "versionId": "1f38b6c8-cab7-4bb2-a645-f6c092f23ca5",
+        "id": 2007,
+        "workflowId": "QEcsp5jJkdidLPgb",
+        "versionId": "ebbe1c3d-7ebe-43b4-8ba9-323f468ef641",
         "event": "activated",
-        "userId": "2792484d-cba3-4156-adba-fbc49134eb55"
+        "userId": "2792484d-cba3-4156-adba-fbc49134eb55",
+        "createdAt": "2026-07-23T15:11:04.849Z"
+      },
+      {
+        "id": 2009,
+        "workflowId": "QEcsp5jJkdidLPgb",
+        "versionId": "ebbe1c3d-7ebe-43b4-8ba9-323f468ef641",
+        "event": "activated",
+        "userId": "2792484d-cba3-4156-adba-fbc49134eb55",
+        "createdAt": "2026-07-23T15:11:04.954Z"
+      },
+      {
+        "id": 2045,
+        "workflowId": "QEcsp5jJkdidLPgb",
+        "versionId": "ebbe1c3d-7ebe-43b4-8ba9-323f468ef641",
+        "event": "activated",
+        "userId": "2792484d-cba3-4156-adba-fbc49134eb55",
+        "createdAt": "2026-08-03T21:31:35.993Z"
+      },
+      {
+        "id": 2104,
+        "workflowId": "QEcsp5jJkdidLPgb",
+        "versionId": "ebbe1c3d-7ebe-43b4-8ba9-323f468ef641",
+        "event": "activated",
+        "userId": "2792484d-cba3-4156-adba-fbc49134eb55",
+        "createdAt": "2026-08-27T09:03:06.861Z"
+      },
+      {
+        "id": 2006,
+        "workflowId": "QEcsp5jJkdidLPgb",
+        "versionId": "ebbe1c3d-7ebe-43b4-8ba9-323f468ef641",
+        "event": "deactivated",
+        "userId": "2792484d-cba3-4156-adba-fbc49134eb55",
+        "createdAt": "2026-07-23T15:11:04.831Z"
+      },
+      {
+        "id": 2008,
+        "workflowId": "QEcsp5jJkdidLPgb",
+        "versionId": "ebbe1c3d-7ebe-43b4-8ba9-323f468ef641",
+        "event": "deactivated",
+        "userId": "2792484d-cba3-4156-adba-fbc49134eb55",
+        "createdAt": "2026-07-23T15:11:04.933Z"
+      },
+      {
+        "id": 2044,
+        "workflowId": "QEcsp5jJkdidLPgb",
+        "versionId": "ebbe1c3d-7ebe-43b4-8ba9-323f468ef641",
+        "event": "deactivated",
+        "userId": "2792484d-cba3-4156-adba-fbc49134eb55",
+        "createdAt": "2026-08-03T21:31:35.975Z"
+      },
+      {
+        "id": 2103,
+        "workflowId": "QEcsp5jJkdidLPgb",
+        "versionId": "ebbe1c3d-7ebe-43b4-8ba9-323f468ef641",
+        "event": "deactivated",
+        "userId": "2792484d-cba3-4156-adba-fbc49134eb55",
+        "createdAt": "2026-08-27T09:03:06.814Z"
       }
     ]
-  },
-  "//": "Published on 2026-07-23 17:11:04 | Git: 198b46b fix(n8n): explicitly set candidate full name Julien Avarre in AI prompt"
+  }
 }

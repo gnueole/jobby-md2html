@@ -1,0 +1,256 @@
+{
+  "id": "fx7wy1rVPyPLEJtx",
+  "name": "TODEL_2026-08-27_Jobby - Telemetry to Notion",
+  "description": "Published on 2026-06-22 20:18:24 | Git: 1ca0e6f fix: dynamically adjust dropdowns and tooltips to prevent screen overflow",
+  "active": false,
+  "activeVersionId": null,
+  "createdAt": "2026-06-20T16:34:34.317Z",
+  "updatedAt": "2026-08-27T14:45:25.565Z",
+  "isArchived": false,
+  "versionId": "d845db77-7e10-459a-9a71-cf76f8a31aeb",
+  "versionCounter": 21,
+  "sourceWorkflowId": null,
+  "triggerCount": 1,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "jobby-telemetry",
+        "options": {
+          "responseCode": {
+            "values": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        250,
+        240
+      ],
+      "id": "webhook-trigger",
+      "name": "Webhook",
+      "webhookId": "2300a0c7-43aa-4203-bf58-f6e08a1d3b68"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "={{ $('Get Notion DB ID').item.json.value }}",
+          "mode": "id"
+        },
+        "title": "Session ID",
+        "simple": false,
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Session ID|title",
+              "title": "={{ $json.body.sessionId }}"
+            },
+            {
+              "key": "Platform|select",
+              "selectValue": "={{ $json.body.platform }}"
+            },
+            {
+              "key": "Event Type|select",
+              "selectValue": "={{ $json.body.eventType }}"
+            },
+            {
+              "key": "Word Count|number",
+              "numberValue": "={{ $json.body.wordCount || 0 }}"
+            },
+            {
+              "key": "Char Count|number",
+              "numberValue": "={{ $json.body.charCount || 0 }}"
+            },
+            {
+              "key": "Active Preset|select",
+              "selectValue": "={{ $json.body.activePreset || \"default\" }}"
+            },
+            {
+              "key": "Font Family|rich_text",
+              "textContent": "={{ $json.body.fontFamily || \"Inter\" }}"
+            },
+            {
+              "key": "Layout Mode|select",
+              "selectValue": "={{ $json.body.layoutMode || \"letter\" }}"
+            },
+            {
+              "key": "ATS Score|number",
+              "numberValue": "={{ $json.body.atsScore || 0 }}"
+            },
+            {
+              "key": "Print Count|number",
+              "numberValue": "={{ $json.body.printCount || 0 }}"
+            },
+            {
+              "key": "Buttons Clicked|multi_select",
+              "multiSelectValue": "={{ $json.body.buttonsClicked }}"
+            },
+            {
+              "key": "Platform OS|select",
+              "selectValue": "={{ $json.body.os || \"Unknown\" }}"
+            },
+            {
+              "key": "Platform Version|rich_text",
+              "textContent": "={{ $json.body.osVersion || \"Unknown\" }}"
+            },
+            {
+              "key": "Browser Name|select",
+              "selectValue": "={{ $json.body.browser || \"Unknown\" }}"
+            },
+            {
+              "key": "Browser Version|rich_text",
+              "textContent": "={{ $json.body.browserVersion || \"Unknown\" }}"
+            },
+            {
+              "key": "Device Type|select",
+              "selectValue": "={{ $json.body.deviceType || \"Unknown\" }}"
+            },
+            {
+              "key": "Initial ATS Score|number",
+              "numberValue": "={{ $json.body.initialAtsScore }}"
+            },
+            {
+              "key": "ATS Score Delta|number",
+              "numberValue": "={{ $json.body.atsScoreDelta }}"
+            },
+            {
+              "key": "ATS Fixes Count|number",
+              "numberValue": "={{ $json.body.atsFixesCount }}"
+            },
+            {
+              "key": "Preset Switches|rich_text",
+              "textContent": "={{ $json.body.presetSwitches }}"
+            },
+            {
+              "key": "Theme Preference|select",
+              "selectValue": "={{ $json.body.themePreference }}"
+            },
+            {
+              "key": "Undo Redo Clicks|number",
+              "numberValue": "={{ $json.body.undoRedoClicks }}"
+            },
+            {
+              "key": "Markdown Render Time|number",
+              "numberValue": "={{ $json.body.markdownRenderTimeMs }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        500,
+        240
+      ],
+      "id": "notion-node",
+      "name": "Notion",
+      "credentials": {
+        "notionApi": {
+          "id": "KYrsxF0plfLkPpqW",
+          "name": "Notion LinkedIn Auto"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "### Last Publish Info\n\nPublished on 2026-07-06 15:42:06 | Git: b94e66d feat: implement web UI for trail mapping with multi-language support, elevation charts, and route processing features",
+        "height": 150,
+        "width": 300,
+        "color": 6
+      },
+      "id": "b5b7f08f-6870-47b1-8a32-2814d29baba5",
+      "name": "Last Publish Info",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -100,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "={{ $env.JOBBY_DATA_TABLE_ID }}",
+          "mode": "id"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "key",
+              "keyValue": "notion_telemetry_db_id"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        250,
+        420
+      ],
+      "id": "get-notion-db-id",
+      "name": "Get Notion DB ID"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Notion",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Get Notion DB ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodeGroups": [],
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "staticData": null,
+  "pinData": null,
+  "meta": null,
+  "tags": [
+    {
+      "id": "5zynHpPHQi9PRMyD",
+      "name": "jobby",
+      "createdAt": "2026-05-29T11:31:39.972Z",
+      "updatedAt": "2026-05-29T11:31:39.972Z"
+    }
+  ],
+  "shared": [
+    {
+      "role": "workflow:owner",
+      "workflowId": "fx7wy1rVPyPLEJtx",
+      "projectId": "GfFdmZTqGEJQkrXG",
+      "project": {
+        "id": "GfFdmZTqGEJQkrXG",
+        "name": "Éole Wind <megazef@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "customTelemetryTags": [],
+        "creatorId": "2792484d-cba3-4156-adba-fbc49134eb55",
+        "createdAt": "2026-05-11T09:34:45.695Z",
+        "updatedAt": "2026-07-06T15:34:54.223Z"
+      },
+      "createdAt": "2026-06-20T16:34:34.318Z",
+      "updatedAt": "2026-06-20T16:34:34.318Z"
+    }
+  ],
+  "activeVersion": null
+}

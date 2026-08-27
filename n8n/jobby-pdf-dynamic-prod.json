@@ -1,12 +1,16 @@
 {
-  "//": "Published on 2026-07-23 17:11:04 | Git: 198b46b fix(n8n): explicitly set candidate full name Julien Avarre in AI prompt",
-  "updatedAt": "2026-06-03T11:51:05.014Z",
-  "createdAt": "2026-05-29T09:56:13.800Z",
-  "id": "dSX8vdBy3PnPdiOU",
+  "id": "9SQJBLUaAIVsESa7",
   "name": "jobby - pdf-dynamic - prod",
-  "description": "Published on 2026-06-22 20:18:24 | Git: 1ca0e6f fix: dynamically adjust dropdowns and tooltips to prevent screen overflow",
+  "description": null,
   "active": true,
+  "activeVersionId": "2f7e4d81-e48e-4d9e-8689-67a519ca4b90",
+  "createdAt": "2026-06-24T07:15:39.445Z",
+  "updatedAt": "2026-08-27T09:03:07.166Z",
   "isArchived": false,
+  "versionId": "2f7e4d81-e48e-4d9e-8689-67a519ca4b90",
+  "versionCounter": 26,
+  "sourceWorkflowId": null,
+  "triggerCount": 1,
   "nodes": [
     {
       "parameters": {
@@ -487,433 +491,38 @@
       ]
     }
   },
+  "nodeGroups": [],
   "settings": {
     "executionOrder": "v1",
-    "binaryMode": "separate",
-    "availableInMCP": false
+    "availableInMCP": true
   },
   "staticData": null,
-  "meta": {
-    "templateCredsSetupCompleted": true
-  },
-  "pinData": {
-    "Webhook": [
-      {
-        "json": {
-          "headers": {
-            "host": "n8n.eole.me",
-            "user-agent": "NotionAutomation",
-            "content-length": "9021",
-            "baggage": "sentry-environment=production,sentry-release=23.13.20260530.0652,sentry-public_key=704fe3b1898d4ccda1d05fe1ee79a1f7,sentry-trace_id=ff3f12f019ea45c69674d5d36831b6d0,sentry-org_id=324374,sentry-sampled=false,sentry-sample_rand=0.528688874755405,sentry-sample_rate=0.00001",
-            "content-type": "application/json",
-            "sentry-trace": "967d955e74794623a8f9eba06a1d6f94-a94a804f244b2096",
-            "traceparent": "00-5ccb8daa76951ba4c9a151c7129b195b-9182b90add169190-00",
-            "x-forwarded-for": "131.149.232.211",
-            "x-forwarded-host": "n8n.eole.me",
-            "x-forwarded-port": "443",
-            "x-forwarded-proto": "https",
-            "x-forwarded-server": "050a05252a50",
-            "x-real-ip": "131.149.232.211",
-            "accept-encoding": "gzip"
-          },
-          "params": {},
-          "query": {},
-          "body": {
-            "source": {
-              "type": "automation",
-              "automation_id": "36eee932-db12-8092-8f51-004da95950f3",
-              "action_id": "36eee932-db12-80cf-ad16-005a3d8f097e",
-              "event_id": "6e02741e-aa33-4957-ad44-7a6461801a86",
-              "user_id": "f41a3f3c-4423-4fe9-8bd5-4aa4c762f4b4",
-              "attempt": 1
-            },
-            "data": {
-              "object": "page",
-              "id": "36bee932-db12-813b-afc6-dfbbb7cbf118",
-              "created_time": "2026-05-25T15:42:00.000Z",
-              "last_edited_time": "2026-05-30T15:03:00.000Z",
-              "created_by": {
-                "object": "user",
-                "id": "35cee932-db12-8156-8429-0027172fc7d0"
-              },
-              "last_edited_by": {
-                "object": "user",
-                "id": "f41a3f3c-4423-4fe9-8bd5-4aa4c762f4b4"
-              },
-              "cover": null,
-              "icon": {
-                "type": "emoji",
-                "emoji": "🆕"
-              },
-              "parent": {
-                "type": "data_source_id",
-                "data_source_id": "bd9677f6-7f24-44d3-8a67-b00fc871426e",
-                "database_id": "385ee932-db12-80ee-8794-d789554478b8"
-              },
-              "in_trash": false,
-              "is_archived": false,
-              "is_locked": false,
-              "properties": {
-                "CV": {
-                  "id": "%5B%3C%7C~",
-                  "type": "rich_text",
-                  "rich_text": [
-                    {
-                      "type": "text",
-                      "text": {
-                        "content": "# JULIEN AVARRE\n",
-                        "link": null
-                      },
-                      "annotations": {
-                        "bold": false,
-                        "italic": false,
-                        "strikethrough": false,
-                        "underline": false,
-                        "code": false,
-                        "color": "default"
-                      },
-                      "plain_text": "# JULIEN AVARRE\n",
-                      "href": null
-                    },
-                    {
-                      "type": "text",
-                      "text": {
-                        "content": "POST-SALES SOLUTIONS ENGINEER (AI OPERATING SYSTEM) | SOLUTIONS ENGINEERING | PROMPT ENGINEERING",
-                        "link": null
-                      },
-                      "annotations": {
-                        "bold": true,
-                        "italic": false,
-                        "strikethrough": false,
-                        "underline": false,
-                        "code": false,
-                        "color": "default"
-                      },
-                      "plain_text": "POST-SALES SOLUTIONS ENGINEER (AI OPERATING SYSTEM) | SOLUTIONS ENGINEERING | PROMPT ENGINEERING",
-                      "href": null
-                    },
-                    {
-                      "type": "text",
-                      "text": {
-                        "content": "\n[CONTACT : ",
-                        "link": null
-                      },
-                      "annotations": {
-                        "bold": false,
-                        "italic": false,
-                        "strikethrough": false,
-                        "underline": false,
-                        "code": false,
-                        "color": "default"
-                      },
-                      "plain_text": "\n[CONTACT : ",
-                      "href": null
-                    },
-                    {
-                      "type": "text",
-                      "text": {
-                        "content": "julien@avarre.com",
-                        "link": {
-                          "url": "mailto:julien@avarre.com"
-                        }
-                      },
-                      "annotations": {
-                        "bold": false,
-                        "italic": false,
-                        "strikethrough": false,
-                        "underline": false,
-                        "code": false,
-                        "color": "default"
-                      },
-                      "plain_text": "julien@avarre.com",
-                      "href": "mailto:julien@avarre.com"
-                    },
-                    {
-                      "type": "text",
-                      "text": {
-                        "content": " | +33 6 50 83 69 09| ",
-                        "link": null
-                      },
-                      "annotations": {
-                        "bold": false,
-                        "italic": false,
-                        "strikethrough": false,
-                        "underline": false,
-                        "code": false,
-                        "color": "default"
-                      },
-                      "plain_text": " | +33 6 50 83 69 09| ",
-                      "href": null
-                    },
-                    {
-                      "type": "text",
-                      "text": {
-                        "content": "https://www.linkedin.com/in/javarre",
-                        "link": {
-                          "url": "https://www.linkedin.com/in/javarre"
-                        }
-                      },
-                      "annotations": {
-                        "bold": false,
-                        "italic": false,
-                        "strikethrough": false,
-                        "underline": false,
-                        "code": false,
-                        "color": "default"
-                      },
-                      "plain_text": "https://www.linkedin.com/in/javarre",
-                      "href": "https://www.linkedin.com/in/javarre"
-                    },
-                    {
-                      "type": "text",
-                      "text": {
-                        "content": "]\n\n---\n\n> \"J’aide les équipes à déployer des automatisations et des agents IA qui deviennent indispensables : cas d’usage à forte valeur, adoption terrain, et industrialisation (docs, API, workflows) pour transformer l’essai sur le long terme.\"\n\n---\n\n### EXPÉRIENCES CLÉS\n\n",
-                        "link": null
-                      },
-                      "annotations": {
-                        "bold": false,
-                        "italic": false,
-                        "strikethrough": false,
-                        "underline": false,
-                        "code": false,
-                        "color": "default"
-                      },
-                      "plain_text": "]\n\n---\n\n> \"J’aide les équipes à déployer des automatisations et des agents IA qui deviennent indispensables : cas d’usage à forte valeur, adoption terrain, et industrialisation (docs, API, workflows) pour transformer l’essai sur le long terme.\"\n\n---\n\n### EXPÉRIENCES CLÉS\n\n",
-                      "href": null
-                    },
-                    {
-                      "type": "text",
-                      "text": {
-                        "content": "Solutions Engineer (Expertise Tooling & RFPs)",
-                        "link": null
-                      },
-                      "annotations": {
-                        "bold": true,
-                        "italic": false,
-                        "strikethrough": false,
-                        "underline": false,
-                        "code": false,
-                        "color": "default"
-                      },
-                      "plain_text": "Solutions Engineer (Expertise Tooling & RFPs)",
-                      "href": null
-                    },
-                    {
-                      "type": "text",
-                      "text": {
-                        "content": " | Diabolocom | 2025 - Aujourd’hui\n- Déploiement et adoption de solutions chez des clients Enterprise : cadrage des besoins, design de workflows et accompagnement jusqu’à la valeur mesurable.\n- Industrialisation du delivery (process, documentation, knowledge base) pour accélérer l’implémentation, réduire les frictions et sécuriser l’usage dans la durée.\n\n",
-                        "link": null
-                      },
-                      "annotations": {
-                        "bold": false,
-                        "italic": false,
-                        "strikethrough": false,
-                        "underline": false,
-                        "code": false,
-                        "color": "default"
-                      },
-                      "plain_text": " | Diabolocom | 2025 - Aujourd’hui\n- Déploiement et adoption de solutions chez des clients Enterprise : cadrage des besoins, design de workflows et accompagnement jusqu’à la valeur mesurable.\n- Industrialisation du delivery (process, documentation, knowledge base) pour accélérer l’implémentation, réduire les frictions et sécuriser l’usage dans la durée.\n\n",
-                      "href": null
-                    },
-                    {
-                      "type": "text",
-                      "text": {
-                        "content": "Presales Engineer",
-                        "link": null
-                      },
-                      "annotations": {
-                        "bold": true,
-                        "italic": false,
-                        "strikethrough": false,
-                        "underline": false,
-                        "code": false,
-                        "color": "default"
-                      },
-                      "plain_text": "Presales Engineer",
-                      "href": null
-                    },
-                    {
-                      "type": "text",
-                      "text": {
-                        "content": " | Valiantys | 2023 - Aujourd’hui\n- Construction de démonstrations et de PoC orientés “use cases” (automatisation, intégrations, API) pour prouver rapidement la valeur et accélérer la décision.\n- Traduction des besoins métier en architectures de solution, avec une forte attention à l’adoption utilisateur, à la qualité des prompts/inputs et à la robustesse des workflows.\n\n",
-                        "link": null
-                      },
-                      "annotations": {
-                        "bold": false,
-                        "italic": false,
-                        "strikethrough": false,
-                        "underline": false,
-                        "code": false,
-                        "color": "default"
-                      },
-                      "plain_text": " | Valiantys | 2023 - Aujourd’hui\n- Construction de démonstrations et de PoC orientés “use cases” (automatisation, intégrations, API) pour prouver rapidement la valeur et accélérer la décision.\n- Traduction des besoins métier en architectures de solution, avec une forte attention à l’adoption utilisateur, à la qualité des prompts/inputs et à la robustesse des workflows.\n\n",
-                      "href": null
-                    },
-                    {
-                      "type": "text",
-                      "text": {
-                        "content": "Presales Engineer",
-                        "link": null
-                      },
-                      "annotations": {
-                        "bold": true,
-                        "italic": false,
-                        "strikethrough": false,
-                        "underline": false,
-                        "code": false,
-                        "color": "default"
-                      },
-                      "plain_text": "Presales Engineer",
-                      "href": null
-                    },
-                    {
-                      "type": "text",
-                      "text": {
-                        "content": " | Claranet | 2019 - 2022\n- Conception d’architectures Cloud (AWS) et de trajectoires de migration, en intégrant contraintes sécurité/ops, et en sécurisant la mise en production.\n- Automatisation et scripting (Bash/Python) pour fiabiliser les opérations et améliorer la répétabilité (runbooks, standards, bonnes pratiques).\n\n",
-                        "link": null
-                      },
-                      "annotations": {
-                        "bold": false,
-                        "italic": false,
-                        "strikethrough": false,
-                        "underline": false,
-                        "code": false,
-                        "color": "default"
-                      },
-                      "plain_text": " | Claranet | 2019 - 2022\n- Conception d’architectures Cloud (AWS) et de trajectoires de migration, en intégrant contraintes sécurité/ops, et en sécurisant la mise en production.\n- Automatisation et scripting (Bash/Python) pour fiabiliser les opérations et améliorer la répétabilité (runbooks, standards, bonnes pratiques).\n\n",
-                      "href": null
-                    },
-                    {
-                      "type": "text",
-                      "text": {
-                        "content": "Technical Project Manager",
-                        "link": null
-                      },
-                      "annotations": {
-                        "bold": true,
-                        "italic": false,
-                        "strikethrough": false,
-                        "underline": false,
-                        "code": false,
-                        "color": "default"
-                      },
-                      "plain_text": "Technical Project Manager",
-                      "href": null
-                    },
-                    {
-                      "type": "text",
-                      "text": {
-                        "content": " | Actility | 2015 - 2019\n- Pilotage de projets techniques multi-parties prenantes : cadrage, coordination, planification, gestion des risques et delivery.\n- Mise en place de processus de qualité (incident/change management, amélioration continue) pour fiabiliser les déploiements et l’exploitation.\n\n---\n\n### EXPERTISE TECHNIQUE\nAI Agents, Prompt Engineering, Agentic AI Workflows, Workflow Automation, n8n, Zapier, Make, REST APIs, Solution Engineering, Customer Success\n\n---\n\n### ÉDUCATION\nEPITECH – European Institute of Technologies",
-                        "link": null
-                      },
-                      "annotations": {
-                        "bold": false,
-                        "italic": false,
-                        "strikethrough": false,
-                        "underline": false,
-                        "code": false,
-                        "color": "default"
-                      },
-                      "plain_text": " | Actility | 2015 - 2019\n- Pilotage de projets techniques multi-parties prenantes : cadrage, coordination, planification, gestion des risques et delivery.\n- Mise en place de processus de qualité (incident/change management, amélioration continue) pour fiabiliser les déploiements et l’exploitation.\n\n---\n\n### EXPERTISE TECHNIQUE\nAI Agents, Prompt Engineering, Agentic AI Workflows, Workflow Automation, n8n, Zapier, Make, REST APIs, Solution Engineering, Customer Success\n\n---\n\n### ÉDUCATION\nEPITECH – European Institute of Technologies",
-                      "href": null
-                    }
-                  ]
-                },
-                "Job Title": {
-                  "id": "title",
-                  "type": "title",
-                  "title": [
-                    {
-                      "type": "text",
-                      "text": {
-                        "content": "Solutions Sales Engineer",
-                        "link": null
-                      },
-                      "annotations": {
-                        "bold": false,
-                        "italic": false,
-                        "strikethrough": false,
-                        "underline": false,
-                        "code": false,
-                        "color": "default"
-                      },
-                      "plain_text": "Solutions Sales Engineer",
-                      "href": null
-                    }
-                  ]
-                },
-                "Company": {
-                  "id": "%5CsWK",
-                  "type": "select",
-                  "select": {
-                    "id": "1a5e596e-7611-4f0d-b022-a4e7af025ced",
-                    "name": "Dust",
-                    "color": "gray"
-                  }
-                }
-              },
-              "url": "https://www.notion.so/Solutions-Sales-Engineer-36bee932db12813bafc6dfbbb7cbf118",
-              "public_url": null,
-              "request_id": "e8712edc-8c05-486e-8d31-12a42a3950ef"
-            }
-          },
-          "webhookUrl": "https://n8n.eole.me/webhook-test/md2pdf",
-          "executionMode": "test"
-        },
-        "pairedItem": {
-          "item": 0
-        }
-      }
-    ]
-  },
-  "versionId": "a9ab848d-0d02-43a2-8728-ca1997482ade",
-  "activeVersionId": "a9ab848d-0d02-43a2-8728-ca1997482ade",
-  "versionCounter": 65,
-  "triggerCount": 1,
+  "pinData": null,
+  "meta": null,
+  "tags": [],
   "shared": [
     {
-      "updatedAt": "2026-05-29T09:56:13.805Z",
-      "createdAt": "2026-05-29T09:56:13.805Z",
       "role": "workflow:owner",
-      "workflowId": "dSX8vdBy3PnPdiOU",
+      "workflowId": "9SQJBLUaAIVsESa7",
       "projectId": "GfFdmZTqGEJQkrXG",
       "project": {
-        "updatedAt": "2026-05-11T09:44:44.757Z",
-        "createdAt": "2026-05-11T09:34:45.695Z",
         "id": "GfFdmZTqGEJQkrXG",
         "name": "Éole Wind <megazef@gmail.com>",
         "type": "personal",
         "icon": null,
         "description": null,
-        "creatorId": "2792484d-cba3-4156-adba-fbc49134eb55"
-      }
-    }
-  ],
-  "tags": [
-    {
-      "updatedAt": "2026-05-29T11:31:39.972Z",
-      "createdAt": "2026-05-29T11:31:39.972Z",
-      "id": "5zynHpPHQi9PRMyD",
-      "name": "jobby"
-    },
-    {
-      "updatedAt": "2026-05-28T12:28:46.096Z",
-      "createdAt": "2026-05-28T12:28:46.096Z",
-      "id": "Ft2TXB4BVRBQRwkV",
-      "name": "PDF"
-    },
-    {
-      "updatedAt": "2026-05-28T12:28:49.321Z",
-      "createdAt": "2026-05-28T12:28:49.321Z",
-      "id": "XmFLRaZ2ZU05mmMo",
-      "name": "Gotemberg"
+        "customTelemetryTags": [],
+        "creatorId": "2792484d-cba3-4156-adba-fbc49134eb55",
+        "createdAt": "2026-05-11T09:34:45.695Z",
+        "updatedAt": "2026-07-06T15:34:54.223Z"
+      },
+      "createdAt": "2026-06-24T07:15:39.447Z",
+      "updatedAt": "2026-06-24T07:15:39.447Z"
     }
   ],
   "activeVersion": {
-    "updatedAt": "2026-06-03T11:51:05.017Z",
-    "createdAt": "2026-06-03T11:51:05.017Z",
-    "versionId": "a9ab848d-0d02-43a2-8728-ca1997482ade",
-    "workflowId": "dSX8vdBy3PnPdiOU",
+    "versionId": "2f7e4d81-e48e-4d9e-8689-67a519ca4b90",
+    "workflowId": "9SQJBLUaAIVsESa7",
     "nodes": [
       {
         "parameters": {
@@ -944,7 +553,7 @@
       },
       {
         "parameters": {
-          "jsCode": "// 1. Récupération du CV et des deux nouvelles propriétés Notion\nconst properties = $('Webhook').item.json.body?.data?.properties || {};\nconst richTextArray = properties.CV?.rich_text || [];\n\n// Extraction propre depuis Get PageID\nconst company = $('Get PageID').first().json.company || 'company';\nconst jobTitle = $('Get PageID').first().json.jobTitle || 'job';\n\nlet mdText = richTextArray.map(block => block.plain_text || '').join('');\n\n// Fallback: Parser Markdown robuste aligné sur marked.js\nfunction robustMarkdownToHtml(md) {\n  const lines = md.split(/\\r?\\n/);\n  let htmlOutput = [];\n  let inList = false;\n\n  for (let line of lines) {\n    let trimmed = line.trim();\n    if (!/^[-\\*]\\s+/.test(trimmed) && inList) {\n      htmlOutput.push('</ul>');\n      inList = false;\n    }\n    if (trimmed === '---' || trimmed === '***') {\n      htmlOutput.push('<hr />');\n      continue;\n    }\n    if (trimmed.startsWith('>')) {\n      let content = line.replace(/^>\\s*/, '').trim().replace(/^\"(.*)\"$/, '$1');\n      htmlOutput.push(`<blockquote>${content}</blockquote>`);\n      continue;\n    }\n    if (trimmed.startsWith('# ')) { htmlOutput.push(`<h1>${trimmed.substring(2)}</h1>`); continue; }\n    if (trimmed.startsWith('## ')) { htmlOutput.push(`<h2>${trimmed.substring(3)}</h2>`); continue; }\n    if (trimmed.startsWith('### ')) { htmlOutput.push(`<h3>${trimmed.substring(4)}</h3>`); continue; }\n    if (trimmed.startsWith('#### ')) { htmlOutput.push(`<h4>${trimmed.substring(5)}</h4>`); continue; }\n    if (trimmed.startsWith('##### ')) { htmlOutput.push(`<h5>${trimmed.substring(6)}</h5>`); continue; }\n    if (trimmed.startsWith('###### ')) { htmlOutput.push(`<h6>${trimmed.substring(7)}</h6>`); continue; }\n\n    if (/^[-\\*]\\s+/.test(trimmed)) {\n      if (!inList) { htmlOutput.push('<ul>'); inList = true; }\n      htmlOutput.push(`<li>${trimmed.replace(/^[-\\*]\\s+/, '')}</li>`);\n      continue;\n    }\n    if (trimmed !== '') {\n      if (line.includes('•') || line.includes('·')) {\n        htmlOutput.push(`<p style=\"text-align: justify; text-justify: inter-word;\">${line}</p>`);\n      } else {\n        htmlOutput.push(`<p>${line}</p>`);\n      }\n    }\n  }\n  if (inList) htmlOutput.push('</ul>');\n\n  let finalBody = htmlOutput.join('\\n');\n  finalBody = finalBody.replace(/\\*\\*(.*?)\\*\\*/g, '<strong>$1</strong>');\n  finalBody = finalBody.replace(/\\*(.*?)\\*/g, '<em>$1</em>');\n  finalBody = finalBody.replace(/\\[([^\\]]+)\\]\\(([^)]+)\\)/g, '<a href=\"$2\">$1</a>');\n  return finalBody;\n}\n\n// Fonction utilitaire pour nettoyer les caractères spéciaux du futur nom de fichier\nfunction slugify(text) {\n  return text\n    .toString()\n    .toLowerCase()\n    .normalize('NFD') // Supprime les accents\n    .replace(/[\\u0300-\\u036f]/g, '')\n    .trim()\n    .replace(/\\s+/g, '-') // Remplace les espaces par des tirets\n    .replace(/[^a-z0-9\\-]/g, ''); // Supprime le reste\n}\n\nconst finalFileName = `javarre-${slugify(company)}-${slugify(jobTitle)}`;\n\n// 3. RECUPERATION CONFIG & CSS DE DATA TABLE\nconst config = JSON.parse($('Read Config from Table').first().json.value);\nconst templatesCss = $('Read CSS from Table').first().json.value;\n\n// 4. PARSER MARKDOWN AVEC LE MEME COMPILATEUR QUE L'EDITEUR (MARKED.JS VIA CDN)\nlet compiledHtml;\ntry {\n  const cdnUrl = 'https://cdn.jsdelivr.net/npm/marked/marked.min.js';\n  const response = await fetch(cdnUrl);\n  if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);\n  const markedText = await response.text();\n  const evalGlobal = new Function(markedText + '\\nreturn marked;');\n  const marked = evalGlobal();\n  \n  marked.setOptions({\n    gfm: true,\n    breaks: true\n  });\n  \n  let processedMd = mdText;\n  processedMd = processedMd.replace(/:accent\\[([^\\]]+)\\]/g, '<span class=\"resume-accent\">$1</span>');\n  processedMd = processedMd.replace(/:muted\\[([^\\]]+)\\]/g, '<span class=\"resume-muted\">$1</span>');\n  \n  compiledHtml = marked.parse(processedMd);\n  \n  // Post-process styling for paragraph tags with separators/bullets to justify\n  compiledHtml = compiledHtml.replace(/<p>((?:(?!<\\/p>).)*(?:[•·])(?:(?!<\\/p>).)*)<\\/p>/g, '<p style=\"text-align: justify; text-justify: inter-word;\">$1</p>');\n} catch (error) {\n  console.warn('Fallback: Failed to load marked.js from CDN, using robustMarkdownToHtml', error);\n  compiledHtml = robustMarkdownToHtml(mdText);\n  compiledHtml = compiledHtml.replace(/:accent\\[([^\\]]+)\\]/g, '<span class=\"resume-accent\">$1</span>');\n  compiledHtml = compiledHtml.replace(/:muted\\[([^\\]]+)\\]/g, '<span class=\"resume-muted\">$1</span>');\n}\n\n// Traitement du bloc contact si présent\ncompiledHtml = compiledHtml.replace(/\\[CONTACT\\s*:\\s*([^\\]]+)\\]/gi, (match, contents) => {\n    const parts = contents.split('|').map(p => p.trim());\n    const formattedParts = parts.map(part => {\n        if (part.includes('@') && !part.includes(' ')) {\n            return `<a href=\"mailto:${part}\">${part}</a>`;\n        }\n        if (part.startsWith('http://') || part.startsWith('https://')) {\n            const cleanUrl = part.replace(/^https?:\\/\\/(www\\.)?/, '');\n            return `<a href=\"${part}\" target=\"_blank\">${cleanUrl}</a>`;\n        }\n        return `<span>${part}</span>`;\n    });\n    return `<div class=\"resume-contact-bar\">${formattedParts.join(' &nbsp;•&nbsp; ')}</div>`;\n});\n\n// 5. LAYOUT 2 COLUMNS RESTRUCTURING\nlet finalHtml = compiledHtml;\nif (config.layoutMode === '2-column') {\n    const parts = compiledHtml.split(/(?=<h[23]\\b)/i);\n    const headerHtml = parts[0];\n    let mainHtml = '';\n    let sidebarHtml = '';\n    \n    for (let i = 1; i < parts.length; i++) {\n        const part = parts[i];\n        if (part.toLowerCase().startsWith('<h2')) {\n            mainHtml += part;\n        } else if (part.toLowerCase().startsWith('<h3')) {\n            sidebarHtml += part;\n        }\n    }\n    \n    finalHtml = `\n        <div class=\"resume-header\">\n            ${headerHtml}\n        </div>\n        <div class=\"resume-columns ${config.sidebarPosition === 'left' ? 'sidebar-left' : ''}\">\n            <div class=\"resume-main-col\">\n                ${mainHtml}\n            </div>\n            <div class=\"resume-sidebar-col\" style=\"background-color: ${config.sidebarBg}; color: ${config.sidebarText};\">\n                ${sidebarHtml}\n            </div>\n        </div>\n    `;\n}\n\n// 6. GENERATE INLINE CSS VARIABLES\nconst inlineVariables = `\n:root {\n    --resume-font-family: ${config.fontFamily};\n    --resume-font-size: ${config.fontSize}px;\n    --resume-line-height: ${config.lineHeight};\n    --resume-heading-scale: ${config.headingScale};\n    --resume-margin-x: ${config.marginX}px;\n    --resume-margin-y: ${config.marginY}px;\n    --resume-section-spacing: ${config.sectionSpacing}px;\n    --resume-color-bg: ${config.colorBg || '#ffffff'};\n    --resume-color-headings: ${config.colorHeadings};\n    --resume-color-body: ${config.colorBody};\n    --resume-color-links: ${config.colorLinks};\n    --resume-color-accent: ${config.colorAccent};\n    --resume-sidebar-bg: ${config.sidebarBg || '#2d3748'};\n    --resume-sidebar-text: ${config.sidebarText || '#ffffff'};\n}`;\n\n// 7. ASSEMBLE STANDALONE DOCUMENT\nconst standaloneHtml = `<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>${finalFileName}</title>\n  <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n  <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n  <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Raleway:wght@300;400;500;600;700;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap\" rel=\"stylesheet\">\n  <style>\n    ${inlineVariables}\n    ${templatesCss}\n    @media print {\n      body {\n        display: block !important;\n        width: 100% !important;\n        height: auto !important;\n        background: #ffffff !important;\n      }\n      .a4-sheet {\n        width: 100% !important;\n        margin: 0 !important;\n        box-shadow: none !important;\n      }\n    }\n    body {\n        background-color: var(--resume-color-bg, #ffffff);\n        margin: 0;\n        padding: 0;\n        display: flex;\n        justify-content: center;\n    }\n    .a4-sheet {\n        box-shadow: none !important;\n        border-radius: 0 !important;\n        margin: 0 auto;\n    }\n  </style>\n</head>\n<body>\n  <article class=\"a4-sheet\" id=\"resume-output\">\n    ${finalHtml}\n  </article>\n</body>\n</html>`;\n\nreturn [\n  {\n    json: {\n      compiledBody: standaloneHtml,\n      pdfFileName: finalFileName,\n      printBackground: \"true\",\n      marginTop: \"0in\",\n      marginBottom: \"0in\",\n      marginLeft: \"0in\",\n      marginRight: \"0in\"\n    }\n  }\n];"
+          "jsCode": "// 1. Récupération du CV et des deux nouvelles propriétés Notion\nconst properties = $('Webhook').item.json.body?.data?.properties || {};\nconst richTextArray = properties.CV?.rich_text || [];\n\n// Extraction propre depuis Get PageID\nconst company = $('Get PageID').first().json.company || 'company';\nconst jobTitle = $('Get PageID').first().json.jobTitle || 'job';\nconst increment = $('Get PageID').first().json.increment || '01';\n\nlet mdText = richTextArray.map(block => block.plain_text || '').join('');\n\n// Fallback: Parser Markdown robuste aligné sur marked.js\nfunction robustMarkdownToHtml(md) {\n  const lines = md.split(/\\r?\\n/);\n  let htmlOutput = [];\n  let inList = false;\n\n  for (let line of lines) {\n    let trimmed = line.trim();\n    if (!/^[-\\*]\\s+/.test(trimmed) && inList) {\n      htmlOutput.push('</ul>');\n      inList = false;\n    }\n    if (trimmed === '---' || trimmed === '***') {\n      htmlOutput.push('<hr />');\n      continue;\n    }\n    if (trimmed.startsWith('>')) {\n      let content = line.replace(/^>\\s*/, '').trim().replace(/^\"(.*)\"$/, '$1');\n      htmlOutput.push(`<blockquote>${content}</blockquote>`);\n      continue;\n    }\n    if (trimmed.startsWith('# ')) { htmlOutput.push(`<h1>${trimmed.substring(2)}</h1>`); continue; }\n    if (trimmed.startsWith('## ')) { htmlOutput.push(`<h2>${trimmed.substring(3)}</h2>`); continue; }\n    if (trimmed.startsWith('### ')) { htmlOutput.push(`<h3>${trimmed.substring(4)}</h3>`); continue; }\n    if (trimmed.startsWith('#### ')) { htmlOutput.push(`<h4>${trimmed.substring(5)}</h4>`); continue; }\n    if (trimmed.startsWith('##### ')) { htmlOutput.push(`<h5>${trimmed.substring(6)}</h5>`); continue; }\n    if (trimmed.startsWith('###### ')) { htmlOutput.push(`<h6>${trimmed.substring(7)}</h6>`); continue; }\n\n    if (/^[-\\*]\\s+/.test(trimmed)) {\n      if (!inList) { htmlOutput.push('<ul>'); inList = true; }\n      htmlOutput.push(`<li>${trimmed.replace(/^[-\\*]\\s+/, '')}</li>`);\n      continue;\n    }\n    if (trimmed !== '') {\n      if (line.includes('•') || line.includes('·')) {\n        htmlOutput.push(`<p style=\"text-align: justify; text-justify: inter-word;\">${line}</p>`);\n      } else {\n        htmlOutput.push(`<p>${line}</p>`);\n      }\n    }\n  }\n  if (inList) htmlOutput.push('</ul>');\n\n  let finalBody = htmlOutput.join('\\n');\n  finalBody = finalBody.replace(/\\*\\*(.*?)\\*\\*/g, '<strong>$1</strong>');\n  finalBody = finalBody.replace(/\\*(.*?)\\*/g, '<em>$1</em>');\n  finalBody = finalBody.replace(/\\[([^\\]]+)\\]\\(([^)]+)\\)/g, '<a href=\"$2\">$1</a>');\n  return finalBody;\n}\n\n// Fonction utilitaire pour nettoyer les caractères spéciaux du futur nom de fichier\nfunction slugify(text) {\n  return text\n    .toString()\n    .toLowerCase()\n    .normalize('NFD') // Supprime les accents\n    .replace(/[\\u0300-\\u036f]/g, '')\n    .trim()\n    .replace(/\\s+/g, '-') // Remplace les espaces par des tirets\n    .replace(/[^a-z0-9\\-]/g, ''); // Supprime le reste\n}\n\nconst finalFileName = \"javarre-\" + slugify(company) + \"-\" + slugify(jobTitle);\n\n// 3. RECUPERATION CONFIG & CSS DE DATA TABLE\nconst config = JSON.parse($('Read Config from Table').first().json.value);\nconst templatesCss = $('Read CSS from Table').first().json.value;\n\n// 4. PARSER MARKDOWN AVEC LE MEME COMPILATEUR QUE L'EDITEUR (MARKED.JS VIA CDN)\nlet compiledHtml;\ntry {\n  const cdnUrl = 'https://cdn.jsdelivr.net/npm/marked/marked.min.js';\n  const response = await fetch(cdnUrl);\n  if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);\n  const markedText = await response.text();\n  const evalGlobal = new Function(markedText + '\\nreturn marked;');\n  const marked = evalGlobal();\n  \n  marked.setOptions({\n    gfm: true,\n    breaks: true\n  });\n  \n  let processedMd = mdText;\n  processedMd = processedMd.replace(/:accent\\[([^\\]]+)\\]/g, '<span class=\"resume-accent\">$1</span>');\n  processedMd = processedMd.replace(/:muted\\[([^\\]]+)\\]/g, '<span class=\"resume-muted\">$1</span>');\n  \n  compiledHtml = marked.parse(processedMd);\n  \n  // Post-process styling for paragraph tags with separators/bullets to justify\n  compiledHtml = compiledHtml.replace(/<p>((?:(?!<\\/p>).)*(?:[•·])(?:(?!<\\/p>).)*)<\\/p>/g, '<p style=\"text-align: justify; text-justify: inter-word;\">$1</p>');\n} catch (error) {\n  console.warn('Fallback: Failed to load marked.js from CDN, using robustMarkdownToHtml', error);\n  compiledHtml = robustMarkdownToHtml(mdText);\n  compiledHtml = compiledHtml.replace(/:accent\\[([^\\]]+)\\]/g, '<span class=\"resume-accent\">$1</span>');\n  compiledHtml = compiledHtml.replace(/:muted\\[([^\\]]+)\\]/g, '<span class=\"resume-muted\">$1</span>');\n}\n\n// Traitement du bloc contact si présent\ncompiledHtml = compiledHtml.replace(/\\\\\\[CONTACT\\s*:\\s*([^\\]]+)\\\\\\]/gi, (match, contents) => {\n    const parts = contents.split('|').map(p => p.trim());\n    const formattedParts = parts.map(part => {\n        if (part.includes('@') && !part.includes(' ')) {\n            return `<a href=\"mailto:${part}\">&part;</a>`.replace('&part;', part);\n        }\n        if (part.startsWith('http://') || part.startsWith('https://')) {\n            const cleanUrl = part.replace(/^https?:\\/\\/(www\\.)?/, '');\n            return `<a href=\"${part}\" target=\"_blank\">&cleanUrl;</a>`.replace('&cleanUrl;', cleanUrl);\n        }\n        return `<span>${part}</span>`;\n    });\n    return `<div class=\"resume-contact-bar\">&parts;</div>`.replace('&parts;', formattedParts.join(' &nbsp;•&nbsp; '));\n});\n\n// 5. LAYOUT 2 COLUMNS RESTRUCTURING\nlet finalHtml = compiledHtml;\nif (config.layoutMode === '2-column') {\n    const parts = compiledHtml.split(/(?=<h[23]\\b)/i);\n    const headerHtml = parts[0];\n    let mainHtml = '';\n    let sidebarHtml = '';\n    const sidebarClasses = ['resume-sidebar-col'];\n    if (config.columnFontSize === 'smaller') sidebarClasses.push('column-font-smaller');\n    if (config.columnFontStyle === 'alternative') sidebarClasses.push('column-font-alternative');\n    \n    for (let i = 1; i < parts.length; i++) {\n        const part = parts[i];\n        if (part.toLowerCase().startsWith('<h2')) {\n            mainHtml += part;\n        } else if (part.toLowerCase().startsWith('<h3')) {\n            sidebarHtml += part;\n        }\n    }\n    \n    finalHtml = `\n        <div class=\"resume-header\">\n            ${headerHtml}\n        </div>\n        <div class=\"resume-columns ${config.sidebarPosition === 'left' ? 'sidebar-left' : ''}\">\n            <div class=\"resume-main-col\">\n                ${mainHtml}\n            </div>\n            <div class=\"${sidebarClasses.join(' ')}\" style=\"background-color: ${config.sidebarBg}; color: ${config.sidebarText};\">\n                ${sidebarHtml}\n                ${config.showVersion ? `<div class=\"resume-version-sidebar\">v${increment}</div>` : ''}\n            </div>\n        </div>\n    `;\n} else {\n    if (config.showVersion) {\n        finalHtml = finalHtml + `<div class=\"resume-version-footer\">v${increment}</div>`;\n    }\n}\n\n// 6. GENERATE INLINE CSS VARIABLES\nconst inlineVariables = `\n:root {\n    --resume-font-family: ${config.fontFamily};\n    --resume-font-size: ${config.fontSize}px;\n    --resume-line-height: ${config.lineHeight};\n    --resume-heading-scale: ${config.headingScale};\n    --resume-margin-x: ${config.marginX}px;\n    --resume-margin-y: ${config.marginY}px;\n    --resume-section-spacing: ${config.sectionSpacing}px;\n    --resume-color-bg: ${config.colorBg || '#ffffff'};\n    --resume-color-headings: ${config.colorHeadings};\n    --resume-color-body: ${config.colorBody};\n    --resume-color-links: ${config.colorLinks};\n    --resume-color-accent: ${config.colorAccent};\n    --resume-sidebar-bg: ${config.sidebarBg || '#2d3748'};\n    --resume-sidebar-text: ${config.sidebarText || '#ffffff'};\n    --column-split-main: ${(config.columnSplit || 58)}%;\n    --column-split-sidebar: ${(100 - (config.columnSplit || 58))}%;\n    --column-shadow-distance: ${(config.columnShadowDistance || 10)}px;\n    --column-shadow-color: ${config.columnShadowColor || '#000000'};\n    --column-gradient-length: ${(config.columnGradientLength || 150)}%;\n    --column-gradient-color: ${config.columnGradientColor || '#000000'};\n    --column-border-width: ${(config.columnBorderWidth || 2)}px;\n    --column-border-opacity: ${(config.columnBorderOpacity || 100)}%;\n}`;\n\n// 7. ASSEMBLE STANDALONE DOCUMENT\nconst standaloneHtml = `<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n  <title>${finalFileName}</title>\n  <link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">\n  <link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>\n  <link href=\"https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,400&family=Raleway:wght@300;400;500;600;700;800&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=JetBrains+Mono:wght@400;500;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&display=swap\" rel=\"stylesheet\">\n  <style>\n    ${inlineVariables}\n    ${templatesCss}\n    @media print {\n      body {\n        display: block !important;\n        width: 100% !important;\n        height: auto !important;\n        background: #ffffff !important;\n      }\n      .a4-sheet {\n        width: 100% !important;\n        margin: 0 !important;\n        box-shadow: none !important;\n      }\n    }\n    body {\n        background-color: var(--resume-color-bg, #ffffff);\n        margin: 0;\n        padding: 0;\n        display: flex;\n        justify-content: center;\n    }\n    .a4-sheet {\n        box-shadow: none !important;\n        border-radius: 0 !important;\n        margin: 0 auto;\n    }\n  </style>\n</head>\n<body class=\"${config.layoutMode === '2-column' ? 'layout-2-column sidebar-' + (config.sidebarPosition || 'right') : 'layout-1-column'}\">\n  <article class=\"a4-sheet ${config.cosmeticShadow !== false ? 'has-shadow' : ''} ${config.cosmeticBorder ? 'has-border' : ''} ${config.cosmeticGradient ? 'has-gradient' : ''}\" id=\"resume-output\">\n    ${finalHtml}\n  </article>\n</body>\n</html>`;\n\nreturn [\n  {\n    json: {\n      compiledBody: standaloneHtml,\n      pdfFileName: finalFileName,\n      printBackground: \"true\",\n      marginTop: \"0in\",\n      marginBottom: \"0in\",\n      marginLeft: \"0in\",\n      marginRight: \"0in\"\n    }\n  }\n];"
         },
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
@@ -1043,7 +652,7 @@
       },
       {
         "parameters": {
-          "jsCode": "// 1. Récupération des données brutes du Webhook\nconst body = $('Webhook').item.json.body?.data || {};\nconst properties = body.properties || {};\n\nconst pageId = body.id;\n\n// 2. Extraction du texte MD de CV\nconst richTextArray = properties.CV?.rich_text || [];\nconst mdText = richTextArray.map(block => block.plain_text || '').join('');\n\n// 3. Extraction du nom ($name est la ligne après le '#' ou sur la ligne du '#')\nlet name = 'resume';\nconst lines = mdText.split(/\\r?\\n/);\nfor (let i = 0; i < lines.length; i++) {\n  const trimmed = lines[i].trim();\n  if (trimmed.startsWith('# ')) {\n    const headingText = trimmed.substring(2).trim();\n    if (headingText) {\n      name = headingText;\n    } else if (i + 1 < lines.length) {\n      name = lines[i + 1].trim();\n    }\n    break;\n  }\n}\n\n// 4. Fonction locale slugify pour nettoyer les chaînes\nfunction slugify(text) {\n  return text\n    .toString()\n    .toLowerCase()\n    .normalize('NFD')\n    .replace(/[\\u0300-\\u036f]/g, '')\n    .trim()\n    .replace(/\\s+/g, '-')\n    .replace(/[^a-z0-9\\-]/g, '');\n}\n\nconst nameSlug = slugify(name);\nconst today = new Date().toISOString().split('T')[0];\n\n// 5. Calcul de l'incrément quotidien en inspectant les PDF existants\nlet maxIncrement = 0;\nconst pdfFiles = properties.PDF?.files || [];\nconst prefixPattern = new RegExp(`^${nameSlug}-resume-${today}-(\\d+)\\.pdf$`, 'i');\n\nfor (const fileObj of pdfFiles) {\n  const fileName = fileObj.name || '';\n  const match = fileName.match(prefixPattern);\n  if (match) {\n    const inc = parseInt(match[1], 10);\n    if (inc > maxIncrement) {\n      maxIncrement = inc;\n    }\n  }\n}\n\nconst nextIncrement = String(maxIncrement + 1).padStart(2, '0');\nconst finalFileName = `${nameSlug}-resume-${today}-${nextIncrement}`;\nconst outputPdf = `${finalFileName}.pdf`;\n\n// 6. Extraction de Company et JobTitle pour rétrocompatibilité n8n\nlet company = 'company';\nif (properties.Company && properties.Company.select) {\n  company = properties.Company.select.name || 'company';\n}\nlet jobTitle = 'job';\nconst targetProperty = properties.Title || properties[\"Job Title\"];\nif (targetProperty && targetProperty.title && targetProperty.title.length > 0) {\n  jobTitle = targetProperty.title.plain_text || 'job';\n}\n\n// 7. Retour des variables\nreturn [{ \n  json: {\n    pageId: pageId,\n    company: company,\n    jobTitle: jobTitle,\n    outputPdf: outputPdf,\n    increment: nextIncrement\n  }\n}];"
+          "jsCode": "// 1. Récupération des données brutes du Webhook\nconst body = $('Webhook').item.json.body?.data || {};\nconst properties = body.properties || {};\n\nconst pageId = body.id;\n\n// 2. Extraction de Company (Type: select)\nlet company = 'company';\nif (properties.Company && properties.Company.select) {\n  company = properties.Company.select.name || 'company';\n}\n\n// 3. Extraction de Job Title / Title (Type: title) - Tolère l'ancien et le nouveau nom\nlet jobTitle = 'job';\nconst targetProperty = properties.Title || properties[\"Job Title\"];\n\nif (targetProperty && targetProperty.title && targetProperty.title.length > 0) {\n  jobTitle = targetProperty.title.plain_text || $input.first().json.body.data.properties[\"Job Title\"].title[0].plain_text  || 'job';\n}\n\n// 4. Fonction locale slugify pour nettoyer les chaînes\nfunction slugify(text) {\n  return text\n    .toString()\n    .toLowerCase()\n    .normalize('NFD') // Supprime les accents\n    .replace(/[\\u0300-\\u036f]/g, '')\n    .trim()\n    .replace(/\\s+/g, '-') // Remplace les espaces par des tirets\n    .replace(/[^a-z0-9\\-]/g, ''); // Élimine le reste\n}\n\n// 5. Forge du nom de fichier final personnalisé\nconst outputPdf = `javarre-${slugify(company)}_${slugify(jobTitle)}.pdf`;\n\n// 6. Retour des variables propres\nreturn [{ \n  json: { \n    pageId: pageId,\n    company: company,\n    jobTitle: jobTitle,\n    outputPdf: outputPdf\n  } \n}];"
         },
         "type": "n8n-nodes-base.code",
         "typeVersion": 2,
@@ -1235,6 +844,40 @@
         ],
         "id": "ba499321-0a26-4a49-b389-3540fa4eed20",
         "name": "Read CSS from Table"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "http://vector:8080",
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"application\": \"jobby_ats\",\n  \"environment\": \"production\",\n  \"action\": \"resume_generation\",\n  \"user_id\": \"{{ $('Webhook').item.json.body?.source?.user_id || $json.user_id || 'anonymous' }}\",\n  \"status\": \"success\"\n}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.4,
+        "position": [
+          1800,
+          -80
+        ],
+        "id": "e0e29b1b-12cd-43ef-ba38-16cb4b2e8a1a",
+        "name": "HTTP Request Telemetry"
+      },
+      {
+        "parameters": {
+          "content": "### Last Publish Info\n\nPublished on 2026-07-23 17:11:04 | Git: 198b46b fix(n8n): explicitly set candidate full name Julien Avarre in AI prompt",
+          "height": 150,
+          "width": 300,
+          "color": 6
+        },
+        "id": "2d15c071-1b14-4e66-9bbc-f90c6e953134",
+        "name": "Last Publish Info",
+        "type": "n8n-nodes-base.stickyNote",
+        "typeVersion": 1,
+        "position": [
+          -1006,
+          -80
+        ]
       }
     ],
     "connections": {
@@ -1265,6 +908,17 @@
           [
             {
               "node": "Attach Bin to page",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Attach Bin to page": {
+        "main": [
+          [
+            {
+              "node": "HTTP Request Telemetry",
               "type": "main",
               "index": 0
             }
@@ -1349,42 +1003,77 @@
         ]
       }
     },
+    "nodeGroups": [],
     "authors": "Éole Wind",
     "name": null,
     "description": null,
     "autosaved": false,
+    "createdAt": "2026-07-23T15:11:05.028Z",
+    "updatedAt": "2026-07-23T15:11:05.028Z",
     "workflowPublishHistory": [
       {
-        "createdAt": "2026-06-03T11:51:05.164Z",
-        "id": 210,
-        "workflowId": "dSX8vdBy3PnPdiOU",
-        "versionId": "a9ab848d-0d02-43a2-8728-ca1997482ade",
+        "id": 2011,
+        "workflowId": "9SQJBLUaAIVsESa7",
+        "versionId": "2f7e4d81-e48e-4d9e-8689-67a519ca4b90",
         "event": "activated",
-        "userId": "2792484d-cba3-4156-adba-fbc49134eb55"
+        "userId": "2792484d-cba3-4156-adba-fbc49134eb55",
+        "createdAt": "2026-07-23T15:11:05.084Z"
       },
       {
-        "createdAt": "2026-06-03T11:51:05.476Z",
-        "id": 212,
-        "workflowId": "dSX8vdBy3PnPdiOU",
-        "versionId": "a9ab848d-0d02-43a2-8728-ca1997482ade",
+        "id": 2013,
+        "workflowId": "9SQJBLUaAIVsESa7",
+        "versionId": "2f7e4d81-e48e-4d9e-8689-67a519ca4b90",
         "event": "activated",
-        "userId": "2792484d-cba3-4156-adba-fbc49134eb55"
+        "userId": "2792484d-cba3-4156-adba-fbc49134eb55",
+        "createdAt": "2026-07-23T15:11:05.171Z"
       },
       {
-        "createdAt": "2026-06-03T11:51:05.094Z",
-        "id": 209,
-        "workflowId": "dSX8vdBy3PnPdiOU",
-        "versionId": "a9ab848d-0d02-43a2-8728-ca1997482ade",
-        "event": "deactivated",
-        "userId": "2792484d-cba3-4156-adba-fbc49134eb55"
+        "id": 2029,
+        "workflowId": "9SQJBLUaAIVsESa7",
+        "versionId": "2f7e4d81-e48e-4d9e-8689-67a519ca4b90",
+        "event": "activated",
+        "userId": "2792484d-cba3-4156-adba-fbc49134eb55",
+        "createdAt": "2026-08-03T21:31:34.805Z"
       },
       {
-        "createdAt": "2026-06-03T11:51:05.453Z",
-        "id": 211,
-        "workflowId": "dSX8vdBy3PnPdiOU",
-        "versionId": "a9ab848d-0d02-43a2-8728-ca1997482ade",
+        "id": 2106,
+        "workflowId": "9SQJBLUaAIVsESa7",
+        "versionId": "2f7e4d81-e48e-4d9e-8689-67a519ca4b90",
+        "event": "activated",
+        "userId": "2792484d-cba3-4156-adba-fbc49134eb55",
+        "createdAt": "2026-08-27T09:03:07.465Z"
+      },
+      {
+        "id": 2010,
+        "workflowId": "9SQJBLUaAIVsESa7",
+        "versionId": "2f7e4d81-e48e-4d9e-8689-67a519ca4b90",
         "event": "deactivated",
-        "userId": "2792484d-cba3-4156-adba-fbc49134eb55"
+        "userId": "2792484d-cba3-4156-adba-fbc49134eb55",
+        "createdAt": "2026-07-23T15:11:05.068Z"
+      },
+      {
+        "id": 2012,
+        "workflowId": "9SQJBLUaAIVsESa7",
+        "versionId": "2f7e4d81-e48e-4d9e-8689-67a519ca4b90",
+        "event": "deactivated",
+        "userId": "2792484d-cba3-4156-adba-fbc49134eb55",
+        "createdAt": "2026-07-23T15:11:05.159Z"
+      },
+      {
+        "id": 2028,
+        "workflowId": "9SQJBLUaAIVsESa7",
+        "versionId": "2f7e4d81-e48e-4d9e-8689-67a519ca4b90",
+        "event": "deactivated",
+        "userId": "2792484d-cba3-4156-adba-fbc49134eb55",
+        "createdAt": "2026-08-03T21:31:34.787Z"
+      },
+      {
+        "id": 2105,
+        "workflowId": "9SQJBLUaAIVsESa7",
+        "versionId": "2f7e4d81-e48e-4d9e-8689-67a519ca4b90",
+        "event": "deactivated",
+        "userId": "2792484d-cba3-4156-adba-fbc49134eb55",
+        "createdAt": "2026-08-27T09:03:07.422Z"
       }
     ]
   }

@@ -1,14 +1,14 @@
 {
-  "id": "0KyUBNMUzuGAoM7q",
-  "name": "Jobby - Feedback to Notion",
-  "description": "Published on 2026-06-22 20:18:24 | Git: 1ca0e6f fix: dynamically adjust dropdowns and tooltips to prevent screen overflow",
+  "id": "yjXR3cQC2fNk2rzV",
+  "name": "jobby - feedback-to-notion - prod",
+  "description": null,
   "active": false,
   "activeVersionId": null,
-  "createdAt": "2026-06-20T16:34:33.224Z",
-  "updatedAt": "2026-08-23T15:14:10.000Z",
+  "createdAt": "2026-06-24T07:15:39.156Z",
+  "updatedAt": "2026-08-24T08:59:28.000Z",
   "isArchived": true,
-  "versionId": "907cde7a-fe4c-4ac3-a19c-e8c44f33533e",
-  "versionCounter": 20,
+  "versionId": "62a8361f-6f74-47dc-ad1c-b1ed8f5a84c2",
+  "versionCounter": 17,
   "sourceWorkflowId": null,
   "triggerCount": 1,
   "nodes": [
@@ -27,7 +27,7 @@
       ],
       "id": "webhook-trigger",
       "name": "Webhook",
-      "webhookId": "96153d69-4987-4c08-a1da-9a97c412e2c1"
+      "webhookId": "6b5b4359-2a3a-437c-9372-7114e4b4231c"
     },
     {
       "parameters": {
@@ -35,8 +35,8 @@
         "operation": "create",
         "databaseId": {
           "__rl": true,
-          "value": "385ee932-db12-81f6-8256-e350b3d1b0f2",
-          "mode": "list"
+          "value": "={{ $('Get Notion DB ID').item.json.value }}",
+          "mode": "id"
         },
         "propertiesUi": {
           "propertyValues": [
@@ -59,6 +59,10 @@
             },
             {
               "key": "Platform|select",
+              "selectValue": "jobby"
+            },
+            {
+              "key": "Environment|select",
               "selectValue": "={{ $json.body.platform }}"
             }
           ]
@@ -67,7 +71,7 @@
       "type": "n8n-nodes-base.notion",
       "typeVersion": 2.2,
       "position": [
-        480,
+        670,
         300
       ],
       "id": "notion-node",
@@ -102,7 +106,7 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.1,
       "position": [
-        680,
+        880,
         300
       ],
       "id": "notion-append-node",
@@ -126,7 +130,7 @@
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1,
       "position": [
-        880,
+        1090,
         300
       ],
       "id": "respond-node",
@@ -134,7 +138,7 @@
     },
     {
       "parameters": {
-        "content": "### Last Publish Info\n\nPublished on 2026-07-06 15:42:06 | Git: b94e66d feat: implement web UI for trail mapping with multi-language support, elevation charts, and route processing features",
+        "content": "### Last Publish Info\n\nPublished on 2026-07-08 10:45:09 | Git: No git commit info available",
         "height": 150,
         "width": 300,
         "color": 6
@@ -147,10 +151,48 @@
         -100,
         300
       ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "OtWoNuYUmoj7knoz",
+          "mode": "id"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "key",
+              "keyValue": "notion_feedback_db_id"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        460,
+        300
+      ],
+      "id": "get-notion-db-id",
+      "name": "Get Notion DB ID"
     }
   ],
   "connections": {
     "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Get Notion DB ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Notion DB ID": {
       "main": [
         [
           {
@@ -191,18 +233,11 @@
   "staticData": null,
   "pinData": null,
   "meta": null,
-  "tags": [
-    {
-      "id": "5zynHpPHQi9PRMyD",
-      "name": "jobby",
-      "createdAt": "2026-05-29T11:31:39.972Z",
-      "updatedAt": "2026-05-29T11:31:39.972Z"
-    }
-  ],
+  "tags": [],
   "shared": [
     {
       "role": "workflow:owner",
-      "workflowId": "0KyUBNMUzuGAoM7q",
+      "workflowId": "yjXR3cQC2fNk2rzV",
       "projectId": "GfFdmZTqGEJQkrXG",
       "project": {
         "id": "GfFdmZTqGEJQkrXG",
@@ -215,8 +250,8 @@
         "createdAt": "2026-05-11T09:34:45.695Z",
         "updatedAt": "2026-07-06T15:34:54.223Z"
       },
-      "createdAt": "2026-06-20T16:34:33.229Z",
-      "updatedAt": "2026-06-20T16:34:33.229Z"
+      "createdAt": "2026-06-24T07:15:39.158Z",
+      "updatedAt": "2026-06-24T07:15:39.158Z"
     }
   ],
   "activeVersion": null

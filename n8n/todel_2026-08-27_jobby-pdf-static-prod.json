@@ -1,0 +1,455 @@
+{
+  "id": "GEx4IF6EAWUWgede",
+  "name": "TODEL_2026-08-27_jobby - pdf-static - prod",
+  "description": null,
+  "active": false,
+  "activeVersionId": null,
+  "createdAt": "2026-06-24T07:15:39.588Z",
+  "updatedAt": "2026-08-27T14:45:25.782Z",
+  "isArchived": false,
+  "versionId": "29313a2c-c9b9-4915-b134-0eb40f33115d",
+  "versionCounter": 28,
+  "sourceWorkflowId": null,
+  "triggerCount": 0,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "jobby-pdf",
+        "options": {
+          "responseCode": {
+            "values": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -656,
+        -80
+      ],
+      "id": "aee20b02-ae57-411f-8c3b-b1d33ac21d83",
+      "name": "Webhook",
+      "webhookId": "18b49df3-fa89-4200-aad8-d17edfa81e8d"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. Récupération du CV et des deux nouvelles propriétés Notion\nconst properties = $('Webhook').item.json.body?.data?.properties || {};\nconst richTextArray = properties.CV?.rich_text || [];\n\n// Extraction propre depuis Get PageID\nconst company = $('Get PageID').first().json.company || 'company';\nconst jobTitle = $('Get PageID').first().json.jobTitle || 'job';\nconst increment = $('Get PageID').first().json.increment || '01';\n\nlet mdText = richTextArray.map(block => block.plain_text || '').join('');\n\n// 2. Parser Markdown avec nettoyage du \"plain text\" parasite\nfunction robustMarkdownToHtml(md) {\n  // Suppression des mentions \"plain text\" ou \"plain_text\" textuelles injectées par l'agent\n  let cleanedMd = md.replace(/plain[\\s_]text/gi, '');\n\n  const lines = cleanedMd.split('\\n');\n  let htmlOutput = [];\n  let inList = false;\n\n  for (let line of lines) {\n    let trimmed = line.trim();\n    if (!trimmed.startsWith('-') && !trimmed.startsWith('*') && inList) {\n      htmlOutput.push('</ul>');\n      inList = false;\n    }\n    if (trimmed === '---' || trimmed === '***') {\n      htmlOutput.push('<hr />');\n      continue;\n    }\n    if (trimmed.startsWith('>')) {\n      let content = line.replace(/^>\\s*/, '').trim().replace(/^\"(.*)\"$/, '$1');\n      htmlOutput.push(`<div class=\"summary-box\">\text;</div>`.replace('text;', content));\n      continue;\n    }\n    if (trimmed.startsWith('# ')) { htmlOutput.push(`<h1>\text;</h1>`.replace('text;', trimmed.substring(2))); continue; }\n    if (trimmed.startsWith('## ')) { htmlOutput.push(`<h2>\text;</h2>`.replace('text;', trimmed.substring(3))); continue; }\n    if (trimmed.startsWith('### ')) { htmlOutput.push(`<h3>\text;</h3>`.replace('text;', trimmed.substring(4))); continue; }\n\n    if (trimmed.startsWith('-') || trimmed.startsWith('*')) {\n      if (!inList) { htmlOutput.push('<ul>'); inList = true; }\n      htmlOutput.push(`<li>${trimmed.replace(/^[\\-\\*]\\s*/, '')}</li>`);\n      continue;\n    }\n    if (trimmed !== '') htmlOutput.push(`<p>&line;</p>`.replace('&line;', line));\n  }\n  if (inList) htmlOutput.push('</ul>');\n\n  let finalBody = htmlOutput.join('\\n');\n  return finalBody.replace(/\\*\\*(.*?)\\*\\*/g, '<strong>$1</strong>');\n}\n\n// Fonction utilitaire pour nettoyer les caractères spéciaux du futur nom de fichier\nfunction slugify(text) {\n  return text\n    .toString()\n    .toLowerCase()\n    .normalize('NFD') // Supprime les accents\n    .replace(/[\\u0300-\\u036f]/g, '')\n    .trim()\n    .replace(/\\s+/g, '-') // Remplace les espaces par des tirets\n    .replace(/[^a-z0-9\\-]/g, ''); // Supprime le reste\n}\n\nconst finalFileName = \"javarre-\" + slugify(company) + \"-\" + slugify(jobTitle);\n\n// 3. RECUPERATION CONFIG\nlet config = { showVersion: false };\ntry {\n  config = JSON.parse($('Read Config from Table').first().json.value);\n} catch (e) {}\n\nlet compiledBody = robustMarkdownToHtml(mdText);\nif (config.showVersion) {\n  compiledBody = compiledBody + `<div class=\"resume-version-footer\">v${increment}</div>`;\n}\n\nreturn [\n  {\n    json: {\n      compiledBody: compiledBody,\n      pdfFileName: finalFileName\n    }\n  }\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -224,
+        -80
+      ],
+      "id": "e79006b9-898c-4505-8606-9ca159c25273",
+      "name": "Génération du HTML & Style CSS"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $node[\"Notion : Initialiser l'upload\"].json.upload_url }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "notionApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": []
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Notion-Version",
+              "value": "2022-06-28"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "={{ $node[\"(Gotemberg) PDF\"].binary.data }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        880,
+        -80
+      ],
+      "id": "5b17e223-3c0a-43cb-89ce-40e7986236ac",
+      "name": "Notion : Envoyer le binaire",
+      "credentials": {
+        "notionApi": {
+          "id": "KYrsxF0plfLkPpqW",
+          "name": "Notion LinkedIn Auto"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.notion.com/v1/file_uploads",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "notionApi",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": []
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Notion-Version",
+              "value": " 2022-06-28"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"mode\": \"single_part\",\n  \"filename\": \"{{ $('Get PageID').item.json.outputPdf }}\",\n  \"content_type\": \"application/pdf\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        656,
+        -80
+      ],
+      "id": "ea9008a2-e5f9-44d0-ba00-032edd9088d0",
+      "name": "Notion : Initialiser l'upload",
+      "credentials": {
+        "notionApi": {
+          "id": "KYrsxF0plfLkPpqW",
+          "name": "Notion LinkedIn Auto"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. Récupération des données brutes du Webhook\nconst body = $('Webhook').item.json.body?.data || {};\nconst properties = body.properties || {};\n\nconst pageId = body.id;\n\n// 2. Extraction du texte MD de CV\nconst richTextArray = properties.CV?.rich_text || [];\nconst mdText = richTextArray.map(block => block.plain_text || '').join('');\n\n// 3. Extraction du nom ($name est la ligne après le '#' ou sur la ligne du '#')\nlet name = 'resume';\nconst lines = mdText.split(/\\r?\\n/);\nfor (let i = 0; i < lines.length; i++) {\n  const trimmed = lines[i].trim();\n  if (trimmed.startsWith('# ')) {\n    const headingText = trimmed.substring(2).trim();\n    if (headingText) {\n      name = headingText;\n    } else if (i + 1 < lines.length) {\n      name = lines[i + 1].trim();\n    }\n    break;\n  }\n}\n\n// 4. Fonction locale slugify pour nettoyer les chaînes\nfunction slugify(text) {\n  return text\n    .toString()\n    .toLowerCase()\n    .normalize('NFD')\n    .replace(/[\\u0300-\\u036f]/g, '')\n    .trim()\n    .replace(/\\s+/g, '-')\n    .replace(/[^a-z0-9\\-]/g, '');\n}\n\nconst nameSlug = slugify(name);\nconst today = new Date().toISOString().split('T')[0];\n\n// 5. Calcul de l'incrément quotidien en inspectant les PDF existants\nlet maxIncrement = 0;\nconst pdfFiles = properties.PDF?.files || [];\nconst prefixPattern = new RegExp(\"^\" + nameSlug + \"-resume-\" + today + \"-(\\\\d+)\\\\.pdf$\", \"i\");\n\nfor (const fileObj of pdfFiles) {\n  const fileName = fileObj.name || '';\n  const match = fileName.match(prefixPattern);\n  if (match) {\n    const inc = parseInt(match[1], 10);\n    if (inc > maxIncrement) {\n      maxIncrement = inc;\n    }\n  }\n}\n\nconst nextIncrement = String(maxIncrement + 1).padStart(2, '0');\nconst finalFileName = nameSlug + \"-resume-\" + today + \"-\" + nextIncrement;\nconst outputPdf = finalFileName + \".pdf\";\n\n// 6. Extraction de Company et JobTitle pour rétrocompatibilité n8n\nlet company = 'company';\nif (properties.Company && properties.Company.select) {\n  company = properties.Company.select.name || 'company';\n}\nlet jobTitle = 'job';\nconst targetProperty = properties.Title || properties[\"Job Title\"];\nif (targetProperty && targetProperty.title && targetProperty.title.length > 0) {\n  jobTitle = targetProperty.title.plain_text || 'job';\n}\n\n// 7. Retour des variables\nreturn [{ \n  json: {\n    pageId: pageId,\n    company: company,\n    jobTitle: jobTitle,\n    outputPdf: outputPdf,\n    increment: nextIncrement\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -448,
+        -80
+      ],
+      "id": "50e1809c-41d6-4d09-a38b-fa08be19185a",
+      "name": "Get PageID"
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://api.notion.com/v1/pages/{{ $node[\"Get PageID\"].json.pageId }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "notionApi",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Notion-Version",
+              "value": "2026-03-11"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"properties\": {\n    \"PDF\": {\n      \"type\": \"files\",\n      \"files\": [\n        {\n          \"type\": \"file_upload\",\n          \"file_upload\": { \n            \"id\": \"{{ $('Notion : Initialiser l\\'upload').item.json.id }}\" \n          },\n          \"name\": \"{{ $json.filename }}\"\n        }\n      ]\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1072,
+        -80
+      ],
+      "id": "1e94c1a3-320d-47ab-88f8-167563781146",
+      "name": "Attach Bin to page",
+      "credentials": {
+        "notionApi": {
+          "id": "KYrsxF0plfLkPpqW",
+          "name": "Notion LinkedIn Auto"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://gotenberg:3000/forms/chromium/convert/html",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "index.html",
+              "inputDataFieldName": "indexHtml"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        432,
+        -80
+      ],
+      "id": "b3921630-4876-4e63-bf65-6dd8ba2a2033",
+      "name": "(Gotemberg) PDF"
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "myRawContent",
+        "binaryPropertyName": "indexHtml",
+        "options": {
+          "addBOM": false,
+          "encoding": "utf8",
+          "fileName": "=index.html"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        208,
+        -80
+      ],
+      "id": "d0978c75-1b40-4761-bf50-766eb4d0d0ff",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1fb1391e-c916-48ff-ae50-b4da474a5ea1",
+              "name": "myRawContent",
+              "value": "=<!DOCTYPE html>\n<html lang=\"fr\">\n<head>\n  <meta charset=\"utf-8\">\n  <title>CV Julien Avarre</title>\n  <style>\n    @page { \n      size: A4; \n      /* \"To wide\" corrigé : On augmente drastiquement les marges latérales (35mm) pour resserrer le texte au centre comme sur le modèle */\n      margin: 25mm 35mm 25mm 35mm; \n    }\n    \n /* Custom Config Variables */\n:root {\n    --resume-font-family: 'Inter', sans-serif;\n    --resume-font-size: 12.5px;\n    --resume-line-height: 1.2;\n    --resume-heading-scale: 1.6;\n    --resume-margin-x: 48px;\n    --resume-margin-y: 20px;\n    --resume-section-spacing: 12px;\n    --resume-color-bg: #ffffff;\n    --resume-color-headings: #0f172a;\n    --resume-color-body: #334155;\n    --resume-color-links: #2563eb;\n    --resume-color-accent: #0ea5e9;\n    --resume-sidebar-bg: #2d3748;\n    --resume-sidebar-text: #ffffff;\n}\n\n/* ==========================================\n   ATS RESUME RENDERING AND PRINT TEMPLATES\n   ========================================== */\n\n/* The A4 Canvas Sheet Simulator (Screen-only) */\n.a4-sheet {\n    background-color: var(--resume-color-bg, #ffffff);\n    color: var(--resume-color-body, #334155);\n    font-family: var(--resume-font-family, 'Raleway', sans-serif);\n    font-size: var(--resume-font-size, 14px);\n    line-height: var(--resume-line-height, 1.45);\n    \n    padding: var(--resume-margin-y, 25px) var(--resume-margin-x, 30px);\n    \n    width: 210mm;\n    min-height: 297mm;\n    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);\n    border-radius: 4px;\n    box-sizing: border-box;\n    text-align: left;\n    \n    /* Smooth transitions for slider adjustments */\n    transition: padding 0.15s ease-out;\n}\n\n/* 2-Column Layout CSS Rules */\n.resume-columns {\n    display: grid;\n    grid-template-columns: 1.7fr 1.3fr;\n    gap: 20px;\n    align-items: stretch;\n    margin-top: 16px;\n}\n\n.resume-columns.sidebar-left {\n    grid-template-columns: 1.3fr 1.7fr;\n}\n\n.resume-main-col {\n    display: flex;\n    flex-direction: column;\n    gap: var(--resume-section-spacing, 12px);\n}\n\n.resume-sidebar-col {\n    display: flex;\n    flex-direction: column;\n    gap: var(--resume-section-spacing, 12px);\n    background-color: var(--resume-sidebar-bg, #2d3748);\n    color: var(--resume-sidebar-text, #ffffff);\n    padding: 18px;\n    border-radius: 6px;\n    box-sizing: border-box;\n}\n\n/* Sidebar Specific Content Overrides */\n#resume-output .resume-sidebar-col h3 {\n    color: var(--resume-sidebar-headings, var(--resume-sidebar-text, #ffffff));\n    border-bottom: 1.5px solid var(--resume-color-accent, #0d9488);\n    margin-top: calc(var(--resume-section-spacing, 12px) * 0.5);\n    padding-bottom: 4px;\n}\n\n#resume-output .resume-sidebar-col p {\n    color: var(--resume-sidebar-text, #ffffff);\n}\n\n#resume-output .resume-sidebar-col p strong {\n    color: var(--resume-sidebar-headings, var(--resume-sidebar-text, #ffffff));\n}\n\n#resume-output .resume-sidebar-col li {\n    color: var(--resume-sidebar-text, #ffffff);\n}\n\n#resume-output .resume-sidebar-col li::marker {\n    color: var(--resume-color-accent, #0d9488);\n}\n\n#resume-output .resume-sidebar-col a {\n    color: var(--resume-sidebar-text, #ffffff);\n    text-decoration: underline;\n}\n\n/* Resume Markdown HTML Output Elements Styling */\n\n#resume-output h1 {\n    font-family: var(--resume-font-family, 'Raleway', sans-serif);\n    font-size: calc(var(--resume-font-size, 14px) * var(--resume-heading-scale, 1.6) * 1.5);\n    color: var(--resume-color-headings, #1e293b);\n    font-weight: 800;\n    line-height: 1.15;\n    margin-bottom: 6px;\n    letter-spacing: -0.02em;\n}\n\n#resume-output p {\n    margin-bottom: 8px;\n    font-size: var(--resume-font-size, 14px);\n    color: var(--resume-color-body, #334155);\n}\n\n/* Subtitles or roles (typically bold text right after h1) */\n#resume-output h1 + p strong,\n#resume-output h1 + p {\n    font-size: calc(var(--resume-font-size, 14px) * 1.05);\n    color: var(--resume-color-accent, #0d9488);\n    font-weight: 600;\n}\n\n/* Contact Details Paragraph (e.g. [CONTACT : ...]) */\n#resume-output p:nth-of-type(2) {\n    font-size: calc(var(--resume-font-size, 14px) * 0.85);\n    color: var(--resume-color-links, #7c3aed);\n    background-color: rgba(0, 0, 0, 0.02);\n    border: 1px solid rgba(0, 0, 0, 0.04);\n    padding: 6px 12px;\n    border-radius: 4px;\n    margin-top: 8px;\n    margin-bottom: 16px;\n    display: block;\n    word-break: break-all;\n}\n\n/* Links inside the document */\n#resume-output a {\n    color: var(--resume-color-links, #7c3aed);\n    text-decoration: none;\n    font-weight: 500;\n    transition: opacity 0.15s ease;\n}\n\n#resume-output a:hover {\n    text-decoration: underline;\n    opacity: 0.95;\n}\n\n/* Horizontal separators */\n#resume-output hr {\n    border: 0;\n    border-top: 1px solid rgba(0, 0, 0, 0.08);\n    margin: 16px 0;\n}\n\n/* Blockquotes (used for Summary Quotes) */\n#resume-output blockquote {\n    border-left: 3px solid var(--resume-color-accent, #0d9488);\n    padding-left: 14px;\n    margin: 16px 0;\n    font-style: italic;\n    color: var(--resume-color-body, #475569);\n    font-size: calc(var(--resume-font-size, 14px) * 1.02);\n    line-height: 1.5;\n}\n\n/* Section Headings (e.g., ### EXPÉRIENCES CLÉS) */\n#resume-output h3 {\n    font-family: var(--resume-font-family, 'Raleway', sans-serif);\n    font-size: calc(var(--resume-font-size, 14px) * var(--resume-heading-scale, 1.6));\n    color: var(--resume-color-headings, #1e293b);\n    font-weight: 700;\n    text-transform: uppercase;\n    letter-spacing: 0.04em;\n    margin-top: calc(var(--resume-section-spacing, 12px) * 1.8);\n    margin-bottom: calc(var(--resume-section-spacing, 12px) * 0.8);\n    border-bottom: 1.5px solid var(--resume-color-accent, #0d9488);\n    padding-bottom: 4px;\n    display: block;\n}\n\n/* Sub-headings / job blocks (typically bold text for titles) */\n#resume-output p strong {\n    font-weight: 600;\n    color: var(--resume-color-headings, #1e293b);\n}\n\n/* Lists and Bullet Points - critical for ATS readability */\n#resume-output ul {\n    margin-left: 18px;\n    margin-bottom: 12px;\n    padding-left: 0;\n}\n\n#resume-output li {\n    font-size: calc(var(--resume-font-size, 14px) * 0.96);\n    margin-bottom: 4px;\n    line-height: 1.45;\n    color: var(--resume-color-body, #334155);\n    /* Standard bullets only, no graphics */\n    list-style-type: disc;\n}\n\n#resume-output li::marker {\n    color: var(--resume-color-accent, #0d9488);\n}\n\n/* Ensure no page breaks inside job details or blocks in print */\n#resume-output p, \n#resume-output ul, \n#resume-output h3 {\n    page-break-inside: avoid;\n    break-inside: avoid;\n}\n\n/* Custom directives styling matching markdownresume.app guide */\n.resume-accent {\n    color: var(--resume-color-accent, #0d9488);\n    font-weight: 600;\n}\n\n.resume-muted {\n    color: #64748b;\n    font-size: 0.95em;\n    opacity: 0.85;\n}\n\n/* ==========================================\n   STRICT PRINT-TO-PDF STYLING OVERRIDES\n   ========================================== */\n@media print {\n    * {\n        -webkit-print-color-adjust: exact !important;\n        print-color-adjust: exact !important;\n    }\n    \n    /* Set page margins in printer settings dynamically */\n    @page {\n        size: A4 portrait;\n        margin: 15mm; /* Balanced printing margins */\n    }\n\n    /* Hide entire builder UI */\n    body {\n        background: #ffffff !important;\n        color: #000000 !important;\n        font-size: var(--resume-font-size, 12px) !important;\n        height: auto !important;\n        width: auto !important;\n        overflow: visible !important;\n    }\n\n    .app-header, \n    .panel:not(.preview-panel),\n    .panel-header,\n    .preview-controls,\n    .toast {\n        display: none !important;\n    }\n\n    .app-container {\n        display: block !important;\n        height: auto !important;\n        width: 100% !important;\n        background: none !important;\n    }\n\n    .app-main {\n        display: block !important;\n        height: auto !important;\n        overflow: visible !important;\n        background: none !important;\n    }\n\n    .preview-panel {\n        display: block !important;\n        width: 100% !important;\n        height: auto !important;\n        border: none !important;\n        background: none !important;\n        overflow: visible !important;\n    }\n\n    .preview-canvas-wrapper {\n        padding: 0 !important;\n        overflow: visible !important;\n        display: block !important;\n        background: none !important;\n    }\n\n    .preview-canvas {\n        transform: none !important;\n        width: 100% !important;\n        height: auto !important;\n        display: block !important;\n    }\n\n    .a4-sheet {\n        box-shadow: none !important;\n        border-radius: 0 !important;\n        padding: 0 !important; /* Managed by @page margin */\n        width: 100% !important;\n        min-height: 0 !important;\n        background: var(--resume-color-bg, #ffffff) !important;\n        color: var(--resume-color-body, #334155) !important;\n    }\n}\n\n  </style>\n</head>\n<body>\n\n  {{ $json.compiledBody }}\n\n</body>\n</html>",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -16,
+        -80
+      ],
+      "id": "c536ea5f-8e34-4a92-8d0b-e9cca421b474",
+      "name": "Template Design CV"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "OtWoNuYUmoj7knoz",
+          "mode": "id"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "key",
+              "keyValue": "config"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        -336,
+        -80
+      ],
+      "id": "a4c9b321-0a26-4a49-b389-3540fa4eed10",
+      "name": "Read Config from Table"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://vector:8080",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"application\": \"jobby_ats\",\n  \"environment\": \"production\",\n  \"action\": \"resume_generation\",\n  \"user_id\": \"{{ $('Webhook').item.json.body?.source?.user_id || $json.user_id || 'anonymous' }}\",\n  \"status\": \"success\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1300,
+        -80
+      ],
+      "id": "e0e29b1b-12cd-43ef-ba38-16cb4b2e8a1a",
+      "name": "HTTP Request Telemetry"
+    },
+    {
+      "parameters": {
+        "content": "### Last Publish Info\n\nPublished on 2026-08-27 11:20:22 | Git: b8dd861 fix(docs2notion): stop two workers from sharing one Notion page",
+        "height": 150,
+        "width": 300,
+        "color": 6
+      },
+      "id": "b7346ebe-267f-40cf-8f38-161145d0a090",
+      "name": "Last Publish Info",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1006,
+        -80
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Get PageID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Génération du HTML & Style CSS": {
+      "main": [
+        [
+          {
+            "node": "Template Design CV",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion : Envoyer le binaire": {
+      "main": [
+        [
+          {
+            "node": "Attach Bin to page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Attach Bin to page": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request Telemetry",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Notion : Initialiser l'upload": {
+      "main": [
+        [
+          {
+            "node": "Notion : Envoyer le binaire",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get PageID": {
+      "main": [
+        [
+          {
+            "node": "Read Config from Table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "(Gotemberg) PDF": {
+      "main": [
+        [
+          {
+            "node": "Notion : Initialiser l'upload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "(Gotemberg) PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Template Design CV": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Config from Table": {
+      "main": [
+        [
+          {
+            "node": "Génération du HTML & Style CSS",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodeGroups": [],
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true
+  },
+  "staticData": null,
+  "pinData": null,
+  "meta": null,
+  "tags": [],
+  "shared": [
+    {
+      "role": "workflow:owner",
+      "workflowId": "GEx4IF6EAWUWgede",
+      "projectId": "GfFdmZTqGEJQkrXG",
+      "project": {
+        "id": "GfFdmZTqGEJQkrXG",
+        "name": "Éole Wind <megazef@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "customTelemetryTags": [],
+        "creatorId": "2792484d-cba3-4156-adba-fbc49134eb55",
+        "createdAt": "2026-05-11T09:34:45.695Z",
+        "updatedAt": "2026-07-06T15:34:54.223Z"
+      },
+      "createdAt": "2026-06-24T07:15:39.590Z",
+      "updatedAt": "2026-06-24T07:15:39.590Z"
+    }
+  ],
+  "activeVersion": null
+}
