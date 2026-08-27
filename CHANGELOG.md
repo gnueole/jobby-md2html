@@ -8,6 +8,30 @@ All notable changes to the Jobby project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.12.3] - 2026-08-27
+
+### Fixed
+
+- **The feedback forward never left the container.** It targeted
+  `https://n8n.eole.me/webhook/feedback`, and the VPS `/etc/hosts` maps
+  `n8n.eole.me` to `127.0.1.1` — a resolution every container inherits. The
+  server logged one line and stopped there:
+
+  ```
+  [Feedback] Failed to forward to n8n: connect ECONNREFUSED 127.0.1.1:443
+  ```
+
+  Now `http://n8n-server:5678/webhook/feedback`, the container name on
+  `eole_shared_network`. Verified from inside the container: the internal route
+  answers, the public hostname refuses. Set in Doppler
+  (`prd_eole-me-jobby`), in the compose default and in the code fallback, so no
+  single missing value can send it back to the unreachable address.
+
+> A redeploy is required — the environment is injected when the container
+> starts.
+
+---
+
 ## [1.12.2] - 2026-08-27
 
 ### Fixed

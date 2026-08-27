@@ -389,10 +389,14 @@ const server = http.createServer((req, res) => {
             res.end(JSON.stringify({ success: true }));
 
             // Asynchronously forward to n8n feedback webhook.
-            // The fallback matters: with no value the guard below holds and the
-            // feedback is dropped without a trace. /feedback is the single intake
-            // shared by www, improv and jobby — the per-app paths were retired.
-            const webhookUrl = process.env.N8N_FEEDBACK_WEBHOOK_URL || 'https://n8n.eole.me/webhook/feedback';
+            // Container-internal address, not the public hostname. The VPS
+            // /etc/hosts maps n8n.eole.me to 127.0.1.1, and every container
+            // inherits that resolution, so https://n8n.eole.me answers
+            // ECONNREFUSED from in here. n8n-server is the container name on
+            // eole_shared_network.
+            // The fallback matters too: with no value the guard below holds and
+            // the feedback is dropped without a trace.
+            const webhookUrl = process.env.N8N_FEEDBACK_WEBHOOK_URL || 'http://n8n-server:5678/webhook/feedback';
             if (webhookUrl && webhookUrl.trim() !== "") {
                 try {
                     const parsedUrl = new URL(webhookUrl);
