@@ -138,7 +138,7 @@ Jobby includes a secure, interactive feedback collection system that allows user
 ### Feedback Configuration
 To activate the feedback pipeline, ensure `N8N_FEEDBACK_WEBHOOK_URL` is set in your environment:
 ```env
-N8N_FEEDBACK_WEBHOOK_URL="http://localhost:5678/webhook/jobby-feedback"
+N8N_FEEDBACK_WEBHOOK_URL="http://localhost:5678/webhook/feedback"
 ```
 
 ---

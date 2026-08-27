@@ -8,6 +8,23 @@ All notable changes to the Jobby project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.12.2] - 2026-08-27
+
+### Fixed
+
+- **Feedback was dropped silently when the webhook URL was unset.**
+  `server.js:392` read `N8N_FEEDBACK_WEBHOOK_URL` with no fallback, and the
+  guard below it (`if (webhookUrl && …)`) then skipped the call without a log
+  line — a submission simply vanished. It now falls back to
+  `https://n8n.eole.me/webhook/feedback`, the single intake shared by www,
+  improv and jobby, and `docker-compose.prod.yml` carries the same default
+  instead of an empty one.
+
+- **`.env.example` and `ARCHITECTURE.md` still named `/jobby-feedback`**, a path
+  retired in July. Anyone copying the template configured a 404.
+
+---
+
 ## [1.12.1] - 2026-08-27
 
 ### Changed

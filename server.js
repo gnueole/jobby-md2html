@@ -388,8 +388,11 @@ const server = http.createServer((req, res) => {
             res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
             res.end(JSON.stringify({ success: true }));
 
-            // Asynchronously forward to n8n feedback webhook
-            const webhookUrl = process.env.N8N_FEEDBACK_WEBHOOK_URL;
+            // Asynchronously forward to n8n feedback webhook.
+            // The fallback matters: with no value the guard below holds and the
+            // feedback is dropped without a trace. /feedback is the single intake
+            // shared by www, improv and jobby — the per-app paths were retired.
+            const webhookUrl = process.env.N8N_FEEDBACK_WEBHOOK_URL || 'https://n8n.eole.me/webhook/feedback';
             if (webhookUrl && webhookUrl.trim() !== "") {
                 try {
                     const parsedUrl = new URL(webhookUrl);

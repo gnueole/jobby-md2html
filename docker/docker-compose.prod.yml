@@ -53,7 +53,7 @@ services:
       - X_N8N_TOKEN=${X_N8N_TOKEN}
       - GOOGLE_TAG_ID=${GOOGLE_TAG_ID:-}
       - N8N_TELEMETRY_WEBHOOK_URL=${N8N_TELEMETRY_WEBHOOK_URL:-}
-      - N8N_FEEDBACK_WEBHOOK_URL=${N8N_FEEDBACK_WEBHOOK_URL:-}
+      - N8N_FEEDBACK_WEBHOOK_URL=${N8N_FEEDBACK_WEBHOOK_URL:-https://n8n.eole.me/webhook/feedback}
       - VECTOR_TELEMETRY_URL=${VECTOR_TELEMETRY_URL:-}
     labels:
       - "traefik.enable=true"
