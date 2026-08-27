@@ -8,6 +8,24 @@ All notable changes to the Jobby project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.12.4] - 2026-08-28
+
+### Fixed
+
+- **Vector collected by compose project, not by label, so four projects shipped
+  nothing.** `docker/vector.yaml` filtered on
+  `com.docker.compose.project == eole-infra`, so only n8n and traefik ever
+  reached Axiom — while jobby, www, trail-mapper and backdrop-studio each
+  declared `vector.dev/collect=true` and were silently dropped, because nothing
+  read that label. Four containers labelled and silent, two shipping without a
+  label. The filter now reads `vector.dev/collect`, which is what the
+  architecture documented all along.
+
+  `vector.dev/dataset` stays unread on purpose: one log dataset, with the project
+  as a field. See ARCHITECTURE.md in eoleme-infra.
+
+---
+
 ## [1.12.3] - 2026-08-27
 
 ### Fixed

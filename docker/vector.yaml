@@ -11,11 +11,23 @@ sources:
       codec: "json"
 
 transforms:
+  # Opt in by label, not by compose project. The previous condition matched
+  # `com.docker.compose.project == eole-infra`, so only n8n and traefik ever
+  # shipped: jobby, www, trail-mapper and backdrop-studio all declared
+  # `vector.dev/collect=true` and were silently dropped, because nothing read
+  # that label. ARCHITECTURE.md documented the label mechanism as the way this
+  # works — it now is.
+  #
+  # `vector.dev/dataset` is deliberately NOT honoured: everything goes to one
+  # log dataset, and the project is a field (container_name,
+  # label."com.docker.compose.project"), not a dataset. Splitting per project
+  # would cost a query per project to answer "what happened at 20:15", which is
+  # exactly the question that matters when a chain spans several of them.
   filter_project_logs:
     type: "filter"
     inputs:
       - "docker_logs"
-    condition: '.label."com.docker.compose.project" == "${COMPOSE_PROJECT_NAME}"'
+    condition: '.label."vector.dev/collect" == "true"'
 
 sinks:
   axiom_sink:
