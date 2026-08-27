@@ -8,6 +8,36 @@ All notable changes to the Jobby project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.12.1] - 2026-08-27
+
+### Changed
+
+- **Five superseded workflows moved to `TODEL_2026-08-27_…` quarantine**, each
+  switched off, unused for 30 days, and with a live successor owning its webhook
+  path: `Jobby - LinkedIn 2 Notion`, `Jobby - PDF - dyn`, `Jobby - sync conf`,
+  `Jobby - Telemetry to Notion` and `jobby - pdf-static - prod`.
+
+- **n8n exports refreshed and renamed.** Four active `- prod` workflows had no
+  file of their own — the files bearing their names held their inactive twins.
+
+### Known
+
+- **`jobby - telemetry-to-notion - prod` has never run.** `server.js:291` guards
+  the forward on `N8N_TELEMETRY_WEBHOOK_URL`, which is absent from Doppler, so
+  the call is skipped in silence. That is currently a feature: the workflow
+  wrote ~80 Notion rows a day before it stopped on 29 June. Telemetry belongs in
+  Axiom, not Notion.
+
+- **It also carries a latent defect**, proven by an end-to-end probe: the Notion
+  node reads `$json.body.*`, but its input is the data-table node's output,
+  which has no `body`. Fixing the plumbing without fixing the expression would
+  make the first success an error.
+
+- **`.env.example:11` still names `/jobby-feedback`**, a webhook retired last
+  month. The live endpoint is `/feedback`.
+
+---
+
 ## [1.12.0] - 2026-07-25
 
 ### Added
