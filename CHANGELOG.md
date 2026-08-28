@@ -8,6 +8,18 @@ All notable changes to the Jobby project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.12.5] - 2026-08-28
+
+### Fixed
+
+- **The telemetry sink fell back to a dataset that is about to be deleted.**
+  `vector.yaml` read `${AXIOM_TELEMETRY_DATASET:-jobby-telemetry}`; that dataset
+  is superseded by `eole-telemetry`. A fallback naming a deleted dataset is
+  worse than no fallback: Axiom answers 404 and Vector drops every event without
+  a word, which is exactly how the log rail died unnoticed for three weeks.
+
+---
+
 ## [1.12.4] - 2026-08-28
 
 ### Fixed

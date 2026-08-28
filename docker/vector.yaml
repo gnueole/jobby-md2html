@@ -46,7 +46,8 @@ sinks:
     type: "http"
     inputs:
       - "http_telemetry"
-    uri: "https://eu-central-1.aws.edge.axiom.co/v1/ingest/${AXIOM_TELEMETRY_DATASET:-jobby-telemetry}"
+    # Fallback names a dataset that exists — a deleted one means a silent 404.
+    uri: "https://eu-central-1.aws.edge.axiom.co/v1/ingest/${AXIOM_TELEMETRY_DATASET:-eole-telemetry}"
     encoding:
       codec: "json"
     request:
