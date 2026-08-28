@@ -287,13 +287,23 @@ const server = http.createServer((req, res) => {
                 return;
             }
 
-            // Asynchronously forward to n8n webhook
-            const webhookUrl = process.env.N8N_TELEMETRY_WEBHOOK_URL;
+            // Forward to Vector, not to n8n. Telemetry used to land in a Notion
+            // database at ~80 rows a day; Notion is not a time-series store, and
+            // n8n added a hop that failed on every event for two months without
+            // anyone noticing. Vector ships straight to the Axiom
+            // eole-telemetry dataset.
+            const webhookUrl = process.env.N8N_TELEMETRY_WEBHOOK_URL || 'http://vector:8080';
             if (webhookUrl && webhookUrl.trim() !== "") {
                 try {
                     const parsedUrl = new URL(webhookUrl);
                     const protocol = parsedUrl.protocol === 'https:' ? require('https') : require('http');
-                    const payloadString = JSON.stringify(payload);
+                    // The dashboards group by `application`; without it every
+                    // project's events pile into one anonymous heap.
+                    const payloadString = JSON.stringify({
+                        application: 'jobby',
+                        environment: env,
+                        ...payload,
+                    });
                     const reqOpts = {
                         hostname: parsedUrl.hostname,
                         port: parsedUrl.port || (parsedUrl.protocol === 'https:' ? 443 : 80),
