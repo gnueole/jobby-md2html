@@ -1,0 +1,256 @@
+{
+  "id": "1oIDvJ67esNJNDc4",
+  "name": "TODEL_2026-08-28_jobby - telemetry-to-notion - prod",
+  "description": null,
+  "active": false,
+  "activeVersionId": null,
+  "createdAt": "2026-06-24T07:15:39.795Z",
+  "updatedAt": "2026-08-28T12:04:33.410Z",
+  "isArchived": false,
+  "versionId": "87ff72ca-5161-48a9-b02c-f58b788a60e4",
+  "versionCounter": 28,
+  "sourceWorkflowId": null,
+  "triggerCount": 1,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "jobby-telemetry",
+        "options": {
+          "responseCode": {
+            "values": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        250,
+        240
+      ],
+      "id": "webhook-trigger",
+      "name": "Webhook",
+      "webhookId": "db535ec7-aef8-437d-934c-d6836fd90638"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "={{ $('Get Notion DB ID').item.json.value }}",
+          "mode": "id"
+        },
+        "title": "Session ID",
+        "simple": false,
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Session ID|title",
+              "title": "={{ $json.body.sessionId }}"
+            },
+            {
+              "key": "Platform|select",
+              "selectValue": "={{ $json.body.platform }}"
+            },
+            {
+              "key": "Event Type|select",
+              "selectValue": "={{ $json.body.eventType }}"
+            },
+            {
+              "key": "Word Count|number",
+              "numberValue": "={{ $json.body.wordCount || 0 }}"
+            },
+            {
+              "key": "Char Count|number",
+              "numberValue": "={{ $json.body.charCount || 0 }}"
+            },
+            {
+              "key": "Active Preset|select",
+              "selectValue": "={{ $json.body.activePreset || \"default\" }}"
+            },
+            {
+              "key": "Font Family|rich_text",
+              "textContent": "={{ $json.body.fontFamily || \"Inter\" }}"
+            },
+            {
+              "key": "Layout Mode|select",
+              "selectValue": "={{ $json.body.layoutMode || \"letter\" }}"
+            },
+            {
+              "key": "ATS Score|number",
+              "numberValue": "={{ $json.body.atsScore || 0 }}"
+            },
+            {
+              "key": "Print Count|number",
+              "numberValue": "={{ $json.body.printCount || 0 }}"
+            },
+            {
+              "key": "Buttons Clicked|multi_select",
+              "multiSelectValue": "={{ $json.body.buttonsClicked }}"
+            },
+            {
+              "key": "Platform OS|select",
+              "selectValue": "={{ $json.body.os || \"Unknown\" }}"
+            },
+            {
+              "key": "Platform Version|rich_text",
+              "textContent": "={{ $json.body.osVersion || \"Unknown\" }}"
+            },
+            {
+              "key": "Browser Name|select",
+              "selectValue": "={{ $json.body.browser || \"Unknown\" }}"
+            },
+            {
+              "key": "Browser Version|rich_text",
+              "textContent": "={{ $json.body.browserVersion || \"Unknown\" }}"
+            },
+            {
+              "key": "Device Type|select",
+              "selectValue": "={{ $json.body.deviceType || \"Unknown\" }}"
+            },
+            {
+              "key": "Initial ATS Score|number",
+              "numberValue": "={{ $json.body.initialAtsScore }}"
+            },
+            {
+              "key": "ATS Score Delta|number",
+              "numberValue": "={{ $json.body.atsScoreDelta }}"
+            },
+            {
+              "key": "ATS Fixes Count|number",
+              "numberValue": "={{ $json.body.atsFixesCount }}"
+            },
+            {
+              "key": "Preset Switches|rich_text",
+              "textContent": "={{ $json.body.presetSwitches }}"
+            },
+            {
+              "key": "Theme Preference|select",
+              "selectValue": "={{ $json.body.themePreference }}"
+            },
+            {
+              "key": "Undo Redo Clicks|number",
+              "numberValue": "={{ $json.body.undoRedoClicks }}"
+            },
+            {
+              "key": "Markdown Render Time|number",
+              "numberValue": "={{ $json.body.markdownRenderTimeMs }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        700,
+        240
+      ],
+      "id": "notion-node",
+      "name": "Notion",
+      "credentials": {
+        "notionApi": {
+          "id": "KYrsxF0plfLkPpqW",
+          "name": "Notion LinkedIn Auto"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "### Last Publish Info\n\nPublished on 2026-07-23 17:11:04 | Git: 198b46b fix(n8n): explicitly set candidate full name Julien Avarre in AI prompt",
+        "height": 150,
+        "width": 300,
+        "color": 6
+      },
+      "id": "b5b7f08f-6870-47b1-8a32-2814d29baba5",
+      "name": "Last Publish Info",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -100,
+        240
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "OtWoNuYUmoj7knoz",
+          "mode": "id"
+        },
+        "matchType": "allConditions",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "key",
+              "keyValue": "notion_telemetry_db_id"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1,
+      "position": [
+        480,
+        240
+      ],
+      "id": "get-notion-db-id",
+      "name": "Get Notion DB ID"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Get Notion DB ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Notion DB ID": {
+      "main": [
+        [
+          {
+            "node": "Notion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "nodeGroups": [],
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true,
+    "errorWorkflow": "tx4xTfvUypqRf7jO"
+  },
+  "staticData": null,
+  "pinData": null,
+  "meta": null,
+  "tags": [],
+  "shared": [
+    {
+      "role": "workflow:owner",
+      "workflowId": "1oIDvJ67esNJNDc4",
+      "projectId": "GfFdmZTqGEJQkrXG",
+      "project": {
+        "id": "GfFdmZTqGEJQkrXG",
+        "name": "Éole Wind <megazef@gmail.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "customTelemetryTags": [],
+        "creatorId": "2792484d-cba3-4156-adba-fbc49134eb55",
+        "createdAt": "2026-05-11T09:34:45.695Z",
+        "updatedAt": "2026-07-06T15:34:54.223Z"
+      },
+      "createdAt": "2026-06-24T07:15:39.798Z",
+      "updatedAt": "2026-06-24T07:15:39.798Z"
+    }
+  ],
+  "activeVersion": null
+}
