@@ -5,10 +5,10 @@
   "active": true,
   "activeVersionId": "8ea18bf0-76fd-4ecb-ad8e-cd264dbc4c9e",
   "createdAt": "2026-06-24T07:15:39.662Z",
-  "updatedAt": "2026-08-27T09:03:08.278Z",
+  "updatedAt": "2026-08-28T09:45:23.497Z",
   "isArchived": false,
   "versionId": "8ea18bf0-76fd-4ecb-ad8e-cd264dbc4c9e",
-  "versionCounter": 26,
+  "versionCounter": 27,
   "sourceWorkflowId": null,
   "triggerCount": 2,
   "nodes": [
@@ -233,7 +233,8 @@
   "nodeGroups": [],
   "settings": {
     "executionOrder": "v1",
-    "availableInMCP": true
+    "availableInMCP": true,
+    "errorWorkflow": "tx4xTfvUypqRf7jO"
   },
   "staticData": null,
   "pinData": null,
@@ -522,6 +523,22 @@
         "createdAt": "2026-08-27T09:03:08.446Z"
       },
       {
+        "id": 2168,
+        "workflowId": "E8rqiT2NvkzG1uUv",
+        "versionId": "8ea18bf0-76fd-4ecb-ad8e-cd264dbc4c9e",
+        "event": "activated",
+        "userId": "2792484d-cba3-4156-adba-fbc49134eb55",
+        "createdAt": "2026-08-28T09:45:23.711Z"
+      },
+      {
+        "id": 2170,
+        "workflowId": "E8rqiT2NvkzG1uUv",
+        "versionId": "8ea18bf0-76fd-4ecb-ad8e-cd264dbc4c9e",
+        "event": "activated",
+        "userId": "2792484d-cba3-4156-adba-fbc49134eb55",
+        "createdAt": "2026-08-28T09:45:25.502Z"
+      },
+      {
         "id": 2014,
         "workflowId": "E8rqiT2NvkzG1uUv",
         "versionId": "8ea18bf0-76fd-4ecb-ad8e-cd264dbc4c9e",
@@ -552,6 +569,22 @@
         "event": "deactivated",
         "userId": "2792484d-cba3-4156-adba-fbc49134eb55",
         "createdAt": "2026-08-27T09:03:08.410Z"
+      },
+      {
+        "id": 2167,
+        "workflowId": "E8rqiT2NvkzG1uUv",
+        "versionId": "8ea18bf0-76fd-4ecb-ad8e-cd264dbc4c9e",
+        "event": "deactivated",
+        "userId": "2792484d-cba3-4156-adba-fbc49134eb55",
+        "createdAt": "2026-08-28T09:45:23.647Z"
+      },
+      {
+        "id": 2169,
+        "workflowId": "E8rqiT2NvkzG1uUv",
+        "versionId": "8ea18bf0-76fd-4ecb-ad8e-cd264dbc4c9e",
+        "event": "deactivated",
+        "userId": "2792484d-cba3-4156-adba-fbc49134eb55",
+        "createdAt": "2026-08-28T09:45:23.813Z"
       }
     ]
   }
