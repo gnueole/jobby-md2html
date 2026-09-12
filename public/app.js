@@ -359,7 +359,17 @@ async function initializeJobby() {
 
             const payload = {
                 sessionId,
-                eventType,
+                // `event_type` en snake_case : c'est le vocabulaire de la
+                // plateforme (voir CLAUDE.md racine). Cette page envoyait
+                // `eventType` avec des valeurs en Title Case — « Session Start »
+                // ici, `session_start` chez trail-mapper, le même évènement sous
+                // deux graphies qu'aucune requête ne pouvait regrouper.
+                //
+                // La conversion est faite ici plutôt qu'aux quatorze points
+                // d'appel : ceux-ci gardent des noms lisibles, et un futur
+                // sendTelemetry('New Thing') sortira canonique sans que personne
+                // ait à y penser.
+                event_type: String(eventType).trim().toLowerCase().replace(/\s+/g, '_'),
                 platform: isDev ? 'dev' : 'prod',
                 wordCount: counts.wordCount,
                 charCount: counts.charCount,
