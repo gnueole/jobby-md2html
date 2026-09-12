@@ -165,7 +165,11 @@ _preflight-image:
 		printf "   Push it and let the image build, or ALLOW_UNSAFE=1 to ship the previous image.\n"; \
 		exit 1; \
 	fi; \
-	pending=$$(gh run list --commit $$sha --json status --jq '[.[] | select(.status != "completed")] | length'); \
+	pending=$$(gh run list --commit $$sha --json workflowName,status --jq '[.[] | select(.workflowName | test("docker|image|ghcr|publish"; "i")) | select(.status != "completed")] | length'); \
+	imgtotal=$$(gh run list --commit $$sha --json workflowName --jq '[.[] | select(.workflowName | test("docker|image|ghcr|publish"; "i"))] | length'); \
+	if [ "$$imgtotal" = "0" ]; then \
+		pending=$$(gh run list --commit $$sha --json status --jq '[.[] | select(.status != "completed")] | length'); \
+	fi; \
 	failed=$$(gh run list --commit $$sha --json conclusion --jq '[.[] | select(.conclusion == "failure" or .conclusion == "cancelled")] | length'); \
 	if [ "$$pending" != "0" ]; then \
 		printf "$(STYLE_ERROR)❌ CI is still running for %s — the image is not published yet.$(RESET)\n" "$$short"; \
