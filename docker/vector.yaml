@@ -29,6 +29,41 @@ transforms:
       - "docker_logs"
     condition: '.label."vector.dev/collect" == "true"'
 
+  # La télémétrie partait de la source HTTP directement au sink : rien ne la
+  # normalisait, et chaque application avait donc choisi son propre vocabulaire.
+  # Sur 552 évènements, le nom de l'évènement vivait sous quatre champs —
+  # eventType (jobby, 450), event_type (trail-mapper, improv, 55), event
+  # (sc2-build-order, 41), action (reservoir_idees, jobby_ats, 6) — et
+  # l'application sous deux, `application` et `service`. Un tableau de bord lisant
+  # `action` était donc vide à 98,9 %.
+  #
+  # Le contrat, désormais tenu ici quel que soit l'émetteur, y compris ceux qui
+  # n'existent pas encore : `event_type` en snake_case, et `application`.
+  #
+  # Les champs d'origine ne sont PAS supprimés. Pendant la migration des
+  # applications, un tableau de bord encore branché sur `eventType` continue de
+  # fonctionner ; et rien de ce qui a été émis n'est perdu en route.
+  normalize_telemetry:
+    type: "remap"
+    inputs:
+      - "http_telemetry"
+    source: |
+      name = null
+      if exists(.event_type) { name = .event_type
+      } else if exists(.eventType) { name = .eventType
+      } else if exists(.event) { name = .event
+      } else if exists(.action) { name = .action }
+
+      # downcase + underscores : "Session Start" (jobby) et "session_start"
+      # (trail-mapper) sont le même évènement et doivent se regrouper.
+      if name != null {
+        .event_type = downcase(replace(to_string(name) ?? "", " ", "_"))
+      }
+
+      if !exists(.application) && exists(.service) {
+        .application = .service
+      }
+
 sinks:
   axiom_sink:
     type: "http"
@@ -45,7 +80,8 @@ sinks:
   axiom_telemetry_sink:
     type: "http"
     inputs:
-      - "http_telemetry"
+      # Passe par la normalisation, plus par la source brute.
+      - "normalize_telemetry"
     # Fallback names a dataset that exists — a deleted one means a silent 404.
     uri: "https://eu-central-1.aws.edge.axiom.co/v1/ingest/${AXIOM_TELEMETRY_DATASET:-eole-telemetry}"
     encoding:
