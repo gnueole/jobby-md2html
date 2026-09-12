@@ -140,7 +140,46 @@ down: dev-down
 restart: down up
 
 # 🚀 AUTOMATED DEPLOYMENT PIPELINE (VPS)
-deploy:
+# A deploy runs `docker compose pull`, which resolves :latest. CI publishes that
+# tag a minute or two after the push, so deploying inside that window pulls the
+# PREVIOUS image and ships old code while printing a green success line. That is
+# not hypothetical: it happened on eole.me/www 4.18.1 and took a full
+# investigation to spot, because nothing in the deploy output is wrong.
+#
+# Actions is the only source of truth reachable from here — the ghcr packages are
+# private, the local docker has no registry login, and the gh token carries no
+# read:packages scope, so the image cannot be queried directly, but the run that
+# builds it can.
+#
+# Escape hatch for a genuine emergency: make deploy ALLOW_UNSAFE=1
+_preflight-image:
+	@if [ "$(ALLOW_UNSAFE)" = "1" ]; then exit 0; fi
+	@if ! command -v gh >/dev/null 2>&1; then \
+		printf "$(STYLE_WARNING)⚠️  gh not found — cannot confirm the image was built for this commit.$(RESET)\n"; \
+		exit 0; \
+	fi
+	@sha=$$(git rev-parse HEAD); short=$$(git rev-parse --short HEAD); \
+	runs=$$(gh run list --commit $$sha --json workflowName,status,conclusion 2>/dev/null); \
+	if [ -z "$$runs" ] || [ "$$runs" = "[]" ]; then \
+		printf "$(STYLE_ERROR)❌ No CI run for %s — no image has been built for this commit.$(RESET)\n" "$$short"; \
+		printf "   Push it and let the image build, or ALLOW_UNSAFE=1 to ship the previous image.\n"; \
+		exit 1; \
+	fi; \
+	pending=$$(gh run list --commit $$sha --json status --jq '[.[] | select(.status != "completed")] | length'); \
+	failed=$$(gh run list --commit $$sha --json conclusion --jq '[.[] | select(.conclusion == "failure" or .conclusion == "cancelled")] | length'); \
+	if [ "$$pending" != "0" ]; then \
+		printf "$(STYLE_ERROR)❌ CI is still running for %s — the image is not published yet.$(RESET)\n" "$$short"; \
+		printf "   Deploying now would pull the previous image and silently ship it.\n"; \
+		exit 1; \
+	fi; \
+	if [ "$$failed" != "0" ]; then \
+		printf "$(STYLE_ERROR)❌ CI failed for %s. Do not deploy it.$(RESET)\n" "$$short"; \
+		gh run list --commit $$sha --json workflowName,conclusion --jq '.[] | select(.conclusion == "failure" or .conclusion == "cancelled") | "   \(.workflowName): \(.conclusion)"'; \
+		exit 1; \
+	fi; \
+	printf "$(STYLE_RESULT)✔$(RESET)  CI finished for %s — the image for this commit is published.\n" "$$short"
+
+deploy: _preflight-image
 	@"$(MAKE)" --no-print-directory _deploy SERVICES="jobby-editor"
 
 deploy-infra:
