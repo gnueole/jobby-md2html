@@ -8,6 +8,44 @@ All notable changes to the Jobby project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.14.0] - 2026-09-15
+
+### Fixed
+
+- **An unclosed contact line swallowed the whole resume.** The `[CONTACT : …]`
+  pattern ran over the entire compiled HTML and matched up to the next `]`
+  anywhere in the document, so deleting one closing bracket pulled the summary,
+  the experience and the projects into the small contact box. A contact line now
+  ends at its own line: without its bracket it stays raw text, and the rest of
+  the resume renders normally.
+- **Jobby syntax was interpreted inside code spans.** `:accent[…]`, `:muted[…]`
+  and `[CONTACT : …]` were converted even between backticks, so the sample's own
+  formatting guide displayed raw `<span class="resume-accent">` markup and a
+  second contact bar.
+- **A trailing separator left a dangling `•`** at the end of the contact bar.
+
+### Added
+
+- **Unclosed contact line warning.** A notice above the preview sheet, shown
+  after a pause in typing, plus an entry in the ATS checklist. The syntax is
+  reported, never corrected silently. The notice sits outside the sheet, so it
+  cannot reach the PDF.
+- **Template placeholder check.** The ATS checklist lists placeholders left from
+  the samples (`example.com`, `your-profile`, `perdu.com`…), which would
+  otherwise go out as dead links.
+- **`•` and `·` as contact separators**, alongside `|`. The samples now use `•`,
+  so the line as typed already looks like the rendered bar.
+- **The 2-column rule in the Markdown help** (`##` main column, `###` sidebar).
+
+### Changed
+
+- **The samples no longer embed a formatting guide.** The `💡 FORMATTING
+  DIRECTIVES` section sat between real sections, and clearing it meant deleting
+  skills, education and languages along with it. The syntax lives in the
+  Markdown help instead.
+
+---
+
 ## [1.13.0] - 2026-08-28
 
 ### Changed
