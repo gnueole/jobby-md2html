@@ -7,6 +7,48 @@ import { getDailyVersionString } from './utils.js';
 
 let lastSectionsJSON = "";
 
+// Code spans and fences, in Markdown source and in compiled HTML. Jobby syntax written
+// between backticks is shown literally, never interpreted.
+const MD_CODE_PATTERN = /(```[\s\S]*?```|~~~[\s\S]*?~~~|`[^`\n]+`)/g;
+const HTML_CODE_PATTERN = /(<pre[\s\S]*?<\/pre>|<code[\s\S]*?<\/code>)/gi;
+
+// A contact line ends at its closing bracket and never runs past its own line or block.
+// Without that bound, one missing "]" matched up to the next bracket anywhere in the
+// document and pulled the whole resume into the contact bar.
+const CONTACT_PATTERN = /\[CONTACT\s*:\s*((?:(?!<br\s*\/?>|<\/?(?:p|li|ul|ol|h[1-6]|blockquote|div|table|hr)\b)[^\]])*)\]/gi;
+const CONTACT_OPENING = /\[CONTACT\s*:/i;
+const CONTACT_SEPARATOR = /[|•·]/;
+
+function mapOutsideCode(text, codePattern, fn) {
+    return text.split(codePattern).map((chunk, i) => (i % 2 === 0 ? fn(chunk) : chunk)).join('');
+}
+
+function formatContactPart(part) {
+    if (part.includes('@') && !part.includes(' ')) {
+        return `<a href="mailto:${part}">${part}</a>`;
+    }
+    if (part.startsWith('http://') || part.startsWith('https://')) {
+        const cleanUrl = part.replace(/^https?:\/\/(www\.)?/, '');
+        return `<a href="${part}" target="_blank">${cleanUrl}</a>`;
+    }
+    return `<span>${part}</span>`;
+}
+
+// Returns the HTML with contact lines formatted, and whether one was left unclosed:
+// that is reported to the user rather than guessed at.
+function formatContactBars(html) {
+    let unclosed = false;
+    const formatted = mapOutsideCode(html, HTML_CODE_PATTERN, chunk => {
+        const replaced = chunk.replace(CONTACT_PATTERN, (match, contents) => {
+            const parts = contents.split(CONTACT_SEPARATOR).map(p => p.trim()).filter(Boolean);
+            return `<div class="resume-contact-bar">${parts.map(formatContactPart).join(' &nbsp;•&nbsp; ')}</div>`;
+        });
+        if (CONTACT_OPENING.test(replaced)) unclosed = true;
+        return replaced;
+    });
+    return { html: formatted, unclosed };
+}
+
 export function updateHeaderInMarkdown(markdownInput, title, toSidebar, onUpdate) {
     if (!markdownInput) return;
     const mdText = markdownInput.value;
@@ -91,7 +133,8 @@ export function compileMarkdown(mdText, styleConfig, markdownInput, onUpdate) {
         return {
             html: `<p style="color:#64748b; font-style:italic;">Start typing Markdown on the left to preview...</p>`,
             tokens: [],
-            resumeTitle: "resume"
+            resumeTitle: "resume",
+            warnings: { contactUnclosed: false }
         };
     }
 
@@ -102,9 +145,9 @@ export function compileMarkdown(mdText, styleConfig, markdownInput, onUpdate) {
     });
 
     // 1. Pre-process custom directives: :accent[text] and :muted[text]
-    let processedMd = mdText;
-    processedMd = processedMd.replace(/:accent\[([^\]]+)\]/g, '<span class="resume-accent">$1</span>');
-    processedMd = processedMd.replace(/:muted\[([^\]]+)\]/g, '<span class="resume-muted">$1</span>');
+    const processedMd = mapOutsideCode(mdText, MD_CODE_PATTERN, chunk => chunk
+        .replace(/:accent\[([^\]]+)\]/g, '<span class="resume-accent">$1</span>')
+        .replace(/:muted\[([^\]]+)\]/g, '<span class="resume-muted">$1</span>'));
 
     // Tokenize and calculate raw source offsets
     const tokens = marked.lexer(processedMd);
@@ -133,21 +176,9 @@ export function compileMarkdown(mdText, styleConfig, markdownInput, onUpdate) {
     });
     html = doc.body.innerHTML;
 
-    // 2. Post-process contact block if present: e.g. [CONTACT : text]
-    html = html.replace(/\[CONTACT\s*:\s*([^\]]+)\]/gi, (match, contents) => {
-        const parts = contents.split('|').map(p => p.trim());
-        const formattedParts = parts.map(part => {
-            if (part.includes('@') && !part.includes(' ')) {
-                return `<a href="mailto:${part}">${part}</a>`;
-            }
-            if (part.startsWith('http://') || part.startsWith('https://')) {
-                const cleanUrl = part.replace(/^https?:\/\/(www\.)?/, '');
-                return `<a href="${part}" target="_blank">${cleanUrl}</a>`;
-            }
-            return `<span>${part}</span>`;
-        });
-        return `<div class="resume-contact-bar">${formattedParts.join(' &nbsp;•&nbsp; ')}</div>`;
-    });
+    // 2. Post-process contact block if present: e.g. [CONTACT : email • phone | link]
+    const contact = formatContactBars(html);
+    html = contact.html;
 
     // RESTRUCTURE FOR 2 COLUMNS IF ENABLED
     let finalHtml = html;
@@ -264,6 +295,7 @@ export function compileMarkdown(mdText, styleConfig, markdownInput, onUpdate) {
     return {
         html: finalHtml,
         tokens: tokens,
-        resumeTitle: currentResumeTitle
+        resumeTitle: currentResumeTitle,
+        warnings: { contactUnclosed: contact.unclosed }
     };
 }
