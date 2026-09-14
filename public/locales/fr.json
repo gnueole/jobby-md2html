@@ -89,7 +89,8 @@
     "paper_format_tooltip": "Choisir le format de page",
     "format_a4": "Format A4",
     "format_letter": "Lettre US",
-    "format_legal": "Légal US"
+    "format_legal": "Légal US",
+    "warning_contact_unclosed": "⚠️ La ligne CONTACT n'est pas fermée : ajoutez « ] » à la fin de la ligne pour afficher la barre de contact."
   },
   "controls": {
     "title": "● DESIGN & EXPORTS",
@@ -257,7 +258,9 @@
     "ext_muted_title": "Balise de texte estompé (Muted)",
     "ext_muted_desc": "Estomper le texte (gris clair) tout en le gardant 100% lisible par les robots ATS. Ex : :muted[Permis B - Véhiculé]",
     "ext_contact_title": "Bloc de coordonnées centré",
-    "ext_contact_desc": "Formate automatiquement une ligne de contact avec des icônes. Séparez les valeurs par des barres verticales |.",
+    "ext_contact_desc": "Formate automatiquement une ligne de contact. Séparez les valeurs par des points • (les barres | fonctionnent aussi) et terminez la ligne par un crochet ].",
+    "ext_columns_title": "Mise en page sur 2 colonnes",
+    "ext_columns_desc": "En mode 2 colonnes, les titres ## vont dans la colonne principale et les titres ### dans la colonne latérale.",
     "section_ai": "🤖 Collaboration avec l'IA",
     "ai_desc_html": "Le Markdown est le format idéal lorsque vous travaillez avec des IA. Lors de la rédaction et de l'optimisation de votre CV avec votre modèle préféré (Gemini, ChatGPT, Claude, etc.), demandez-lui systématiquement :<br><code style=\"display: block; margin: 8px 0; padding: 10px; background: var(--bg-modal-directives); border-radius: 6px; font-family: monospace; border: 1px dashed var(--border-color); color: var(--text-primary);\">\"Générer le CV final au format Markdown propre\"</code>Cela vous permettra de coller directement le contenu dans Jobby avec un rendu parfait.",
     "section_practices": "✨ Bonnes Pratiques & Liens Utiles",
@@ -314,7 +317,9 @@
     "rule_name_pass": "Nom du candidat identifié dans un titre H1.",
     "rule_name_fail": "Commencez votre CV avec votre Nom dans un titre principal H1.",
     "rule_bullets_pass": "Structure des listes à puces standardisée.",
-    "rule_bullets_fail": "Utilisez des listes à puces (au moins 3 items) pour détailler vos expériences."
+    "rule_bullets_fail": "Utilisez des listes à puces (au moins 3 items) pour détailler vos expériences.",
+    "rule_contact_unclosed": "Ligne CONTACT non fermée : ajoutez un crochet « ] » à la fin de la ligne.",
+    "rule_placeholders": "Éléments du modèle encore présents ({items}) : remplacez-les par vos vraies coordonnées."
   },
   "toasts": {
     "loaded": "Fichier **{filename}** chargé !",

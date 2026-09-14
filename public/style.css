@@ -497,6 +497,21 @@ body {
     background-color: var(--bg-preview);
 }
 
+/* Syntax warning, above the sheet rather than inside it, so it never reaches the PDF */
+.preview-warning {
+    display: none;
+    margin: 12px 16px 0;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    background-color: var(--warning-bg);
+    color: #fbbf24;
+}
+
+.preview-warning.show {
+    display: block;
+}
+
 .preview-canvas {
     display: inline-block;
     text-align: left;
@@ -1984,6 +1999,7 @@ body.expert-mode-active .format-lock-badge {
 
 @media print {
     .page-break-indicator,
+    .preview-warning,
     .toast-container,
     .jobby-tooltip,
     .cursor-radar,

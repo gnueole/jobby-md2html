@@ -2,7 +2,7 @@
 
 **Titlul jobului vizat (de ex., Solutions Engineer)** :accent[· Disponibil Imediat]
 
-[CONTACT : emailul.dvs@example.com | +40 700 000 000 | [linkedin.com/in/profilul-dvs](https://www.linkedin.com/in/your-profile) | [portofoliu](https://perdu.com)]
+[CONTACT : emailul.dvs@example.com • +40 700 000 000 • [linkedin.com/in/profilul-dvs](https://www.linkedin.com/in/your-profile) • [portofoliu](https://perdu.com)]
 
 > "Scrieți aici o scurtă introducere de 2 până la 3 propoziții. Evidențiați expertiza dvs. principală, realizările cheie și valoarea unică pe care o aduceți unei echipe. Utilizați cuvinte cheie vizate care se aliniează cu joburile pentru care aplicați pentru a optimiza algoritmii ATS."
 
@@ -23,20 +23,6 @@
 **Numele proiectului personal** - Rol :muted[Tehnologii utilizate] - 2023
 - Descrieți scopul proiectului, rolul dvs. și ceea ce ați construit.
 - Conectați la aplicația live sau la depozitul Git, dacă este disponibil.
-
-### 💡 DIRECTIVE DE FORMATARE (Coloana laterală)
-
-Acest șablon servește ca ghid interactiv pentru editor:
-
-- **Culoarea de accent**:
-  Utilizați sintaxa `:accent[textul meu]` pentru a colora termenii cheie cu culoarea de accent.
-- **Text estompat (gri)**:
-  Utilizați `:muted[textul meu]` pentru a de-accentua detaliile secundare (de ex., :muted[Permis de conducere categoria B]).
-- **Bara de contact**:
-  Linia `[CONTACT : email | telefon | link]` de sus formatează automat o bară centrată cu linkuri active.
-- **Aspect pe 2 coloane**:
-  - Antetele `##` (H2) merg în **dreapta** (Coloana principală).
-  - Antetele `###` (H3) merg în **stânga** (Coloana laterală).
 
 ### ABILITĂȚI TEHNICE
 

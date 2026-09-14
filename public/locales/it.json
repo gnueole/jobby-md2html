@@ -89,7 +89,8 @@
     "paper_format_tooltip": "Scegli il formato della pagina",
     "format_a4": "Formato A4",
     "format_letter": "Lettera US",
-    "format_legal": "US Legal"
+    "format_legal": "US Legal",
+    "warning_contact_unclosed": "⚠️ La riga CONTACT non è chiusa: aggiungi \"]\" alla fine della riga per mostrare la barra dei contatti."
   },
   "controls": {
     "title": "● DESIGN & ESPORTAZIONI",
@@ -257,7 +258,9 @@
     "ext_muted_title": "Tag di testo attenuato (Muted)",
     "ext_muted_desc": "Attenua la visibilità del testo (grigio chiaro) lasciandolo scansionabile al 100% dai robot ATS. Es: :muted[Patente B]",
     "ext_contact_title": "Riga di recapito centrata",
-    "ext_contact_desc": "Raggruppa le informazioni di contatto con icone automatiche. Separa gli elementi con barre verticali |.",
+    "ext_contact_desc": "Formatta automaticamente una riga di contatto. Separa i valori con punti • (funzionano anche le barre |) e chiudi la riga con una parentesi ].",
+    "ext_columns_title": "Layout a 2 colonne",
+    "ext_columns_desc": "In modalità 2 colonne, i titoli ## vanno nella colonna principale e i titoli ### nella colonna laterale.",
     "section_ai": "🤖 Collaborazione e istruzioni per IA",
     "ai_desc_html": "Il formato Markdown è l'ideale quando utilizzi sistemi di IA per comporre il tuo CV. Nella stesura e ottimizzazione con il tuo modello di IA preferito (Gemini, ChatGPT, Claude, ecc.), richiedi sempre:<br><code style=\"display: block; margin: 8px 0; padding: 10px; background: var(--bg-modal-directives); border-radius: 6px; font-family: monospace; border: 1px dashed var(--border-color); color: var(--text-primary);\">\"Genera il curriculum finale in formato Markdown pulito\"</code>Questo ti consentirà di incollare direttamente il testo su Jobby con una resa grafica impeccabile.",
     "section_practices": "✨ Buone pratiche e guide utili",
@@ -314,7 +317,9 @@
     "rule_name_pass": "Nome completo del candidato rilevato nel tag H1.",
     "rule_name_fail": "Inizia il tuo curriculum con il tuo Nome in un'intestazione H1 all'inizio.",
     "rule_bullets_pass": "Struttura degli elenchi puntati standardizzata.",
-    "rule_bullets_fail": "Utilizza elenchi puntati (almeno 3 elementi) per descrivere le tue esperienze."
+    "rule_bullets_fail": "Utilizza elenchi puntati (almeno 3 elementi) per descrivere le tue esperienze.",
+    "rule_contact_unclosed": "Riga CONTACT non chiusa: aggiungi una parentesi quadra di chiusura \"]\" alla fine della riga.",
+    "rule_placeholders": "Segnaposto del modello ancora presenti ({items}): sostituiscili con i tuoi dati reali."
   },
   "toasts": {
     "loaded": "Caricato **{filename}**",

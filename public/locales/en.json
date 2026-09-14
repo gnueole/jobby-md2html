@@ -89,7 +89,8 @@
     "paper_format_tooltip": "Choose page format",
     "format_a4": "A4 Format",
     "format_letter": "US Letter",
-    "format_legal": "US Legal"
+    "format_legal": "US Legal",
+    "warning_contact_unclosed": "⚠️ The CONTACT line is not closed: add \"]\" at the end of the line to display the contact bar."
   },
   "controls": {
     "title": "● DESIGN & EXPORTS",
@@ -257,7 +258,9 @@
     "ext_muted_title": "Muted Text Tag",
     "ext_muted_desc": "De-emphasize text (light gray) while leaving it 100% readable by ATS scanners. Ex: :muted[Driver's License]",
     "ext_contact_title": "Contact Centered Block",
-    "ext_contact_desc": "Auto-formats contact details with icons. Separate values with vertical bars |.",
+    "ext_contact_desc": "Auto-formats a contact line. Separate values with dots • (vertical bars | work too) and end the line with a closing bracket ].",
+    "ext_columns_title": "2-Column Layout",
+    "ext_columns_desc": "In 2-column mode, ## headings go to the main column and ### headings go to the sidebar.",
     "section_ai": "🤖 AI Collaboration & Prompting",
     "ai_desc_html": "Markdown is your best asset when using AI to build your CV. When manipulating and optimizing your CV with your favorite AI model (Gemini, ChatGPT, Claude, etc.), always instruct it to:<br><code style=\"display: block; margin: 8px 0; padding: 10px; background: var(--bg-modal-directives); border-radius: 6px; font-family: monospace; border: 1px dashed var(--border-color); color: var(--text-primary);\">\"Generate the final CV in clean MD format\"</code>This ensures you can simply copy and paste the raw output directly into Jobby with zero layout distortion.",
     "section_practices": "✨ Best Practices & Markdown Guide",
@@ -314,7 +317,9 @@
     "rule_name_pass": "Candidate full name identified in H1.",
     "rule_name_fail": "Start your resume with your Name in H1.",
     "rule_bullets_pass": "Standardized bullet point structure.",
-    "rule_bullets_fail": "Use bullet point lists (at least 3 items) for professional experience."
+    "rule_bullets_fail": "Use bullet point lists (at least 3 items) for professional experience.",
+    "rule_contact_unclosed": "CONTACT line not closed: add a closing bracket \"]\" at the end of the line.",
+    "rule_placeholders": "Template placeholders still present ({items}): replace them with your real details."
   },
   "toasts": {
     "loaded": "Loaded **{filename}**",

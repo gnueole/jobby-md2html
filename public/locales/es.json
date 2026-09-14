@@ -89,7 +89,8 @@
     "paper_format_tooltip": "Elegir formato de página",
     "format_a4": "Formato A4",
     "format_letter": "US Letter",
-    "format_legal": "US Legal"
+    "format_legal": "US Legal",
+    "warning_contact_unclosed": "⚠️ La línea CONTACT no está cerrada: añada «]» al final de la línea para mostrar la barra de contacto."
   },
   "controls": {
     "title": "● DISEÑO Y EXPORTACIONES",
@@ -257,7 +258,9 @@
     "ext_muted_title": "Etiqueta de texto atenuado (Muted)",
     "ext_muted_desc": "Atenúa el color del texto (gris claro) sin perder legibilidad ante robots ATS. Ej: :muted[Licencia de conducir]",
     "ext_contact_title": "Línea de contacto centrada",
-    "ext_contact_desc": "Agrupa detalles de contacto con iconos automáticos. Separe los elementos con barras verticales |.",
+    "ext_contact_desc": "Da formato automático a una línea de contacto. Separe los valores con puntos • (las barras | también funcionan) y termine la línea con un corchete ].",
+    "ext_columns_title": "Diseño a 2 columnas",
+    "ext_columns_desc": "En modo 2 columnas, los títulos ## van a la columna principal y los títulos ### a la columna lateral.",
     "section_ai": "🤖 Colaboración e instrucciones para IA",
     "ai_desc_html": "El formato Markdown es ideal para colaborar con IA. Al redactar u optimizar su CV con su modelo de IA preferido (Gemini, ChatGPT, Claude, etc.), pídale siempre:<br><code style=\"display: block; margin: 8px 0; padding: 10px; background: var(--bg-modal-directives); border-radius: 6px; font-family: monospace; border: 1px dashed var(--border-color); color: var(--text-primary);\">\"Genera el currículum final en formato Markdown limpio\"</code>Esto le permitirá copiar y pegar el contenido directamente en Jobby con un renderizado excelente.",
     "section_practices": "✨ Buenas prácticas y guías",
@@ -314,7 +317,9 @@
     "rule_name_pass": "Nombre completo del candidato identificado en H1.",
     "rule_name_fail": "Inicie su CV escribiendo su Nombre en formato H1 al principio.",
     "rule_bullets_pass": "Estructura de viñetas estandarizada.",
-    "rule_bullets_fail": "Utilice listas con viñetas (mínimo 3 elementos) para detallar su trayectoria."
+    "rule_bullets_fail": "Utilice listas con viñetas (mínimo 3 elementos) para detallar su trayectoria.",
+    "rule_contact_unclosed": "Línea CONTACT sin cerrar: añada un corchete de cierre «]» al final de la línea.",
+    "rule_placeholders": "Quedan marcadores de la plantilla ({items}): sustitúyalos por sus datos reales."
   },
   "toasts": {
     "loaded": "Cargado **{filename}**",

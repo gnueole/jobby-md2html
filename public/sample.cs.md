@@ -2,7 +2,7 @@
 
 **Cílová pracovní pozice (např. Solutions Engineer)** :accent[· Ihned k dispozici]
 
-[CONTACT : vas.email@example.com | +420 123 456 789 | [linkedin.com/in/vas-profil](https://www.linkedin.com/in/your-profile) | [portfolio](https://perdu.com)]
+[CONTACT : vas.email@example.com • +420 123 456 789 • [linkedin.com/in/vas-profil](https://www.linkedin.com/in/your-profile) • [portfolio](https://perdu.com)]
 
 > "Zde napište krátký úvod o 2 až 3 větách. Zvýrazněte své hlavní odborné znalosti, klíčové úspěchy a jedinečnou hodnotu, kterou přinášíte týmu. Pro optimalizaci pro algoritmy ATS použijte klíčová slova, která odpovídají pozicím, o které se ucházíte."
 
@@ -23,20 +23,6 @@
 **Název osobního projektu** - Role :muted[Použitý technologický zásobník] - 2023
 - Popište cíl projektu, svou roli a to, co jste vytvořili.
 - Přidejte odkaz na živou aplikaci nebo Git repozitář, pokud je k dispozici.
-
-### 💡 POKYNY PRO FORMÁTOVÁNÍ (Boční sloupec)
-
-Tato šablona slouží jako interaktivní průvodce pro editor:
-
-- **Barva zvýraznění**:
-  Použijte syntaxi `:accent[můj text]` pro obarvení klíčových pojmů barvou zvýraznění.
-- **Muted text (šedý)**:
-  Použijte `:muted[můj text]` pro potlačení sekundárních detailů (např. :muted[Řidičský průkaz B]).
-- **Kontaktní lišta**:
-  Řádek `[CONTACT : email | telefon | odkaz]` nahoře automaticky zformátuje vycentrovanou lištu s aktivními odkazy.
-- **Dvousloupcové rozvržení**:
-  - Nadpisy `##` (H2) jdou **doprava** (Hlavní sloupec).
-  - Nadpisy `###` (H3) jdou **doleva** (Boční sloupec).
 
 ### TECHNICKÉ DOVEDNOSTI
 

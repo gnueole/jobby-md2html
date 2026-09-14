@@ -6,7 +6,11 @@
 import { ICONS } from './config.js';
 import { t } from './i18n.js';
 
-export function runAtsChecker(md, html) {
+// Placeholders shipped in the sample resumes. Finding one means a link or an address
+// was never replaced, and would go out as a dead link on a real resume.
+const TEMPLATE_PLACEHOLDERS = ['example.com', 'perdu.com', 'your-profile', 'votre-profil', 'vas-profil', 'ihr-profil', 'su-perfil', 'il-tuo-profilo', 'profilul-dvs'];
+
+export function runAtsChecker(md, html, warnings = {}) {
     const charWordCount = document.getElementById('char-word-count');
     const atsChecklistContainer = document.getElementById('ats-checklist');
     const scoreRingProgress = document.getElementById('score-ring-progress');
@@ -98,6 +102,18 @@ export function runAtsChecker(md, html) {
     } else {
         score -= 15;
         checks.push({ status: 'fail', text: t('ats.rule_bullets_fail') });
+    }
+
+    // 8. Syntax slips are reported, never corrected silently
+    if (warnings.contactUnclosed) {
+        checks.push({ status: 'info', text: t('ats.rule_contact_unclosed') });
+    }
+
+    // 9. Template placeholders left in place
+    const mdLower = md.toLowerCase();
+    const leftovers = TEMPLATE_PLACEHOLDERS.filter(p => mdLower.includes(p));
+    if (leftovers.length > 0) {
+        checks.push({ status: 'info', text: t('ats.rule_placeholders', { items: leftovers.join(', ') }) });
     }
 
     // Ensure score bounds

@@ -89,7 +89,8 @@
     "paper_format_tooltip": "Vybrat formát stránky",
     "format_a4": "Formát A4",
     "format_letter": "US Letter",
-    "format_legal": "US Legal"
+    "format_legal": "US Legal",
+    "warning_contact_unclosed": "⚠️ Řádek CONTACT není uzavřen: přidejte „]“ na konec řádku, aby se zobrazila kontaktní lišta."
   },
   "controls": {
     "title": "● DESIGN & EXPORTY",
@@ -257,7 +258,9 @@
     "ext_muted_title": "Značka tlumeného textu",
     "ext_muted_desc": "Potlačení důrazu textu (světle šedá) při zachování 100% čitelnosti pro ATS skenery. Příklad: :muted[Řidičský průkaz]",
     "ext_contact_title": "Centrovaný blok kontaktů",
-    "ext_contact_desc": "Automaticky formátuje kontaktní údaje s ikonami. Hodnoty oddělujte svislítky |.",
+    "ext_contact_desc": "Automaticky naformátuje kontaktní řádek. Hodnoty oddělujte tečkami • (fungují i svislítka |) a řádek ukončete závorkou ].",
+    "ext_columns_title": "Rozvržení do 2 sloupců",
+    "ext_columns_desc": "V režimu 2 sloupců jdou nadpisy ## do hlavního sloupce a nadpisy ### do bočního sloupce.",
     "section_ai": "🤖 Spolupráce s AI & dotazování",
     "ai_desc_html": "Markdown je vaším nejlepším pomocníkem při používání AI k sestavení životopisu. Při úpravách a optimalizaci životopisu s vaším oblíbeným modelem AI (Gemini, ChatGPT, Claude atd.) jej vždy instruujte, aby:<br><code style=\"display: block; margin: 8px 0; padding: 10px; background: var(--bg-modal-directives); border-radius: 6px; font-family: monospace; border: 1px dashed var(--border-color); color: var(--text-primary);\">\"Vygeneroval finální životopis v čistém formátu MD\"</code>To zajistí, že surový výstup můžete jednoduše zkopírovat a vložit přímo do Jobby bez jakéhokoli zkreslení rozvržení.",
     "section_practices": "✨ Nejlepší praxe & průvodce Markdownem",
@@ -314,7 +317,9 @@
     "rule_name_pass": "Celé jméno kandidáta identifikováno v H1.",
     "rule_name_fail": "Začněte svůj životopis jménem v nadpisu H1.",
     "rule_bullets_pass": "Standardizovaná struktura odrážek.",
-    "rule_bullets_fail": "Použijte seznam s odrážkami (alespoň 3 položky) pro profesní zkušenosti."
+    "rule_bullets_fail": "Použijte seznam s odrážkami (alespoň 3 položky) pro profesní zkušenosti.",
+    "rule_contact_unclosed": "Řádek CONTACT není uzavřen: na konec řádku přidejte uzavírací hranatou závorku „]“.",
+    "rule_placeholders": "Zůstaly zástupné údaje ze šablony ({items}): nahraďte je svými skutečnými údaji."
   },
   "toasts": {
     "loaded": "Načteno **{filename}**",
