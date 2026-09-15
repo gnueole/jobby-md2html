@@ -8,6 +8,29 @@ All notable changes to the Jobby project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.14.1] - 2026-09-15
+
+### Security
+
+- **POST bodies are capped at 5 MB.** `/api/pdf`, `/api/verify-token`,
+  `/api/telemetry` and `/api/feedback` accumulated the request body without any
+  limit, so an oversized or malicious payload grew the server's memory
+  unbounded. They now answer `413 Payload Too Large` past `MAX_BODY_SIZE`
+  (5 MB by default, overridable through the environment), and `400` on a
+  stream error.
+- **New-tab links no longer expose the editor.** Links opened with
+  `target="_blank"` in the about modal and the Markdown help carry
+  `rel="noopener noreferrer"`, so the opened page cannot reach back through
+  `window.opener`. Links inside the resume open in the same tab and were never
+  exposed.
+
+### Changed
+
+- **Bookmarklet labels in `INSTALL.md`** now match the developer modal:
+  "💼 Sync to Jobby (Active)" and "🧪 Sync to Jobby (Test)".
+
+---
+
 ## [1.14.0] - 2026-09-15
 
 ### Fixed
