@@ -74,8 +74,8 @@ To scrape jobs from LinkedIn and send them directly to your webhook:
 
 1. Launch the editor and click the **Developer** button in the header.
 2. Under **Jobby Webhook Bookmarklets**, you will find two pre-configured buttons:
-   - 🚀 **Sync to Jobby (Prod)**: Points to your production n8n server.
-   - 🛠️ **Sync to Jobby (Dev)**: Points to your local WSL n8n instance.
+   - 💼 **Sync to Jobby (Active)**: Points to your production n8n server.
+   - 🧪 **Sync to Jobby (Test)**: Points to your local WSL n8n instance.
 3. Drag either button to your browser's Bookmarks bar.
 4. Go to any LinkedIn job post page and click the bookmarklet to sync the job details automatically.
 
