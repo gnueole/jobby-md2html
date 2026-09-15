@@ -29,7 +29,7 @@ function formatContactPart(part) {
     }
     if (part.startsWith('http://') || part.startsWith('https://')) {
         const cleanUrl = part.replace(/^https?:\/\/(www\.)?/, '');
-        return `<a href="${part}" target="_blank">${cleanUrl}</a>`;
+        return `<a href="${part}" target="_blank" rel="noopener noreferrer">${cleanUrl}</a>`;
     }
     return `<span>${part}</span>`;
 }

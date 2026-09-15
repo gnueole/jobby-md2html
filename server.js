@@ -46,6 +46,44 @@ for (const envPath of envPaths) {
 
 const PORT = parseInt(process.env.PORT, 10) || 3010;
 
+// Maximum accepted request body size (bytes) for POST endpoints.
+// Prevents unbounded memory growth from oversized/malicious payloads.
+const MAX_BODY_SIZE = parseInt(process.env.MAX_BODY_SIZE, 10) || 5 * 1024 * 1024; // 5 MB
+
+// Collect a request body with an enforced size cap.
+// Calls onComplete(bodyString) once fully received; on overflow it responds 413
+// and destroys the socket without ever invoking onComplete.
+function collectBody(req, res, onComplete) {
+    let body = '';
+    let size = 0;
+    let aborted = false;
+
+    req.on('data', chunk => {
+        if (aborted) return;
+        size += chunk.length;
+        if (size > MAX_BODY_SIZE) {
+            aborted = true;
+            res.writeHead(413, { 'Content-Type': 'text/plain; charset=utf-8' });
+            res.end('Payload Too Large');
+            req.destroy();
+            return;
+        }
+        body += chunk.toString();
+    });
+    req.on('end', () => {
+        if (aborted) return;
+        onComplete(body);
+    });
+    req.on('error', () => {
+        if (aborted) return;
+        aborted = true;
+        try {
+            res.writeHead(400, { 'Content-Type': 'text/plain; charset=utf-8' });
+            res.end('Bad Request');
+        } catch (e) { /* response already sent */ }
+    });
+}
+
 // Initialize developer token securely
 const serverToken = process.env.N8N_WEBHOOK_TOKEN || process.env.X_N8N_TOKEN || crypto.randomBytes(24).toString('hex');
 if (!process.env.N8N_WEBHOOK_TOKEN && !process.env.X_N8N_TOKEN) {
@@ -95,9 +133,7 @@ const server = http.createServer((req, res) => {
             return;
         }
 
-        let body = '';
-        req.on('data', chunk => { body += chunk.toString(); });
-        req.on('end', () => {
+        collectBody(req, res, (body) => {
             let payload;
             try { payload = JSON.parse(body); } catch(e) { payload = {}; }
 
@@ -246,9 +282,7 @@ const server = http.createServer((req, res) => {
             return;
         }
         
-        let body = '';
-        req.on('data', chunk => { body += chunk.toString(); });
-        req.on('end', () => {
+        collectBody(req, res, (body) => {
             let payload;
             try { payload = JSON.parse(body); } catch(e) { payload = {}; }
             
@@ -270,9 +304,7 @@ const server = http.createServer((req, res) => {
             return;
         }
 
-        let body = '';
-        req.on('data', chunk => { body += chunk.toString(); });
-        req.on('end', () => {
+        collectBody(req, res, (body) => {
             let payload;
             try { payload = JSON.parse(body); } catch(e) { payload = {}; }
 
@@ -385,9 +417,7 @@ const server = http.createServer((req, res) => {
             return;
         }
 
-        let body = '';
-        req.on('data', chunk => { body += chunk.toString(); });
-        req.on('end', () => {
+        collectBody(req, res, (body) => {
             let payload;
             try { payload = JSON.parse(body); } catch(e) { payload = {}; }
 
