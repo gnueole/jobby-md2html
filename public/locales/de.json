@@ -89,7 +89,8 @@
     "paper_format_tooltip": "Seitenformat wählen",
     "format_a4": "A4-Format",
     "format_letter": "US-Letter",
-    "format_legal": "US-Legal"
+    "format_legal": "US-Legal",
+    "warning_contact_unclosed": "⚠️ Die CONTACT-Zeile ist nicht geschlossen: Fügen Sie „]“ am Zeilenende hinzu, um die Kontaktleiste anzuzeigen."
   },
   "controls": {
     "title": "● DESIGN & EXPORTE",
@@ -257,7 +258,9 @@
     "ext_muted_title": "Gedämpfter Text-Tag (Muted)",
     "ext_muted_desc": "Text leicht ausgrauen, während er für ATS-Reader zu 100% lesbar bleibt. Bsp: :muted[Führerschein Klasse B]",
     "ext_contact_title": "Zentrierter Kontaktblock",
-    "ext_contact_desc": "Formatiert Kontaktdaten automatisch mit Icons. Trennen Sie Werte mit einem vertikalen Strich |.",
+    "ext_contact_desc": "Formatiert eine Kontaktzeile automatisch. Trennen Sie Werte mit Punkten • (senkrechte Striche | funktionieren auch) und schließen Sie die Zeile mit einer Klammer ] ab.",
+    "ext_columns_title": "Zweispaltiges Layout",
+    "ext_columns_desc": "Im zweispaltigen Modus landen ##-Überschriften in der Hauptspalte und ###-Überschriften in der Seitenleiste.",
     "section_ai": "🤖 Zusammenarbeit mit KI",
     "ai_desc_html": "Markdown ist Ihr bestes Werkzeug bei der Erstellung des Lebenslaufs mit KI-Unterstützung. Wenn Sie Ihren Lebenslauf mit Modellen wie Gemini, ChatGPT oder Claude schreiben, weisen Sie diese immer an:<br><code style=\"display: block; margin: 8px 0; padding: 10px; background: var(--bg-modal-directives); border-radius: 6px; font-family: monospace; border: 1px dashed var(--border-color); color: var(--text-primary);\">\"Erstelle den finalen Lebenslauf im sauberen MD-Format\"</code>So können Sie das Ergebnis direkt ohne Formatierungsverluste in Jobby einfügen.",
     "section_practices": "✨ Best Practices & Markdown-Anleitung",
@@ -314,7 +317,9 @@
     "rule_name_pass": "Name in Überschrift (H1) erkannt.",
     "rule_name_fail": "Beginnen Sie Ihren Lebenslauf mit Ihrem Namen als H1-Überschrift.",
     "rule_bullets_pass": "Standardisierte Aufzählungs-Struktur.",
-    "rule_bullets_fail": "Nutzen Sie Listen (mindestens 3 Punkte) zur Beschreibung Ihrer Berufserfahrung."
+    "rule_bullets_fail": "Nutzen Sie Listen (mindestens 3 Punkte) zur Beschreibung Ihrer Berufserfahrung.",
+    "rule_contact_unclosed": "CONTACT-Zeile nicht geschlossen: Fügen Sie am Zeilenende eine schließende Klammer „]“ hinzu.",
+    "rule_placeholders": "Platzhalter aus der Vorlage noch vorhanden ({items}): Ersetzen Sie sie durch Ihre echten Angaben."
   },
   "toasts": {
     "loaded": "**{filename}** erfolgreich geladen",

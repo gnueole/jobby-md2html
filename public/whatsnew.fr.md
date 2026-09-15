@@ -1,3 +1,19 @@
+# 1.14.0 - Mise à jour Jobby
+Mise à jour Jobby du 15/09/2026 · Une ligne de contact mal fermée ne casse plus l'aperçu, avertissements de syntaxe, détection des éléments du modèle et modèles allégés.
+[CONTACT : hi@eole.me • [cv.eole.me](https://cv.eole.me)]
+
+## 🛡️ LIGNE DE CONTACT FIABILISÉE
+* **Fini le CV avalé** : Une ligne `[CONTACT : …]` sans son crochet fermant `]` reste sur sa ligne, au lieu d'entraîner tout le CV dans l'encadré de contact.
+* **Avertissement clair** : Un bandeau au-dessus de l'aperçu et une ligne de la checklist ATS indiquent exactement quoi ajouter.
+* **Séparateurs plus jolis** : Séparez vos coordonnées avec `•` (la barre `|` fonctionne toujours).
+
+## ✨ MODÈLES ALLÉGÉS
+* **Détection des éléments du modèle** : La checklist ATS signale les liens et adresses du modèle que vous n'avez pas encore remplacés.
+* **Guide déplacé dans l'aide** : Le guide de formatage quitte le CV modèle pour l'aide Markdown, qui explique aussi la mise en page sur 2 colonnes.
+* **Le code reste du code** : La syntaxe Jobby écrite entre backticks s'affiche telle quelle.
+
+---
+
 # 1.12.0 - Mise à jour Jobby
 Mise à jour Jobby du 25/07/2026 · Pipeline de linting automatisé, script de validation i18n, workflow GitHub Actions CI, typographie Outfit, en-têtes dépolis en glassmorphism et micro-animations sur les boutons.
 [CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]

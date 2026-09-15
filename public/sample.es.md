@@ -2,7 +2,7 @@
 
 **Título del puesto objetivo (p. ej., Ingeniero de Soluciones)** :accent[· Disponible de inmediato]
 
-[CONTACT : su.correo@example.com | +34 600 00 00 00 | [linkedin.com/in/su-perfil](https://www.linkedin.com/in/your-profile) | [portfolio](https://perdu.com)]
+[CONTACT : su.correo@example.com • +34 600 00 00 00 • [linkedin.com/in/su-perfil](https://www.linkedin.com/in/your-profile) • [portfolio](https://perdu.com)]
 
 > "Escriba aquí una breve introducción de 2 o 3 frases. Destaque su experiencia principal, sus logros clave y el valor único que aporta a un equipo. Utilice palabras clave específicas que se alineen con los puestos a los que postula para optimizar el análisis de los algoritmos ATS."
 
@@ -23,20 +23,6 @@
 **Nombre del proyecto personal** - Rol :muted[Tecnologías utilizadas] - 2023
 - Describa el objetivo del proyecto, su rol y lo que construyó.
 - Enlace a la aplicación activa o al repositorio Git si está disponible.
-
-### 💡 DIRECTRICES DE FORMATO (Columna lateral)
-
-Esta plantilla sirve como guía interactiva para el editor:
-
-- **Color de acento**:
-  Utilice la sintaxis `:accent[mi texto]` para resaltar términos clave con el color de acento.
-- **Texto atenuado (gris)**:
-  Utilice `:muted[mi texto]` para restar importancia a los detalles secundarios (p. ej., :muted[Licencia de conducir B]).
-- **Barra de contacto**:
-  La línea `[CONTACT : correo | teléfono | enlace]` en la parte superior formatea automáticamente una barra centrada con enlaces activos.
-- **Diseño de 2 columnas**:
-  - Los encabezados `##` (H2) van a la **derecha** (Columna principal).
-  - Los encabezados `###` (H3) van a la **izquierda** (Columna lateral).
 
 ### COMPETENCIAS TÉCNICAS
 

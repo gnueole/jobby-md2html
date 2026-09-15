@@ -1,3 +1,19 @@
+# 1.14.0 - Jobby Update
+Jobby Update of 09/15/2026 · An unclosed contact line no longer breaks the preview, syntax warnings, template placeholder check, and lighter samples.
+[CONTACT : hi@eole.me • [cv.eole.me](https://cv.eole.me)]
+
+## 🛡️ SAFER CONTACT LINE
+* **No More Swallowed Resume**: A `[CONTACT : …]` line missing its closing `]` now stays on its own line instead of pulling the rest of the resume into the contact box.
+* **Clear Warning**: A notice above the preview and an entry in the ATS checklist tell you exactly what to add.
+* **Nicer Separators**: Separate contact details with `•` (the `|` still works).
+
+## ✨ LIGHTER SAMPLES
+* **Placeholder Check**: The ATS checklist flags template links and addresses you have not replaced yet.
+* **Guide Moved to Help**: The formatting guide left the sample resume for the Markdown help, which now also explains the 2-column layout.
+* **Code Stays Code**: Jobby syntax written between backticks is displayed as-is.
+
+---
+
 # 1.12.0 - Jobby Update
 Jobby Update of 07/25/2026 · Automated linting pipeline, i18n validator script, GitHub Actions CI workflow, Outfit typography, frosted glassmorphism headers, and button micro-animations.
 [CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]

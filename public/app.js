@@ -854,6 +854,23 @@ async function initializeJobby() {
         }
     }
 
+    // --- Preview warning: a syntax slip is reported above the sheet, never inside it ---
+    let previewWarningTimer = null;
+    function updatePreviewWarning(warnings) {
+        const previewWarning = document.getElementById('preview-warning');
+        if (!previewWarning) return;
+        clearTimeout(previewWarningTimer);
+        if (!warnings || !warnings.contactUnclosed) {
+            previewWarning.classList.remove('show');
+            return;
+        }
+        // Wait for a pause in typing: a contact line is legitimately unclosed while it is being written
+        previewWarningTimer = setTimeout(() => {
+            previewWarning.textContent = t('preview.warning_contact_unclosed');
+            previewWarning.classList.add('show');
+        }, 1200);
+    }
+
     // --- Local parser invoker ---
     function runCompileMarkdown(text) {
         const start = performance.now();
@@ -866,7 +883,8 @@ async function initializeJobby() {
         currentResumeTitle = result.resumeTitle;
         lastCleanHTML = result.html;
 
-        runAtsChecker(text, result.html);
+        runAtsChecker(text, result.html, result.warnings);
+        updatePreviewWarning(result.warnings);
         updatePageBreaks(resumeOutput);
         updateSyntaxHighlight(markdownInput, highlightCode, cbSyntaxHighlight);
         const end = performance.now();

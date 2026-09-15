@@ -89,7 +89,8 @@
     "paper_format_tooltip": "Alege formatul paginii",
     "format_a4": "Format A4",
     "format_letter": "Scrisoare US",
-    "format_legal": "US Legal"
+    "format_legal": "US Legal",
+    "warning_contact_unclosed": "⚠️ Linia CONTACT nu este închisă: adăugați „]” la sfârșitul liniei pentru a afișa bara de contact."
   },
   "controls": {
     "title": "● DESIGN & EXPORTURI",
@@ -257,7 +258,9 @@
     "ext_muted_title": "Tag text estompat (Muted)",
     "ext_muted_desc": "Estompează textul (gri deschis) păstrându-l în același timp citibil de scanerele ATS. Ex: :muted[Permis de conducere]",
     "ext_contact_title": "Bloc de contact centrat",
-    "ext_contact_desc": "Grupează automat detaliile de contact cu pictograme. Separați elementele cu bare verticale |.",
+    "ext_contact_desc": "Formatează automat o linie de contact. Separați valorile cu puncte • (funcționează și barele |) și încheiați linia cu o paranteză ].",
+    "ext_columns_title": "Aspect pe 2 coloane",
+    "ext_columns_desc": "În modul 2 coloane, titlurile ## merg în coloana principală, iar titlurile ### în coloana laterală.",
     "section_ai": "🤖 Colaborare cu IA",
     "ai_desc_html": "Markdown este cel mai bun format când lucrați cu IA. La scrierea și optimizarea CV-ului cu modelul preferat (Gemini, ChatGPT, Claude etc.), solicitați-i întotdeauna:<br><code style=\"display: block; margin: 8px 0; padding: 10px; background: var(--bg-modal-directives); border-radius: 6px; font-family: monospace; border: 1px dashed var(--border-color); color: var(--text-primary);\">\"Generează CV-ul final în format Markdown curat\"</code>Acest lucru vă va permite să lipiți conținutul direct în Jobby cu o redare grafică perfectă.",
     "section_practices": "✨ Bune practici & Ghiduri utile",
@@ -314,7 +317,9 @@
     "rule_name_pass": "Nume complet detectat în H1.",
     "rule_name_fail": "Începeți CV-ul cu numele dumneavoastră ca titlu H1 la început.",
     "rule_bullets_pass": "Structură standardizată de puncte (liste).",
-    "rule_bullets_fail": "Utilizați liste cu puncte (minim 3 elemente) pentru a detalia experiențele."
+    "rule_bullets_fail": "Utilizați liste cu puncte (minim 3 elemente) pentru a detalia experiențele.",
+    "rule_contact_unclosed": "Linia CONTACT nu este închisă: adăugați o paranteză pătrată de închidere „]” la sfârșitul liniei.",
+    "rule_placeholders": "Au rămas elemente din șablon ({items}): înlocuiți-le cu datele dvs. reale."
   },
   "toasts": {
     "loaded": "S-a încărcat **{filename}**",

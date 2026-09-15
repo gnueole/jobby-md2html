@@ -2,7 +2,7 @@
 
 **Angestrebter Jobtitel (z. B. Solutions Engineer)** :accent[· Ab sofort verfügbar]
 
-[CONTACT : ihre.email@example.com | +49 170 0000000 | [linkedin.com/in/ihr-profil](https://www.linkedin.com/in/your-profile) | [portfolio](https://perdu.com)]
+[CONTACT : ihre.email@example.com • +49 170 0000000 • [linkedin.com/in/ihr-profil](https://www.linkedin.com/in/your-profile) • [portfolio](https://perdu.com)]
 
 > "Schreiben Sie hier eine kurze Einleitung von 2 bis 3 Sätzen. Heben Sie Ihre Kernkompetenz, Ihre wichtigsten Erfolge und den einzigartigen Wert hervor, den Sie in ein Team einbringen. Verwenden Sie Keywords, die auf die Stellen abgestimmt sind, auf die Sie sich bewerben, um die ATS-Algorithmen zu optimieren."
 
@@ -23,20 +23,6 @@
 **Name des persönlichen Projekts** - Rolle :muted[Verwendete Technologien] - 2023
 - Beschreiben Sie das Projektziel, Ihre Rolle und was Sie gebaut haben.
 - Verlinken Sie auf die Live-Anwendung oder das Git-Repository, falls vorhanden.
-
-### 💡 FORMATIERUNGSRICHTLINIEN (Seitenleiste)
-
-Diese Vorlage dient als interaktive Anleitung für den Editor:
-
-- **Akzentfarbe**:
-  Verwenden Sie die Syntax `:accent[mein Text]`, um Schlüsselbegriffe in der Akzentfarbe hervorzuheben.
-- **Dezenter Text (Grau)**:
-  Verwenden Sie `:muted[mein Text]`, um sekundäre Details abzuschwächen (z. B. :muted[Führerschein Klasse B]).
-- **Kontaktleiste**:
-  Die Zeile `[CONTACT : E-Mail | Telefon | Link]` oben formatiert automatisch eine zentrierte Leiste mit aktiven Links.
-- **2-Spalten-Layout**:
-  - `##` (H2)-Überschriften werden **rechts** platziert (Hauptspalte).
-  - `###` (H3)-Überschriften werden **links** platziert (Seitenleiste).
 
 ### FACHLICHE KOMPETENZEN
 

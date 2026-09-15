@@ -68,8 +68,10 @@ Jobby extends standard Markdown with shortcodes to style and structure elements 
 | :--- | :--- | :--- |
 | `:accent[text]` | Styles text with your chosen main layout accent color. | `Status: :accent[Available Immediately]` |
 | `:muted[text]` | De-emphasizes secondary information (remains crawlable by ATS). | `:muted[Driver's license B · Own vehicle]` |
-| `[CONTACT : email \| phone \| link]` | Renders a clean, centered, list-separated contact card. | `[CONTACT : hi@eole.me \| +33 6... \| linkedin.com/in/...]` |
+| `[CONTACT : email • phone • link]` | Renders a clean, centered, list-separated contact card. Separate values with `•`, `·` or `\|`, and end the line with `]`. | `[CONTACT : hi@eole.me • +33 6... • linkedin.com/in/...]` |
 | **H2 (`##`) & H3 (`###`)** | In 2-column mode: H3 forms the sidebar (left); H2 forms the body (right). | *Toggle columns to auto-arrange.* |
+
+Shortcodes written between backticks are displayed as-is, never interpreted. A `[CONTACT : …]` line missing its closing `]` stays raw text on its own line: the preview shows a warning above the sheet and the ATS checklist names the fix, rather than Jobby guessing where the line ends.
 
 ---
 
