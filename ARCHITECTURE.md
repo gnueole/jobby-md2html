@@ -108,19 +108,18 @@ To manage your application history and personalize your CV, the system is backed
 
 Jobby includes a lightweight telemetry pipeline to monitor editor performance, calculate layout rendering speeds, and track feature adoption.
 
-- **Strict Anonymity**: Telemetry collection is strictly anonymous. No personal information, name, email, IP address, or resume text is ever collected or transmitted. A random session identifier is used solely to correlate editor actions.
-- **Experimental Abstractions**: The backend currently proxies telemetry events to an n8n webhook and stores logs. Please note that **Notion** (acting as the metrics database) and **Axiom** (used for centralized logging) are current experimental integrations that are subject to change in future iterations.
+- **Strict Anonymity**: Telemetry collection is strictly anonymous. No personal information, name, email, IP address, file name or resume text is ever collected or transmitted. A random session identifier is used solely to correlate editor actions.
+- **Where it goes**: Events reach the Axiom `eole-telemetry` dataset through Vector, shared by every eole.me project. They used to go through n8n into a Notion database, which was retired in 1.13.0.
 
-### Event Capture & n8n Workflow
-1. **Event Capture:** The frontend editor captures key user events (e.g., Session Start, Open/Save File, Copy Markdown, Print PDF, ATS Scorecard calculations, opening the About Modal, opening the Markdown Help Modal, and starting, completing, replaying, or exiting the popup tutorial).
-2. **Secure Proxy:** Events are POSTed to the local `/api/telemetry` endpoint. This acts as a proxy, forwarding events to n8n without exposing credentials to the client.
-3. **n8n Workflow:** A dedicated self-hosted n8n workflow (`n8n/jobby-telemetry.json`) is triggered via a webhook.
-4. **Notion Database:** The n8n workflow logs the events into a central Notion Database (capturing metrics like session ID, event type, word/character count, ATS score, design preset, layout format, font family, browser, OS, initial ATS score, score delta, rule fixes count, preset switches history, active theme, history stack clicks, and compiler rendering times).
+### Event Capture & Delivery
+1. **Event Capture:** The frontend editor captures key user events: session start, open/save file, copy Markdown, print PDF, the ATS scorecard (sent only when the score changes), opening the About and Help modals, and the tutorial (start, complete, replay, exit). Nothing is sent in development or when the user opts out.
+2. **Secure Proxy:** Events are POSTed to the local `/api/telemetry` endpoint, which adds `application: 'jobby'` and the environment, then forwards them. The event name goes out in snake_case (`event_type`), the vocabulary shared by all projects.
+3. **Vector → Axiom:** Vector normalises legacy field names at ingest and ships the events to the `eole-telemetry` dataset.
 
 ### Telemetry Configuration
-To activate telemetry, ensure `N8N_TELEMETRY_WEBHOOK_URL` is set in your environment (managed securely via Doppler or in your `.env` file):
+The forwarding address is read from `N8N_TELEMETRY_WEBHOOK_URL`, a name kept from the n8n era, and defaults to the Vector container. `server.js` also has an optional second forward, `VECTOR_TELEMETRY_URL`.
 ```env
-N8N_TELEMETRY_WEBHOOK_URL="http://localhost:5678/webhook/jobby-telemetry"
+N8N_TELEMETRY_WEBHOOK_URL="http://vector:8080"
 ```
 
 ---

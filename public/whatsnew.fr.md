@@ -1,3 +1,20 @@
+# 1.14.6 - Mise à jour Jobby
+Mise à jour Jobby du 19/09/2026 · Le curseur reste sur son texte, tous les écrans sont lisibles en thème clair, une ligne de contact peut se fermer à la ligne suivante, et Firefox et Safari disent enfin ce que fait vraiment « Enregistrer ».
+[CONTACT : hi@eole.me • [cv.eole.me](https://cv.eole.me)]
+
+## 🛠️ CORRECTIONS DE L'ÉDITEUR
+* **Curseur aligné** : Le curseur ne se décale plus sur une ligne qui semble vide, à certaines largeurs d'éditeur.
+* **Ligne de contact** : Un `]` posé à la ligne suivante ferme de nouveau la ligne de contact.
+
+## 🎨 LISIBILITÉ
+* **Thème clair** : Tous les textes atteignent le contraste WCAG AA dans les deux thèmes, fenêtres comprises.
+
+## 💾 FICHIERS & CONFIDENTIALITÉ
+* **Télécharger sous Firefox et Safari** : Quand le navigateur ne peut pas enregistrer dans un fichier, le bouton indique désormais « Télécharger ».
+* **Confidentialité** : Les noms de fichiers ne font plus partie des statistiques d'usage anonymes.
+
+---
+
 # 1.14.0 - Mise à jour Jobby
 Mise à jour Jobby du 15/09/2026 · Une ligne de contact mal fermée ne casse plus l'aperçu, avertissements de syntaxe, détection des éléments du modèle et modèles allégés.
 [CONTACT : hi@eole.me • [cv.eole.me](https://cv.eole.me)]

@@ -1,3 +1,20 @@
+# 1.14.6 - Jobby Update
+Jobby Update of 09/19/2026 · The caret stays on its text, every screen is readable in the light theme, a contact line can be closed on the next line, and Firefox and Safari now say what "Save" really does.
+[CONTACT : hi@eole.me • [cv.eole.me](https://cv.eole.me)]
+
+## 🛠️ EDITOR FIXES
+* **Caret Alignment**: The caret no longer drifts onto a line that looks empty at some editor widths.
+* **Contact Line**: A `]` typed on the next line closes the contact line again.
+
+## 🎨 READABILITY
+* **Light Theme**: Every text now meets WCAG AA contrast in both themes, modals included.
+
+## 💾 FILES & PRIVACY
+* **Download on Firefox & Safari**: Where the browser cannot save to a file, the button now says Download.
+* **Privacy**: File names are no longer part of the anonymous usage statistics.
+
+---
+
 # 1.14.0 - Jobby Update
 Jobby Update of 09/15/2026 · An unclosed contact line no longer breaks the preview, syntax warnings, template placeholder check, and lighter samples.
 [CONTACT : hi@eole.me • [cv.eole.me](https://cv.eole.me)]
