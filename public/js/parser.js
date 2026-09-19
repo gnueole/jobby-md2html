@@ -12,10 +12,13 @@ let lastSectionsJSON = "";
 const MD_CODE_PATTERN = /(```[\s\S]*?```|~~~[\s\S]*?~~~|`[^`\n]+`)/g;
 const HTML_CODE_PATTERN = /(<pre[\s\S]*?<\/pre>|<code[\s\S]*?<\/code>)/gi;
 
-// A contact line ends at its closing bracket and never runs past its own line or block.
-// Without that bound, one missing "]" matched up to the next bracket anywhere in the
-// document and pulled the whole resume into the contact bar.
-const CONTACT_PATTERN = /\[CONTACT\s*:\s*((?:(?!<br\s*\/?>|<\/?(?:p|li|ul|ol|h[1-6]|blockquote|div|table|hr)\b)[^\]])*)\]/gi;
+// A contact line ends at its closing bracket and never runs past its own paragraph or
+// block. Without that bound, one missing "]" matched up to the next bracket anywhere in
+// the document and pulled the whole resume into the contact bar.
+// The bound is the paragraph, not the line: a "]" typed on the next line, inside the same
+// paragraph (a <br> once compiled), still closes the contact line. 1.14.0 stopped at the
+// <br> and turned that closed line into raw text, with a warning claiming it was unclosed.
+const CONTACT_PATTERN = /\[CONTACT\s*:\s*((?:(?!<\/?(?:p|li|ul|ol|h[1-6]|blockquote|div|table|hr)\b)[^\]])*)\]/gi;
 const CONTACT_OPENING = /\[CONTACT\s*:/i;
 const CONTACT_SEPARATOR = /[|•·]/;
 
@@ -40,7 +43,9 @@ function formatContactBars(html) {
     let unclosed = false;
     const formatted = mapOutsideCode(html, HTML_CODE_PATTERN, chunk => {
         const replaced = chunk.replace(CONTACT_PATTERN, (match, contents) => {
-            const parts = contents.split(CONTACT_SEPARATOR).map(p => p.trim()).filter(Boolean);
+            // A line break inside the contact line is layout, not a value
+            const parts = contents.replace(/<br\s*\/?>/gi, ' ')
+                .split(CONTACT_SEPARATOR).map(p => p.trim()).filter(Boolean);
             return `<div class="resume-contact-bar">${parts.map(formatContactPart).join(' &nbsp;•&nbsp; ')}</div>`;
         });
         if (CONTACT_OPENING.test(replaced)) unclosed = true;
