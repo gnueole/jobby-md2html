@@ -33,13 +33,13 @@ export function highlightMarkdown(text) {
         // 1. Headings
         const headingMatch = escaped.match(/^(\s*)(#{1,6})(\s+)(.*)$/);
         if (headingMatch) {
-            const [_, indent, hashes, spaces, content] = headingMatch;
+            const [, indent, hashes, spaces, content] = headingMatch;
             highlighted = `${indent}<span class="md-hash">${hashes}</span>${spaces}<span class="md-heading">${content}</span>`;
         } else {
             // 2b. Blockquotes: > text
             const quoteMatch = escaped.match(/^(\s*&gt;)(\s*)(.*)$/);
             if (quoteMatch) {
-                const [_, gtSym, spaces, content] = quoteMatch;
+                const [, gtSym, spaces, content] = quoteMatch;
                 let highlightedContent = content;
                 highlightedContent = highlightedContent.replace(/\*\*(.*?)\*\*/g, '<span class="md-bold">**$1**</span>');
                 highlightedContent = highlightedContent.replace(/\*(.*?)\*/g, '<span class="md-italic">*$1*</span>');
@@ -52,7 +52,7 @@ export function highlightMarkdown(text) {
                 // 2. Bullet Lists - escape asterisks as HTML entities to prevent cross-tagging
                 const bulletMatch = escaped.match(/^(\s*([-\*])\s+)(.*)$/);
                 if (bulletMatch) {
-                    const [_, prefix, char, rest] = bulletMatch;
+                    const [, prefix, char, rest] = bulletMatch;
                     const safeChar = char === '*' ? '&#42;' : char;
                     const bullet = prefix.replace(char, safeChar);
                     escaped = `<span class="md-bullet">${bullet}</span>${rest}`;

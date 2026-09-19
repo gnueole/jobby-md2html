@@ -5,9 +5,12 @@
   "main": "server.js",
   "scripts": {
     "dev": "node server.js",
-    "lint": "eslint public/**/*.js && prettier --check \"scripts/**/*.js\" \"public/bricks/*.html\"",
+    "lint": "eslint \"public/**/*.js\" && prettier --check \"scripts/**/*.js\" \"public/bricks/*.html\"",
     "format": "prettier --write .",
     "validate:i18n": "node scripts/validate_i18n.js",
+    "test:contact": "node toolkit/test_contact_line.js",
+    "test:contrast": "node toolkit/test_contrast.js",
+    "test:overlay": "node toolkit/test_editor_overlay.js",
     "build": "esbuild public/app.js --bundle --minify --outfile=public/dist/app.min.js"
   },
   "keywords": [

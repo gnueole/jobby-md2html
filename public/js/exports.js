@@ -32,12 +32,6 @@ export function initExports({
                 'a5': 'A5'
             };
             const pageSize = pageSizes[format] || 'A4';
-            const formatWidths = {
-                'letter': '8.5in',
-                'legal': '8.5in',
-                'a5': '148mm'
-            };
-            const pageWidth = formatWidths[format] || '210mm';
 
             const resumeOutputClass = resumeOutput ? resumeOutput.className : "a4-sheet";
             const resumeOutputStyle = resumeOutput ? resumeOutput.style.cssText : "";

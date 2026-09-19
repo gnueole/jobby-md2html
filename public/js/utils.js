@@ -1,4 +1,4 @@
-import { t, currentLocale } from './i18n.js';
+import { currentLocale } from './i18n.js';
 
 const defaultTitles = {
     en: { success: "Success", error: "Error", warning: "Warning", info: "Info", welcome: "Welcome", easter_egg: "Secret Found!", print: "Print" },

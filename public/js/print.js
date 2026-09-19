@@ -146,7 +146,7 @@ export function initPrint({
                     // Trigger save
                     try {
                         localStorage.setItem('ats_resume_styles', JSON.stringify(styleConfig));
-                    } catch (err) {}
+                    } catch (err) { /* storage full or disabled: the setting still applies to this session */ }
                 }
                 
                 // Keep hidden select-page-format synchronized
@@ -182,7 +182,7 @@ export function initPrint({
                 styleConfig.pageFormat = pageFormat;
                 try {
                     localStorage.setItem('ats_resume_styles', JSON.stringify(styleConfig));
-                } catch (err) {}
+                } catch (err) { /* storage full or disabled: the setting still applies to this session */ }
             }
             updatePageBreaks(resumeOutput, styleConfig);
             if (autoFitZoom) autoFitZoom();
@@ -254,12 +254,6 @@ export function initPrint({
             'a5': 'A5'
         };
         const pageSize = pageSizes[format] || 'A4';
-        const formatWidths = {
-            'letter': '8.5in',
-            'legal': '8.5in',
-            'a5': '148mm'
-        };
-        const pageWidth = formatWidths[format] || '210mm';
 
         const standaloneHtml = `<!DOCTYPE html>
 <html lang="en">
