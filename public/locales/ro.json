@@ -29,6 +29,9 @@
     "save_option_save_as_tooltip": "Salvează ca fișier nou (Ctrl+Shift+S)",
     "save_option_open": "Deschidere",
     "save_option_open_tooltip": "Deschide un fișier Markdown din sistem (Ctrl+O)",
+    "save_btn_download": "Descărcați",
+    "save_option_download": "Descărcați .md",
+    "save_option_download_tooltip": "Browserul dvs. nu poate salva într-un fișier: aceasta descarcă o copie (Ctrl+S)",
     "sample_btn": "Exemplu",
     "sample_tooltip": "Încarcă exemplu",
     "whatsnew_btn": "Noutăți",
@@ -264,7 +267,8 @@
     "section_ai": "🤖 Colaborare cu IA",
     "ai_desc_html": "Markdown este cel mai bun format când lucrați cu IA. La scrierea și optimizarea CV-ului cu modelul preferat (Gemini, ChatGPT, Claude etc.), solicitați-i întotdeauna:<br><code style=\"display: block; margin: 8px 0; padding: 10px; background: var(--bg-modal-directives); border-radius: 6px; font-family: monospace; border: 1px dashed var(--border-color); color: var(--text-primary);\">\"Generează CV-ul final în format Markdown curat\"</code>Acest lucru vă va permite să lipiți conținutul direct în Jobby cu o redare grafică perfectă.",
     "section_practices": "✨ Bune practici & Ghiduri utile",
-    "practices_link": "Ghid de utilizare Markdown - Bune practici"
+    "practices_link": "Ghid de utilizare Markdown - Bune practici",
+    "practices_title": "Pentru documentație completă și sfaturi despre structurarea documentelor Markdown, consultați ghidul oficial:"
   },
   "feedback": {
     "thank_you": "Vă mulțumim că folosiți Jobby! ❤️",
@@ -326,7 +330,7 @@
     "saved": "Salvat în **{filename}**",
     "saved_as": "Salvat ca **{filename}**",
     "permission_denied": "Permisiune refuzată pentru salvarea fișierului.",
-    "fallback_download": "Fișier descărcat prin browser (fallback)!",
+    "fallback_download": "Copie descărcată în folderul Descărcări. Textul dvs. rămâne salvat și în acest browser.",
     "clear_warning": "Sigur doriți să goliți editorul? Se vor pierde modificările nesalvate.",
     "copy_success": "Markdown copiat în clipboard!",
     "copy_fail": "Eșec la copierea Markdown-ului.",

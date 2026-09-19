@@ -29,6 +29,9 @@
     "save_option_save_as_tooltip": "Uložit jako nový soubor (Ctrl+Shift+S)",
     "save_option_open": "Otevřít",
     "save_option_open_tooltip": "Otevřít soubor Markdown ze systému (Ctrl+O)",
+    "save_btn_download": "Stáhnout",
+    "save_option_download": "Stáhnout .md",
+    "save_option_download_tooltip": "Váš prohlížeč neumí ukládat přímo do souboru: tímto stáhnete kopii (Ctrl+S)",
     "sample_btn": "Ukázka",
     "sample_tooltip": "Načíst ukázku",
     "whatsnew_btn": "Co je nového",
@@ -264,7 +267,8 @@
     "section_ai": "🤖 Spolupráce s AI & dotazování",
     "ai_desc_html": "Markdown je vaším nejlepším pomocníkem při používání AI k sestavení životopisu. Při úpravách a optimalizaci životopisu s vaším oblíbeným modelem AI (Gemini, ChatGPT, Claude atd.) jej vždy instruujte, aby:<br><code style=\"display: block; margin: 8px 0; padding: 10px; background: var(--bg-modal-directives); border-radius: 6px; font-family: monospace; border: 1px dashed var(--border-color); color: var(--text-primary);\">\"Vygeneroval finální životopis v čistém formátu MD\"</code>To zajistí, že surový výstup můžete jednoduše zkopírovat a vložit přímo do Jobby bez jakéhokoli zkreslení rozvržení.",
     "section_practices": "✨ Nejlepší praxe & průvodce Markdownem",
-    "practices_link": "Průvodce Markdownem - Syntaxe & Nejlepší praxe"
+    "practices_link": "Průvodce Markdownem - Syntaxe & Nejlepší praxe",
+    "practices_title": "Kompletní dokumentaci a tipy ke strukturování dokumentů v Markdownu najdete v oficiálním průvodci:"
   },
   "feedback": {
     "thank_you": "Děkujeme, že používáte Jobby! ❤️",
@@ -326,7 +330,7 @@
     "saved": "Uloženo do **{filename}**",
     "saved_as": "Uloženo jako **{filename}**",
     "permission_denied": "Přístup odepřen pro uložení souboru.",
-    "fallback_download": "Soubor stažen přes nouzové stažení v prohlížeči!",
+    "fallback_download": "Kopie stažena do složky Stažené soubory. Váš text zůstává uložen i v tomto prohlížeči.",
     "clear_warning": "Opravdu chcete vymazat editor? Tím vymažete svou neuloženou práci.",
     "copy_success": "Markdown zkopírován do schránky!",
     "copy_fail": "Kopírování Markdownu selhalo.",

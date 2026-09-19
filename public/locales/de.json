@@ -29,6 +29,9 @@
     "save_option_save_as_tooltip": "Als neue Datei speichern (Ctrl+Shift+S)",
     "save_option_open": "Öffnen",
     "save_option_open_tooltip": "Eine Markdown-Datei vom System öffnen (Ctrl+O)",
+    "save_btn_download": "Herunterladen",
+    "save_option_download": ".md herunterladen",
+    "save_option_download_tooltip": "Ihr Browser kann nicht direkt in eine Datei speichern: Dies lädt eine Kopie herunter (Strg+S)",
     "sample_btn": "Beispiel",
     "sample_tooltip": "Beispiel laden",
     "whatsnew_btn": "Neuigkeiten",
@@ -264,7 +267,8 @@
     "section_ai": "🤖 Zusammenarbeit mit KI",
     "ai_desc_html": "Markdown ist Ihr bestes Werkzeug bei der Erstellung des Lebenslaufs mit KI-Unterstützung. Wenn Sie Ihren Lebenslauf mit Modellen wie Gemini, ChatGPT oder Claude schreiben, weisen Sie diese immer an:<br><code style=\"display: block; margin: 8px 0; padding: 10px; background: var(--bg-modal-directives); border-radius: 6px; font-family: monospace; border: 1px dashed var(--border-color); color: var(--text-primary);\">\"Erstelle den finalen Lebenslauf im sauberen MD-Format\"</code>So können Sie das Ergebnis direkt ohne Formatierungsverluste in Jobby einfügen.",
     "section_practices": "✨ Best Practices & Markdown-Anleitung",
-    "practices_link": "Markdown-Handbuch - Syntax & Best Practices"
+    "practices_link": "Markdown-Handbuch - Syntax & Best Practices",
+    "practices_title": "Ausführliche Dokumentation und Tipps zur Strukturierung von Markdown-Dokumenten finden Sie im offiziellen Leitfaden:"
   },
   "feedback": {
     "thank_you": "Danke, dass du Jobby benutzt! ❤️",
@@ -326,7 +330,7 @@
     "saved": "Als **{filename}** gespeichert",
     "saved_as": "Als **{filename}** gespeichert",
     "permission_denied": "Speichern fehlgeschlagen: Berechtigung verweigert.",
-    "fallback_download": "Datei über Browser-Fallback heruntergeladen!",
+    "fallback_download": "Kopie in Ihren Download-Ordner heruntergeladen. Ihr Text bleibt auch in diesem Browser gespeichert.",
     "clear_warning": "Sind Sie sicher, dass Sie den Editor leeren möchten? Ungespeicherte Änderungen gehen verloren.",
     "copy_success": "Markdown in die Zwischenablage kopiert!",
     "copy_fail": "Kopieren fehlgeschlagen.",

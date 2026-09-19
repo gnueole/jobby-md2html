@@ -29,6 +29,9 @@
     "save_option_save_as_tooltip": "Salva come nuovo file (Ctrl+Shift+S)",
     "save_option_open": "Apri",
     "save_option_open_tooltip": "Apri un file Markdown dal sistema (Ctrl+O)",
+    "save_btn_download": "Scarica",
+    "save_option_download": "Scarica .md",
+    "save_option_download_tooltip": "Il tuo browser non può salvare su file: questo scarica una copia (Ctrl+S)",
     "sample_btn": "Esempio",
     "sample_tooltip": "Carica esempio",
     "whatsnew_btn": "Novità",
@@ -264,7 +267,8 @@
     "section_ai": "🤖 Collaborazione e istruzioni per IA",
     "ai_desc_html": "Il formato Markdown è l'ideale quando utilizzi sistemi di IA per comporre il tuo CV. Nella stesura e ottimizzazione con il tuo modello di IA preferito (Gemini, ChatGPT, Claude, ecc.), richiedi sempre:<br><code style=\"display: block; margin: 8px 0; padding: 10px; background: var(--bg-modal-directives); border-radius: 6px; font-family: monospace; border: 1px dashed var(--border-color); color: var(--text-primary);\">\"Genera il curriculum finale in formato Markdown pulito\"</code>Questo ti consentirà di incollare direttamente il testo su Jobby con una resa grafica impeccabile.",
     "section_practices": "✨ Buone pratiche e guide utili",
-    "practices_link": "Guida sintattica Markdown - Buone pratiche"
+    "practices_link": "Guida sintattica Markdown - Buone pratiche",
+    "practices_title": "Per una documentazione completa e consigli sulla struttura dei documenti Markdown, consulta la guida ufficiale:"
   },
   "feedback": {
     "thank_you": "Grazie per aver usato Jobby! ❤️",
@@ -326,7 +330,7 @@
     "saved": "Salvato in **{filename}**",
     "saved_as": "Salvato come **{filename}**",
     "permission_denied": "Permesso negato per salvare il file.",
-    "fallback_download": "File scaricato tramite il browser!",
+    "fallback_download": "Copia scaricata nella cartella Download. Il tuo testo resta anche salvato in questo browser.",
     "clear_warning": "Sei sicuro di voler ripulire l'editor? Questo cancellerà il tuo lavoro non salvato.",
     "copy_success": "Markdown copiato negli appunti!",
     "copy_fail": "Copia del Markdown fallita.",

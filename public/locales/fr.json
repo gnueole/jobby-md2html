@@ -29,6 +29,9 @@
     "save_option_save_as_tooltip": "Enregistrer sous un nouveau fichier (Ctrl+Shift+S)",
     "save_option_open": "Ouvrir",
     "save_option_open_tooltip": "Ouvrir un fichier Markdown local (Ctrl+O)",
+    "save_btn_download": "Télécharger",
+    "save_option_download": "Télécharger le .md",
+    "save_option_download_tooltip": "Votre navigateur ne peut pas enregistrer dans un fichier : ceci télécharge une copie (Ctrl+S)",
     "sample_btn": "Exemple",
     "sample_tooltip": "Charger l'exemple",
     "whatsnew_btn": "Nouveautés",
@@ -264,7 +267,8 @@
     "section_ai": "🤖 Collaboration avec l'IA",
     "ai_desc_html": "Le Markdown est le format idéal lorsque vous travaillez avec des IA. Lors de la rédaction et de l'optimisation de votre CV avec votre modèle préféré (Gemini, ChatGPT, Claude, etc.), demandez-lui systématiquement :<br><code style=\"display: block; margin: 8px 0; padding: 10px; background: var(--bg-modal-directives); border-radius: 6px; font-family: monospace; border: 1px dashed var(--border-color); color: var(--text-primary);\">\"Générer le CV final au format Markdown propre\"</code>Cela vous permettra de coller directement le contenu dans Jobby avec un rendu parfait.",
     "section_practices": "✨ Bonnes Pratiques & Liens Utiles",
-    "practices_link": "Guide de Syntaxe Markdown - Bonnes Pratiques"
+    "practices_link": "Guide de Syntaxe Markdown - Bonnes Pratiques",
+    "practices_title": "Pour une documentation complète et des conseils de structuration en Markdown, consultez le guide officiel :"
   },
   "feedback": {
     "thank_you": "Merci d'utiliser Jobby ! ❤️",
@@ -326,7 +330,7 @@
     "saved": "Fichier enregistré sous **{filename}**",
     "saved_as": "Fichier enregistré sous **{filename}**",
     "permission_denied": "Permission refusée pour enregistrer le fichier.",
-    "fallback_download": "Fichier téléchargé via le navigateur !",
+    "fallback_download": "Copie téléchargée dans votre dossier Téléchargements. Votre texte reste aussi enregistré dans ce navigateur.",
     "clear_warning": "Êtes-vous sûr de vouloir vider l'éditeur ? Vos modifications non sauvegardées seront perdues.",
     "copy_success": "Contenu Markdown copié dans le presse-papiers !",
     "copy_fail": "Échec de la copie du Markdown.",

@@ -82,6 +82,21 @@ async function initializeJobby() {
 
     // --- Initialize Localization ---
     await loadLocale(currentLocale);
+
+    // Without the File System Access API (Firefox, Safari) "Save" can only download a
+    // new copy each time: say so, and hide "Save As", which would do exactly the same.
+    // Swapping the i18n keys rather than the text keeps language switching working.
+    if (typeof window.showSaveFilePicker !== 'function') {
+        const swapKey = (selector, key, attr = 'data-i18n') => {
+            const el = document.querySelector(selector);
+            if (el) el.setAttribute(attr, key);
+        };
+        swapKey('#btn-save-dropdown-toggle [data-i18n="editor.save_btn"]', 'editor.save_btn_download');
+        swapKey('#btn-save-file [data-i18n="editor.save_option_save"]', 'editor.save_option_download');
+        swapKey('#btn-save-file', 'editor.save_option_download_tooltip', 'data-i18n-title');
+        const saveAsOption = document.getElementById('btn-save-as-file');
+        if (saveAsOption) saveAsOption.style.display = 'none';
+    }
     translateDOM();
     initTooltips();
 
@@ -359,16 +374,15 @@ async function initializeJobby() {
 
             const payload = {
                 sessionId,
-                // `event_type` en snake_case : c'est le vocabulaire de la
-                // plateforme (voir CLAUDE.md racine). Cette page envoyait
-                // `eventType` avec des valeurs en Title Case — « Session Start »
-                // ici, `session_start` chez trail-mapper, le même évènement sous
-                // deux graphies qu'aucune requête ne pouvait regrouper.
+                // `event_type` in snake_case: the platform's vocabulary (see the
+                // root CLAUDE.md). This page used to send `eventType` with Title
+                // Case values — "Session Start" here, `session_start` in
+                // trail-mapper: one event under two spellings that no query could
+                // group.
                 //
-                // La conversion est faite ici plutôt qu'aux quatorze points
-                // d'appel : ceux-ci gardent des noms lisibles, et un futur
-                // sendTelemetry('New Thing') sortira canonique sans que personne
-                // ait à y penser.
+                // Converted here rather than at the fourteen call sites: they keep
+                // readable names, and a future sendTelemetry('New Thing') comes out
+                // canonical without anyone having to think about it.
                 event_type: String(eventType).trim().toLowerCase().replace(/\s+/g, '_'),
                 platform: isDev ? 'dev' : 'prod',
                 wordCount: counts.wordCount,
@@ -407,8 +421,15 @@ async function initializeJobby() {
         }
     }
 
-    // Debounced telemetry for ATS Scorecard changes to avoid spamming
-    const debouncedAtsTelemetry = debounce(() => sendTelemetry('ATS Check'), 5000);
+    // Debounced telemetry for ATS Scorecard changes, sent only when the score moves.
+    // Firing after every typing pause made it 88% of all telemetry events.
+    let lastSentAtsScore = null;
+    const debouncedAtsTelemetry = debounce(() => {
+        const { score } = getAtsMetrics();
+        if (score === lastSentAtsScore) return;
+        lastSentAtsScore = score;
+        sendTelemetry('ATS Check');
+    }, 5000);
 
     // Listen for modular components triggering telemetry
     window.addEventListener('jobby-telemetry', (e) => {
@@ -537,7 +558,7 @@ async function initializeJobby() {
             
             updateActiveFileNameDisplay();
             showToast(`Loaded ${currentFileName}`);
-            sendTelemetry('Open File', { filename: currentFileName, fallback: false });
+            sendTelemetry('Open File', { fallback: false });
             markdownInput.focus();
         } catch (err) {
             if (err.name !== 'AbortError') {
@@ -570,7 +591,7 @@ async function initializeJobby() {
                 
                 updateActiveFileNameDisplay();
                 showToast(`Loaded ${currentFileName}`);
-                sendTelemetry('Open File', { filename: currentFileName, fallback: true });
+                sendTelemetry('Open File', { fallback: true });
                 markdownInput.focus();
             };
             reader.onerror = (err) => {
@@ -596,7 +617,7 @@ async function initializeJobby() {
                 await writable.write(markdownInput.value);
                 await writable.close();
                 showToast(`Saved to ${currentFileName}`);
-                sendTelemetry('Save File', { filename: currentFileName, fallback: false });
+                sendTelemetry('Save File', { fallback: false });
             } catch (err) {
                 console.error("Error saving file:", err);
                 showToast("Failed to save. Trying Save As...");
@@ -634,7 +655,7 @@ async function initializeJobby() {
             
             updateActiveFileNameDisplay();
             showToast(`Saved as ${currentFileName}`);
-            sendTelemetry('Save File As', { filename: currentFileName, fallback: false });
+            sendTelemetry('Save File As', { fallback: false });
         } catch (err) {
             if (err.name !== 'AbortError') {
                 console.error("Save As failed:", err);
@@ -662,8 +683,8 @@ async function initializeJobby() {
                 URL.revokeObjectURL(url);
             }, 100);
             
-            showToast("Downloaded file via browser fallback!");
-            sendTelemetry('Save File As', { filename: name, fallback: true });
+            showToast(t('toasts.fallback_download'));
+            sendTelemetry('Save File As', { fallback: true });
         } catch (err) {
             console.error("Fallback save failed:", err);
             showToast("Failed to download file");
@@ -759,7 +780,6 @@ async function initializeJobby() {
     const btnAbout = document.getElementById('btn-about');
     const aboutModal = document.getElementById('about-modal');
     const tooltipHelpLink = document.getElementById('tooltip-help-link');
-    const btnCloseModal = document.getElementById('btn-close-modal');
 
     const fontTiles = document.querySelectorAll('.font-tile');
     const fontSizeSlider = document.getElementById('font-size');
@@ -1513,7 +1533,6 @@ async function initializeJobby() {
         } else {
             // It's custom-1 or custom-2
             const preset = customPresets[key];
-            const defaultCoolGradient = key === 'custom-1' ? '#262626' : '#00ffff';
             if (!preset.styles) {
                 const presetStyles = { ...styleConfig };
                 delete presetStyles.activePreset;

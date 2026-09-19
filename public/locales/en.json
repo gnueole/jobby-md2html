@@ -29,6 +29,9 @@
     "save_option_save_as_tooltip": "Save as a new file (Ctrl+Shift+S)",
     "save_option_open": "Open",
     "save_option_open_tooltip": "Open a Markdown file from your system (Ctrl+O)",
+    "save_btn_download": "Download",
+    "save_option_download": "Download .md",
+    "save_option_download_tooltip": "Your browser cannot save to a file: this downloads a copy (Ctrl+S)",
     "sample_btn": "Sample",
     "sample_tooltip": "Load sample",
     "whatsnew_btn": "What's New",
@@ -264,7 +267,8 @@
     "section_ai": "🤖 AI Collaboration & Prompting",
     "ai_desc_html": "Markdown is your best asset when using AI to build your CV. When manipulating and optimizing your CV with your favorite AI model (Gemini, ChatGPT, Claude, etc.), always instruct it to:<br><code style=\"display: block; margin: 8px 0; padding: 10px; background: var(--bg-modal-directives); border-radius: 6px; font-family: monospace; border: 1px dashed var(--border-color); color: var(--text-primary);\">\"Generate the final CV in clean MD format\"</code>This ensures you can simply copy and paste the raw output directly into Jobby with zero layout distortion.",
     "section_practices": "✨ Best Practices & Markdown Guide",
-    "practices_link": "Markdown Guide - Syntax & Best Practices"
+    "practices_link": "Markdown Guide - Syntax & Best Practices",
+    "practices_title": "For comprehensive documentation and tips on structuring Markdown documents, refer to the official guide:"
   },
   "feedback": {
     "thank_you": "Thank you for using Jobby! ❤️",
@@ -326,7 +330,7 @@
     "saved": "Saved to **{filename}**",
     "saved_as": "Saved as **{filename}**",
     "permission_denied": "Permission denied to save file.",
-    "fallback_download": "Downloaded file via browser fallback!",
+    "fallback_download": "Copy downloaded to your Downloads folder. Your text is also kept in this browser.",
     "clear_warning": "Are you sure you want to clear the editor? This will erase your unsaved work.",
     "copy_success": "Markdown copied to clipboard!",
     "copy_fail": "Failed to copy Markdown.",

@@ -29,6 +29,9 @@
     "save_option_save_as_tooltip": "Guardar como un archivo nuevo (Ctrl+Shift+S)",
     "save_option_open": "Abrir",
     "save_option_open_tooltip": "Abrir un archivo Markdown desde el sistema (Ctrl+O)",
+    "save_btn_download": "Descargar",
+    "save_option_download": "Descargar .md",
+    "save_option_download_tooltip": "Su navegador no puede guardar en un archivo: esto descarga una copia (Ctrl+S)",
     "sample_btn": "Ejemplo",
     "sample_tooltip": "Cargar ejemplo",
     "whatsnew_btn": "Novedades",
@@ -264,7 +267,8 @@
     "section_ai": "🤖 Colaboración e instrucciones para IA",
     "ai_desc_html": "El formato Markdown es ideal para colaborar con IA. Al redactar u optimizar su CV con su modelo de IA preferido (Gemini, ChatGPT, Claude, etc.), pídale siempre:<br><code style=\"display: block; margin: 8px 0; padding: 10px; background: var(--bg-modal-directives); border-radius: 6px; font-family: monospace; border: 1px dashed var(--border-color); color: var(--text-primary);\">\"Genera el currículum final en formato Markdown limpio\"</code>Esto le permitirá copiar y pegar el contenido directamente en Jobby con un renderizado excelente.",
     "section_practices": "✨ Buenas prácticas y guías",
-    "practices_link": "Guía de Markdown - Sintaxis y buenas prácticas"
+    "practices_link": "Guía de Markdown - Sintaxis y buenas prácticas",
+    "practices_title": "Para una documentación completa y consejos sobre cómo estructurar documentos Markdown, consulte la guía oficial:"
   },
   "feedback": {
     "thank_you": "¡Gracias por usar Jobby! ❤️",
@@ -326,7 +330,7 @@
     "saved": "Guardado en **{filename}**",
     "saved_as": "Guardado como **{filename}**",
     "permission_denied": "Permiso denegado para guardar el archivo.",
-    "fallback_download": "¡Archivo descargado a través del navegador!",
+    "fallback_download": "Copia descargada en su carpeta de Descargas. Su texto también se conserva en este navegador.",
     "clear_warning": "¿Está seguro de que desea limpiar el editor? Se perderán las modificaciones no guardadas.",
     "copy_success": "¡Markdown copiado al portapapeles!",
     "copy_fail": "Error al copiar Markdown.",
