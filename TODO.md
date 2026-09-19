@@ -35,13 +35,6 @@ Decisions nobody else can take. Each is blocked, not merely unstarted.
 
 Pickable without asking.
 
-**Live bracket highlighting in the editor (1.15.0).** Decided 2026-09-19: an
-unclosed `[` in red; an extra `]` in magenta with a wavy underline, so the two
-differ by shape as well as colour; parentheses checked only after a link
-(`](…)`), since prose is full of legitimately unbalanced ones. Checked per
-paragraph like the parser, code spans ignored, shown after a typing pause, colour
-and underline only — never a width change (`npm run test:overlay`).
-
 **The `toolkit/` tests do not run in CI.** They have `npm run` entries now, but
 `ci.yml` still runs only lint and i18n. Wiring them needs the job to start the
 server and install a Playwright browser.
@@ -53,6 +46,6 @@ server and install a Playwright browser.
 | Looking for | Lives in |
 |---|---|
 | What shipped, and why | `CHANGELOG.md` |
-| Non-regression tests | `npm run test:contact`, `test:contrast`, `test:overlay` against a local server (`BASE_URL` overrides); each `toolkit/test_*.js` header says what it pins |
+| Non-regression tests | `npm run test:contact`, `test:contrast`, `test:overlay`, `test:brackets` against a local server (`BASE_URL` overrides); each `toolkit/test_*.js` header says what it pins |
 | Contact line syntax, separators, columns | `README.md` — *Custom Markdown Directives* |
 | Telemetry path and configuration | `ARCHITECTURE.md` — *Telemetry & Data Pipeline* |

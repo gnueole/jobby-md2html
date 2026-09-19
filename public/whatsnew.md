@@ -1,3 +1,14 @@
+# 1.15.0 - Jobby Update
+Jobby Update of 09/19/2026 · The editor now points out unbalanced brackets as you write.
+[CONTACT : hi@eole.me • [cv.eole.me](https://cv.eole.me)]
+
+## 🔍 BRACKET CHECK
+* **Unclosed Brackets**: A `[` left open turns red once you pause typing, right where the mistake is.
+* **Extra Brackets**: A `]` with nothing to close is shown in magenta with a wavy underline.
+* **Broken Links**: A link missing its closing `)` is flagged too. Parentheses in ordinary text never are.
+
+---
+
 # 1.14.6 - Jobby Update
 Jobby Update of 09/19/2026 · The caret stays on its text, every screen is readable in the light theme, a contact line can be closed on the next line, and Firefox and Safari now say what "Save" really does.
 [CONTACT : hi@eole.me • [cv.eole.me](https://cv.eole.me)]

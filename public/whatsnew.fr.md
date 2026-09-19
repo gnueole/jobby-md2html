@@ -1,3 +1,14 @@
+# 1.15.0 - Mise à jour Jobby
+Mise à jour Jobby du 19/09/2026 · L'éditeur signale désormais les crochets mal équilibrés pendant l'écriture.
+[CONTACT : hi@eole.me • [cv.eole.me](https://cv.eole.me)]
+
+## 🔍 VÉRIFICATION DES CROCHETS
+* **Crochets non fermés** : Un `[` resté ouvert passe en rouge dès que vous marquez une pause, à l'endroit même de l'erreur.
+* **Crochets en trop** : Un `]` qui ne ferme rien apparaît en magenta, souligné d'une vague.
+* **Liens cassés** : Un lien auquel il manque sa `)` finale est signalé aussi. Les parenthèses du texte courant ne le sont jamais.
+
+---
+
 # 1.14.6 - Mise à jour Jobby
 Mise à jour Jobby du 19/09/2026 · Le curseur reste sur son texte, tous les écrans sont lisibles en thème clair, une ligne de contact peut se fermer à la ligne suivante, et Firefox et Safari disent enfin ce que fait vraiment « Enregistrer ».
 [CONTACT : hi@eole.me • [cv.eole.me](https://cv.eole.me)]

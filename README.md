@@ -73,6 +73,8 @@ Jobby extends standard Markdown with shortcodes to style and structure elements 
 
 Shortcodes written between backticks are displayed as-is, never interpreted. A `[CONTACT : …]` line missing its closing `]` stays raw text on its own line: the preview shows a warning above the sheet and the ATS checklist names the fix, rather than Jobby guessing where the line ends.
 
+The editor also marks unbalanced brackets once you pause typing: an unclosed `[` in red, an extra `]` in magenta with a wavy underline, and a link missing its closing `)`. Parentheses in ordinary text are never flagged.
+
 ---
 
 ## ⌨️ Keyboard Shortcuts
