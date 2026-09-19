@@ -2301,6 +2301,28 @@ body.expert-mode-active .format-lock-badge {
 [data-theme="light"] .md-italic { color: #475569; }
 [data-theme="light"] .md-link-text { color: #2563eb; }
 [data-theme="light"] .md-link-url { color: #475569; }
+
+/* Unbalanced brackets, marked by syntax.js after a typing pause. Colour, background and
+   underline only: a width change would put the caret out of step with the text. The
+   extra closer differs by shape as well as colour, for colour-blind readers. */
+.md-bracket-unclosed {
+    color: #f87171;
+    background-color: rgba(248, 113, 113, 0.18);
+    border-radius: 2px;
+}
+.md-bracket-extra {
+    color: #e879f9;
+    text-decoration: underline wavy #e879f9;
+    text-underline-offset: 3px;
+}
+[data-theme="light"] .md-bracket-unclosed {
+    color: #b91c1c;
+    background-color: rgba(185, 28, 28, 0.12);
+}
+[data-theme="light"] .md-bracket-extra {
+    color: #a21caf;
+    text-decoration-color: #a21caf;
+}
 [data-theme="light"] .md-inline-code { color: #6d28d9; background: rgba(109, 40, 217, 0.05); }
 [data-theme="light"] .md-quote-symbol { color: #6d28d9; }
 [data-theme="light"] .md-quote-text { color: #475569; }
