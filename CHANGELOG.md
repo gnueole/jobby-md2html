@@ -8,6 +8,37 @@ All notable changes to the Jobby project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.14.6] - 2026-09-19
+
+### Fixed
+
+- **File names no longer reach telemetry.** Open and Save events sent the file
+  name, and the default one is the candidate's own name, while the About modal
+  promises that no name is collected. None had reached Axiom yet.
+- **The help modal showed a raw translation key** (`help.practices_title`),
+  missing from all seven locales.
+- **`npm run lint` never linted `public/app.js`**: its unquoted glob skipped
+  every file at the root of `public/`. It is quoted now, and the eleven warnings
+  it surfaced are cleared.
+
+### Changed
+
+- **"Save" says "Download" where it cannot save.** Without the File System
+  Access API (Firefox, Safari), saving only downloads a new copy each time: the
+  button now says so, "Save As" is hidden, and the message says where the copy
+  went.
+- **`ats_check` is sent only when the score changes.** It fired after every
+  typing pause and made up 88% of all telemetry events.
+- **`ARCHITECTURE.md` describes the actual telemetry path**, Vector to Axiom,
+  instead of the n8n-to-Notion one retired in 1.13.0.
+
+### Added
+
+- **`npm run test:contact`, `test:contrast` and `test:overlay`** for the three
+  non-regression tests in `toolkit/`.
+
+---
+
 ## [1.14.5] - 2026-09-19
 
 ### Fixed
