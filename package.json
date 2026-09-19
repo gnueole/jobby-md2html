@@ -11,6 +11,7 @@
     "test:contact": "node toolkit/test_contact_line.js",
     "test:contrast": "node toolkit/test_contrast.js",
     "test:overlay": "node toolkit/test_editor_overlay.js",
+    "test:brackets": "node toolkit/test_bracket_highlight.js",
     "build": "esbuild public/app.js --bundle --minify --outfile=public/dist/app.min.js"
   },
   "keywords": [
