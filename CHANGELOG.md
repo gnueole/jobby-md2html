@@ -8,6 +8,22 @@ All notable changes to the Jobby project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.15.0] - 2026-09-19
+
+### Added
+
+- **The editor marks unbalanced brackets as you write.** After a typing pause,
+  an unclosed `[` turns red, an extra `]` magenta with a wavy underline, and a
+  link missing its closing `)` is flagged at its `(`. Square brackets are
+  checked everywhere; parentheses only in links, never in ordinary text. Checked
+  block by block, with code and escaped brackets skipped. Only colour,
+  background and underline change, so the caret stays aligned.
+- **`npm run test:brackets`** (`toolkit/test_bracket_highlight.js`), fifteen
+  cases covering these rules. Against 1.14.6 it fails the six that expect a
+  mark.
+
+---
+
 ## [1.14.6] - 2026-09-19
 
 ### Fixed
