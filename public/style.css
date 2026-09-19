@@ -2249,8 +2249,13 @@ body.expert-mode-active .format-lock-badge {
     background: rgba(37, 99, 235, 0.3) !important;
 }
 
-.textarea-syntax-wrapper pre::-webkit-scrollbar {
-    display: none;
+/* The overlay's scrollbar is invisible, not removed. With display: none it took no
+   room while the textarea's kept its 6px, so the two layers wrapped long lines at
+   different points and the caret drifted onto lines that looked empty. Kept at the
+   textarea's width, both wrap alike; it sits under the textarea and takes no clicks. */
+.textarea-syntax-wrapper pre::-webkit-scrollbar-thumb,
+.textarea-syntax-wrapper pre::-webkit-scrollbar-track {
+    background: transparent;
 }
 
 
