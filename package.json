@@ -12,6 +12,7 @@
     "test:contrast": "node toolkit/test_contrast.js",
     "test:overlay": "node toolkit/test_editor_overlay.js",
     "test:brackets": "node toolkit/test_bracket_highlight.js",
+    "test:menus": "node toolkit/test_header_menus.js",
     "build": "esbuild public/app.js --bundle --minify --outfile=public/dist/app.min.js"
   },
   "keywords": [
