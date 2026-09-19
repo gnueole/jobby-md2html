@@ -3,6 +3,17 @@ sources:
     type: "docker_logs"
     exclude_containers:
       - "vector"
+    # A stack trace used to arrive as one event per line: an n8n webhook error
+    # was 6 events, an improv DOMException about 15, and each fragment counted
+    # towards the "Error spike" monitor on its own. Any line that starts with
+    # whitespace continues the event above it — Node's "    at …" frames,
+    # Python's "  File …" frames, the fields of a dumped object. No access-log
+    # or application line starts with whitespace, so nothing else is merged.
+    multiline:
+      start_pattern: '^\S'
+      mode: "continue_through"
+      condition_pattern: '^\s'
+      timeout_ms: 1000
 
   http_telemetry:
     type: "http"
@@ -28,6 +39,38 @@ transforms:
     inputs:
       - "docker_logs"
     condition: '.label."vector.dev/collect" == "true"'
+
+  # Visitor IP addresses are personal data, and every nginx access line (www,
+  # backdrop-studio) ended with the real one, taken from X-Forwarded-For. They
+  # are truncated here, before anything leaves the VPS: the last IPv4 octet
+  # becomes 0, an IPv6 address keeps its first three groups (the /48). Enough
+  # to tell a scan from a visitor, not enough to name anyone.
+  #
+  # Only the last quoted field of nginx's combined format is touched; the first
+  # address of the line is Traefik's internal one. Traefik's own access log
+  # carries no client address at all: eoleme-infra drops those fields at the
+  # source, so its privacy does not depend on this image being deployed first.
+  anonymize_client_ips:
+    type: "remap"
+    inputs:
+      - "filter_project_logs"
+    source: |
+      if is_string(.message) {
+        msg = string!(.message)
+        if match(msg, r'^\S+ - \S+ \[') {
+          parts, err = parse_regex(msg, r'^(?P<head>.*")(?P<xff>[^"]*)"$')
+          if err == null {
+            kept = []
+            for_each(split(string!(parts.xff), ",")) -> |_index, ip| {
+              ip = strip_whitespace(ip)
+              mask = if contains(ip, ":") { "/48" } else { "/24" }
+              kept = push(kept, ip_subnet(ip, mask) ?? ip)
+            }
+            msg = string!(parts.head) + join!(kept, ", ") + "\""
+          }
+        }
+        .message = msg
+      }
 
   # La télémétrie partait de la source HTTP directement au sink : rien ne la
   # normalisait, et chaque application avait donc choisi son propre vocabulaire.
@@ -64,11 +107,22 @@ transforms:
         .application = .service
       }
 
+      # One word for production. Four apps spelled it three ways (prod, prd,
+      # production), so "prod only" was a three-value filter nobody got right.
+      if exists(.environment) {
+        env = downcase(to_string(.environment) ?? "")
+        if includes(["prod", "prd", "production"], env) {
+          .environment = "prod"
+        } else if includes(["dev", "development", "local"], env) {
+          .environment = "dev"
+        }
+      }
+
 sinks:
   axiom_sink:
     type: "http"
     inputs:
-      - "filter_project_logs"
+      - "anonymize_client_ips"
     uri: "https://eu-central-1.aws.edge.axiom.co/v1/ingest/${AXIOM_DATASET}"
     encoding:
       codec: "json"

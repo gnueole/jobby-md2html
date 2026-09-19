@@ -14,7 +14,8 @@ docker/
 ├── Dockerfile                 # Shared Node.js Web Editor Container Definition
 ├── README.md                  # This file
 ├── vector.Dockerfile          # Shared Vector Log Shipper Container Definition
-└── vector.yaml                # Environment-Agnostic Vector Log Shipper Configuration
+├── vector.yaml                # Environment-Agnostic Vector Log Shipper Configuration
+└── vector.tests.yaml          # Unit tests for vector.yaml's transforms (make vector-test)
 ```
 
 ## 🛠️ Environment Isolation (Dev vs. Prod)
@@ -36,18 +37,26 @@ To prevent log mixing across shared hosts (e.g. between a `production` stack and
    * Set `AXIOM_DATASET` to your production dataset in your production stack (`.env.prod`).
    * Set `AXIOM_DATASET` to a different dataset name (e.g., test/staging dataset) in your test stack.
 
-2. **Docker Compose Project Filtering**:
-   Vector matches and forwards container logs based on their Docker Compose project name:
-   ```yaml
-   condition: '.label."com.docker.compose.project" == "${COMPOSE_PROJECT_NAME}"'
-   ```
-   * The production compose file sets `COMPOSE_PROJECT_NAME=n8n-eole-prod`.
-   * A test compose file would set `COMPOSE_PROJECT_NAME=n8n-eole-test`.
-   Vector will automatically isolate and ship only logs belonging to that specific project.
+2. **Opt-in by label**:
+   Vector ships a container's logs only if it carries `vector.dev/collect=true`
+   (`filter_project_logs`). Everything lands in one dataset; the project is a
+   field, not a dataset.
+
+3. **Before shipping** (`anonymize_client_ips`):
+   * **Client IPs are truncated.** The last quoted field of an nginx access
+     line, the visitor's address from X-Forwarded-For, keeps its /24 (IPv4) or
+     /48 (IPv6).
+   * **Stack traces stay whole.** The `docker_logs` source merges any line
+     starting with whitespace into the event above it, so a trace is one event
+     rather than one per frame.
+
+4. **Testing**: `make vector-test` validates the config and runs
+   `vector.tests.yaml` on the Vector version `vector.Dockerfile` pins. CI runs it
+   before building the image.
 
 ## 📊 Telemetry Ingest
 
-Besides container logs, Vector receives the editor's telemetry events. `server.js` posts them to Vector's HTTP source (`http_telemetry`, port 8080); the `normalize_telemetry` transform maps legacy field names onto `event_type` and `application`; `axiom_telemetry_sink` ships them to the `eole-telemetry` dataset (`AXIOM_TELEMETRY_DATASET` overrides it). See [ARCHITECTURE.md](../ARCHITECTURE.md).
+Besides container logs, Vector receives the editor's telemetry events. `server.js` posts them to Vector's HTTP source (`http_telemetry`, port 8080); the `normalize_telemetry` transform maps legacy field names onto `event_type` and `application`, and folds `prd`/`production` into `prod`; `axiom_telemetry_sink` ships them to the `eole-telemetry` dataset (`AXIOM_TELEMETRY_DATASET` overrides it). See [ARCHITECTURE.md](../ARCHITECTURE.md).
 
 ---
 

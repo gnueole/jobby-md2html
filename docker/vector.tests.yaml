@@ -1,0 +1,93 @@
+# Unit tests for the transforms in vector.yaml. Run them against the version
+# the image pins, not the newest one:
+#
+#   make vector-test
+#
+# `vector validate` only checks that the VRL compiles; these check what it does.
+tests:
+  - name: "nginx line: the client IP from X-Forwarded-For loses its last octet"
+    inputs:
+      - insert_at: "anonymize_client_ips"
+        type: "log"
+        log_fields:
+          message: '172.16.5.2 - - [08/Sep/2026:16:09:04 +0000] "GET / HTTP/1.1" 200 20514 "-" "Mozilla/5.0" "86.107.168.71"'
+    outputs:
+      - extract_from: "anonymize_client_ips"
+        conditions:
+          - type: "vrl"
+            source: |
+              assert_eq!(.message, "172.16.5.2 - - [08/Sep/2026:16:09:04 +0000] \"GET / HTTP/1.1\" 200 20514 \"-\" \"Mozilla/5.0\" \"86.107.168.0\"")
+
+  - name: "nginx line: a chain of forwarded IPv4 and IPv6 addresses is truncated whole"
+    inputs:
+      - insert_at: "anonymize_client_ips"
+        type: "log"
+        log_fields:
+          message: '172.16.5.2 - - [08/Sep/2026:16:09:04 +0000] "GET / HTTP/1.1" 404 12 "-" "curl/8" "2a01:e0a:1b2:c3d0:4d5e:6f70:8192:a3b4, 10.0.0.7"'
+    outputs:
+      - extract_from: "anonymize_client_ips"
+        conditions:
+          - type: "vrl"
+            source: |
+              assert_eq!(.message, "172.16.5.2 - - [08/Sep/2026:16:09:04 +0000] \"GET / HTTP/1.1\" 404 12 \"-\" \"curl/8\" \"2a01:e0a:1b2::, 10.0.0.0\"")
+
+  - name: "application lines pass through untouched"
+    inputs:
+      - insert_at: "anonymize_client_ips"
+        type: "log"
+        log_fields:
+          message: 'INFO:     172.16.5.2:46412 - "POST /api/parse-url HTTP/1.1" 500 Internal Server Error'
+    outputs:
+      - extract_from: "anonymize_client_ips"
+        conditions:
+          - type: "vrl"
+            source: |
+              assert_eq!(.message, "INFO:     172.16.5.2:46412 - \"POST /api/parse-url HTTP/1.1\" 500 Internal Server Error")
+
+  - name: "telemetry: legacy action and production become event_type and prod"
+    inputs:
+      - insert_at: "normalize_telemetry"
+        type: "log"
+        log_fields:
+          application: "jobby_ats"
+          environment: "production"
+          action: "resume_generation"
+    outputs:
+      - extract_from: "normalize_telemetry"
+        conditions:
+          - type: "vrl"
+            source: |
+              assert_eq!(.event_type, "resume_generation")
+              assert_eq!(.environment, "prod")
+              assert_eq!(.action, "resume_generation")
+
+  - name: "telemetry: legacy service and Title Case eventType are folded"
+    inputs:
+      - insert_at: "normalize_telemetry"
+        type: "log"
+        log_fields:
+          service: "sc2-build-order"
+          eventType: "Session Start"
+          environment: "prd"
+    outputs:
+      - extract_from: "normalize_telemetry"
+        conditions:
+          - type: "vrl"
+            source: |
+              assert_eq!(.event_type, "session_start")
+              assert_eq!(.application, "sc2-build-order")
+              assert_eq!(.environment, "prod")
+
+  - name: "telemetry: an event without environment does not get one"
+    inputs:
+      - insert_at: "normalize_telemetry"
+        type: "log"
+        log_fields:
+          application: "improv"
+          event_type: "tile_used"
+    outputs:
+      - extract_from: "normalize_telemetry"
+        conditions:
+          - type: "vrl"
+            source: |
+              assert!(!exists(.environment))

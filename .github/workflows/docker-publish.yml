@@ -56,6 +56,11 @@ jobs:
             type=raw,value=latest
             type=sha
 
+      # This image ships every log line and telemetry event on the VPS; a VRL
+      # regression would be pushed as :latest and pulled by deploy-infra.
+      - name: Test Vector config
+        run: make vector-test
+
       - name: Build and push Vector image
         uses: docker/build-push-action@v5
         with:

@@ -54,7 +54,7 @@ DOCKER_DIR   := docker
 COMPOSE_DEV  := $(DOCKER_DIR)/docker-compose.yml
 COMPOSE_PROD := $(DOCKER_DIR)/docker-compose.prod.yml
 
-.PHONY: help configure dev dev-up dev-down up down restart deploy deploy-infra deploy-n8n deploy-all _deploy deploy-delay checklogs check-build check-build-full n8n-backup n8n-push n8n-backup-dev n8n-push-dev n8n-deploy-error n8n-dbs-push n8n-dbs-pull n8n-dbs-list
+.PHONY: help configure vector-test dev dev-up dev-down up down restart deploy deploy-infra deploy-n8n deploy-all _deploy deploy-delay checklogs check-build check-build-full n8n-backup n8n-push n8n-backup-dev n8n-push-dev n8n-deploy-error n8n-dbs-push n8n-dbs-pull n8n-dbs-list
 
 # Default target
 help:
@@ -70,6 +70,9 @@ help:
 	@printf "    $(STYLE_INSTRUCTION)make up$(RESET)                   $(STYLE_DISCREET)•$(RESET) Start local dev Docker containers (HMR, n8n, gotenberg)\n"
 	@printf "    $(STYLE_INSTRUCTION)make down$(RESET)                 $(STYLE_DISCREET)•$(RESET) Stop local dev Docker containers\n"
 	@printf "    $(STYLE_INSTRUCTION)make restart$(RESET)              $(STYLE_DISCREET)•$(RESET) Restart local dev Docker containers\n"
+	@printf "\n"
+	@printf "  $(BOLD)$(STYLE_SECTION)❯ Checks:$(RESET)\n"
+	@printf "    $(STYLE_INSTRUCTION)make vector-test$(RESET)          $(STYLE_DISCREET)•$(RESET) Validate docker/vector.yaml and run its unit tests on the pinned Vector\n"
 	@printf "\n"
 	@printf "  $(BOLD)$(STYLE_SECTION)❯ Production Deployment (VPS - cv.eole.me):$(RESET)\n"
 	@printf "    $(STYLE_INSTRUCTION)make deploy$(RESET)               $(STYLE_DISCREET)•$(RESET) Push production compose & pull custom editor/vector images\n"
@@ -97,6 +100,14 @@ help:
 # Run configure wizard (checks dependencies and copies fallback env)
 configure:
 	@bash configure
+
+# Validate the Vector config and run docker/vector.tests.yaml, on the version
+# vector.Dockerfile pins: `validate` proves the VRL compiles, the tests prove
+# what it does to an event. Dummy credentials: nothing is sent anywhere.
+VECTOR_IMAGE := $(shell sed -n 's/^FROM //p' $(DOCKER_DIR)/vector.Dockerfile)
+vector-test:
+	@docker run --rm -e AXIOM_DATASET=test -e AXIOM_TOKEN=test -v "$(CURDIR)/$(DOCKER_DIR):/cfg:ro" --entrypoint vector $(VECTOR_IMAGE) validate --no-environment /cfg/vector.yaml
+	@docker run --rm -e AXIOM_DATASET=test -e AXIOM_TOKEN=test -v "$(CURDIR)/$(DOCKER_DIR):/cfg:ro" --entrypoint vector $(VECTOR_IMAGE) test /cfg/vector.yaml /cfg/vector.tests.yaml
 
 # Local Node resume editor
 dev:

@@ -8,6 +8,36 @@ All notable changes to the Jobby project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.16.0] - 2026-09-19
+
+Nothing changes in the editor. This release is the Vector image, which ships
+every container log and telemetry event on the VPS to Axiom, after an audit of
+what actually arrived there.
+
+### Changed
+
+- **Visitor IP addresses no longer reach Axiom in full.** Every nginx access
+  line from www and backdrop-studio ended with the visitor's real address, taken
+  from X-Forwarded-For. Vector now truncates it before it leaves the VPS: the
+  last IPv4 octet becomes 0, an IPv6 address keeps its /48. A scan can still be
+  told from a visitor; a person can no longer be named.
+- **A stack trace is one event again, not one per line.** A single n8n webhook
+  error arrived as 6 events and an improv DOMException as about 15, and each
+  fragment counted towards the "Error spike" monitor on its own, so one error
+  could trip it. A line starting with whitespace now continues the event above.
+- **`environment` has one spelling for production.** Producers sent `prod`,
+  `prd` and `production`; ingest folds them to `prod` (and `development` or
+  `local` to `dev`). An event without the field still gets none.
+- **The PDF workflows send `event_type`, not `action`**, and `prod` rather than
+  `production`: the platform vocabulary at the source, not only at ingest.
+
+### Added
+
+- **`make vector-test`**: validates `docker/vector.yaml` and runs the unit
+  tests in `docker/vector.tests.yaml`, on the Vector version the image pins.
+  CI runs it before building the Vector image, so a VRL regression can no longer
+  be published as `:latest` and pulled by `deploy-infra`.
+
 ## [1.15.1] - 2026-09-19
 
 ### Fixed
