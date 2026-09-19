@@ -8,6 +8,27 @@ All notable changes to the Jobby project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.14.4] - 2026-09-19
+
+### Fixed
+
+- **Low-contrast text across the UI, in both themes.** Most status colours had
+  been tuned for the dark theme only. Measured against the real background, the
+  light theme had the checklist's pass and fail entries at 1.4:1 and 1.9:1, the
+  panel indicators at 1.6:1 and 2.1:1, and muted text at 3.9:1; its modals were
+  a dull grey-blue, their card being 70% opaque over a near-black overlay. The
+  dark theme had muted text at 3.7:1 and accent violet at 3.1:1 in the help
+  modal. Every visible text now measures at least 4.5:1 (WCAG AA) in both
+  themes, main UI and all four modals.
+
+### Added
+
+- **`toolkit/test_contrast.js`**, a contrast audit of every visible UI text in
+  both themes, modals included. Run it against a local server (`BASE_URL`
+  overrides the address). Against 1.14.3 it reports 117 low-contrast elements.
+
+---
+
 ## [1.14.3] - 2026-09-19
 
 ### Fixed
