@@ -8,6 +8,27 @@ All notable changes to the Jobby project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.14.5] - 2026-09-19
+
+### Fixed
+
+- **The caret drifted away from the text in the editor.** The editor is a
+  transparent textarea over a highlighted copy of the text. The copy hid its
+  scrollbar in a way that also removed the room reserved for it, so it had 6px
+  more width than the textarea. At some editor widths, a long line wrapped one
+  line earlier under the caret than on screen: the caret showed on a line that
+  looked empty, and every line below was offset by one. The defect predates
+  1.14; it surfaced on the sample's contact line. Both layers now keep the same
+  width.
+
+### Added
+
+- **`toolkit/test_editor_overlay.js`**, which sweeps the editor width in both
+  themes and checks that both layers wrap alike and scroll together. Against
+  1.14.4 it fails at every width tested.
+
+---
+
 ## [1.14.4] - 2026-09-19
 
 ### Fixed
