@@ -88,7 +88,9 @@ export function highlightMarkdown(text) {
 // in a resume they are nearly always syntax (links, [CONTACT : …], :accent[…]). Round
 // ones only right after "](", where a missing ")" breaks a link: prose is full of
 // legitimately unbalanced parentheses. Code spans and fences are skipped.
-const BRACKET_MARK_DELAY = 900;
+// Long enough not to flash while a bracket is being typed, short enough to feel live
+// (900ms in 1.15.0 read as "nothing happens").
+const BRACKET_MARK_DELAY = 300;
 let bracketMarkTimer = null;
 
 // A block ends at a blank line, and each heading, list item or quote line starts one:

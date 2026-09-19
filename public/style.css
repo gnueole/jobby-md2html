@@ -401,6 +401,14 @@ body {
     justify-content: space-between;
 }
 
+/* The blur above makes each header a stacking context of its own. Without a z-index,
+   its dropdowns (Save, page format) rendered under the panel body: the menu opened,
+   and a click on "Save" landed in the editor underneath. */
+.panel-header {
+    position: relative;
+    z-index: 10;
+}
+
 .panel-header span,
 .panel-header h2.panel-title {
     font-size: 11px;
@@ -2312,6 +2320,8 @@ body.expert-mode-active .format-lock-badge {
 }
 .md-bracket-extra {
     color: #e879f9;
+    background-color: rgba(232, 121, 249, 0.2);
+    border-radius: 2px;
     text-decoration: underline wavy #e879f9;
     text-underline-offset: 3px;
 }
@@ -2321,6 +2331,7 @@ body.expert-mode-active .format-lock-badge {
 }
 [data-theme="light"] .md-bracket-extra {
     color: #a21caf;
+    background-color: rgba(162, 28, 175, 0.12);
     text-decoration-color: #a21caf;
 }
 [data-theme="light"] .md-inline-code { color: #6d28d9; background: rgba(109, 40, 217, 0.05); }
