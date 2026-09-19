@@ -512,6 +512,19 @@ body {
     display: block;
 }
 
+/* The amber text is tuned for the dark theme: on the light theme's grey-beige panels,
+   over a translucent amber, it measured 3.2:1. A solid pale amber behind a dark amber
+   brings it above the 4.5:1 WCAG AA threshold. */
+[data-theme="light"] .preview-warning,
+[data-theme="light"] .ats-checklist li.info {
+    color: #92400e;
+}
+
+[data-theme="light"] .preview-warning {
+    background-color: #fef3c7;
+    border: 1px solid rgba(146, 64, 14, 0.3);
+}
+
 .preview-canvas {
     display: inline-block;
     text-align: left;
