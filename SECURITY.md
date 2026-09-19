@@ -36,6 +36,12 @@ Jobby compiles Markdown to HTML on-the-fly inside the user's browser. To prevent
 - The sanitization configuration allows safe HTML elements and preserves the custom `data-token-index` synchronizer attributes while stripping out any malicious active content.
 - Draft content remains strictly local to the user's browser via `localStorage` or local file handles.
 
+## Server-Side Protections
+
+- **Bounded request bodies**: Every POST endpoint (`/api/pdf`, `/api/verify-token`, `/api/telemetry`, `/api/feedback`) answers `413 Payload Too Large` past `MAX_BODY_SIZE` (5 MB by default) instead of buffering without limit.
+- **Isolated new tabs**: Links opened with `target="_blank"` carry `rel="noopener noreferrer"`, so the opened page cannot reach back into the editor through `window.opener`.
+- **Anonymous telemetry**: Usage events carry no resume text, name, email or file name. See [ARCHITECTURE.md](ARCHITECTURE.md).
+
 ---
 
 ## 🔗 Jobby Project Links

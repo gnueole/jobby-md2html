@@ -63,6 +63,26 @@ Refer to this guide to resolve common issues encountered while setting up, using
 
 ---
 
+## ✍️ Editor & Contact Line
+
+### Issue: The contact bar shows raw text, with a warning above the preview
+* **Root Cause**: The `[CONTACT : …]` line is missing its closing `]`.
+* **Solution**: Add `]` at the end of the line; the next line of the same paragraph works too. Jobby never guesses where the line ends, so the rest of the resume stays intact meanwhile.
+
+### Issue: Some brackets in the editor turn red or magenta
+* **Root Cause**: They are unbalanced. Red: a `[` never closed, or a link missing its `)`. Magenta with a wavy underline: a `]` with nothing to close.
+* **Solution**: Fix the bracket. Marks clear while you type and are checked again after a short pause. Parentheses in ordinary text are never flagged.
+
+### Issue: Clicking Save, Save As or Open does nothing
+* **Root Cause**: Before 1.15.1, the Save menu opened behind the editor and clicks landed in the text.
+* **Solution**: Reload the page to get 1.15.1 or later. `Ctrl + S` and `Ctrl + O` always worked.
+
+### Issue: On Firefox or Safari, Save downloads a new file every time
+* **Root Cause**: These browsers do not offer the File System Access API, so a web page cannot write back to a file on disk.
+* **Solution**: Expected: the button says Download there, and your text is also kept in the browser. Use Chrome or Edge to save back to the same file.
+
+---
+
 ## 💾 Local Storage & Draft Recovery
 
 ### Issue: I lost my resume configurations / content
@@ -70,4 +90,4 @@ Refer to this guide to resolve common issues encountered while setting up, using
 * **Solution**:
   * Jobby caches content directly inside browser `localStorage`.
   * If you accidentally overwrite content: Press **`Ctrl + Z`** (Undo) or click the Undo button in the toolbar. Jobby automatically snapshots the canvas to the history stack before any full overwrite.
-  * In the future, export your styling as a JSON config file using the **Developer Tools** panel, and save your markdown resume file (`.md`) locally using the **Save As** option.
+  * In the future, export your styling as a JSON config file using the **Developer Tools** panel, and save your Markdown resume file (`.md`) locally using **Save As** (Chrome, Edge) or **Download** (Firefox, Safari).

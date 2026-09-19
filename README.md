@@ -19,11 +19,11 @@ Jobby serves as an instant manual override for immediate layout tweaks and conte
 
 ## ✨ Key Features
 
-- **Buttery-Smooth Preview**: Real-time syntax-highlighted editor with a decoupled, debounced preview pane.
+- **Buttery-Smooth Preview**: Real-time syntax-highlighted editor with a decoupled, debounced preview pane. Unbalanced brackets are flagged as you write.
 - **ATS-Compliant by Design**: Outputs semantic HTML optimized for applicant tracking systems.
 - **A4/Letter Canvas Emulation**: Clear visual page breaks indicating exactly where content will split.
 - **Modern Layout Controls**: Customizer panel for spacing, margins, shadows, column positioning, borders, and gradient backdrops.
-- **Native File Integration**: Save and open markdown files directly from/to your system disk via the File System Access API.
+- **Native File Integration**: Save and open Markdown files directly on disk in Chrome and Edge (File System Access API). Firefox and Safari do not offer that API: there, Save downloads a copy. Everything you type is also kept in the browser (`localStorage`).
 - **Cosmetic Customization**: Dynamic color presets, double-click renameable color buttons, and custom theme exports.
 - **Multi-language Support (i18n)**: Instantly translate the interface to English, French, Spanish, German, Romanian, Italian, or Czech.
 - **Interactive Markdown Tutorial**: A 20-second step-by-step interactive onboarding workflow.
@@ -88,7 +88,25 @@ Speed up composition and layout reorganization:
 | `Ctrl + 1` / `2` / `3` | Apply Heading level (`#`, `##`, `###`) to the current line |
 | `Ctrl + Up` / `Down` | Move current line or **entire heading section** (with contents) up or down |
 | `Ctrl + Z` / `Ctrl + Y` | Undo / Redo content edits (supports 100 history steps) |
-| `Ctrl + S` / `Ctrl + O` | Save changes back to disk / Open a new Markdown file |
+| `Ctrl + S` / `Ctrl + O` | Save changes back to disk (downloads a copy on Firefox/Safari) / Open a Markdown file |
+
+---
+
+## 🧪 Testing
+
+Non-regression tests drive a real browser (Playwright) against a local server:
+
+```bash
+npm ci && npx playwright install chromium
+npm run dev              # serves http://localhost:3010
+npm run test:contact     # contact line: closed, unclosed, separators, code spans
+npm run test:brackets    # editor marks for unbalanced brackets
+npm run test:menus       # a real click on every header menu option
+npm run test:overlay     # caret layer and highlight layer wrap alike
+npm run test:contrast    # every UI text meets WCAG AA, in both themes
+```
+
+`BASE_URL` points them at another server, production included. `npm run lint` and `npm run validate:i18n` run in CI; the browser tests do not yet. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ---
 

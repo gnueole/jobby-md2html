@@ -15,7 +15,8 @@ This document details the system design, file structure, telemetry pipelines, an
   - `config.js`: Configuration storage management, default styles, and sync states.
   - `developer.js`: Auth UX, inline credentials modal, and developer settings panel.
   - `exports.js`: Markdown, JSON import/export, and raw configuration copy handlers.
-  - `highlight.js`, `syntax.js`: Synchronous syntax highlighting engine for the editor.
+  - `highlight.js`: Selection-to-preview highlighting and the caret radar.
+  - `syntax.js`: The editor's syntax highlighting overlay, and the unbalanced-bracket marks applied after a typing pause.
   - `parser.js`: Custom markdown-to-HTML parsing rules aligned with Gotenberg compiler.
   - `shortcuts.js`: Keyboard hotkeys and structural section swapping.
   - `styles.js`: Dynamic styling injector, cosmetics, and slider values handlers.
@@ -27,6 +28,8 @@ This document details the system design, file structure, telemetry pipelines, an
 - `public/sample.md`: Default resume template (example author) provided as a starting point.
 - `public/resume.md`: **[Optional Backup]** A Markdown resume file placed on disk to bootstrap the editor if browser `localStorage` is empty.
 - `public/config.json`: **[Optional Backup]** Custom layout configuration settings placed on disk to bootstrap the styles if browser `localStorage` is empty.
+- `toolkit/test_*.js`: Playwright non-regression tests, run with `npm run test:contact`, `test:brackets`, `test:menus`, `test:overlay` and `test:contrast`. `toolkit/` also holds the n8n sync scripts.
+- `TODO.md`: Open work only; shipped changes live in `CHANGELOG.md`.
 
 *Note: Placing `resume.md` and `config.json` in the `public` directory allows you to version-control and distribute default templates via Git.*
 

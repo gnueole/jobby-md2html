@@ -45,6 +45,10 @@ To prevent log mixing across shared hosts (e.g. between a `production` stack and
    * A test compose file would set `COMPOSE_PROJECT_NAME=n8n-eole-test`.
    Vector will automatically isolate and ship only logs belonging to that specific project.
 
+## 📊 Telemetry Ingest
+
+Besides container logs, Vector receives the editor's telemetry events. `server.js` posts them to Vector's HTTP source (`http_telemetry`, port 8080); the `normalize_telemetry` transform maps legacy field names onto `event_type` and `application`; `axiom_telemetry_sink` ships them to the `eole-telemetry` dataset (`AXIOM_TELEMETRY_DATASET` overrides it). See [ARCHITECTURE.md](../ARCHITECTURE.md).
+
 ---
 
 ## 🔗 Jobby Project Links

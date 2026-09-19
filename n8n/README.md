@@ -1,6 +1,6 @@
 # Jobby n8n Workflows Guide
 
-This directory contains the production-ready n8n workflow configurations used to automate resume scraping, AI tailoring, Gotenberg PDF compilation, telemetry tracking, and feedback capture.
+This directory contains the production-ready n8n workflow configurations used to automate resume scraping, AI tailoring, Gotenberg PDF compilation, and feedback capture. Telemetry no longer goes through n8n: see [ARCHITECTURE.md](../ARCHITECTURE.md).
 
 ---
 
@@ -14,9 +14,8 @@ The following JSON files define the n8n workflows:
 2. **`jobby-pdf-dynamic-prod.json` & `jobby-pdf-static-prod.json`**
    * **Role**: PDF compiler orchestration.
    * **Action**: Fetches Markdown text and style customizer JSON values, posts them to the Gotenberg API container, and saves the generated A4 PDF file back to Notion or local storage.
-3. **`jobby-telemetry-to-notion-prod.json`**
-   * **Role**: Anonymous editor metrics harvester.
-   * **Action**: Logs events (editor session started, PDF prints, ATS score calculations, tutorial runs) into a Notion metrics table.
+3. **`jobby-telemetry-to-notion-prod.json`** — **retired in 1.13.0**
+   * Telemetry now goes to Vector and the Axiom `eole-telemetry` dataset (see [ARCHITECTURE.md](../ARCHITECTURE.md)). The workflow is quarantined as `todel_2026-08-28_jobby-telemetry-to-notion-prod.json`.
 4. **`jobby-feedback-to-notion-prod.json`**
    * **Role**: Captures user feedback.
    * **Action**: Proxies name, rating stars, category, and review text from the editor header form into a **Jobby Feedback** Notion database.
