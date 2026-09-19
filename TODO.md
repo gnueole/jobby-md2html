@@ -11,12 +11,11 @@ do with this repository's version numbers.
 
 ## ⏰ Watch
 
-**Nobody opens or saves a file.** Zero `open_file`, `save_file` or
-`save_file_as` events in 31 sessions since telemetry moved to Axiom
-(2026-08-28), verified as not a telemetry loss: the events do fire, including on
-the Firefox/Safari fallback path. The editor already autosaves to `localStorage`,
-which may be all anyone needs. Too little data to act on — look again once there
-are a few hundred sessions, before investing in file handling either way.
+**Nobody opens or saves a file — partly because nobody could.** Zero
+`open_file`, `save_file` or `save_file_as` events in 31 sessions from 2026-08-28.
+Until 1.15.1 the Save menu opened under the editor, so a click on Save, Save As or
+Open landed in the text and did nothing; only Ctrl+S worked. Look at these events
+again after a few weeks with a working menu, before drawing any conclusion.
 
 ---
 
@@ -46,6 +45,6 @@ server and install a Playwright browser.
 | Looking for | Lives in |
 |---|---|
 | What shipped, and why | `CHANGELOG.md` |
-| Non-regression tests | `npm run test:contact`, `test:contrast`, `test:overlay`, `test:brackets` against a local server (`BASE_URL` overrides); each `toolkit/test_*.js` header says what it pins |
+| Non-regression tests | `npm run test:contact`, `test:contrast`, `test:overlay`, `test:brackets`, `test:menus` against a local server (`BASE_URL` overrides); each `toolkit/test_*.js` header says what it pins |
 | Contact line syntax, separators, columns | `README.md` — *Custom Markdown Directives* |
 | Telemetry path and configuration | `ARCHITECTURE.md` — *Telemetry & Data Pipeline* |

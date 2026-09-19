@@ -1,3 +1,14 @@
+# 1.15.1 - Jobby Update
+Jobby Update of 09/19/2026 · The Save menu works again, and bracket marks show up faster.
+[CONTACT : hi@eole.me • [cv.eole.me](https://cv.eole.me)]
+
+## 🛠️ FIXES
+* **Save Menu**: Save, Save As and Open respond to clicks again. The menu used to open behind the editor, so a click fell into the text.
+* **Page Format Menu**: Same fix for the page format menu in Expert Mode.
+* **Bracket Marks**: They appear about twice as fast after you pause typing, and an extra `]` now has a tinted background so it stands out.
+
+---
+
 # 1.15.0 - Jobby Update
 Jobby Update of 09/19/2026 · The editor now points out unbalanced brackets as you write.
 [CONTACT : hi@eole.me • [cv.eole.me](https://cv.eole.me)]

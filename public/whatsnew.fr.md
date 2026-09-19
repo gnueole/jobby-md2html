@@ -1,3 +1,14 @@
+# 1.15.1 - Mise à jour Jobby
+Mise à jour Jobby du 19/09/2026 · Le menu Enregistrer fonctionne de nouveau, et les marques de crochets apparaissent plus vite.
+[CONTACT : hi@eole.me • [cv.eole.me](https://cv.eole.me)]
+
+## 🛠️ CORRECTIONS
+* **Menu Enregistrer** : Enregistrer, Enregistrer sous et Ouvrir répondent de nouveau aux clics. Le menu s'ouvrait derrière l'éditeur, et le clic tombait dans le texte.
+* **Menu du format de page** : Même correction pour le menu du format de page en mode Expert.
+* **Marques de crochets** : Elles apparaissent environ deux fois plus vite après une pause de frappe, et un `]` en trop a désormais un fond coloré pour mieux se voir.
+
+---
+
 # 1.15.0 - Mise à jour Jobby
 Mise à jour Jobby du 19/09/2026 · L'éditeur signale désormais les crochets mal équilibrés pendant l'écriture.
 [CONTACT : hi@eole.me • [cv.eole.me](https://cv.eole.me)]
