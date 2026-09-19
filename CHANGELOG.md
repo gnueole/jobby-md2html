@@ -8,6 +8,18 @@ All notable changes to the Jobby project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.14.3] - 2026-09-19
+
+### Fixed
+
+- **The unclosed-contact warning was unreadable in light mode.** It reused the
+  dark theme's amber text, which measured 3.2:1 on the light theme's panels,
+  below the 4.5:1 WCAG AA threshold; the ATS checklist's info entries had the
+  same problem at 3.8:1. Light mode now uses a darker amber and a solid pale
+  background for the warning: 6.4:1 and 5.3:1. Dark mode is unchanged.
+
+---
+
 ## [1.14.2] - 2026-09-19
 
 ### Fixed
