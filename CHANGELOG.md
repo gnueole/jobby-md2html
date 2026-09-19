@@ -8,6 +8,27 @@ All notable changes to the Jobby project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.14.2] - 2026-09-19
+
+### Fixed
+
+- **A "]" typed on the next line closes the contact line again.** 1.14.0
+  bounded the contact line to its own line so that a missing bracket could not
+  swallow the resume, but it stopped at the first line break. A line closed on
+  the next line of the same paragraph (the natural fix after the unclosed-line
+  warning) and contact values spread over several lines both rendered as raw
+  text, and the warning claimed the line was unclosed when it was not. The
+  bound is now the paragraph or block.
+
+### Added
+
+- **`toolkit/test_contact_line.js`**, nine Playwright non-regression cases for
+  the contact line, including the original report and this regression. Run it
+  against a local server (`BASE_URL` overrides the address). Against 1.14.1 it
+  fails exactly the two cases fixed here.
+
+---
+
 ## [1.14.1] - 2026-09-15
 
 ### Security
