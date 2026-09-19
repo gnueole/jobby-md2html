@@ -8,6 +8,28 @@ All notable changes to the Jobby project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.15.1] - 2026-09-19
+
+### Fixed
+
+- **The Save menu could not be clicked.** The panel headers' backdrop blur
+  makes each of them a stacking context, so their dropdowns were painted under
+  the panel body: the Save menu opened behind the editor, and a click on Save,
+  Save As or Open landed in the text. The page format menu (Expert Mode) had the
+  same defect. Only Ctrl+S worked. This likely explains why no file was ever
+  saved or opened in the telemetry.
+- **Bracket marks took too long to show and an extra `]` was hard to see.** The
+  delay drops from about 1.1s to about 0.5s after the last keystroke, and an
+  extra `]` gets a tinted background like an unclosed `[`.
+
+### Added
+
+- **`npm run test:menus`** (`toolkit/test_header_menus.js`): a real mouse click
+  on every header menu option. It fails on 1.15.0 for the four options fixed
+  here.
+
+---
+
 ## [1.15.0] - 2026-09-19
 
 ### Added
