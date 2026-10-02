@@ -4,11 +4,42 @@
  */
 
 import { ICONS } from './config.js';
-import { t } from './i18n.js';
+import { t, supportedLanguages } from './i18n.js';
 
 // Placeholders shipped in the sample resumes. Finding one means a link or an address
 // was never replaced, and would go out as a dead link on a real resume.
 const TEMPLATE_PLACEHOLDERS = ['example.com', 'perdu.com', 'your-profile', 'votre-profil', 'vas-profil', 'ihr-profil', 'su-perfil', 'il-tuo-profilo', 'profilul-dvs'];
+
+// Lower case, no accents, trimmed: "Expérience" and "experience" compare equal
+function fold(text) {
+    return String(text).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
+}
+
+function parseKeywords(list) {
+    return String(list || '').split(',').map(fold).filter(Boolean);
+}
+
+// The section names live in the locale files (ats.section_keywords), one list per
+// language. A resume is not always written in the interface language, so the check
+// accepts the names of every supported language once they are loaded; until then,
+// those of the current one.
+let allSectionKeywords = null;
+let loadingKeywords = null;
+function loadAllSectionKeywords() {
+    if (loadingKeywords) return loadingKeywords;
+    loadingKeywords = Promise.all(supportedLanguages.map(async lang => {
+        try {
+            const res = await fetch(`/locales/${lang}.json`);
+            const data = await res.json();
+            return data && data.ats ? data.ats.section_keywords : '';
+        } catch (e) {
+            return '';
+        }
+    })).then(lists => {
+        allSectionKeywords = [...new Set(lists.flatMap(parseKeywords))];
+    });
+    return loadingKeywords;
+}
 
 export function runAtsChecker(md, html, warnings = {}) {
     const charWordCount = document.getElementById('char-word-count');
@@ -69,9 +100,12 @@ export function runAtsChecker(md, html, warnings = {}) {
         checks.push({ status: 'pass', text: t('ats.rule_images_pass') });
     }
 
-    // 5. Headings Check
-    const standardHeaders = ['experience', 'education', 'formation', 'skills', 'competenc', 'project', 'projet', 'summary', 'profile', 'profil', 'resume', 'résumé'];
-    const headers = Array.from(doc.querySelectorAll('h1, h2, h3, h4, h5, h6')).map(h => h.textContent.toLowerCase());
+    // 5. Headings Check, without accents or case: "Expérience" and "Compétences"
+    // count. The old hard-coded English list did not recognise them and told
+    // French users to use standard headings.
+    if (!allSectionKeywords) loadAllSectionKeywords();
+    const standardHeaders = allSectionKeywords || parseKeywords(t('ats.section_keywords'));
+    const headers = Array.from(doc.querySelectorAll('h1, h2, h3, h4, h5, h6')).map(h => fold(h.textContent));
     let standardHeadingCount = 0;
     headers.forEach(h => {
         if (standardHeaders.some(sh => h.includes(sh))) {

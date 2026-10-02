@@ -35,11 +35,11 @@
     "sample_btn": "Esempio",
     "sample_tooltip": "Carica esempio",
     "ai_prompt_btn": "Prompt IA",
-    "ai_prompt_tooltip": "Copia un prompt per ChatGPT, Claude o Gemini: restituiscono il tuo CV pronto da incollare qui",
+    "ai_prompt_tooltip": "Mostra il prompt per ChatGPT, Claude o Gemini: restituiscono il tuo CV pronto da incollare qui",
     "empty_title": "Nessun CV ancora?",
     "empty_desc": "Incolla qui il tuo Markdown, oppure inizia in uno di questi modi:",
     "empty_sample_btn": "Inizia con l'esempio",
-    "empty_ai_btn": "Copia il prompt IA",
+    "empty_ai_btn": "Vedi il prompt IA",
     "empty_hint_html": "Il prompt chiede a ChatGPT, Claude o Gemini il tuo CV nel formato di Jobby: incolla qui la loro risposta. <a href=\"#\" id=\"link-empty-help\">Aiuto Markdown</a>",
     "whatsnew_btn": "Novità",
     "whatsnew_tooltip": "Carica aggiornamenti di Jobby / Novità",
@@ -210,7 +210,7 @@
     "why_md_text": "Markdown separa il contenuto dalla formattazione grafica. Questo garantisce che i sistemi di tracciamento candidati (ATS) possano scansionare il testo del tuo curriculum in modo impeccabile, senza essere bloccati da strutture complesse invisibili (come tabelle o caselle di testo di Word/PDF). Mantiene inoltre il curriculum duraturo, leggero e facile da modificare.",
     "section_ai": "🤖 Scrittura del CV assistita dall'IA",
     "ai_text": "Scrivi e rifinisci il tuo CV con Gemini, ChatGPT o Claude, poi portalo qui con il prompt pronto all'uso di Jobby: l'IA lo restituisce esattamente nel Markdown atteso, e tu incolli la risposta nell'editor.",
-    "ai_copy_btn": "Copia il prompt IA",
+    "ai_copy_btn": "Vedi il prompt IA",
     "section_privacy": "🔒 Tutela dei dati e riservatezza (GDPR / RGPD)",
     "privacy_intro": "Jobby è un progetto personale non commerciale. Ci preoccupiamo molto della riservatezza dei tuoi dati in conformità con le linee guida GDPR:",
     "privacy_bullets_html": "<li><strong>Contenuto del CV privato</strong>: Non raccogliamo, memorizziamo o trasmettiamo in nessun modo il testo del tuo CV o le informazioni sui candidati. L'intera elaborazione avviene localmente nel tuo browser.</li><li><strong>Bozze locali</strong>: Le bozze Markdown e le scelte grafiche vengono salvate nel <code>localStorage</code> del tuo browser (o direttamente sui tuoi file locali se usi la File System Access API).</li><li><strong>Telemetria anonima</strong>:<span style=\"font-size: 11.5px; display: block; margin-top: 2px; opacity: 0.85; line-height: 1.4;\">• <em>Scopo</em>: Analizzare l'adozione dei temi di stile, monitorare il tasso di errore dei punteggi ATS (per migliorare le regole) e valutare le prestazioni del compilatore grafico.<br>• <em>Livello di riservatezza</em>: Altamente limitato e anonimo. Un ID casuale viene memorizzato nel tuo <code>localStorage</code>. Non vengono raccolti indirizzi IP, posizioni o nomi.</span></li><li><strong>Modulo feedback (Facoltativo)</strong>:<span style=\"font-size: 11.5px; display: block; margin-top: 2px; opacity: 0.85; line-height: 1.4;\">• <em>Scopo</em>: Elaborare suggerimenti degli utenti, bug report e valutazioni complessive.<br>• <em>Livello di riservatezza</em>: Riceviamo esclusivamente le informazioni inviate in modo esplicito (valutazione, categoria, testo e opzionalmente nome/email).</span></li>",
@@ -220,6 +220,12 @@
     "about_me_btn": "Su di me",
     "inspired_by": "Ispirato da",
     "help_banner_html": "💡 Hai bisogno di aiuto? Consulta la nostra <a href=\"#\" id=\"link-to-help\" >Guida d'aiuto e sintassi Markdown</a>."
+  },
+  "aiprompt": {
+    "title": "Il prompt IA",
+    "desc": "Leggilo prima di usarlo. Spiega a ChatGPT, Claude o Gemini come restituire il tuo CV esattamente nel Markdown che Jobby si aspetta. Incollalo nell'IA, aggiungi il tuo CV se non è già nella conversazione, poi incolla l'intera risposta nell'editor.",
+    "copy_btn": "Copia il prompt",
+    "help_btn": "Aiuto Markdown"
   },
   "help": {
     "title": "Aiuto e guida Markdown",
@@ -328,6 +334,7 @@
     "rule_images_fail": "Immagine rilevata: evita immagini o grafici (gli ATS non rilevano il testo incastrato nelle immagini).",
     "rule_headings_pass": "Intestazioni di sezione standard identificate.",
     "rule_headings_fail": "Utilizza intestazioni di sezione standard (es. \"Esperienza\", \"Istruzione\").",
+    "section_keywords": "esperienza, formazione, istruzione, competenze, progett, profilo, sommario, lingue, certificaz",
     "rule_name_pass": "Nome completo del candidato rilevato nel tag H1.",
     "rule_name_fail": "Inizia il tuo curriculum con il tuo Nome in un'intestazione H1 all'inizio.",
     "rule_bullets_pass": "Struttura degli elenchi puntati standardizzata.",

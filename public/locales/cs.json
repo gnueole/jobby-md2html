@@ -35,11 +35,11 @@
     "sample_btn": "Ukázka",
     "sample_tooltip": "Načíst ukázku",
     "ai_prompt_btn": "AI prompt",
-    "ai_prompt_tooltip": "Zkopírovat prompt pro ChatGPT, Claude nebo Gemini: vrátí váš životopis připravený k vložení sem",
+    "ai_prompt_tooltip": "Zobrazit prompt pro ChatGPT, Claude nebo Gemini: vrátí váš životopis připravený k vložení sem",
     "empty_title": "Ještě žádný životopis?",
     "empty_desc": "Vložte sem svůj Markdown, nebo začněte jedním z těchto způsobů:",
     "empty_sample_btn": "Začít s ukázkou",
-    "empty_ai_btn": "Zkopírovat AI prompt",
+    "empty_ai_btn": "Zobrazit AI prompt",
     "empty_hint_html": "Prompt požádá ChatGPT, Claude nebo Gemini o váš životopis ve formátu Jobby: jejich odpověď vložte sem. <a href=\"#\" id=\"link-empty-help\">Nápověda k Markdownu</a>",
     "whatsnew_btn": "Co je nového",
     "whatsnew_tooltip": "Načíst aktualizace Jobby / Co je nového",
@@ -210,7 +210,7 @@
     "why_md_text": "Markdown odděluje obsah od formátování. To zaručuje, že systémy pro správu uchazečů (ATS) dokážou text vašeho životopisu bezchybně přečíst, aniž by se zasekly na složité skryté struktuře dokumentu (jako jsou tabulky nebo textová pole ve Wordu/PDF). Také to udržuje váš životopis snadno přenosný, upravitelný a připravený na budoucnost.",
     "section_ai": "🤖 Psaní CV s podporou AI",
     "ai_text": "Napište a vylaďte svůj životopis s Gemini, ChatGPT nebo Claude a přeneste ho sem pomocí hotového promptu Jobby: AI ho vrátí přesně v očekávaném Markdownu a vy odpověď vložíte do editoru.",
-    "ai_copy_btn": "Zkopírovat AI prompt",
+    "ai_copy_btn": "Zobrazit AI prompt",
     "section_privacy": "🔒 Ochrana soukromí & Zásady zpracování údajů (GDPR)",
     "privacy_intro": "Jobby je osobní, nekomerční projekt. Hluboce nám záleží na vašem soukromí a dodržujeme pokyny GDPR:",
     "privacy_bullets_html": "<li><strong>Soukromý obsah CV</strong>: Neshromažďujeme, neukládáme ani nepřenášíme žádný text vašeho životopisu ani údaje o kandidátech. Vaše data se zpracovávají výhradně lokálně ve vašem prohlížeči.</li><li><strong>Lokální koncepty</strong>: Vaše koncepty v markdownu a volby vzhledu se ukládají lokálně v <code>localStorage</code> vašeho prohlížeče (nebo přímo ve vašich vlastních souborech, pokud používáte File System Access API).</li><li><strong>Anonymní telemetrie</strong>:<span style=\"font-size: 11.5px; display: block; margin-top: 2px; opacity: 0.85; line-height: 1.4;\">• <em>Účel</em>: Analyzovat používání předvoleb vzhledu, sledovat míru neúspěšnosti skóre ATS (pro zpřesnění pravidel), sledovat kliknutí na funkce a sledovat výkon vykreslování překladače.<br>• <em>Úroveň soukromí</em>: Vysoce omezená a anonymní. V <code>localStorage</code> vašeho prohlížeče je uloženo náhodné anonymní ID. Neshromažďují se žádné osobní údaje, jména, IP adresy ani sledovače polohy.</span></li><li><strong>Zpětná vazba (Dobrovolná)</strong>:<span style=\"font-size: 11.5px; display: block; margin-top: 2px; opacity: 0.85; line-height: 1.4;\">• <em>Účel</em>: Zpracování uživatelských návrhů, hlášení chyb a hodnocení kvality.<br>• <em>Úroveň soukromí</em>: Získáváme pouze údaje, které explicitně odešlete prostřednictvím formuláře (hodnocení, kategorie, text a volitelné jméno/e-mail).</span></li>",
@@ -220,6 +220,12 @@
     "about_me_btn": "O mně",
     "inspired_by": "Inspirováno",
     "help_banner_html": "💡 Potřebujete pomoct? Podívejte se na naši <a href=\"#\" id=\"link-to-help\" >Nápovědu & Syntaxi Markdownu</a>."
+  },
+  "aiprompt": {
+    "title": "AI prompt",
+    "desc": "Přečtěte si ho, než ho použijete. Říká ChatGPT, Claude nebo Gemini, jak vrátit váš životopis přesně v Markdownu, který Jobby očekává. Vložte ho do AI, přidejte svůj životopis, pokud ještě není v konverzaci, a pak vložte celou odpověď do editoru.",
+    "copy_btn": "Zkopírovat prompt",
+    "help_btn": "Nápověda k Markdownu"
   },
   "help": {
     "title": "Nápověda & průvodce Markdownem",
@@ -328,6 +334,7 @@
     "rule_images_fail": "Zjištěn obrázek: Vyhněte se grafice/obrázkům (ATS skenery ignorují obrázky a text v nich obsažený).",
     "rule_headings_pass": "Identifikovány standardní nadpisy sekcí.",
     "rule_headings_fail": "Používejte standardní nadpisy sekcí (např. \"Zkušenosti\", \"Vzdělání\").",
+    "section_keywords": "praxe, zkušenosti, vzdělání, dovednosti, projekt, profil, shrnutí, jazyky, certifik",
     "rule_name_pass": "Celé jméno kandidáta identifikováno v H1.",
     "rule_name_fail": "Začněte svůj životopis jménem v nadpisu H1.",
     "rule_bullets_pass": "Standardizovaná struktura odrážek.",

@@ -35,11 +35,11 @@
     "sample_btn": "Exemple",
     "sample_tooltip": "Charger l'exemple",
     "ai_prompt_btn": "Prompt IA",
-    "ai_prompt_tooltip": "Copier un prompt pour ChatGPT, Claude ou Gemini : ils renvoient votre CV prêt à coller ici",
+    "ai_prompt_tooltip": "Afficher le prompt pour ChatGPT, Claude ou Gemini : ils renvoient votre CV prêt à coller ici",
     "empty_title": "Pas encore de CV ?",
     "empty_desc": "Collez votre Markdown ici, ou partez de l'une de ces deux façons :",
     "empty_sample_btn": "Commencer avec l'exemple",
-    "empty_ai_btn": "Copier le prompt IA",
+    "empty_ai_btn": "Voir le prompt IA",
     "empty_hint_html": "Le prompt demande à ChatGPT, Claude ou Gemini votre CV au format Jobby : collez leur réponse ici. <a href=\"#\" id=\"link-empty-help\">Aide Markdown</a>",
     "whatsnew_btn": "Nouveautés",
     "whatsnew_tooltip": "Charger les nouveautés de Jobby",
@@ -210,7 +210,7 @@
     "why_md_text": "Le Markdown sépare le fond (le contenu) de la forme (le design). Cela garantit que les robots de tri de CV (ATS) analysent parfaitement votre texte sans être bloqués par des structures complexes comme des tableaux ou zones de texte Word/PDF. Vos fichiers restent durables, légers et faciles à éditer.",
     "section_ai": "🤖 Rédaction de CV assistée par IA",
     "ai_text": "Rédigez et peaufinez votre CV avec Gemini, ChatGPT ou Claude, puis ramenez-le ici avec le prompt prêt à l'emploi de Jobby : l'IA le renvoie exactement dans le Markdown attendu, et vous collez sa réponse dans l'éditeur.",
-    "ai_copy_btn": "Copier le prompt IA",
+    "ai_copy_btn": "Voir le prompt IA",
     "section_privacy": "🔒 Confidentialité & Données (RGPD)",
     "privacy_intro": "Jobby est un projet personnel non commercial. Nous respectons strictement la confidentialité de vos données et le RGPD :",
     "privacy_bullets_html": "<li><strong>Contenu Privé</strong> : Nous ne collectons, ne stockons et ne transmettons aucun texte de votre CV, ni aucune information personnelle. Tout est traité localement dans votre navigateur.</li><li><strong>Brouillons Locaux</strong> : Vos brouillons Markdown et vos choix de style sont enregistrés localement dans le <code>localStorage</code> de votre navigateur (ou directement dans vos fichiers si vous utilisez l'API d'accès aux fichiers).</li><li><strong>Télémétrie Anonyme</strong> :<span style=\"font-size: 11.5px; display: block; margin-top: 2px; opacity: 0.85; line-height: 1.4;\">• <em>Objectif</em> : Analyser l'utilisation des thèmes de style, suivre les taux d'erreur du score ATS (pour améliorer les règles), et mesurer la performance du rendu.<br>• <em>Confidentialité</em> : Totalement anonyme. Un identifiant aléatoire est stocké dans votre <code>localStorage</code>. Aucune donnée personnelle, nom ou adresse IP n'est collectée.</span></li><li><strong>Formulaire d'Avis (Optionnel)</strong>:<span style=\"font-size: 11.5px; display: block; margin-top: 2px; opacity: 0.85; line-height: 1.4;\">• <em>Objectif</em> : Traiter vos suggestions, rapports de bugs et évaluations.<br>• <em>Confidentialité</em> : Nous ne recevons que les détails que vous soumettez explicitement (note, catégorie, texte, nom/email facultatif).</span></li>",
@@ -220,6 +220,12 @@
     "about_me_btn": "À propos de moi",
     "inspired_by": "Inspiré par",
     "help_banner_html": "💡 Besoin d'aide ? Consultez notre <a href=\"#\" id=\"link-to-help\" >Guide d'Aide & Syntaxe Markdown</a>."
+  },
+  "aiprompt": {
+    "title": "Le prompt IA",
+    "desc": "Lisez-le avant de l'utiliser. Il explique à ChatGPT, Claude ou Gemini comment renvoyer votre CV exactement dans le Markdown attendu par Jobby. Collez-le dans l'IA, ajoutez votre CV s'il n'est pas déjà dans la conversation, puis collez sa réponse entière dans l'éditeur.",
+    "copy_btn": "Copier le prompt",
+    "help_btn": "Aide Markdown"
   },
   "help": {
     "title": "Aide & Guide Markdown",
@@ -328,6 +334,7 @@
     "rule_images_fail": "Image détectée : À éviter absolument (les robots ATS ignorent les images et le texte qu'elles contiennent).",
     "rule_headings_pass": "Titres de section standards identifiés.",
     "rule_headings_fail": "Utilisez des titres de section standards (ex. \"Expérience\", \"Formation\").",
+    "section_keywords": "expérience, parcours, formation, études, compétences, projet, résumé, profil, langues, certification",
     "rule_name_pass": "Nom du candidat identifié dans un titre H1.",
     "rule_name_fail": "Commencez votre CV avec votre Nom dans un titre principal H1.",
     "rule_bullets_pass": "Structure des listes à puces standardisée.",

@@ -3,7 +3,7 @@
  * Client-side internationalization and translation engine.
  */
 
-const supportedLanguages = ['en', 'fr', 'cs', 'es', 'it', 'de', 'ro'];
+export const supportedLanguages = ['en', 'fr', 'cs', 'es', 'it', 'de', 'ro'];
 
 const urlParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
 const urlLang = urlParams ? urlParams.get('lang') : null;

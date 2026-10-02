@@ -35,11 +35,11 @@
     "sample_btn": "Exemplu",
     "sample_tooltip": "Încarcă exemplu",
     "ai_prompt_btn": "Prompt IA",
-    "ai_prompt_tooltip": "Copiați un prompt pentru ChatGPT, Claude sau Gemini: vă returnează CV-ul gata de lipit aici",
+    "ai_prompt_tooltip": "Afișați promptul pentru ChatGPT, Claude sau Gemini: vă returnează CV-ul gata de lipit aici",
     "empty_title": "Niciun CV încă?",
     "empty_desc": "Lipiți aici Markdown-ul dvs., sau începeți într-unul din aceste moduri:",
     "empty_sample_btn": "Începeți cu exemplul",
-    "empty_ai_btn": "Copiați promptul IA",
+    "empty_ai_btn": "Vedeți promptul IA",
     "empty_hint_html": "Promptul cere lui ChatGPT, Claude sau Gemini CV-ul dvs. în formatul Jobby: lipiți răspunsul lor aici. <a href=\"#\" id=\"link-empty-help\">Ajutor Markdown</a>",
     "whatsnew_btn": "Noutăți",
     "whatsnew_tooltip": "Încarcă actualizările Jobby / Noutăți",
@@ -210,7 +210,7 @@
     "why_md_text": "Markdown separă textul propriu-zis (conținutul) de așezarea grafică (designul). Acest lucru garantează că sistemele de sortare a CV-urilor (ATS) pot scana textul în mod perfect, fără a fi blocate de elemente grafice invizibile complexe (cum ar fi tabele sau casete de text în Word/PDF). Păstrează de asemenea CV-ul ușor de editat și portabil.",
     "section_ai": "🤖 Redactare CV asistată de IA",
     "ai_text": "Scrieți și rafinați CV-ul cu Gemini, ChatGPT sau Claude, apoi aduceți-l aici cu promptul gata făcut al lui Jobby: IA îl returnează exact în Markdown-ul așteptat, iar dvs. lipiți răspunsul în editor.",
-    "ai_copy_btn": "Copiați promptul IA",
+    "ai_copy_btn": "Vedeți promptul IA",
     "section_privacy": "🔒 Confidențialitate & Date personale (GDPR / RGPD)",
     "privacy_intro": "Jobby este un proiect personal necomercial. Respectăm confidențialitatea datelor dumneavoastră conform regulamentelor GDPR / RGPD:",
     "privacy_bullets_html": "<li><strong>Conținut privat CV</strong>: Nu colectăm, stocăm sau transmitem textul din CV-ul dumneavoastră sau datele de candidat. Totul este procesat local în browser-ul dumneavoastră.</li><li><strong>Ciorne locale</strong>: Ciornele Markdown și opțiunile de design sunt salvate în <code>localStorage</code> din browser (sau direct în fișierele dumneavoastră dacă folosiți API-ul de acces la fișiere).</li><li><strong>Telemetrie anonimă</strong>:<span style=\"font-size: 11.5px; display: block; margin-top: 2px; opacity: 0.85; line-height: 1.4;\">• <em>Scop</em>: Analiza utilizării temelor de design, urmărirea ratelor de eroare ale scorului ATS (pentru îmbunătățirea regulilor) și evaluarea performanței motorului de redare.<br>• <em>Confidențialitate</em>: Total anonim. Un identificator aleatoriu este stocat în <code>localStorage</code>. Nu se colectează date personale, adrese IP, nume sau locații.</span></li><li><strong>Trimitere Feedback (Opțional)</strong>:<span style=\"font-size: 11.5px; display: block; margin-top: 2px; opacity: 0.85; line-height: 1.4;\">• <em>Scop</em>: Procesarea sugestiilor, raportarea bug-urilor și notări.<br>• <em>Confidențialitate</em>: Primim doar informațiile trimise în mod explicit de dumneavoastră prin formular (evaluare, categorie, text și opțional nume/email).</span></li>",
@@ -220,6 +220,12 @@
     "about_me_btn": "Despre mine",
     "inspired_by": "Inspirat de",
     "help_banner_html": "💡 Aveți nevoie de ajutor? Consultați <a href=\"#\" id=\"link-to-help\" >Ghidul de ajutor & Sintaxa Markdown</a>."
+  },
+  "aiprompt": {
+    "title": "Promptul IA",
+    "desc": "Citiți-l înainte de a-l folosi. Îi spune lui ChatGPT, Claude sau Gemini cum să returneze CV-ul dvs. exact în Markdown-ul pe care Jobby îl așteaptă. Lipiți-l în IA, adăugați CV-ul dacă nu este deja în conversație, apoi lipiți întregul răspuns în editor.",
+    "copy_btn": "Copiați promptul",
+    "help_btn": "Ajutor Markdown"
   },
   "help": {
     "title": "Ajutor și ghid Markdown",
@@ -328,6 +334,7 @@
     "rule_images_fail": "Grafică/Imagine detectată: Evitați imaginile (sistemele ATS ignoră textul din imagini).",
     "rule_headings_pass": "Titluri de secțiuni standard detectate.",
     "rule_headings_fail": "Utilizați titluri standard pentru secțiuni (ex. \"Experiență\", \"Educație\").",
+    "section_keywords": "experiență, educație, formare, competențe, abilități, proiect, profil, rezumat, limbi, certificare",
     "rule_name_pass": "Nume complet detectat în H1.",
     "rule_name_fail": "Începeți CV-ul cu numele dumneavoastră ca titlu H1 la început.",
     "rule_bullets_pass": "Structură standardizată de puncte (liste).",

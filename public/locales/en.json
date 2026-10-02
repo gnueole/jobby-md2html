@@ -35,11 +35,11 @@
     "sample_btn": "Sample",
     "sample_tooltip": "Load sample",
     "ai_prompt_btn": "AI prompt",
-    "ai_prompt_tooltip": "Copy a prompt for ChatGPT, Claude or Gemini: they return your CV ready to paste here",
+    "ai_prompt_tooltip": "Show the prompt for ChatGPT, Claude or Gemini: they return your CV ready to paste here",
     "empty_title": "No CV yet?",
     "empty_desc": "Paste your Markdown here, or start one of these ways:",
     "empty_sample_btn": "Start with the sample",
-    "empty_ai_btn": "Copy the AI prompt",
+    "empty_ai_btn": "See the AI prompt",
     "empty_hint_html": "The prompt asks ChatGPT, Claude or Gemini for your CV in Jobby's format: paste their answer here. <a href=\"#\" id=\"link-empty-help\">Markdown help</a>",
     "whatsnew_btn": "What's New",
     "whatsnew_tooltip": "Load Jobby Updates / What's New",
@@ -210,7 +210,7 @@
     "why_md_text": "Markdown separates content from formatting. This guarantees that Applicant Tracking Systems (ATS) can parse your resume's text flawlessly without getting tripped up by complex hidden document structures (like tables or text boxes in Word/PDFs). It also keeps your resume future-proof, portable, and easy to edit.",
     "section_ai": "🤖 AI-Powered CV Writing",
     "ai_text": "Write and refine your CV with Gemini, ChatGPT or Claude, then bring it here with Jobby's ready-made prompt: the AI returns it in the exact Markdown Jobby expects, and you paste the answer into the editor.",
-    "ai_copy_btn": "Copy the AI prompt",
+    "ai_copy_btn": "See the AI prompt",
     "section_privacy": "🔒 Privacy & Data Policy (GDPR / RGPD)",
     "privacy_intro": "Jobby is a personal, non-commercial project. We care deeply about your privacy and adhere to GDPR / RGPD guidelines:",
     "privacy_bullets_html": "<li><strong>Private CV Content</strong>: We do not collect, store, or transmit any of your resume text, candidate details, or compiled files. Your data is processed entirely locally within your browser.</li><li><strong>Local Drafts</strong>: Your markdown drafts and design choices are saved locally in your browser's <code>localStorage</code> (or directly in your own files if using the File System Access API).</li><li><strong>Anonymous Telemetry</strong>:<span style=\"font-size: 11.5px; display: block; margin-top: 2px; opacity: 0.85; line-height: 1.4;\">• <em>Purpose</em>: To analyze design preset adoption, monitor ATS scorecard failure rates (to refine compliance rules), track feature clicks, and monitor compiler rendering performance.<br>• <em>Privacy Level</em>: Highly restricted and anonymous. A persistent, random anonymous ID is stored in your browser's <code>localStorage</code>. No personal data, names, IP addresses, or location trackers are collected or linked to telemetry.</span></li><li><strong>User Feedback (Voluntary)</strong>:<span style=\"font-size: 11.5px; display: block; margin-top: 2px; opacity: 0.85; line-height: 1.4;\">• <em>Purpose</em>: To process user suggestions, bug reports, and quality ratings.<br>• <em>Privacy Level</em>: We only receive details you explicitly submit through the form (rating, category, text, and optional name/email).</span></li>",
@@ -220,6 +220,12 @@
     "about_me_btn": "About me",
     "inspired_by": "Inspired by",
     "help_banner_html": "💡 Need help? Check our <a href=\"#\" id=\"link-to-help\" >Help Guide & Markdown Syntax</a>."
+  },
+  "aiprompt": {
+    "title": "The AI prompt",
+    "desc": "Read it before you use it. It tells ChatGPT, Claude or Gemini how to return your CV in the exact Markdown Jobby expects. Paste it into the AI, add your CV if it is not already in the conversation, then paste the whole answer into the editor.",
+    "copy_btn": "Copy the prompt",
+    "help_btn": "Markdown help"
   },
   "help": {
     "title": "Help & Markdown Guide",
@@ -328,6 +334,7 @@
     "rule_images_fail": "Image detected: Avoid graphics/images (ATS scanners ignore images and text inside them).",
     "rule_headings_pass": "Standard section headings identified.",
     "rule_headings_fail": "Use standard section headings (e.g., \"Experience\", \"Education\").",
+    "section_keywords": "experience, employment, work history, education, skills, project, summary, profile, languages, certification",
     "rule_name_pass": "Candidate full name identified in H1.",
     "rule_name_fail": "Start your resume with your Name in H1.",
     "rule_bullets_pass": "Standardized bullet point structure.",
