@@ -57,7 +57,7 @@ npx playwright install chromium   # once, for the browser tests
 npm run lint                      # ESLint on public/**/*.js, Prettier on bricks and scripts
 npm run validate:i18n             # the seven locales share the same keys
 npm run dev                       # in another terminal: http://localhost:3010
-npm run test:contact && npm run test:brackets && npm run test:menus && npm run test:overlay && npm run test:contrast
+npm run test:contact && npm run test:brackets && npm run test:menus && npm run test:prompt && npm run test:overlay && npm run test:contrast
 ```
 
 - The file pickers exist only on a secure origin: run the browser tests against `localhost`, `127.0.0.1` or HTTPS. `BASE_URL` points them at another server, production included.

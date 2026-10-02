@@ -21,11 +21,13 @@ This document details the system design, file structure, telemetry pipelines, an
   - `shortcuts.js`: Keyboard hotkeys and structural section swapping.
   - `styles.js`: Dynamic styling injector, cosmetics, and slider values handlers.
   - `tutorial.js`: Interactive animated popup tutorial demonstrating Markdown in 20 seconds, featuring path routing and dynamic theme/media styling.
+  - `aiprompt.js`: The AI prompt (its copy buttons, the preview in the help modal) and the cleanup of an AI answer pasted whole into the editor.
   - `i18n.js`: Client-side internationalization engine that loads translation JSON files dynamically.
   - `tooltip.js`: Interactive markdown cheatsheet tooltip utility.
   - `theme.js`, `zoom.js`, `print.js`, `panning.js`, `utils.js`: Theme, zoom, scaling, panning, print previews, and core DOM utility helpers.
 - `public/templates.css`: Rendering styles for A4 page (screen + PDF print rules).
 - `public/sample.md`: Default resume template (example author) provided as a starting point.
+- `public/ai-prompt.md`, `public/ai-prompt.<lang>.md`: The prompt handed to ChatGPT, Claude or Gemini, one per interface language, aligned with the sample's syntax.
 - `public/resume.md`: **[Optional Backup]** A Markdown resume file placed on disk to bootstrap the editor if browser `localStorage` is empty.
 - `public/config.json`: **[Optional Backup]** Custom layout configuration settings placed on disk to bootstrap the styles if browser `localStorage` is empty.
 - `toolkit/test_*.js`: Playwright non-regression tests, run with `npm run test:contact`, `test:brackets`, `test:menus`, `test:overlay` and `test:contrast`. `toolkit/` also holds the n8n sync scripts.
@@ -115,7 +117,7 @@ Jobby includes a lightweight telemetry pipeline to monitor editor performance, c
 - **Where it goes**: Events reach the Axiom `eole-telemetry` dataset through Vector, shared by every eole.me project. They used to go through n8n into a Notion database, which was retired in 1.13.0.
 
 ### Event Capture & Delivery
-1. **Event Capture:** The frontend editor captures key user events: session start, open/save file, copy Markdown, print PDF, the ATS scorecard (sent only when the score changes), opening the About and Help modals, and the tutorial (start, complete, replay, exit). Nothing is sent in development or when the user opts out.
+1. **Event Capture:** The frontend editor captures key user events: session start, open/save file, copy Markdown, print PDF, the ATS scorecard (sent only when the score changes), opening the About and Help modals, the tutorial (start, complete, replay, exit), copying the AI prompt (with its `source`: header, empty_state, help or about) and a pasted AI answer unwrapped. Nothing is sent in development or when the user opts out.
 2. **Secure Proxy:** Events are POSTed to the local `/api/telemetry` endpoint, which adds `application: 'jobby'` and the environment, then forwards them. The event name goes out in snake_case (`event_type`), the vocabulary shared by all projects.
 3. **Vector → Axiom:** Vector normalises legacy field names at ingest and ships the events to the `eole-telemetry` dataset.
 
