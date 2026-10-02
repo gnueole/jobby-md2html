@@ -8,6 +8,28 @@ All notable changes to the Jobby project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.17.1] - 2026-10-03
+
+### Security
+
+- **Pinned execution data is gone from the exported workflows.** Two files
+  under `n8n/` carried the request an execution had been pinned with: real
+  headers, and in `jobby-linkedin-to-notion-prod.json` a bearer token, public
+  since 2026-08-27. The `pinData` of every export is now emptied, the
+  `todel_*` quarantine files are deleted, and `sync_n8n.py` strips `pinData`
+  on every backup so it cannot come back. The token itself has to be rotated:
+  deleting it from the tree does not remove it from the history.
+
+### Changed
+
+- **What's New reads like release notes.** Every version has a title that
+  says what it brought, instead of seventeen "Jobby Update" headings, a plain
+  date, and no contact line.
+- **`.env.example` points at `n8n.example.com`**, not at the author's instance.
+- Credits: Maroun Boutanos's name is spelled right, in every language.
+
+---
+
 ## [1.17.0] - 2026-10-02
 
 Getting a CV into Jobby no longer requires knowing Markdown. The editor carries
