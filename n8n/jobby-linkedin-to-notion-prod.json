@@ -503,50 +503,7 @@
     "errorWorkflow": "tx4xTfvUypqRf7jO"
   },
   "staticData": null,
-  "pinData": {
-    "CV Factory": [
-      {
-        "json": {
-          "headers": {
-            "host": "n8n.eole.me",
-            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36",
-            "accept": "application/json",
-            "accept-encoding": "gzip, deflate, br, zstd",
-            "accept-language": "en-US,en;q=0.9,fr;q=0.8",
-            "authorization": "Bearer a56ca7bdd2ad74dfdfa80f356e8c4d7cc3544e4022f5ce52",
-            "origin": "https://jobby.eole.me",
-            "priority": "u=1, i",
-            "referer": "https://jobby.eole.me/",
-            "sec-ch-ua": "\"Not;A=Brand\";v=\"8\", \"Chromium\";v=\"150\", \"Google Chrome\";v=\"150\"",
-            "sec-ch-ua-mobile": "?0",
-            "sec-ch-ua-platform": "\"Windows\"",
-            "sec-fetch-dest": "empty",
-            "sec-fetch-mode": "cors",
-            "sec-fetch-site": "same-site",
-            "x-forwarded-for": "176.134.37.100",
-            "x-forwarded-host": "n8n.eole.me",
-            "x-forwarded-port": "443",
-            "x-forwarded-proto": "https",
-            "x-forwarded-server": "eaf93e0cc201",
-            "x-real-ip": "176.134.37.100"
-          },
-          "params": {},
-          "query": {
-            "job_title": "Solutions Consultant (Paris, France) | Figma | LinkedIn",
-            "company": "",
-            "job_url": "https://www.linkedin.com/jobs/view/4343955597/?trk=eml-email_job_alert_digest_01-primary_job_list-0-jobcard_body_0_jobid_4343955597_ssid_8160885338_fmid_2o865~mr0pccxt~bg&refId=7PAqSEVJdcdOPMljBtp23g%3D%3D&trackingId=IilOTZ3ghpQjJuxyc19Zhw%3D%3D",
-            "job_description": "Figma is growing our team of passionate creatives and builders on a mission to make design accessible to all. Figma’s platform helps teams bring ideas to life—whether you're brainstorming, creating a prototype, translating designs into code, or iterating with AI. From idea to product, Figma empowers teams to streamline workflows, move faster, and work together in real time from anywhere in the world. If you're excited to shape the future of design and collaboration, join us!\n\nAt Figma, our Solutions Consulting team bridges technical expertise with business context to help customers realize what’s possible with our platform. As a Solutions Consultant supporting enterprise accounts, you’ll partner with Sales and cross-functional teams to craft and deliver consultative strategies that showcase Figma’s value. You’ll lead technical discussions, demos, and solution design to help customers achieve their goals and transform how they build products, playing a key role in driving revenue and growth as Figma continues to innovate.\n\nThis is a full time role that can be held from our Paris hub.\n\nWhat you'll do at Figma:\n\nPaint the vision of the Figma Platform and guide customers in realizing the value through product demonstrations and presentations\nSupport the Sales team by addressing Figma platform questions and showcasing how Figma accelerates digital product delivery to customers\nOwn the customer IT and Security relationship during the deal cycle by addressing security questionnaires, RFIs, RFPs, identity and enterprise questions\nCollaborate with Product and Support to identify opportunities for enhancing account security through new product features and help influence the product roadmap\nDesign and scale technical sales efforts, facilitating conversations and connections betwe"
-          },
-          "body": {},
-          "webhookUrl": "https://n8n.eole.me/webhook/cv-factory",
-          "executionMode": "production"
-        },
-        "pairedItem": {
-          "item": 0
-        }
-      }
-    ]
-  },
+  "pinData": {},
   "meta": null,
   "tags": [],
   "shared": [

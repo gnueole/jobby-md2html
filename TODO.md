@@ -35,9 +35,10 @@ Decisions nobody else can take. Each is blocked, not merely unstarted.
 Pickable without asking.
 
 **Which PDF static workflow is live is unclear.** `n8n/README.md` lists
-`jobby-pdf-static-prod.json`, but `n8n/` holds `jobby-pdf-static.json` and a
-quarantined `todel_2026-08-27_jobby-pdf-static-prod.json`. Check the n8n instance
-(`make n8n-backup` from the root) before correcting the README.
+`jobby-pdf-static-prod.json`, but `n8n/` holds `jobby-pdf-static.json`. The
+quarantined `todel_*` exports were deleted on 2026-10-03 (one carried pinned
+request data). Check the n8n instance (`make n8n-backup` from the root) before
+correcting the README.
 
 **The `toolkit/` tests do not run in CI.** They have `npm run` entries now, but
 `ci.yml` still runs only lint and i18n. Wiring them needs the job to start the

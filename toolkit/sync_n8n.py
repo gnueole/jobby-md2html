@@ -655,6 +655,10 @@ def backup_all(n8n_dir, use_dev, container_name="n8n-server-dev"):
                     )
                     with urllib.request.urlopen(wf_req, context=ctx) as wf_res:
                         full_wf = json.loads(wf_res.read().decode("utf-8"))
+                        # Pinned execution data is a captured request: real headers,
+                        # tokens and cookies. It is test fixture, never configuration,
+                        # and one such export put a bearer token in a public repo.
+                        full_wf["pinData"] = {}
                         with open(file_path, "w", encoding="utf-8") as out:
                             json.dump(full_wf, out, indent=2, ensure_ascii=False)
                         print(f"  - Saved: {n8n_dir}/{filename} (ID: {wf_id})")

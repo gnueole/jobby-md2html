@@ -15,7 +15,7 @@ The following JSON files define the n8n workflows:
    * **Role**: PDF compiler orchestration.
    * **Action**: Fetches Markdown text and style customizer JSON values, posts them to the Gotenberg API container, and saves the generated A4 PDF file back to Notion or local storage.
 3. **`jobby-telemetry-to-notion-prod.json`** — **retired in 1.13.0**
-   * Telemetry now goes to Vector and the Axiom `eole-telemetry` dataset (see [ARCHITECTURE.md](../ARCHITECTURE.md)). The workflow is quarantined as `todel_2026-08-28_jobby-telemetry-to-notion-prod.json`.
+   * Telemetry now goes to Vector and the Axiom `eole-telemetry` dataset (see [ARCHITECTURE.md](../ARCHITECTURE.md)). Its export was deleted from this directory on 2026-10-03; the workflow itself stays archived in n8n.
 4. **`jobby-feedback-to-notion-prod.json`**
    * **Role**: Captures user feedback.
    * **Action**: Proxies name, rating stars, category, and review text from the editor header form into a **Jobby Feedback** Notion database.
