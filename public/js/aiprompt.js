@@ -1,7 +1,8 @@
 /**
  * Jobby Markdown Editor - aiprompt.js
  * The prompt that asks an AI (ChatGPT, Claude, Gemini…) to return a CV in the Markdown
- * Jobby expects, and the cleanup applied when its whole answer is pasted into the editor.
+ * Jobby expects: the modal that shows it, the buttons that copy it, and the cleanup
+ * applied when the AI's whole answer is pasted into the editor.
  */
 
 import { showToast } from './utils.js';
@@ -44,15 +45,32 @@ export function copyAiPrompt(source) {
     });
 }
 
-// Shows the prompt inside the help modal, in the current language.
+// Fills every element that displays the prompt (the help modal, the prompt modal), in
+// the current language.
 export async function renderAiPromptPreview() {
-    const box = document.getElementById('help-ai-prompt');
-    if (!box) return;
+    const boxes = document.querySelectorAll('#help-ai-prompt, #ai-prompt-modal-text');
+    if (!boxes.length) return;
     try {
-        box.textContent = await fetchAiPrompt();
+        const text = await fetchAiPrompt();
+        boxes.forEach(box => { box.textContent = text; });
     } catch (err) {
         console.error('AI prompt preview failed:', err);
     }
+}
+
+// The prompt is shown before it can be copied: nobody should paste into an AI a text
+// they have not read.
+export function openAiPromptModal(source) {
+    const modal = document.getElementById('ai-prompt-modal');
+    if (!modal) return;
+    renderAiPromptPreview();
+    modal.classList.add('show');
+    telemetry('AI Prompt Viewed', { source });
+}
+
+export function closeAiPromptModal() {
+    const modal = document.getElementById('ai-prompt-modal');
+    if (modal) modal.classList.remove('show');
 }
 
 // A fenced block, closed on its own line. Group 1 is the fence, group 2 the body.
@@ -83,18 +101,36 @@ export function unwrapAiReply(text) {
 }
 
 /**
- * Binds every "copy the AI prompt" button and prefetches the prompt.
+ * Binds the prompt modal and every button that opens or copies the prompt, and
+ * prefetches it.
  * @param {Object} options
- * @param {Function} options.openHelp Opens the help modal (the empty-state link uses it)
+ * @param {Function} options.openHelp Opens the help modal
  */
 export function initAiPrompt({ openHelp } = {}) {
-    const sources = {
+    // Buttons that show the prompt first
+    const openers = {
         'btn-copy-ai-prompt': 'header',
         'btn-empty-ai-prompt': 'empty_state',
-        'btn-copy-ai-prompt-help': 'help',
         'btn-copy-ai-prompt-about': 'about'
     };
-    Object.entries(sources).forEach(([id, source]) => {
+    Object.entries(openers).forEach(([id, source]) => {
+        const btn = document.getElementById(id);
+        if (btn) {
+            btn.addEventListener('click', e => {
+                e.preventDefault();
+                const about = document.getElementById('about-modal');
+                if (about) about.classList.remove('show');
+                openAiPromptModal(source);
+            });
+        }
+    });
+
+    // Buttons that copy it, next to its full text
+    const copiers = {
+        'btn-copy-ai-prompt-modal': 'modal',
+        'btn-copy-ai-prompt-help': 'help'
+    };
+    Object.entries(copiers).forEach(([id, source]) => {
         const btn = document.getElementById(id);
         if (btn) {
             btn.addEventListener('click', e => {
@@ -103,6 +139,23 @@ export function initAiPrompt({ openHelp } = {}) {
             });
         }
     });
+
+    const modal = document.getElementById('ai-prompt-modal');
+    if (modal) {
+        const closeBtn = modal.querySelector('#btn-close-ai-prompt-modal');
+        if (closeBtn) closeBtn.addEventListener('click', closeAiPromptModal);
+        modal.addEventListener('click', e => {
+            if (e.target === modal) closeAiPromptModal();
+        });
+        const helpBtn = modal.querySelector('#btn-ai-prompt-modal-help');
+        if (helpBtn && typeof openHelp === 'function') {
+            helpBtn.addEventListener('click', e => {
+                e.preventDefault();
+                closeAiPromptModal();
+                openHelp();
+            });
+        }
+    }
 
     const emptyHelpLink = document.getElementById('link-empty-help');
     if (emptyHelpLink && typeof openHelp === 'function') {

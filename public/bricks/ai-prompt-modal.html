@@ -1,0 +1,35 @@
+<div class="modal-card ai-prompt-modal-card">
+  <div class="modal-header">
+    <h2 data-i18n="aiprompt.title">The AI prompt</h2>
+    <button id="btn-close-ai-prompt-modal" class="modal-close-btn">&times;</button>
+  </div>
+  <div class="modal-body">
+    <p class="modal-desc" data-i18n="aiprompt.desc">
+      Read it before you use it. It tells ChatGPT, Claude or Gemini how to return your CV in the
+      exact Markdown Jobby expects. Paste it into the AI, add your CV if it is not already in the
+      conversation, then paste the whole answer into the editor.
+    </p>
+    <pre id="ai-prompt-modal-text" class="ai-prompt-text"></pre>
+    <div class="ai-prompt-modal-actions">
+      <button id="btn-ai-prompt-modal-help" type="button" class="btn btn-secondary">
+        <span data-i18n="aiprompt.help_btn">Markdown help</span>
+      </button>
+      <button id="btn-copy-ai-prompt-modal" type="button" class="btn btn-primary">
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+        </svg>
+        <span data-i18n="aiprompt.copy_btn">Copy the prompt</span>
+      </button>
+    </div>
+  </div>
+</div>

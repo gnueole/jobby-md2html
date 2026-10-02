@@ -21,7 +21,7 @@ This document details the system design, file structure, telemetry pipelines, an
   - `shortcuts.js`: Keyboard hotkeys and structural section swapping.
   - `styles.js`: Dynamic styling injector, cosmetics, and slider values handlers.
   - `tutorial.js`: Interactive animated popup tutorial demonstrating Markdown in 20 seconds, featuring path routing and dynamic theme/media styling.
-  - `aiprompt.js`: The AI prompt (its copy buttons, the preview in the help modal) and the cleanup of an AI answer pasted whole into the editor.
+  - `aiprompt.js`: The AI prompt (the modal that shows it, its copy buttons, the preview in the help modal) and the cleanup of an AI answer pasted whole into the editor.
   - `i18n.js`: Client-side internationalization engine that loads translation JSON files dynamically.
   - `tooltip.js`: Interactive markdown cheatsheet tooltip utility.
   - `theme.js`, `zoom.js`, `print.js`, `panning.js`, `utils.js`: Theme, zoom, scaling, panning, print previews, and core DOM utility helpers.

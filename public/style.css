@@ -3590,3 +3590,25 @@ body.expert-mode-active .font-preferences-row {
     padding: 7px 12px;
     font-size: 12px;
 }
+
+/* The prompt modal: the full text first, the copy button under it */
+.ai-prompt-modal-card {
+    max-width: 760px;
+}
+
+.ai-prompt-modal-card .ai-prompt-text {
+    max-height: 55vh;
+    font-size: 12px;
+}
+
+.ai-prompt-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.ai-prompt-modal-actions .btn {
+    padding: 9px 16px;
+    font-size: 12.5px;
+}

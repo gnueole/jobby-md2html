@@ -78,7 +78,7 @@ The editor also marks unbalanced brackets once you pause typing: an unclosed `[`
 
 ### Importing a CV from an AI
 
-Nobody has to learn this syntax. The **AI prompt** button (editor header, empty editor, Help and About) copies a prompt, in the interface language, that asks ChatGPT, Claude or Gemini to return your CV in exactly this Markdown, inside one code block. Paste the whole answer into the editor: when the pasted text holds a code block starting with a `#` heading, or is nothing but a code block, only its content goes in, and the sentence before and the list of missing information after are left out (`Ctrl + Z` reverts). The prompts live in `public/ai-prompt.md` and `public/ai-prompt.<lang>.md`; keep them aligned with `public/sample.md` when the syntax changes.
+Nobody has to learn this syntax. The **AI prompt** button (editor header, empty editor, About) shows a prompt, in the interface language, that asks ChatGPT, Claude or Gemini to return your CV in exactly this Markdown, inside one code block; read it, then copy it from there (the Help guide shows it too). Paste the whole answer into the editor: when the pasted text holds a code block starting with a `#` heading, or is nothing but a code block, only its content goes in, and the sentence before and the list of missing information after are left out (`Ctrl + Z` reverts). The prompts live in `public/ai-prompt.md` and `public/ai-prompt.<lang>.md`; keep them aligned with `public/sample.md` when the syntax changes.
 
 ---
 
@@ -107,7 +107,8 @@ npm run dev              # serves http://localhost:3010
 npm run test:contact     # contact line: closed, unclosed, separators, code spans
 npm run test:brackets    # editor marks for unbalanced brackets
 npm run test:menus       # a real click on every header menu option
-npm run test:prompt      # AI prompt copy buttons, empty-editor card, paste cleanup
+npm run test:prompt      # AI prompt modal and copy, empty-editor card, paste cleanup
+npm run test:ats         # ATS heading rule in every language, accents ignored
 npm run test:overlay     # caret layer and highlight layer wrap alike
 npm run test:contrast    # every UI text meets WCAG AA, in both themes
 ```

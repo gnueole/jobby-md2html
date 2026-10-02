@@ -5,10 +5,11 @@ const { chromium } = require('playwright');
 //   node toolkit/test_ai_prompt.js                (BASE_URL overrides the address)
 // Exits non-zero on any failure.
 //
-// Pins three things: the "AI prompt" buttons copy the prompt of the interface language,
-// the empty editor shows the two ways to get a CV in, and an AI's whole answer pasted into
-// the editor keeps only the CV from its code block. A plain paste, or a code block in the
-// middle of a text, goes in untouched. Against 1.16.0 every check fails: none of it exists.
+// Pins three things: the "AI prompt" buttons show the prompt of the interface language in
+// a modal whose button copies it (nothing is copied unseen, since 1.17.2), the empty editor
+// shows the two ways to get a CV in, and an AI's whole answer pasted into the editor keeps
+// only the CV from its code block. A plain paste, or a code block in the middle of a text,
+// goes in untouched. Against 1.16.0 every check fails: none of it exists.
 
 const baseUrl = process.env.BASE_URL || 'http://127.0.0.1:3010';
 
@@ -56,11 +57,21 @@ async function run() {
     await page.goto(baseUrl, { waitUntil: 'networkidle' });
     await page.waitForTimeout(1500);
 
-    // --- 1. The header button copies the English prompt, and the prompt teaches Jobby's syntax
+    // --- 1. The header button shows the prompt before anything is copied; the modal's
+    //        button copies it, and the prompt teaches Jobby's syntax
     const promptEn = await fetchText('/ai-prompt.md');
+    const modalShown = () => page.$eval('#ai-prompt-modal', el => el.classList.contains('show') && getComputedStyle(el).display !== 'none');
     await page.click('#btn-copy-ai-prompt');
     await page.waitForTimeout(500);
-    check((await clipboard()) === promptEn, 'header button copies the prompt');
+    check(await modalShown(), 'header button opens the prompt modal');
+    check((await page.$eval('#ai-prompt-modal-text', el => el.textContent)) === promptEn, 'the modal shows the whole prompt');
+    check(await topmostIs('#btn-copy-ai-prompt-modal'), 'the modal copy button is clickable');
+    await page.click('#btn-copy-ai-prompt-modal');
+    await page.waitForTimeout(500);
+    check((await clipboard()) === promptEn, 'modal button copies the prompt');
+    await page.click('#btn-close-ai-prompt-modal');
+    await page.waitForTimeout(300);
+    check(!(await modalShown()), 'the modal closes');
     check(/\[CONTACT :/.test(promptEn) && /:accent\[/.test(promptEn) && /:muted\[/.test(promptEn) && /###/.test(promptEn),
         'prompt teaches the contact line, accent, muted and sidebar headings');
     const toastText = await page.$eval('#toast', el => el.textContent).catch(() => '');
@@ -74,7 +85,9 @@ async function run() {
         'empty-state card shows after Clear, its buttons on top');
     await page.click('#btn-empty-ai-prompt');
     await page.waitForTimeout(400);
-    check((await clipboard()) === promptEn, 'empty-state button copies the prompt');
+    check(await modalShown(), 'empty-state button opens the prompt modal');
+    await page.click('#btn-close-ai-prompt-modal');
+    await page.waitForTimeout(300);
     await page.click('#btn-empty-sample');
     await page.waitForTimeout(600);
     check((await isHidden('#editor-empty-state')) && /^# /.test(await editorValue()),
@@ -123,7 +136,12 @@ async function run() {
     check(promptFr !== promptEn && /\[CONTACT :/.test(promptFr), 'French prompt exists and differs from the English one');
     await page.click('#btn-copy-ai-prompt');
     await page.waitForTimeout(500);
-    check((await clipboard()) === promptFr, 'header button copies the French prompt under ?lang=fr');
+    check((await page.$eval('#ai-prompt-modal-text', el => el.textContent)) === promptFr, 'the modal shows the French prompt under ?lang=fr');
+    await page.click('#btn-copy-ai-prompt-modal');
+    await page.waitForTimeout(500);
+    check((await clipboard()) === promptFr, 'modal button copies the French prompt');
+    await page.click('#btn-close-ai-prompt-modal');
+    await page.waitForTimeout(300);
     await page.click('#btn-markdown-help-header');
     await page.waitForTimeout(500);
     const shown = await page.$eval('#help-ai-prompt', el => el.textContent);

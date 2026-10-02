@@ -57,6 +57,7 @@ async function initializeJobby() {
         { id: 'controls-container', url: '/bricks/controls.html' },
         { id: 'about-modal', url: '/bricks/about-modal.html' },
         { id: 'help-modal', url: '/bricks/help-modal.html' },
+        { id: 'ai-prompt-modal', url: '/bricks/ai-prompt-modal.html' },
         { id: 'feedback-modal', url: '/bricks/feedback-modal.html' }
     ];
 
