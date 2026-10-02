@@ -1,6 +1,5 @@
-# 1.17.0 - Jobby Update
-Jobby Update of 10/02/2026 · Let ChatGPT, Claude or Gemini write your CV in Jobby's Markdown: a ready-made prompt, and a paste that keeps only the CV.
-[CONTACT : hi@eole.me • [cv.eole.me](https://cv.eole.me)]
+# 1.17.0 — Your CV straight from an AI
+October 2, 2026 · Let ChatGPT, Claude or Gemini write your CV in Jobby's Markdown: a ready-made prompt, and a paste that keeps only the CV.
 
 ## 🤖 AI IMPORT
 * **AI Prompt**: The new *AI prompt* button above the editor copies a prompt for ChatGPT, Claude or Gemini. They return your CV in the exact Markdown Jobby expects: no syntax to learn.
@@ -10,9 +9,8 @@ Jobby Update of 10/02/2026 · Let ChatGPT, Claude or Gemini write your CV in Job
 
 ---
 
-# 1.15.1 - Jobby Update
-Jobby Update of 09/19/2026 · The Save menu works again, and bracket marks show up faster.
-[CONTACT : hi@eole.me • [cv.eole.me](https://cv.eole.me)]
+# 1.15.1 — The Save menu answers again
+September 19, 2026 · The Save menu works again, and bracket marks show up faster.
 
 ## 🛠️ FIXES
 * **Save Menu**: Save, Save As and Open respond to clicks again. The menu used to open behind the editor, so a click fell into the text.
@@ -21,9 +19,8 @@ Jobby Update of 09/19/2026 · The Save menu works again, and bracket marks show 
 
 ---
 
-# 1.15.0 - Jobby Update
-Jobby Update of 09/19/2026 · The editor now points out unbalanced brackets as you write.
-[CONTACT : hi@eole.me • [cv.eole.me](https://cv.eole.me)]
+# 1.15.0 — Brackets checked as you type
+September 19, 2026 · The editor now points out unbalanced brackets as you write.
 
 ## 🔍 BRACKET CHECK
 * **Unclosed Brackets**: A `[` left open turns red once you pause typing, right where the mistake is.
@@ -32,9 +29,8 @@ Jobby Update of 09/19/2026 · The editor now points out unbalanced brackets as y
 
 ---
 
-# 1.14.6 - Jobby Update
-Jobby Update of 09/19/2026 · The caret stays on its text, every screen is readable in the light theme, a contact line can be closed on the next line, and Firefox and Safari now say what "Save" really does.
-[CONTACT : hi@eole.me • [cv.eole.me](https://cv.eole.me)]
+# 1.14.6 — A caret that stays put, a light theme you can read
+September 19, 2026 · The caret stays on its text, every screen is readable in the light theme, a contact line can be closed on the next line, and Firefox and Safari now say what "Save" really does.
 
 ## 🛠️ EDITOR FIXES
 * **Caret Alignment**: The caret no longer drifts onto a line that looks empty at some editor widths.
@@ -49,9 +45,8 @@ Jobby Update of 09/19/2026 · The caret stays on its text, every screen is reada
 
 ---
 
-# 1.14.0 - Jobby Update
-Jobby Update of 09/15/2026 · An unclosed contact line no longer breaks the preview, syntax warnings, template placeholder check, and lighter samples.
-[CONTACT : hi@eole.me • [cv.eole.me](https://cv.eole.me)]
+# 1.14.0 — A contact line that cannot swallow the page
+September 15, 2026 · An unclosed contact line no longer breaks the preview, syntax warnings, template placeholder check, and lighter samples.
 
 ## 🛡️ SAFER CONTACT LINE
 * **No More Swallowed Resume**: A `[CONTACT : …]` line missing its closing `]` now stays on its own line instead of pulling the rest of the resume into the contact box.
@@ -65,9 +60,8 @@ Jobby Update of 09/15/2026 · An unclosed contact line no longer breaks the prev
 
 ---
 
-# 1.12.0 - Jobby Update
-Jobby Update of 07/25/2026 · Automated linting pipeline, i18n validator script, GitHub Actions CI workflow, Outfit typography, frosted glassmorphism headers, and button micro-animations.
-[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+# 1.12.0 — Linting, CI and a sharper look
+July 25, 2026 · Automated linting pipeline, i18n validator script, GitHub Actions CI workflow, Outfit typography, frosted glassmorphism headers, and button micro-animations.
 
 ## 🎨 GLASSMORPHISM & FROSTED UI
 * **Frosted Panel Headers**: Enhanced panel headers (`.panel-header`) and modal backdrops with `backdrop-filter: blur(8px)` for a sleek, modern glass aesthetic.
@@ -81,9 +75,8 @@ Jobby Update of 07/25/2026 · Automated linting pipeline, i18n validator script,
 
 ---
 
-# 1.10.6 - Jobby Update
-Jobby Update of 06/29/2026 · Dynamic database configs for Atomic CV & Seeds, side-by-side Developer Tools split layout, auto-formatted Notion UIDs, styled webhook inputs, and terminal sync targets.
-[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+# 1.10.6 — Developer tools side by side
+June 29, 2026 · Dynamic database configs for Atomic CV & Seeds, side-by-side Developer Tools split layout, auto-formatted Notion UIDs, styled webhook inputs, and terminal sync targets.
 
 ## 🥞 SPLIT DEV TOOLS LAYOUT
 * **Side-by-Side Flex Layout**: Redesigned the Developer Tools modal by widening the card and placing Webhooks and Notion Database Mappings side-by-side in columns, eliminating vertical scrolling fatigue.
@@ -106,9 +99,8 @@ Jobby Update of 06/29/2026 · Dynamic database configs for Atomic CV & Seeds, si
 
 ---
 
-# 1.10.5 - Jobby Update
-Jobby Update of 06/29/2026 · SPA /developer route, dynamic Notion DB variables in n8n data tables, telemetry local disable toggle, and color picker contrast fixes.
-[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+# 1.10.5 — A /developer route and dynamic Notion IDs
+June 29, 2026 · SPA /developer route, dynamic Notion DB variables in n8n data tables, telemetry local disable toggle, and color picker contrast fixes.
 
 
 ## 📥 DIRECT GOTENBERG PDF DOWNLOAD
@@ -125,9 +117,8 @@ Jobby Update of 06/29/2026 · SPA /developer route, dynamic Notion DB variables 
 
 ---
 
-# 1.10.1 - Jobby Update
-Jobby Update of 06/21/2026 · About Modal Help Link Fix & Design Refinements.
-[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+# 1.10.1 — Help link mended, design polished
+June 21, 2026 · About Modal Help Link Fix & Design Refinements.
 
 ## 🐛 ABOUT MODAL HELP LINK FIXED
 * **Resolved Navigation Bug**: Fixed a bug where the "Help Guide & Markdown Syntax" link in the About Modal was broken after language translation. We now use event delegation to preserve click event listeners across dynamic DOM language updates.
@@ -137,9 +128,8 @@ Jobby Update of 06/21/2026 · About Modal Help Link Fix & Design Refinements.
 
 ---
 
-# 1.10.0 - Jobby Update
-Jobby Update of 06/21/2026 · Multi-Language Support, Static Header Accent, Visual Theme Switcher, Responsive Modals & Larger Toasts.
-[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+# 1.10.0 — Seven languages and a theme switcher
+June 21, 2026 · Multi-Language Support, Static Header Accent, Visual Theme Switcher, Responsive Modals & Larger Toasts.
 
 ## 🌐 MULTI-LANGUAGE SUPPORT (i18n)
 * **New Locales Supported**: Added support for 5 new languages: Czech (`cs`), Spanish (`es`), Italian (`it`), German (`de`), and Romanian (`ro`). You can switch between all 7 supported languages using the dropdown selector in the header!
@@ -159,9 +149,8 @@ Jobby Update of 06/21/2026 · Multi-Language Support, Static Header Accent, Visu
 
 ---
 
-# 1.9.2 - Jobby Update
-Jobby Update of 06/21/2026 · Stackable Notifications and Refined Broom Icon.
-[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+# 1.9.2 — Notifications that stack
+June 21, 2026 · Stackable Notifications and Refined Broom Icon.
 
 ## 🥞 STACKABLE NOTIFICATIONS SYSTEM (TOASTER)
 * **Fluid Notifications**: Alerts now slide in from the bottom right as stackable cards. They auto-dismiss or can be closed manually, and dynamically adapt (Success, Error, Warning, Info) with custom colors and emojis.
@@ -172,18 +161,16 @@ Jobby Update of 06/21/2026 · Stackable Notifications and Refined Broom Icon.
 
 ---
 
-# 1.9.1 - Jobby Update
-Jobby Update of 06/20/2026 · Advanced Telemetry Metrics.
-[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+# 1.9.1 — Finer telemetry
+June 20, 2026 · Advanced Telemetry Metrics.
 
 ## 📊 PERFORMANCE AND USAGE METRICS
 * **Advanced Metrics**: We now anonymously track the progression of your ATS score (initial score, score improvements, number of corrected rules), design presets tested, undo/redo click counts, active theme (dark/light), and markdown render time in milliseconds to optimize performance.
 
 ---
 
-# 1.9.0 - Jobby Update
-Jobby Update of 06/20/2026 · User Feedback Form and n8n Integration.
-[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+# 1.9.0 — A feedback form wired to n8n
+June 20, 2026 · User Feedback Form and n8n Integration.
 
 ## 💬 USER FEEDBACK FORM
 * **Interactive Form**: A new "Feedback" button has been added to the editor header. It opens an elegant modal allowing you to rate the app (interactive stars), categorize your feedback (Comment, Suggestion, Bug), and describe your comments.
@@ -191,18 +178,16 @@ Jobby Update of 06/20/2026 · User Feedback Form and n8n Integration.
 
 ---
 
-# 1.8.2 - Jobby Update
-Jobby Update of 06/20/2026 · Folded Controls Hidden on Print.
-[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+# 1.8.2 — Clean prints, dock hidden
+June 20, 2026 · Folded Controls Hidden on Print.
 
 ## 🖨️ CLEAN PRINTING WITHOUT ARTIFACTS
 * **Hidden Dock**: The side floating folded controls dock, the unfold "Design" button, and modal overlays are now automatically hidden during printing or PDF export. Your resume prints perfectly clean.
 
 ---
 
-# 1.8.1 - Jobby Update
-Jobby Update of 06/19/2026 · Glassmorphic Mode, Improved Accessibility, and Smooth Actions.
-[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+# 1.8.1 — Glass panels and smoother actions
+June 19, 2026 · Glassmorphic Mode, Improved Accessibility, and Smooth Actions.
 
 ## 🌌 GLASSMORPHIC EFFECTS AND VISUAL POLISH
 * **Translucent Floating Dock**: The collapsed shortcut panel now features a beautiful frosted glass effect (glassmorphism) in both dark and light modes. Buttons adapt dynamically for perfect visual integration.
@@ -217,9 +202,8 @@ Jobby Update of 06/19/2026 · Glassmorphic Mode, Improved Accessibility, and Smo
 
 ---
 
-# 1.8.0 - Jobby Update
-Jobby Update of 06/19/2026 · Collapsible Design Panel, Rich Formatting Toolbar, History, and AI Synergy.
-[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+# 1.8.0 — Folding panel, formatting toolbar, history
+June 19, 2026 · Collapsible Design Panel, Rich Formatting Toolbar, History, and AI Synergy.
 
 ## 🔍 COLLAPSIBLE DESIGN PANEL
 * **Maximum Focus**: A new close button (SVG cross) has been added to the design panel header. Click it to collapse the customizer entirely and free up screen space for the preview!
@@ -239,9 +223,8 @@ Jobby Update of 06/19/2026 · Collapsible Design Panel, Rich Formatting Toolbar,
 
 ---
 
-# 1.7.0 - Jobby Update
-Jobby Update of 06/16/2026 · Simple & Smart Features.
-[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+# 1.7.0 — Simple, smart touches
+June 16, 2026 · Simple & Smart Features.
 
 ## 💾 LOCAL SAVE & LOAD
 * **Draft Saving**: Save a local backup of your current resume to your browser's secure cache using the new :accent[Save] button.

@@ -1,6 +1,5 @@
-# 1.17.0 - Mise à jour Jobby
-Mise à jour Jobby du 02/10/2026 · Laissez ChatGPT, Claude ou Gemini écrire votre CV dans le Markdown de Jobby : un prompt prêt à l'emploi, et un collage qui ne garde que le CV.
-[CONTACT : hi@eole.me • [cv.eole.me](https://cv.eole.me)]
+# 1.17.0 — Votre CV tout droit sorti d'une IA
+2 octobre 2026 · Laissez ChatGPT, Claude ou Gemini écrire votre CV dans le Markdown de Jobby : un prompt prêt à l'emploi, et un collage qui ne garde que le CV.
 
 ## 🤖 IMPORT PAR IA
 * **Prompt IA** : Le nouveau bouton *Prompt IA* au-dessus de l'éditeur copie un prompt pour ChatGPT, Claude ou Gemini. Ils renvoient votre CV exactement dans le Markdown attendu par Jobby : aucune syntaxe à apprendre.
@@ -10,9 +9,8 @@ Mise à jour Jobby du 02/10/2026 · Laissez ChatGPT, Claude ou Gemini écrire vo
 
 ---
 
-# 1.15.1 - Mise à jour Jobby
-Mise à jour Jobby du 19/09/2026 · Le menu Enregistrer fonctionne de nouveau, et les marques de crochets apparaissent plus vite.
-[CONTACT : hi@eole.me • [cv.eole.me](https://cv.eole.me)]
+# 1.15.1 — Le menu Enregistrer répond de nouveau
+19 septembre 2026 · Le menu Enregistrer fonctionne de nouveau, et les marques de crochets apparaissent plus vite.
 
 ## 🛠️ CORRECTIONS
 * **Menu Enregistrer** : Enregistrer, Enregistrer sous et Ouvrir répondent de nouveau aux clics. Le menu s'ouvrait derrière l'éditeur, et le clic tombait dans le texte.
@@ -21,9 +19,8 @@ Mise à jour Jobby du 19/09/2026 · Le menu Enregistrer fonctionne de nouveau, e
 
 ---
 
-# 1.15.0 - Mise à jour Jobby
-Mise à jour Jobby du 19/09/2026 · L'éditeur signale désormais les crochets mal équilibrés pendant l'écriture.
-[CONTACT : hi@eole.me • [cv.eole.me](https://cv.eole.me)]
+# 1.15.0 — Les crochets vérifiés pendant la frappe
+19 septembre 2026 · L'éditeur signale désormais les crochets mal équilibrés pendant l'écriture.
 
 ## 🔍 VÉRIFICATION DES CROCHETS
 * **Crochets non fermés** : Un `[` resté ouvert passe en rouge dès que vous marquez une pause, à l'endroit même de l'erreur.
@@ -32,9 +29,8 @@ Mise à jour Jobby du 19/09/2026 · L'éditeur signale désormais les crochets m
 
 ---
 
-# 1.14.6 - Mise à jour Jobby
-Mise à jour Jobby du 19/09/2026 · Le curseur reste sur son texte, tous les écrans sont lisibles en thème clair, une ligne de contact peut se fermer à la ligne suivante, et Firefox et Safari disent enfin ce que fait vraiment « Enregistrer ».
-[CONTACT : hi@eole.me • [cv.eole.me](https://cv.eole.me)]
+# 1.14.6 — Un curseur qui tient en place, un thème clair lisible
+19 septembre 2026 · Le curseur reste sur son texte, tous les écrans sont lisibles en thème clair, une ligne de contact peut se fermer à la ligne suivante, et Firefox et Safari disent enfin ce que fait vraiment « Enregistrer ».
 
 ## 🛠️ CORRECTIONS DE L'ÉDITEUR
 * **Curseur aligné** : Le curseur ne se décale plus sur une ligne qui semble vide, à certaines largeurs d'éditeur.
@@ -49,9 +45,8 @@ Mise à jour Jobby du 19/09/2026 · Le curseur reste sur son texte, tous les éc
 
 ---
 
-# 1.14.0 - Mise à jour Jobby
-Mise à jour Jobby du 15/09/2026 · Une ligne de contact mal fermée ne casse plus l'aperçu, avertissements de syntaxe, détection des éléments du modèle et modèles allégés.
-[CONTACT : hi@eole.me • [cv.eole.me](https://cv.eole.me)]
+# 1.14.0 — Une ligne de contact qui n'avale plus la page
+15 septembre 2026 · Une ligne de contact mal fermée ne casse plus l'aperçu, avertissements de syntaxe, détection des éléments du modèle et modèles allégés.
 
 ## 🛡️ LIGNE DE CONTACT FIABILISÉE
 * **Fini le CV avalé** : Une ligne `[CONTACT : …]` sans son crochet fermant `]` reste sur sa ligne, au lieu d'entraîner tout le CV dans l'encadré de contact.
@@ -65,9 +60,8 @@ Mise à jour Jobby du 15/09/2026 · Une ligne de contact mal fermée ne casse pl
 
 ---
 
-# 1.12.0 - Mise à jour Jobby
-Mise à jour Jobby du 25/07/2026 · Pipeline de linting automatisé, script de validation i18n, workflow GitHub Actions CI, typographie Outfit, en-têtes dépolis en glassmorphism et micro-animations sur les boutons.
-[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+# 1.12.0 — Linting, CI et une allure plus nette
+25 juillet 2026 · Pipeline de linting automatisé, script de validation i18n, workflow GitHub Actions CI, typographie Outfit, en-têtes dépolis en glassmorphism et micro-animations sur les boutons.
 
 ## 🎨 GLASSMORPHISM & DESIGN SYSTEM
 * **En-têtes dépolis** : Amélioration des en-têtes de panneaux (`.panel-header`) et des modaux avec un filtre dépoli `backdrop-filter: blur(8px)`.
@@ -81,9 +75,8 @@ Mise à jour Jobby du 25/07/2026 · Pipeline de linting automatisé, script de v
 
 ---
 
-# 1.10.6 - Mise à jour Jobby
-Mise à jour Jobby du 29/06/2026 · Disposition côte à côte de la modale développeur, formatage automatique des ID de BDD Notion, styles unifiés pour les webhooks et commandes de synchronisation Doppler/n8n.
-[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+# 1.10.6 — Outils développeur côte à côte
+29 juin 2026 · Disposition côte à côte de la modale développeur, formatage automatique des ID de BDD Notion, styles unifiés pour les webhooks et commandes de synchronisation Doppler/n8n.
 
 ## 🥞 NOUVELLE MODALE DÉVELOPPEUR SUR DEUX COLONNES
 * **Disposition côte à côte** : Réorganisation de la modale développeur en élargissant la carte et en plaçant les sections Webhooks et Notion Database Mappings côte à côte, éliminant le besoin de faire défiler verticalement.
@@ -106,9 +99,8 @@ Mise à jour Jobby du 29/06/2026 · Disposition côte à côte de la modale dév
 
 ---
 
-# 1.10.5 - Mise à jour Jobby
-Mise à jour Jobby du 29/06/2026 · Route SPA /developer, variables dynamiques de base de données Notion dans les tables n8n, bouton de désactivation de la télémétrie locale, et correction de contraste du sélecteur de couleurs.
-[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+# 1.10.5 — Une route /developer et des ID Notion dynamiques
+29 juin 2026 · Route SPA /developer, variables dynamiques de base de données Notion dans les tables n8n, bouton de désactivation de la télémétrie locale, et correction de contraste du sélecteur de couleurs.
 
 
 ## 📥 TÉLÉCHARGEMENT DIRECT DE PDF VIA GOTENBERG
@@ -125,9 +117,8 @@ Mise à jour Jobby du 29/06/2026 · Route SPA /developer, variables dynamiques d
 
 ---
 
-# 1.10.1 - Mise à jour Jobby
-Mise à jour Jobby du 21/06/2026 · Correction du lien d'aide de la modale À propos & Affinements graphiques.
-[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+# 1.10.1 — Lien d'aide réparé, design peaufiné
+21 juin 2026 · Correction du lien d'aide de la modale À propos & Affinements graphiques.
 
 ## 🐛 CORRECTION DU LIEN D'AIDE
 * **Résolution du bug de navigation** : Correction d'un bug où le lien « Guide d'Aide & Syntaxe Markdown » dans la modale À propos était cassé après un changement de langue. Nous utilisons désormais la délégation d'événements pour préserver les écouteurs de clics à travers les mises à jour dynamiques du DOM.
@@ -137,9 +128,8 @@ Mise à jour Jobby du 21/06/2026 · Correction du lien d'aide de la modale À pr
 
 ---
 
-# 1.10.0 - Mise à jour Jobby
-Mise à jour Jobby du 21/06/2026 · Support multilingue, Accent d'en-tête statique, Sélecteur de thème visuel, Modales réactives & Toasts agrandis.
-[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+# 1.10.0 — Sept langues et un sélecteur de thème
+21 juin 2026 · Support multilingue, Accent d'en-tête statique, Sélecteur de thème visuel, Modales réactives & Toasts agrandis.
 
 ## 🌐 SUPPORT MULTILINGUE (i18n)
 * **Nouvelles Langues**: Ajout du support pour 5 nouvelles langues : Tchèque (`cs`), Espagnol (`es`), Italien (`it`), Allemand (`de`) et Roumain (`ro`). Vous pouvez basculer entre les 7 langues prises en charge via le sélecteur dans l'en-tête !
@@ -159,9 +149,8 @@ Mise à jour Jobby du 21/06/2026 · Support multilingue, Accent d'en-tête stati
 
 ---
 
-# 1.9.2 - Mise à jour Jobby
-Mise à jour Jobby du 21/06/2026 · Notifications empilables et icône de balai affinée.
-[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+# 1.9.2 — Des notifications qui s'empilent
+21 juin 2026 · Notifications empilables et icône de balai affinée.
 
 ## 🥞 SYSTÈME DE NOTIFICATIONS EMPILABLES (TOASTER)
 * **Notifications fluides** : Les alertes s'affichent désormais dans le coin inférieur droit sous forme de cartes empilables. Elles se ferment automatiquement ou manuellement et s'adaptent dynamiquement (Succès, Erreur, Avertissement, Info) avec des couleurs et emojis dédiés.
@@ -172,18 +161,16 @@ Mise à jour Jobby du 21/06/2026 · Notifications empilables et icône de balai 
 
 ---
 
-# 1.9.1 - Mise à jour Jobby
-Mise à jour Jobby du 20/06/2026 · Métriques de télémétrie avancées.
-[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+# 1.9.1 — Une télémétrie plus fine
+20 juin 2026 · Métriques de télémétrie avancées.
 
 ## 📊 STATISTIQUES DE PERFORMANCE ET D'USAGE
 * **Métriques avancées** : Nous suivons désormais de manière anonyme l'évolution de votre score ATS (score initial, amélioration du score, nombre de règles corrigées), les presets de design testés, les actions d'annulation (Undo/Redo), le thème actif (sombre/clair) et le temps de rendu Markdown en millisecondes pour optimiser les performances.
 
 ---
 
-# 1.9.0 - Mise à jour Jobby
-Mise à jour Jobby du 20/06/2026 · Formulaire de feedback utilisateur et intégration n8n.
-[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+# 1.9.0 — Un formulaire de feedback relié à n8n
+20 juin 2026 · Formulaire de feedback utilisateur et intégration n8n.
 
 ## 💬 FORMULAIRE DE RETOURS UTILISATEUR (FEEDBACK)
 * **Formulaire interactif** : Un nouveau bouton "Feedback" fait son apparition dans l'en-tête de l'éditeur. Il ouvre un formulaire élégant vous permettant de noter l'application (étoiles interactives), de catégoriser votre retour (Commentaire, Suggestion, Bug) et de décrire votre avis.
@@ -191,18 +178,16 @@ Mise à jour Jobby du 20/06/2026 · Formulaire de feedback utilisateur et intég
 
 ---
 
-# 1.8.2 - Mise à jour Jobby
-Mise à jour Jobby du 20/06/2026 · Masquage du menu flottant à l'impression.
-[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+# 1.8.2 — Impressions propres, dock masqué
+20 juin 2026 · Masquage du menu flottant à l'impression.
 
 ## 🖨️ IMPRESSION PROPRE ET SANS ARTEFACTS
 * **Masquage du menu flottant** : Le menu flottant latéral (folded controls dock), le bouton d'ouverture ("Design"), et les fenêtres modales superposées sont désormais masqués automatiquement lors de l'impression ou de l'export PDF. Votre CV s'imprime de façon parfaitement propre.
 
 ---
 
-# 1.8.1 - Mise à jour Jobby
-Mise à jour Jobby du 19/06/2026 · Mode glassmorphic, accessibilité améliorée et actions fluides.
-[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+# 1.8.1 — Panneaux en verre et actions plus fluides
+19 juin 2026 · Mode glassmorphic, accessibilité améliorée et actions fluides.
 
 ## 🌌 EFFETS GLASSMORPHIC ET POLISH VISUEL
 * **Menu flottant translucide** : Le panneau de raccourcis replié s'habille d'un superbe effet de verre dépoli (glassmorphism) en modes sombre et clair. Ses boutons s'adaptent dynamiquement pour une intégration visuelle parfaite.
@@ -217,9 +202,8 @@ Mise à jour Jobby du 19/06/2026 · Mode glassmorphic, accessibilité amélioré
 
 ---
 
-# 1.8.0 - Mise à jour Jobby
-Mise à jour Jobby du 19/06/2026 · Mode focalisé, barre de style riche, historique et synergie IA.
-[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+# 1.8.0 — Panneau repliable, barre de formatage, historique
+19 juin 2026 · Mode focalisé, barre de style riche, historique et synergie IA.
 
 ## 🔍 COLLAPSER LE PANNEAU DE DESIGN
 * **Focalisation maximale** : Un nouveau bouton de fermeture (croix SVG) a été ajouté dans l'en-tête du panneau de design. Cliquez dessus pour replier complètement le customizer et libérer tout l'espace pour la prévisualisation !
@@ -239,9 +223,8 @@ Mise à jour Jobby du 19/06/2026 · Mode focalisé, barre de style riche, histor
 
 ---
 
-# 1.7.0 - Mise à jour Jobby
-Mise à jour Jobby du 16/06/2026 · Nouveautés simples & intelligentes.
-[CONTACT : hi@eole.me | [cv.eole.me](https://cv.eole.me)]
+# 1.7.0 — Des touches simples et futées
+16 juin 2026 · Nouveautés simples & intelligentes.
 
 ## 💾 SAUVEGARDE ET CHARGEMENT LOCAUX
 * **Sauvegarde de brouillon** : Enregistrez instantanément une copie de votre travail dans le coffre local sécurisé de votre navigateur grâce au nouveau bouton :accent[Save].
