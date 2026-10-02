@@ -204,7 +204,7 @@
   "about": {
     "title": "Acerca del editor de currículums Jobby MD",
     "sig_designer": "Diseñado y desarrollado por",
-    "sig_thanks": "Un agradecimiento especial a Maround Boutanos por sus sugerencias de herramientas y diseño plegable.",
+    "sig_thanks": "Un agradecimiento especial a Maroun Boutanos por sus sugerencias de herramientas y diseño plegable.",
     "desc_html": "Un editor premium de currículums en Markdown diseñado para combinar una estética elegante con una conformidad total con los sistemas de filtrado ATS.",
     "section_why_md": "✍️ ¿Por qué usar Markdown (MD)?",
     "why_md_text": "Markdown separa el contenido del formato. Esto garantiza que los sistemas de seguimiento de candidatos (ATS) puedan analizar el texto de su currículum de manera impecable sin verse afectados por estructuras complejas ocultas (como tablas o cuadros de texto de Word/PDF). Además, mantiene su currículum duradero, ligero y fácil de editar.",

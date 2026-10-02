@@ -224,7 +224,7 @@ Mise à jour Jobby du 19/06/2026 · Mode focalisé, barre de style riche, histor
 ## 🔍 COLLAPSER LE PANNEAU DE DESIGN
 * **Focalisation maximale** : Un nouveau bouton de fermeture (croix SVG) a été ajouté dans l'en-tête du panneau de design. Cliquez dessus pour replier complètement le customizer et libérer tout l'espace pour la prévisualisation !
 * **Bouton flottant interactif** : Un bouton flottant "Design" moderne et glassmorphic apparaît au bas de l'écran lorsque le panneau est masqué, vous permettant de le déplier à tout moment d'un simple clic.
-* *Un grand merci à Maround Boutanos pour le tooltip des raccourcis et la suggestion de masquage du panneau !*
+* *Un grand merci à Maroun Boutanos pour le tooltip des raccourcis et la suggestion de masquage du panneau !*
 
 ## 🛠️ BARRE D'OUTILS D'ÉDITION RICHE (TOOLBAR)
 * **Accès rapide au style** : Le bouton :accent[Format] est désormais placé avant :accent[Save] et permet de déplier une barre d'outils riche juste au-dessus de la zone d'écriture.

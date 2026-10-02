@@ -204,7 +204,7 @@
   "about": {
     "title": "Informazioni sull'editor Jobby MD",
     "sig_designer": "Progettato e sviluppato da",
-    "sig_thanks": "Un ringraziamento speciale a Maround Boutanos per i suggerimenti relativi ai tooltip e alla riduzione del pannello.",
+    "sig_thanks": "Un ringraziamento speciale a Maroun Boutanos per i suggerimenti relativi ai tooltip e alla riduzione del pannello.",
     "desc_html": "Un editor di curricula in Markdown premium progettato per unire un'estetica curata con una conformità totale con i sistemi di tracciamento candidati (ATS).",
     "section_why_md": "✍️ Perché il Markdown (MD)?",
     "why_md_text": "Markdown separa il contenuto dalla formattazione grafica. Questo garantisce che i sistemi di tracciamento candidati (ATS) possano scansionare il testo del tuo curriculum in modo impeccabile, senza essere bloccati da strutture complesse invisibili (come tabelle o caselle di testo di Word/PDF). Mantiene inoltre il curriculum duraturo, leggero e facile da modificare.",

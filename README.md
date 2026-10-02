@@ -1,7 +1,7 @@
 # Jobby: Premium Markdown Resume Editor
 
 *Author: Julien (Éole) Avarre (<hi@eole.me>) & Antigravity (Google DeepMind team)*  
-*Special thanks to **Maround Boutanos** for the shortcuts tooltip and design folding suggestions.*
+*Special thanks to **Maroun Boutanos** for the shortcuts tooltip and design folding suggestions.*
 
 > A premium, modern Markdown resume editor that respects ATS (Applicant Tracking System) standards, designed to run locally with zero heavy external dependencies.
 

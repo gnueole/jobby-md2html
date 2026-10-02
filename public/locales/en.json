@@ -204,7 +204,7 @@
   "about": {
     "title": "About jobby MD Editor",
     "sig_designer": "Designed and developed by",
-    "sig_thanks": "Special thanks to Maround Boutanos for the tooltip & design folding suggestions.",
+    "sig_thanks": "Special thanks to Maroun Boutanos for the tooltip & design folding suggestions.",
     "desc_html": "A premium Markdown resume editor designed to blend elegant aesthetics with flawless ATS (Applicant Tracking System) compliance.",
     "section_why_md": "✍️ Why Markdown (MD)?",
     "why_md_text": "Markdown separates content from formatting. This guarantees that Applicant Tracking Systems (ATS) can parse your resume's text flawlessly without getting tripped up by complex hidden document structures (like tables or text boxes in Word/PDFs). It also keeps your resume future-proof, portable, and easy to edit.",

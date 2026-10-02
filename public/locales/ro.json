@@ -204,7 +204,7 @@
   "about": {
     "title": "Despre editorul Jobby MD",
     "sig_designer": "Proiectat și dezvoltat de",
-    "sig_thanks": "Mulțumiri speciale lui Maround Boutanos pentru sugestiile privind tooltips-urile și reducerea panourilor.",
+    "sig_thanks": "Mulțumiri speciale lui Maroun Boutanos pentru sugestiile privind tooltips-urile și reducerea panourilor.",
     "desc_html": "Un editor premium de CV-uri în Markdown proiectat pentru a îmbina o estetică îngrijită cu o conformitate totală cu sistemele de filtrare ATS.",
     "section_why_md": "✍️ De ce Markdown (MD)?",
     "why_md_text": "Markdown separă textul propriu-zis (conținutul) de așezarea grafică (designul). Acest lucru garantează că sistemele de sortare a CV-urilor (ATS) pot scana textul în mod perfect, fără a fi blocate de elemente grafice invizibile complexe (cum ar fi tabele sau casete de text în Word/PDF). Păstrează de asemenea CV-ul ușor de editat și portabil.",

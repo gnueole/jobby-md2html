@@ -204,7 +204,7 @@
   "about": {
     "title": "Über den Jobby Markdown-Editor",
     "sig_designer": "Entworfen und entwickelt von",
-    "sig_thanks": "Besonderer Dank geht an Maround Boutanos für Feedback zu Tooltips und Design-Panel-Faltung.",
+    "sig_thanks": "Besonderer Dank geht an Maroun Boutanos für Feedback zu Tooltips und Design-Panel-Faltung.",
     "desc_html": "Ein erstklassiger Markdown-Lebenslauf-Editor, der elegante Ästhetik mit kompromissloser ATS-Kompatibilität verbindet.",
     "section_why_md": "✍️ Warum Markdown (MD)?",
     "why_md_text": "Markdown trennt Inhalt und Formatierung. Dies stellt sicher, dass Bewerber-Management-Systeme (ATS) den Text Ihres Lebenslaufs fehlerfrei lesen können, ohne durch unsichtbare Layout-Strukturen (wie Tabellen oder Textfelder in Word/PDFs) behindert zu werden. Zudem bleibt Ihr Lebenslauf zukunftssicher, portabel und leicht editierbar.",

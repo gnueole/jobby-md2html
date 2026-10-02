@@ -204,7 +204,7 @@
   "about": {
     "title": "À propos de l'Éditeur Jobby",
     "sig_designer": "Conçu et développé par",
-    "sig_thanks": "Un grand merci à Maround Boutanos pour les suggestions d'infobulles et de masquage du panneau.",
+    "sig_thanks": "Un grand merci à Maroun Boutanos pour les suggestions d'infobulles et de masquage du panneau.",
     "desc_html": "Un éditeur de CV Markdown premium conçu pour allier une esthétique soignée à une conformité totale avec les ATS (systèmes de tri de candidatures).",
     "section_why_md": "✍️ Pourquoi le Markdown (MD) ?",
     "why_md_text": "Le Markdown sépare le fond (le contenu) de la forme (le design). Cela garantit que les robots de tri de CV (ATS) analysent parfaitement votre texte sans être bloqués par des structures complexes comme des tableaux ou zones de texte Word/PDF. Vos fichiers restent durables, légers et faciles à éditer.",

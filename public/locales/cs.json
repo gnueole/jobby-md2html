@@ -204,7 +204,7 @@
   "about": {
     "title": "O editoru životopisů Jobby MD",
     "sig_designer": "Navrhl a vytvořil",
-    "sig_thanks": "Zvláštní poděkování patří Maroundu Boutanosovi za návrhy nápovědy a skládání designového panelu.",
+    "sig_thanks": "Zvláštní poděkování patří Marounu Boutanosovi za návrhy nápovědy a skládání designového panelu.",
     "desc_html": "Prémiový editor životopisů v Markdownu navržený tak, aby spojoval elegantní vzhled s bezchybným souladem s ATS (Applicant Tracking System).",
     "section_why_md": "✍️ Proč Markdown (MD)?",
     "why_md_text": "Markdown odděluje obsah od formátování. To zaručuje, že systémy pro správu uchazečů (ATS) dokážou text vašeho životopisu bezchybně přečíst, aniž by se zasekly na složité skryté struktuře dokumentu (jako jsou tabulky nebo textová pole ve Wordu/PDF). Také to udržuje váš životopis snadno přenosný, upravitelný a připravený na budoucnost.",

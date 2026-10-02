@@ -224,7 +224,7 @@ Jobby Update of 06/19/2026 · Collapsible Design Panel, Rich Formatting Toolbar,
 ## 🔍 COLLAPSIBLE DESIGN PANEL
 * **Maximum Focus**: A new close button (SVG cross) has been added to the design panel header. Click it to collapse the customizer entirely and free up screen space for the preview!
 * **Interactive Floating Button**: A sleek glassmorphic "Design" button appears at the bottom of the screen when the panel is hidden, letting you unfold it at any time.
-* *Special thanks to Maround Boutanos for the shortcuts tooltips and panel folding suggestions!*
+* *Special thanks to Maroun Boutanos for the shortcuts tooltips and panel folding suggestions!*
 
 ## 🛠️ RICH FORMATTING TOOLBAR
 * **Quick Style Access**: The :accent[Format] button is now placed before :accent[Save] and expands a rich formatting toolbar directly above the editor textarea.
