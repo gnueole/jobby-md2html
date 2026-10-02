@@ -1,6 +1,6 @@
 {
   "name": "jobby",
-  "version": "1.17.1",
+  "version": "1.17.2",
   "description": "Jobby ATS Markdown resume editor",
   "main": "server.js",
   "scripts": {
@@ -14,6 +14,7 @@
     "test:brackets": "node toolkit/test_bracket_highlight.js",
     "test:menus": "node toolkit/test_header_menus.js",
     "test:prompt": "node toolkit/test_ai_prompt.js",
+    "test:ats": "node toolkit/test_ats_headings.js",
     "build": "esbuild public/app.js --bundle --minify --outfile=public/dist/app.min.js"
   },
   "keywords": [

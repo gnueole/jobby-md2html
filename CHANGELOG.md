@@ -8,6 +8,29 @@ All notable changes to the Jobby project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.17.2] - 2026-10-03
+
+### Fixed
+
+- **The ATS check recognises section headings in every language.** It matched
+  a hard-coded, mostly English list, accents included, so a French resume
+  headed "Expérience" and "Compétences" was told to use standard section
+  headings. The names now live in each locale file (`ats.section_keywords`),
+  the check accepts those of every supported language, since a resume is not
+  always written in the interface language, and compares without accents or
+  case. `npm run test:ats` (`toolkit/test_ats_headings.js`) pins it; the
+  French and German cases fail on 1.17.1.
+
+### Changed
+
+- **The AI prompt is shown before it is copied.** The *AI prompt* buttons (editor
+  header, empty editor, About) used to copy it unseen. They now open a window
+  with the full text, a copy button under it and a link to the Markdown help:
+  nobody should paste into an AI a prompt they have not read. The Help guide
+  keeps its inline copy, next to the text. Telemetry gains `ai_prompt_viewed`.
+
+---
+
 ## [1.17.1] - 2026-10-03
 
 ### Security
