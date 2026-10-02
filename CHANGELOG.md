@@ -8,6 +8,43 @@ All notable changes to the Jobby project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.17.0] - 2026-10-02
+
+Getting a CV into Jobby no longer requires knowing Markdown. The editor carries
+a ready-made prompt for ChatGPT, Claude or Gemini, and understands the answer
+they give back. The Markdown tutorial itself was hard to find (About, or the
+small link above the editor); the ways in now show up where they are needed.
+
+### Added
+
+- **A ready-made AI prompt.** The *AI prompt* button in the editor header copies
+  a prompt, in the interface language, that asks ChatGPT, Claude or Gemini to
+  return a CV in the exact Markdown Jobby renders: name, bold title,
+  `[CONTACT : …]` line, summary quote, `##` sections, `###` reserved for the
+  sidebar, one bold line per job, `:accent[…]` and `:muted[…]`. The answer comes
+  in a single code block, so the chat's own copy button grabs it whole. Seven
+  languages, in `public/ai-prompt*.md`, aligned with `public/sample.md`.
+- **The empty editor says what to do.** After Clear, a card in the editor offers
+  the sample, the AI prompt and a link to the Markdown help, instead of a bare
+  placeholder. It disappears at the first keystroke; a click beside it still
+  lands in the text.
+- **An AI answer pasted whole is cleaned up.** When the pasted text holds a code
+  block that starts with a level-1 heading, or is nothing but one code block,
+  only its content goes into the editor: the sentence before and the list of
+  missing information after are left out. A toast says so, and Ctrl+Z reverts.
+  Ordinary pastes, and a code block in the middle of a text, go in untouched.
+- **The prompt in the Help and About modals.** The Help guide shows the full
+  prompt with a copy button where it used to suggest asking for "MD format";
+  the AI card of the About window gets the same button.
+- **`npm run test:prompt`** (`toolkit/test_ai_prompt.js`): the copy buttons in
+  the header, the empty editor and the Help guide, the empty-state card, the
+  paste cleanup in both directions (CRLF and `~~~` fences included), and the
+  French prompt under `?lang=fr`. Fails on 1.16.0, where none of this exists.
+- Telemetry: `ai_prompt_copied`, with its `source` (header, empty_state, help,
+  about), and `paste_unwrapped`.
+
+---
+
 ## [1.16.0] - 2026-09-19
 
 Nothing changes in the editor. This release is the Vector image, which ships
