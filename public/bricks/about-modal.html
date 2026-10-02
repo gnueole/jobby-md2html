@@ -170,10 +170,30 @@
           <div class="about-card-body">
             <h4 data-i18n="about.section_ai">AI-Powered CV Writing</h4>
             <p data-i18n="about.ai_text">
-              Markdown is the ultimate asset when collaborating with AI tools (like Gemini, ChatGPT,
-              or Claude). We highly recommend using AI to write and refine your CV. Just explicitly
-              prompt it to <code>"generate in MD format"</code> for direct copy-paste.
+              Write and refine your CV with Gemini, ChatGPT or Claude, then bring it here with
+              Jobby's ready-made prompt: the AI returns it in the exact Markdown Jobby expects, and
+              you paste the answer into the editor.
             </p>
+            <button
+              id="btn-copy-ai-prompt-about"
+              type="button"
+              class="btn btn-secondary about-ai-copy-btn"
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+              </svg>
+              <span data-i18n="about.ai_copy_btn">Copy the AI prompt</span>
+            </button>
           </div>
         </div>
 

@@ -32,6 +32,7 @@ import { initPrint, updatePageBreaks } from './js/print.js';
 import { loadLocale, translateDOM, currentLocale, t } from './js/i18n.js';
 import { initTooltips } from './js/tooltip.js';
 import { MarkdownPopupTutorial } from './js/tutorial.js';
+import { initAiPrompt, unwrapAiReply, renderAiPromptPreview } from './js/aiprompt.js';
 
 async function initializeJobby() {
     // --- Fetch config (including dynamic version) ---
@@ -892,7 +893,16 @@ async function initializeJobby() {
     }
 
     // --- Local parser invoker ---
+    // The empty-editor card offers the sample and the AI prompt while there is nothing to edit
+    const editorEmptyState = document.getElementById('editor-empty-state');
+    function updateEmptyState(text) {
+        if (editorEmptyState) {
+            editorEmptyState.classList.toggle('hidden', text.trim().length > 0);
+        }
+    }
+
     function runCompileMarkdown(text) {
+        updateEmptyState(text);
         const start = performance.now();
         const result = compileMarkdown(text, styleConfig, markdownInput, (newMd) => {
             saveToLocalStorage();
@@ -1336,9 +1346,23 @@ async function initializeJobby() {
     markdownInput.addEventListener('input', (e) => {
         // 1. Update syntax highlighting immediately for fast visual feedback
         updateSyntaxHighlight(markdownInput, highlightCode, cbSyntaxHighlight);
+        updateEmptyState(e.target.value);
         
         // 2. Debounce the heavier Marked parsing, page layout measuring, and saving
         debouncedCompile(e.target.value);
+    });
+
+    // An AI's whole answer pasted in: keep the CV from its code block, drop the chat
+    // around it. The input event that follows saves the history state, so Ctrl+Z reverts.
+    markdownInput.addEventListener('paste', (e) => {
+        const pasted = e.clipboardData ? e.clipboardData.getData('text/plain') : '';
+        const unwrapped = unwrapAiReply(pasted);
+        if (unwrapped === null) return;
+        e.preventDefault();
+        markdownInput.setRangeText(unwrapped, markdownInput.selectionStart, markdownInput.selectionEnd, 'end');
+        markdownInput.dispatchEvent(new Event('input'));
+        showToast(t('toasts.paste_unwrapped'));
+        sendTelemetry('Paste Unwrapped');
     });
 
     // Bind light styling updates to sliders and color pickers (instant render)
@@ -1658,6 +1682,11 @@ async function initializeJobby() {
                     markdownInput.focus();
                 });
         });
+    }
+
+    const btnEmptySample = document.getElementById('btn-empty-sample');
+    if (btnEmptySample && btnLoadSample) {
+        btnEmptySample.addEventListener('click', () => btnLoadSample.click());
     }
 
     // Load changelog / updates
@@ -2505,6 +2534,9 @@ async function initializeJobby() {
         });
     }
 
+    // "Copy the AI prompt" buttons (editor header, empty editor, help, about)
+    initAiPrompt({ openHelp: toolbarActions['help'] });
+
     // --- Language Selector Binding ---
     const selectLang = document.getElementById('select-lang');
     if (selectLang) {
@@ -2512,6 +2544,7 @@ async function initializeJobby() {
         selectLang.addEventListener('change', async (e) => {
             await loadLocale(e.target.value);
             translateDOM();
+            renderAiPromptPreview();
             showToast(t('toasts.welcome_upgrade', { version: appVersion }));
             if (markdownInput) {
                 runCompileMarkdown(markdownInput.value);

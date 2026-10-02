@@ -188,6 +188,36 @@
       <span class="btn-text" data-i18n="editor.sample_btn">Sample</span>
     </button>
     <button
+      id="btn-copy-ai-prompt"
+      type="button"
+      class="btn-icon"
+      data-i18n-title="editor.ai_prompt_tooltip"
+      title="Copy a prompt for ChatGPT, Claude or Gemini: they return your CV ready to paste here"
+    >
+      <svg
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path
+          d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72Z"
+        />
+        <path d="m14 7 3 3" />
+        <path d="M5 6v4" />
+        <path d="M19 14v4" />
+        <path d="M10 2v2" />
+        <path d="M7 8H3" />
+        <path d="M21 16h-4" />
+        <path d="M11 3H9" />
+      </svg>
+      <span class="btn-text" data-i18n="editor.ai_prompt_btn">AI prompt</span>
+    </button>
+    <button
       id="btn-load-changelog"
       type="button"
       class="btn-icon"
@@ -696,6 +726,58 @@
       data-i18n-placeholder="editor.placeholder"
       placeholder="# YOUR NAME..."
     ></textarea>
+  </div>
+  <!-- Shown while the editor is empty: the two ways to get a CV in, where they are needed -->
+  <div id="editor-empty-state" class="editor-empty-state hidden">
+    <div class="editor-empty-card">
+      <h3 data-i18n="editor.empty_title">No CV yet?</h3>
+      <p data-i18n="editor.empty_desc">Paste your Markdown here, or start one of these ways:</p>
+      <div class="editor-empty-actions">
+        <button id="btn-empty-sample" type="button" class="btn btn-secondary">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+            <polyline points="14 2 14 8 20 8" />
+            <line x1="16" y1="13" x2="8" y2="13" />
+            <line x1="16" y1="17" x2="8" y2="17" />
+          </svg>
+          <span data-i18n="editor.empty_sample_btn">Start with the sample</span>
+        </button>
+        <button id="btn-empty-ai-prompt" type="button" class="btn btn-primary">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path
+              d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72Z"
+            />
+            <path d="m14 7 3 3" />
+            <path d="M5 6v4" />
+            <path d="M19 14v4" />
+            <path d="M10 2v2" />
+          </svg>
+          <span data-i18n="editor.empty_ai_btn">Copy the AI prompt</span>
+        </button>
+      </div>
+      <p class="editor-empty-hint" data-i18n-html="editor.empty_hint_html">
+        The prompt asks ChatGPT, Claude or Gemini for your CV in Jobby's format: paste their answer
+        here. <a href="#" id="link-empty-help">Markdown help</a>
+      </p>
+    </div>
   </div>
 </div>
 <div class="panel-footer">

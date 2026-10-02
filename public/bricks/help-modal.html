@@ -454,24 +454,44 @@
         "
         data-i18n-html="help.ai_desc_html"
       >
-        Markdown is your best asset when using AI to build your CV. When manipulating and optimizing
-        your CV with your favorite AI model (Gemini, ChatGPT, Claude, etc.), always instruct it to:
-        <br />
-        <code
-          style="
-            display: block;
-            margin: 8px 0;
-            padding: 10px;
-            background: var(--bg-modal-directives);
-            border-radius: 6px;
-            font-family: monospace;
-            border: 1px dashed var(--border-color);
-            color: var(--text-primary);
-          "
-          >"Generate the final CV in clean MD format"</code
+        Jobby comes with a ready-made prompt. Paste it into ChatGPT, Claude or Gemini, add your CV
+        if it is not already in the conversation, and the AI returns it in the exact Markdown Jobby
+        expects: name, contact line, sections, sidebar and accent tags.
+      </p>
+      <div class="ai-prompt-box">
+        <pre id="help-ai-prompt" class="ai-prompt-text"></pre>
+        <button
+          id="btn-copy-ai-prompt-help"
+          type="button"
+          class="btn btn-primary ai-prompt-copy-btn"
         >
-        This ensures you can simply copy and paste the raw output directly into Jobby with zero
-        layout distortion.
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+          </svg>
+          <span data-i18n="help.ai_copy_btn">Copy the prompt</span>
+        </button>
+      </div>
+      <p
+        style="
+          font-size: 12.5px;
+          line-height: 1.5;
+          color: var(--text-secondary);
+          margin-bottom: 16px;
+        "
+        data-i18n="help.ai_after"
+      >
+        Then paste the answer into the editor: Jobby keeps the CV from the code block and leaves out
+        the chat around it.
       </p>
 
       <h4 style="margin-bottom: 8px" data-i18n="help.section_practices">

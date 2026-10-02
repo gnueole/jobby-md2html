@@ -1,3 +1,15 @@
+# 1.17.0 - Jobby Update
+Jobby Update of 10/02/2026 · Let ChatGPT, Claude or Gemini write your CV in Jobby's Markdown: a ready-made prompt, and a paste that keeps only the CV.
+[CONTACT : hi@eole.me • [cv.eole.me](https://cv.eole.me)]
+
+## 🤖 AI IMPORT
+* **AI Prompt**: The new *AI prompt* button above the editor copies a prompt for ChatGPT, Claude or Gemini. They return your CV in the exact Markdown Jobby expects: no syntax to learn.
+* **Paste the Whole Answer**: Paste the AI's reply as is. Jobby keeps the CV from the code block and leaves out the chat around it (Ctrl+Z to undo).
+* **Empty Editor**: After Clear, the editor offers the sample, the AI prompt and the Markdown help, right where you need them.
+* **Help & About**: The full prompt now sits in the Help guide with a copy button, and in the About window.
+
+---
+
 # 1.15.1 - Jobby Update
 Jobby Update of 09/19/2026 · The Save menu works again, and bracket marks show up faster.
 [CONTACT : hi@eole.me • [cv.eole.me](https://cv.eole.me)]

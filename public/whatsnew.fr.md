@@ -1,3 +1,15 @@
+# 1.17.0 - Mise à jour Jobby
+Mise à jour Jobby du 02/10/2026 · Laissez ChatGPT, Claude ou Gemini écrire votre CV dans le Markdown de Jobby : un prompt prêt à l'emploi, et un collage qui ne garde que le CV.
+[CONTACT : hi@eole.me • [cv.eole.me](https://cv.eole.me)]
+
+## 🤖 IMPORT PAR IA
+* **Prompt IA** : Le nouveau bouton *Prompt IA* au-dessus de l'éditeur copie un prompt pour ChatGPT, Claude ou Gemini. Ils renvoient votre CV exactement dans le Markdown attendu par Jobby : aucune syntaxe à apprendre.
+* **Collez la réponse entière** : Collez la réponse de l'IA telle quelle. Jobby garde le CV du bloc de code et laisse de côté la conversation autour (Ctrl+Z pour annuler).
+* **Éditeur vide** : Après Effacer, l'éditeur propose l'exemple, le prompt IA et l'aide Markdown, là où vous en avez besoin.
+* **Aide & À propos** : Le prompt complet se trouve désormais dans le guide d'Aide, avec un bouton de copie, et dans la fenêtre À propos.
+
+---
+
 # 1.15.1 - Mise à jour Jobby
 Mise à jour Jobby du 19/09/2026 · Le menu Enregistrer fonctionne de nouveau, et les marques de crochets apparaissent plus vite.
 [CONTACT : hi@eole.me • [cv.eole.me](https://cv.eole.me)]

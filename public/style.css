@@ -3480,3 +3480,113 @@ body.expert-mode-active .font-preferences-row {
     color: var(--accent);
     line-height: 1;
 }
+
+/* ==========================================
+   AI IMPORT: EMPTY EDITOR CARD AND PROMPT BOX
+   ========================================== */
+/* Over the whole editor, but only the card catches the pointer: a click beside it still
+   lands in the textarea. Hidden as soon as there is text. */
+.editor-empty-state {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    pointer-events: none;
+}
+
+.editor-empty-state.hidden {
+    display: none;
+}
+
+.editor-empty-card {
+    pointer-events: auto;
+    width: 100%;
+    max-width: 360px;
+    background-color: var(--bg-panel);
+    border: 1px dashed var(--border-color);
+    border-radius: 12px;
+    padding: 22px 20px;
+    text-align: center;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+}
+
+.editor-empty-card h3 {
+    font-family: var(--font-ui);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 6px 0;
+}
+
+.editor-empty-card p {
+    font-family: var(--font-ui);
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.editor-empty-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 14px 0 12px 0;
+}
+
+.editor-empty-actions .btn {
+    width: 100%;
+    padding: 9px 14px;
+    font-size: 12px;
+}
+
+.editor-empty-hint {
+    font-size: 11px !important;
+    color: var(--text-muted) !important;
+}
+
+.editor-empty-hint a {
+    color: var(--accent);
+    text-decoration: underline;
+}
+
+/* The prompt shown in the help modal, its copy button below so nothing hides the text */
+.ai-prompt-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.ai-prompt-text {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 12px 14px;
+    max-height: 260px;
+    overflow-y: auto;
+    background: var(--bg-modal-directives);
+    border: 1px dashed var(--border-color);
+    border-radius: 8px;
+    font-family: 'JetBrains Mono', 'Consolas', 'Courier New', monospace;
+    font-size: 11px;
+    line-height: 1.5;
+    color: var(--text-primary);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.ai-prompt-copy-btn {
+    padding: 8px 14px;
+    font-size: 12px;
+}
+
+.about-ai-copy-btn {
+    align-self: flex-start;
+    margin-top: 6px;
+    padding: 7px 12px;
+    font-size: 12px;
+}
