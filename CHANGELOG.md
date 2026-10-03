@@ -8,6 +8,26 @@ All notable changes to the Jobby project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.17.3] - 2026-10-03
+
+### Security
+
+- **The n8n owner's e-mail address is gone from the exported workflows.** Every
+  file under `n8n/` carried a `shared` block naming the instance owner, with
+  their e-mail, and an `activeVersion` copy of the nodes; neither is
+  configuration and the push never sent them. Both are removed, and
+  `sync_n8n.py` drops them on every backup, along with `pinData`. The address
+  stays in the git history.
+
+### Changed
+
+- **Code comments are in English.** The Code nodes of the jobby workflows, the
+  Vector configuration, the bookmarklet source and the production compose file
+  still carried French comments. Comments only, no logic changed; the Vector
+  tests pass unchanged.
+
+---
+
 ## [1.17.2] - 2026-10-03
 
 ### Fixed
