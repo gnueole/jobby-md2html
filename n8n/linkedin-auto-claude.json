@@ -52,7 +52,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// 1. Récupération sécurisée (Webhook ou fallback)\nconst body = $json.body || {};\nconst fallbackUrl = body.job_url || \"N/A\";\nconst text = $json.output || \"\"; // L'output qui vient de Gemini\n\n// 2. Extraction du bloc JSON\nconst regex = /\\{[\\s\\S]*\\}/;\nconst match = text.match(regex);\n\nif (match) {\n  try {\n    const data = JSON.parse(match);\n\n    // 3. Transformation en Tableaux de chaînes [ \"A\", \"B\" ]\n    const toSimpleArray = (val) => {\n      if (!val) return [];\n      let rawItems = Array.isArray(val) ? val : val.toString().split(/[|,\\/&]|\\band\\b/);\n      return rawItems.map(i => i.trim()).filter(i => i.length > 1);\n    };\n\n    // 4. Reconstruction de l'objet pour Notion\n    return {\n      domain: toSimpleArray(data.domain || data.Domain),\n      category: toSimpleArray(data.category || data.Category),\n      job_title: data.job_title || body.job_title || \"Unknown Position\",\n      company: data.company || body.company || \"Unknown Company\",\n      link: data.link || data.url || fallbackUrl,\n      score: parseInt(data.match_score) || 0,\n      status: data.status || \"To review\",\n      summary: data.quick_summary || \"Analysis ready\",\n      analysis: (data.full_analysis || \"\").substring(0, 1900)\n    };\n\n  } catch (e) {\n    return { error: \"JSON Parsing Error\", message: e.message, raw: text.substring(0, 100) };\n  }\n}\n\nreturn { error: \"No JSON found in AI output\" };"
+        "jsCode": "// 1. Safe read (webhook or fallback)\nconst body = $json.body || {};\nconst fallbackUrl = body.job_url || \"N/A\";\nconst text = $json.output || \"\"; // The output coming from Gemini\n\n// 2. Extract the JSON block\nconst regex = /\\{[\\s\\S]*\\}/;\nconst match = text.match(regex);\n\nif (match) {\n  try {\n    const data = JSON.parse(match);\n\n    // 3. Turn into arrays of strings [ \"A\", \"B\" ]\n    const toSimpleArray = (val) => {\n      if (!val) return [];\n      let rawItems = Array.isArray(val) ? val : val.toString().split(/[|,\\/&]|\\band\\b/);\n      return rawItems.map(i => i.trim()).filter(i => i.length > 1);\n    };\n\n    // 4. Rebuild the object for Notion\n    return {\n      domain: toSimpleArray(data.domain || data.Domain),\n      category: toSimpleArray(data.category || data.Category),\n      job_title: data.job_title || body.job_title || \"Unknown Position\",\n      company: data.company || body.company || \"Unknown Company\",\n      link: data.link || data.url || fallbackUrl,\n      score: parseInt(data.match_score) || 0,\n      status: data.status || \"To review\",\n      summary: data.quick_summary || \"Analysis ready\",\n      analysis: (data.full_analysis || \"\").substring(0, 1900)\n    };\n\n  } catch (e) {\n    return { error: \"JSON Parsing Error\", message: e.message, raw: text.substring(0, 100) };\n  }\n}\n\nreturn { error: \"No JSON found in AI output\" };"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -300,26 +300,5 @@
   "meta": {
     "templateCredsSetupCompleted": true
   },
-  "tags": [],
-  "shared": [
-    {
-      "role": "workflow:owner",
-      "workflowId": "RHiufL0e6mCunYHx",
-      "projectId": "GfFdmZTqGEJQkrXG",
-      "project": {
-        "id": "GfFdmZTqGEJQkrXG",
-        "name": "Éole Wind <megazef@gmail.com>",
-        "type": "personal",
-        "icon": null,
-        "description": null,
-        "customTelemetryTags": [],
-        "creatorId": "2792484d-cba3-4156-adba-fbc49134eb55",
-        "createdAt": "2026-05-11T09:34:45.695Z",
-        "updatedAt": "2026-07-06T15:34:54.223Z"
-      },
-      "createdAt": "2026-05-11T17:13:49.120Z",
-      "updatedAt": "2026-05-11T17:13:49.120Z"
-    }
-  ],
-  "activeVersion": null
+  "tags": []
 }

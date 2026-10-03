@@ -11,7 +11,7 @@
     const webhookUrl = "{{WEBHOOK_URL}}";
     const editorOrigin = "{{EDITOR_ORIGIN}}";
 
-    /* 1. Extraction chirurgicale multi-sélecteur & sélection manuelle */
+    /* 1. Multi-selector extraction, or the user's own selection */
     const getTxt = (s) => document.querySelector(s)?.innerText?.trim() || "";
     const getFirst = (arr) => {
         for (let s of arr) {
@@ -35,7 +35,7 @@
         'article'
     ]);
 
-    /* Fallback interactif si l'extraction automatique et la sélection ont échoué */
+    /* Interactive fallback when extraction and selection both failed */
     if (!description || description.length < 20) {
         description = prompt("Jobby : Impossible d'extraire la description du poste automatiquement.\n\nVeuillez coller le texte de l'offre ci-dessous :", "") || "";
         description = description.trim();
@@ -46,7 +46,7 @@
         return;
     }
 
-    /* 2. Encodage et préparation du payload */
+    /* 2. Encode and prepare the payload */
     const title = encodeURIComponent(getFirst([
         '.job-details-jobs-unified-top-card__job-title',
         '.jobs-unified-top-card__job-title',

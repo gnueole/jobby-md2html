@@ -72,20 +72,20 @@ transforms:
         .message = msg
       }
 
-  # La télémétrie partait de la source HTTP directement au sink : rien ne la
-  # normalisait, et chaque application avait donc choisi son propre vocabulaire.
-  # Sur 552 évènements, le nom de l'évènement vivait sous quatre champs —
-  # eventType (jobby, 450), event_type (trail-mapper, improv, 55), event
-  # (sc2-build-order, 41), action (reservoir_idees, jobby_ats, 6) — et
-  # l'application sous deux, `application` et `service`. Un tableau de bord lisant
-  # `action` était donc vide à 98,9 %.
+  # Telemetry used to go from the HTTP source straight to the sink: nothing
+  # normalised it, so every application had picked its own vocabulary. Over 552
+  # events the event name lived under four fields — eventType (jobby, 450),
+  # event_type (trail-mapper, improv, 55), event (sc2-build-order, 41), action
+  # (reservoir_idees, jobby_ats, 6) — and the application under two,
+  # `application` and `service`. A dashboard reading `action` was therefore
+  # empty 98.9% of the time.
   #
-  # Le contrat, désormais tenu ici quel que soit l'émetteur, y compris ceux qui
-  # n'existent pas encore : `event_type` en snake_case, et `application`.
+  # The contract, now enforced here whatever the producer, including those not
+  # written yet: `event_type` in snake_case, and `application`.
   #
-  # Les champs d'origine ne sont PAS supprimés. Pendant la migration des
-  # applications, un tableau de bord encore branché sur `eventType` continue de
-  # fonctionner ; et rien de ce qui a été émis n'est perdu en route.
+  # The original fields are NOT removed. While the applications migrate, a
+  # dashboard still wired to `eventType` keeps working, and nothing that was
+  # emitted is lost on the way.
   normalize_telemetry:
     type: "remap"
     inputs:
@@ -97,8 +97,8 @@ transforms:
       } else if exists(.event) { name = .event
       } else if exists(.action) { name = .action }
 
-      # downcase + underscores : "Session Start" (jobby) et "session_start"
-      # (trail-mapper) sont le même évènement et doivent se regrouper.
+      # downcase + underscores: "Session Start" (jobby) and "session_start"
+      # (trail-mapper) are the same event and must group together.
       if name != null {
         .event_type = downcase(replace(to_string(name) ?? "", " ", "_"))
       }

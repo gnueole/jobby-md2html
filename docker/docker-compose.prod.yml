@@ -1,8 +1,7 @@
 name: jobby-prod
 
 services:
-  # Ton nouveau serveur MCP pour Notion
-  # Note : n8n l'appellera via http://mcp-notion:3000
+  # The MCP server for Notion; n8n reaches it at http://mcp-notion:3000
   mcp-notion:
     image: mcp/notion:latest 
     container_name: mcp-notion

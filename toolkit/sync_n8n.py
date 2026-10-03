@@ -659,6 +659,10 @@ def backup_all(n8n_dir, use_dev, container_name="n8n-server-dev"):
                         # tokens and cookies. It is test fixture, never configuration,
                         # and one such export put a bearer token in a public repo.
                         full_wf["pinData"] = {}
+                        # "shared" names the owner (display name and e-mail) and
+                        # "activeVersion" duplicates the nodes: neither is configuration.
+                        for key in ("shared", "activeVersion"):
+                            full_wf.pop(key, None)
                         with open(file_path, "w", encoding="utf-8") as out:
                             json.dump(full_wf, out, indent=2, ensure_ascii=False)
                         print(f"  - Saved: {n8n_dir}/{filename} (ID: {wf_id})")
