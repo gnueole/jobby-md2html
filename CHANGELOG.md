@@ -8,6 +8,21 @@ All notable changes to the Jobby project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Security
+
+- **The webhook token leaked in August is rotated.** The n8n credential that
+  guards `cv-factory`, `jobby-pdf` and `jobby-sync` is now `jobby-token`, with
+  a new value kept in Doppler as `JOBBY_WEBHOOK_TOKEN`; the old credential is
+  deleted, so the published value is refused. `toolkit/sync_n8n.py` gains a
+  generic `--rotate-credential` command (create, rebind, push only the
+  workflows concerned, delete the old one) that never prints the value. The
+  callers take the new value by hand: the Developer panel of the editor, which
+  regenerates the bookmarklet, and the Notion buttons calling `jobby-pdf`.
+
+---
+
 ## [1.17.3] - 2026-10-03
 
 ### Security

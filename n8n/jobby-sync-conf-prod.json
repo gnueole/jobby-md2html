@@ -31,8 +31,8 @@
       "webhookId": "85acc1c2-9244-4ca7-b75e-1d129d879c13",
       "credentials": {
         "httpHeaderAuth": {
-          "id": "QDm4dLNTsiXmLpmM",
-          "name": "Header Auth account"
+          "id": "dZvSE51fvfIcDFvY",
+          "name": "jobby-token"
         }
       }
     },
@@ -145,8 +145,8 @@
       "webhookId": "85acc1c2-9244-4ca7-b75e-1d129d879c13",
       "credentials": {
         "httpHeaderAuth": {
-          "id": "QDm4dLNTsiXmLpmM",
-          "name": "Header Auth account"
+          "id": "dZvSE51fvfIcDFvY",
+          "name": "jobby-token"
         }
       }
     },

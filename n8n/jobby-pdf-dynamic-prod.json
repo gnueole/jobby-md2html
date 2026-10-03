@@ -34,8 +34,8 @@
       "webhookId": "ce00eb54-6844-400c-9aa6-8c1ceb15d940",
       "credentials": {
         "httpHeaderAuth": {
-          "id": "QDm4dLNTsiXmLpmM",
-          "name": "Header Auth account"
+          "id": "dZvSE51fvfIcDFvY",
+          "name": "jobby-token"
         }
       }
     },

@@ -1202,6 +1202,110 @@ def sync_token(n8n_dir, use_dev=False, container_name="n8n-server-dev", credenti
         
     return True
 
+def rotate_credential(n8n_dir, old_name, new_name, header_name, env_var, value_prefix=""):
+    """
+    Rotates an httpHeaderAuth credential without ever printing its value.
+
+    1. Reads the new secret from the environment variable `env_var` (Doppler).
+    2. Creates a credential `new_name` (type httpHeaderAuth) sending `header_name`
+       with `value_prefix` + the secret.
+    3. Rebinds every node of the local workflow files that referenced `old_name`
+       to the new credential, writes the files, and pushes those workflows only.
+    4. Deletes the old credential, so the previous value is refused from then on.
+
+    The public API cannot update a credential's value, hence create-then-delete,
+    and a new id. Archived workflows refuse the push (400): their files are still
+    rewritten, which is what matters once they are unarchived.
+    """
+    if not API_KEY:
+        print("Error: N8N API Key is required.")
+        return False
+    value = os.environ.get(env_var, "").strip()
+    if not value:
+        print(f"Error: {env_var} is not set. Generate it and store it in Doppler first.")
+        return False
+    print(f"New value taken from {env_var} ({len(value)} characters, not shown).")
+
+    headers = {"X-N8N-API-KEY": API_KEY, "Accept": "application/json", "Content-Type": "application/json"}
+    creds_url = f"{BASE_URL}/api/v1/credentials"
+
+    # Existing credentials of that type, by name
+    try:
+        with urllib.request.urlopen(urllib.request.Request(creds_url, headers=headers), context=ctx) as res:
+            creds = json.loads(res.read().decode("utf-8")).get("data", [])
+    except Exception as e:
+        print(f"Error listing credentials: {e}")
+        return False
+    old = [c for c in creds if c.get("name") == old_name and c.get("type") == "httpHeaderAuth"]
+    clash = [c for c in creds if c.get("name") == new_name and c.get("type") == "httpHeaderAuth"]
+    if not old:
+        print(f"Error: no httpHeaderAuth credential named '{old_name}' on {BASE_URL}.")
+        return False
+    if clash and new_name != old_name:
+        print(f"Error: a credential named '{new_name}' already exists; pick another --new-name.")
+        return False
+    old_id = old[0]["id"]
+
+    # Create the new one
+    payload = {"name": new_name, "type": "httpHeaderAuth",
+               "data": {"name": header_name, "value": f"{value_prefix}{value}", "allowedHttpRequestDomains": "all"}}
+    try:
+        req = urllib.request.Request(creds_url, data=json.dumps(payload).encode("utf-8"), headers=headers, method="POST")
+        with urllib.request.urlopen(req, context=ctx) as res:
+            new_id = json.loads(res.read().decode("utf-8")).get("id")
+    except Exception as e:
+        print(f"Error creating credential '{new_name}': {e}")
+        return False
+    print(f"Created credential '{new_name}' (ID: {new_id}), header '{header_name}'.")
+
+    # Rebind the local files, push the workflows that changed
+    pushed, failed = [], []
+    for filename in sorted(f for f in os.listdir(n8n_dir) if f.endswith(".json")):
+        path = os.path.join(n8n_dir, filename)
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                wf = json.load(f)
+        except Exception:
+            continue
+        touched = []
+        for n in wf.get("nodes", []):
+            ref = (n.get("credentials") or {}).get("httpHeaderAuth")
+            if ref and (ref.get("name") == old_name or ref.get("id") == old_id):
+                ref["id"] = new_id
+                ref["name"] = new_name
+                touched.append(n.get("name"))
+        if not touched:
+            continue
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(wf, f, indent=2, ensure_ascii=False)
+        print(f"  - {filename}: rebound {', '.join(touched)}")
+        wf_id = wf.get("id")
+        if wf_id and update_workflow_by_id(wf_id, wf):
+            if wf.get("active"):
+                activate_workflow_by_id(wf_id)
+            pushed.append(filename)
+        else:
+            failed.append(filename)
+
+    if failed:
+        print(f"WARNING: {len(failed)} workflow(s) could not be pushed ({', '.join(failed)}); "
+              f"the old credential '{old_name}' (ID: {old_id}) is kept so nothing breaks. Fix and re-run.")
+        return False
+
+    # Retire the old one
+    try:
+        req = urllib.request.Request(f"{creds_url}/{old_id}", headers={"X-N8N-API-KEY": API_KEY}, method="DELETE")
+        with urllib.request.urlopen(req, context=ctx):
+            pass
+        print(f"Deleted credential '{old_name}' (ID: {old_id}). The previous value is refused from now on.")
+    except Exception as e:
+        print(f"WARNING: could not delete the old credential '{old_name}': {e}")
+        return False
+
+    print(f"SUCCESS: {len(pushed)} workflow(s) now authenticate with '{new_name}'. "
+          f"Give the new value to every caller (see N8N.md).")
+    return True
+
 def main():
     """
     Main CLI entrypoint. Parses arguments and dispatches the corresponding utility actions.
@@ -1224,6 +1328,7 @@ def main():
     group.add_argument("--retry", type=str, metavar="EXECUTION_ID", help="Retry a failed execution by its ID")
     group.add_argument("--inspect", type=str, metavar="EXECUTION_ID", help="Inspect detailed error logs of a specific execution ID")
     group.add_argument("--check-credentials", action="store_true", help="Check if n8n server has credentials required by local workflows")
+    group.add_argument("--rotate-credential", type=str, metavar="NAME", help="Rotate an httpHeaderAuth credential: create a new one from --env, rebind and push the workflows that used NAME, delete the old one")
     group.add_argument("--sync-token", action="store_true", help="Sync Webhook token credential to n8n server and update local workflows")
     
     parser.add_argument("--dev", action="store_true", help="Target the local development n8n instance instead of production")
@@ -1233,6 +1338,10 @@ def main():
     parser.add_argument("--file", type=str, help="Override input/output file path for --backup, --push, or --fix")
     parser.add_argument("--dir", type=str, help="Override n8n directory (defaults to workspace 'n8n/' if found, otherwise skill's 'n8n/')")
     parser.add_argument("--container", type=str, default="n8n-server-dev", help="Name of Docker container for dev backup/push fallback (default: n8n-server-dev)")
+    parser.add_argument("--new-name", type=str, help="Name of the credential created by --rotate-credential (default: same name)")
+    parser.add_argument("--header", type=str, default="x-n8n-token", help="Header the credential sends (default: x-n8n-token; 'authorization' for a bearer)")
+    parser.add_argument("--env", type=str, help="Environment variable holding the new value for --rotate-credential")
+    parser.add_argument("--value-prefix", type=str, default="", help="Prefix put before the value, e.g. 'Bearer ' (default: none)")
     parser.add_argument("--credential-name", type=str, default="webhook-token", help="Name of n8n httpHeaderAuth credential (default: webhook-token)")
     parser.add_argument("--insecure", action="store_true", help="Bypass SSL certificate verification")
     parser.add_argument("--limit", type=int, default=10, help="Number of execution logs to fetch (default: 10)")
@@ -1244,7 +1353,7 @@ def main():
         generate_env(force=True)
         sys.exit(0)
         
-    require_wf_id = not (args.backup_all or args.push_all or args.activate_all or args.deactivate_all or args.deploy_error or args.logs or args.retry or args.inspect or args.check_credentials or args.sync_token)
+    require_wf_id = not (args.backup_all or args.push_all or args.activate_all or args.deactivate_all or args.deploy_error or args.logs or args.retry or args.inspect or args.check_credentials or args.sync_token or args.rotate_credential)
     
     ensure_env(
         require_workflow_id=require_wf_id,
@@ -1408,6 +1517,13 @@ def main():
     elif args.check_credentials:
         check_credentials(n8n_dir)
         
+    elif args.rotate_credential:
+        if not args.env:
+            print("Error: --rotate-credential needs --env VAR (the variable holding the new value).")
+            sys.exit(1)
+        ok = rotate_credential(n8n_dir, args.rotate_credential, args.new_name or args.rotate_credential, args.header, args.env, args.value_prefix)
+        sys.exit(0 if ok else 1)
+
     elif args.sync_token:
         sync_token(n8n_dir, use_dev=args.dev, container_name=args.container, credential_name=args.credential_name)
 
